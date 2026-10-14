@@ -1,1922 +1,250 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>5S VPI - Hệ Thống Quản Lý & Chụp Ảnh Báo Cáo 5S Bệnh Viện Vĩnh Phúc</title>
+  <title>5S VPI - Quản lý Vệ sinh & Chụp ảnh Báo cáo 5S Bệnh viện Vĩnh Phúc</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0284c7">
+  <meta name="theme-color" content="#059669">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="5S VPI">
-  <link rel="apple-touch-icon" href="images/icon-192.png">
-  <link rel="icon" type="image/svg+xml" href="images/logo-5s-vpi.svg">
-  <link rel="alternate icon" type="image/png" href="images/favicon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" onload="if(window.lucide){window.lucide.createIcons();}"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
+<body class="h-full bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200 mobile-frame-mode">
 
-  <!-- Top Global Bar (Chuyển đổi giao diện Điện thoại / Desktop & Nội viện / Ngoại viện & In báo cáo) -->
-  <div id="view-toggle" class="no-print top-global-bar">
-    <div class="top-bar-left">
-      <img src="images/logo-5s-vpi.svg" alt="5S VPI Logo" class="top-bar-logo">
-      <span class="top-bar-brand">5S VPI</span>
-      <span class="top-bar-sub">• Bệnh Viện Đa Khoa VPI</span>
-      <span class="top-bar-badge">Chuẩn BYT & ISO 9001</span>
+  <!-- Top Global Bar (Chuyển đổi giao diện Điện thoại / Desktop & In báo cáo) -->
+  <div id="view-toggle" class="no-print bg-slate-900 text-slate-300 px-4 py-2 text-xs flex items-center justify-between border-b border-slate-800 shadow-sm z-50">
+    <div class="flex items-center space-x-2">
+      <img src="logo-5s-vpi.png" alt="Logo 5S VPI" class="w-5 h-5 rounded-md bg-white p-0.5 object-contain shadow-xs">
+      <span class="font-bold text-white tracking-wide">5S VPI</span>
+      <span class="text-slate-400 hidden sm:inline">• Bệnh viện Đa khoa Vĩnh Phúc</span>
+      <span class="text-[10px] bg-emerald-900/60 text-emerald-300 border border-emerald-700/60 px-2 py-0.5 rounded-full hidden md:inline">
+        Hệ thống Giám sát & Báo cáo 5S Y tế
+      </span>
+      <span id="env-badge" class="text-[10px] bg-blue-900/60 text-blue-300 border border-blue-700/60 px-2 py-0.5 rounded-full">
+        🏢 Nội viện (Wi-Fi)
+      </span>
     </div>
 
-    <div class="top-bar-right">
-      <!-- Nút chuyển Nội viện / Ngoại viện -->
-      <button id="btn-toggle-location" onclick="toggleLocationMode()" class="top-btn btn-location-internal" title="Chuyển đổi kết nối mạng Nội viện / Ngoại viện">
-        <i class="fa-solid fa-building" id="location-mode-icon"></i>
-        <span id="location-mode-label">🏢 Nội viện (Wi-Fi)</span>
+    <div class="flex items-center space-x-2">
+      <!-- Nút đổi Nội/Ngoại viện -->
+      <button onclick="app5s.toggleLocationMode()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-2.5 py-1 rounded-lg border border-slate-700 flex items-center space-x-1.5 transition">
+        <i data-lucide="globe" class="w-3.5 h-3.5 text-cyan-400"></i>
+        <span class="hidden sm:inline">Mạng:</span>
+        <span class="text-cyan-400 font-bold" id="top-location-label">Nội viện</span>
       </button>
 
       <!-- Nút chuyển Mobile Frame / Full Desktop -->
-      <button id="btn-toggle-view" onclick="toggleViewMode()" class="top-btn" title="Chuyển đổi khung điện thoại / Toàn màn hình">
-        <i class="fa-solid fa-mobile-screen" id="view-mode-icon"></i>
-        <span id="view-mode-label">📱 Khung Mobile</span>
+      <button onclick="app5s.toggleViewMode()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-2.5 py-1 rounded-lg border border-slate-700 flex items-center space-x-1.5 transition">
+        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span class="hidden sm:inline">Chế độ xem:</span>
+        <span class="text-emerald-400 font-bold" id="view-mode-label">Mobile Frame</span>
       </button>
 
-      <!-- In báo cáo nhanh chuẩn A4 -->
-      <button onclick="window.print()" class="top-btn btn-print-quick" title="In Báo Cáo Đánh Giá 5S Chuẩn Thể Thức A4">
-        <i class="fa-solid fa-print"></i>
-        <span>In Báo Cáo A4</span>
+      <!-- In báo cáo nhanh -->
+      <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1 rounded-lg flex items-center space-x-1 shadow-xs transition">
+        <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">In Báo Cáo A4</span>
       </button>
     </div>
   </div>
 
-  <!-- App Container Wrapper for Desktop & Mobile Simulation -->
-  <div id="app-wrapper">
-    <!-- Phone Notch Bar for Mobile Simulation -->
-    <div class="phone-notch-bar">
-      <span>09:41</span>
-      <span><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
-    </div>
-
-    <!-- Header Bar -->
-    <header class="header-bar">
-      <div class="header-container">
-        <div class="brand-section">
-          <img src="images/logo-5s-vpi.svg" alt="5S VPI Logo" class="brand-logo-img">
-          <div>
-            <div class="brand-title">5S VPI - BỆNH VIỆN ĐA KHOA VĨNH PHÚC</div>
-            <div class="brand-sub">Hệ thống Giám sát Vệ sinh & Chụp ảnh Báo cáo 5S</div>
-          </div>
-        </div>
-
-      <!-- Desktop Nav Tabs -->
-      <nav class="nav-tabs-desktop">
-        <button class="nav-tab-btn active" onclick="switchTab('dashboard')">
-          <i class="fa-solid fa-chart-pie"></i> Tổng quan
-        </button>
-        <button class="nav-tab-btn" onclick="switchTab('new-audit')">
-          <i class="fa-solid fa-camera"></i> Kiểm tra 5S mới
-        </button>
-        <button class="nav-tab-btn" onclick="switchTab('hierarchy')">
-          <i class="fa-solid fa-sitemap"></i> Khoa & Phòng
-        </button>
-        <button class="nav-tab-btn" onclick="switchTab('history')">
-          <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử & Báo cáo
-        </button>
-        <button class="nav-tab-btn" id="nav-btn-staff" onclick="switchTab('staff-mgmt')">
-          <i class="fa-solid fa-users-gear"></i> Nhân sự & Phân quyền
-        </button>
-        <button class="nav-tab-btn" id="nav-btn-settings" onclick="switchTab('settings')">
-          <i class="fa-solid fa-sliders"></i> Cài đặt nội dung
-        </button>
-        <button class="nav-tab-btn" onclick="switchTab('my-profile')">
-          <i class="fa-solid fa-user-check"></i> Cá nhân
-        </button>
-        <button class="nav-tab-btn" onclick="switchTab('mobile-qr')">
-          <i class="fa-solid fa-mobile-screen"></i> Kết nối ĐT
-        </button>
-      </nav>
-
-      <div class="header-actions">
-        <!-- Nút định danh cá nhân -->
-        <button class="btn-user-profile" id="header-user-btn" onclick="openPersonalModal()" title="Cá nhân hóa tài khoản trên máy này">
-          <i class="fa-solid fa-user-doctor"></i> <span id="header-user-name">Đăng nhập cá nhân</span>
-        </button>
-        <button class="btn-qr-connect" onclick="showQrModal()">
-          <i class="fa-solid fa-qrcode"></i> <span>Quét QR</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content Wrapper -->
-  <main class="app-main-content">
-
-    <!-- PWA Install Banner trên điện thoại -->
-    <div id="pwa-install-banner" class="pwa-banner" style="display: none;">
-      <div class="pwa-banner-left">
-        <img src="images/icon-192.png" alt="5S VPI Icon" class="pwa-banner-icon">
-        <div>
-          <strong style="font-size: 0.92rem;">Cài đặt App 5S VPI vào Điện Thoại</strong>
-          <div style="font-size: 0.74rem; color: #94a3b8; margin-top: 2px;">Cài lên màn hình chính như app thật, mở nhanh khi đi buồng bệnh</div>
-        </div>
-      </div>
-      <button id="pwa-install-btn" class="btn-pwa-install" onclick="triggerPwaInstall()">
-        <i class="fa-solid fa-download"></i> <span>Cài Đặt Ngay</span>
-      </button>
-    </div>
-
-    <!-- ==================== TAB 1: TỔNG QUAN (DASHBOARD) ==================== -->
-    <section id="tab-dashboard" class="tab-view-panel active">
-      <!-- 4 Stat Cards -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Điểm 5S Trung Bình Toàn Viện</div>
-            <div class="stat-value" id="dash-avg-score">--</div>
-            <div class="stat-sub">Thang điểm chuẩn 100</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#e0f2fe; color:#0284c7;">
-            <i class="fa-solid fa-award"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Kiểm Tra Hôm Nay</div>
-            <div class="stat-value" id="dash-today-audits">0</div>
-            <div class="stat-sub">Phòng buồng hoàn thành</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#d1fae5; color:#10b981;">
-            <i class="fa-solid fa-clipboard-check"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Khoa & Buồng Phòng</div>
-            <div class="stat-value" id="dash-total-rooms">-- / --</div>
-            <div class="stat-sub">Khoa lâm sàng / Phòng bệnh</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#fef3c7; color:#f59e0b;">
-            <i class="fa-solid fa-hospital-user"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Vấn Đề Cần Khắc Phục</div>
-            <div class="stat-value" id="dash-pending-actions" style="color:#ef4444;">0</div>
-            <div class="stat-sub">Đang theo dõi xử lý</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#fee2e2; color:#ef4444;">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- Widget Buồng Phòng Phân Công 5S của Cán Bộ Đăng Nhập -->
-      <div id="dash-assigned-rooms-widget" class="content-card" style="display: none; margin-bottom: 1.5rem; border-left: 4px solid #0284c7; background: #f8fafc;">
-        <div class="card-header-bar" style="background: transparent;">
-          <div class="card-header-title" style="color: #0369a1;">
-            <i class="fa-solid fa-clipboard-user text-primary"></i> Vị Trí Buồng / Phòng Bạn Được Phân Công Thực Hiện 5S Hôm Nay
-          </div>
-          <span class="badge badge-pass" id="dash-assigned-count">0 Phòng Phụ Trách</span>
-        </div>
-        <div style="padding: 1rem 1.25rem;">
-          <div id="dash-assigned-rooms-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-            <!-- Dynamic assigned room cards with 1-click audit buttons -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Dashboard Row 1 -->
-      <div class="dashboard-grid-row">
-        <!-- Card: 5 Tiêu chí 5S Y tế -->
-        <div class="content-card">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-chart-simple text-primary"></i> Đánh Giá 5 Tiêu Chí 5S Y Tế Chuẩn
-            </div>
-            <span class="badge badge-good">Thang 20đ / Tiêu chí</span>
-          </div>
-          <div class="card-body">
-            <div class="criteria-item">
-              <div class="criteria-label-row">
-                <span>1. Sàng lọc (Seiri) - Phân loại rác & thuốc</span>
-                <span id="crit-seiri-val">-- / 20</span>
-              </div>
-              <div class="progress-track"><div id="crit-seiri-bar" class="progress-fill" style="width: 0%; background: #0284c7;"></div></div>
-            </div>
-
-            <div class="criteria-item">
-              <div class="criteria-label-row">
-                <span>2. Sắp xếp (Seiton) - Vạch kẻ định vị & hồ sơ</span>
-                <span id="crit-seiton-val">-- / 20</span>
-              </div>
-              <div class="progress-track"><div id="crit-seiton-bar" class="progress-fill" style="width: 0%; background: #0ea5e9;"></div></div>
-            </div>
-
-            <div class="criteria-item">
-              <div class="criteria-label-row">
-                <span>3. Sạch sẽ (Seiso) - Khử khuẩn bề mặt & sàn buồng</span>
-                <span id="crit-seiso-val">-- / 20</span>
-              </div>
-              <div class="progress-track"><div id="crit-seiso-bar" class="progress-fill" style="width: 0%; background: #10b981;"></div></div>
-            </div>
-
-            <div class="criteria-item">
-              <div class="criteria-label-row">
-                <span>4. Săn sóc (Seiketsu) - Chuẩn hóa & duy trì lịch trực</span>
-                <span id="crit-seiketsu-val">-- / 20</span>
-              </div>
-              <div class="progress-track"><div id="crit-seiketsu-bar" class="progress-fill" style="width: 0%; background: #f59e0b;"></div></div>
-            </div>
-
-            <div class="criteria-item">
-              <div class="criteria-label-row">
-                <span>5. Sẵn sàng (Shitsuke) - Vệ sinh tay & tự giác</span>
-                <span id="crit-shitsuke-val">-- / 20</span>
-              </div>
-              <div class="progress-track"><div id="crit-shitsuke-bar" class="progress-fill" style="width: 0%; background: #8b5cf6;"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card: Top Khoa 5S Xuất Sắc Nhất -->
-        <div class="content-card">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-ranking-star" style="color:#f59e0b;"></i> Xếp Hạng 5S Giữa Các Khoa
-            </div>
-            <button class="btn-outline btn-sm" onclick="switchTab('hierarchy')">Xem tất cả khoa</button>
-          </div>
-          <div class="card-body" id="dash-top-depts-list">
-            <!-- Dynamic Dept List -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Dashboard Row 2: Vấn đề cần khắc phục -->
-      <div class="content-card">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-list-check text-primary"></i> Danh Sách Tồn Đọng / Cần Khắc Phục Tại Buồng Bệnh
-          </div>
-          <span class="badge badge-pass" id="dash-action-count">Theo dõi tiến độ</span>
-        </div>
-        <div class="vpi-table-wrap">
-          <table class="vpi-table">
-            <thead>
-              <tr>
-                <th>Mã Phiếu</th>
-                <th>Khoa / Buồng Phòng</th>
-                <th>Ngày KT</th>
-                <th>Điểm / Xếp Loại</th>
-                <th>Yêu Cầu Cải Tiến / Khắc Phục</th>
-                <th>Trạng Thái</th>
-                <th>Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="dash-pending-actions-tbody">
-              <!-- Dynamic rows -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 2: KIỂM TRA 5S MỚI (NEW AUDIT) ==================== -->
-    <section id="tab-new-audit" class="tab-view-panel">
-      <div class="content-card" style="max-width: 950px; margin: 0 auto;">
-        <div class="card-header-bar" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
-          <div class="card-header-title" style="color: #0369a1; font-size: 1.1rem;">
-            <i class="fa-solid fa-clipboard-check"></i> Phiếu Kiểm Tra Vệ Sinh & Báo Cáo 5S Buồng Phòng
-          </div>
-          <span class="badge badge-good">Bệnh viện VPI</span>
-        </div>
-
-        <div class="card-body">
-          <!-- 1. Chọn Khoa & Phòng -->
-          <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem;">
-            <div style="font-weight: 700; color: var(--gray-800); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
-              <i class="fa-solid fa-location-dot text-primary"></i> 1. CHỌN KHU VỰC KIỂM TRA
-            </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
-              <div class="form-group">
-                <label class="form-label">Khoa / Trung tâm <span style="color:red;">*</span></label>
-                <select id="audit-dept-select" class="form-select" onchange="onAuditDeptChanged()">
-                  <option value="">-- Chọn Khoa --</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Phòng / Buồng bệnh <span style="color:red;">*</span></label>
-                <select id="audit-room-select" class="form-select" onchange="onAuditRoomChanged()">
-                  <option value="">-- Chọn Khoa trước --</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Ca kiểm tra</label>
-                <select id="audit-shift-select" class="form-select">
-                  <option value="Ca sáng">Ca sáng (07:00 - 11:30)</option>
-                  <option value="Ca chiều">Ca chiều (13:30 - 17:00)</option>
-                  <option value="Ca đêm">Ca đêm (17:00 - 07:00)</option>
-                  <option value="Đột xuất">Đột xuất / Giám sát QLCL</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Cán bộ kiểm tra <span style="color:red;">*</span></label>
-                <input type="text" id="audit-inspector-name" class="form-control" placeholder="Nhập tên cán bộ kiểm tra..." value="ĐD. Đoàn Thị Lan Hương">
-              </div>
-            </div>
-
-            <div id="room-info-badge" style="display: none; background: #e0f2fe; border: 1px solid #bae6fd; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.82rem; color: #0369a1; margin-top: 6px;">
-              <!-- Dynamic Room details -->
-            </div>
-          </div>
-
-          <!-- 2. Điểm số 5S thời gian thực (Live Scoring) -->
-          <div class="score-summary-banner">
-            <div>
-              <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">Tổng Điểm 5S Dự Kiến</div>
-              <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 4px;">
-                <span class="score-number-display" id="audit-live-total">100.0</span>
-                <span style="font-size: 1.1rem; opacity: 0.8;">/ 100 Điểm</span>
-              </div>
-            </div>
-            <div>
-              <span id="audit-live-badge" class="badge" style="background: #ffffff; color: #065f46; font-size: 0.95rem; padding: 6px 16px;">
-                🟢 XUẤT SẮC
-              </span>
-            </div>
-          </div>
-
-          <!-- 3. Chấm điểm 5 Tiêu chí 5S chi tiết -->
-          <div style="margin-bottom: 1.5rem;">
-            <div style="font-weight: 700; color: var(--gray-800); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
-              <i class="fa-solid fa-list-check text-primary"></i> 2. ĐÁNH GIÁ 5 TIÊU CHÍ 5S Y TẾ
-            </div>
-
-            <!-- Tiêu chí 1: Sàng lọc -->
-            <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <div>
-                  <strong style="color: #0284c7;" id="crit-title-1">1. SÀNG LỌC (Seiri):</strong>
-                  <span style="font-size: 0.85rem; color: var(--gray-600); display: block;" id="crit-desc-1">Phân loại rác thải 4 màu y tế, không chứa đồ dùng thừa, loại bỏ thuốc/vật tư hết hạn</span>
-                </div>
-                <div style="font-weight: 700; font-size: 1.1rem; color: #0284c7;" id="score-val-seiri">20.0đ</div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <input type="range" id="slider-seiri" min="0" max="20" step="0.5" value="20" style="flex:1;" oninput="updateScoreCalc()">
-                <div style="display: flex; gap: 6px;">
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiri', 20)">20đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiri', 17)">17đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiri', 14)">14đ</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 2: Sắp xếp -->
-            <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <div>
-                  <strong style="color: #0ea5e9;" id="crit-title-2">2. SẮP XẾP (Seiton):</strong>
-                  <span style="font-size: 0.85rem; color: var(--gray-600); display: block;" id="crit-desc-2">Trang thiết bị, xe tiêm, hộp cấp cứu đặt đúng vạch vàng định vị 5S; hồ sơ bệnh án dán nhãn ngăn nắp</span>
-                </div>
-                <div style="font-weight: 700; font-size: 1.1rem; color: #0ea5e9;" id="score-val-seiton">20.0đ</div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <input type="range" id="slider-seiton" min="0" max="20" step="0.5" value="20" style="flex:1;" oninput="updateScoreCalc()">
-                <div style="display: flex; gap: 6px;">
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiton', 20)">20đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiton', 17)">17đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiton', 14)">14đ</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 3: Sạch sẽ -->
-            <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <div>
-                  <strong style="color: #10b981;" id="crit-title-3">3. SẠCH SẼ (Seiso):</strong>
-                  <span style="font-size: 0.85rem; color: var(--gray-600); display: block;" id="crit-desc-3">Sàn buồng khô ráo không trơn trượt, mặt bàn/giường bệnh/tay nắm cửa lau khử khuẩn; trần không mạng nhện</span>
-                </div>
-                <div style="font-weight: 700; font-size: 1.1rem; color: #10b981;" id="score-val-seiso">20.0đ</div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <input type="range" id="slider-seiso" min="0" max="20" step="0.5" value="20" style="flex:1;" oninput="updateScoreCalc()">
-                <div style="display: flex; gap: 6px;">
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiso', 20)">20đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiso', 17)">17đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiso', 14)">14đ</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 4: Săn sóc -->
-            <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <div>
-                  <strong style="color: #f59e0b;" id="crit-title-4">4. SĂN SÓC (Seiketsu):</strong>
-                  <span style="font-size: 0.85rem; color: var(--gray-600); display: block;" id="crit-desc-4">Niêm yết bảng phân công 5S tại phòng, duy trì quy chuẩn vệ sinh định kỳ từng ca; đồng phục bảo hộ chuẩn</span>
-                </div>
-                <div style="font-weight: 700; font-size: 1.1rem; color: #f59e0b;" id="score-val-seiketsu">20.0đ</div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <input type="range" id="slider-seiketsu" min="0" max="20" step="0.5" value="20" style="flex:1;" oninput="updateScoreCalc()">
-                <div style="display: flex; gap: 6px;">
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiketsu', 20)">20đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiketsu', 17)">17đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-seiketsu', 14)">14đ</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 5: Sẵn sàng -->
-            <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <div>
-                  <strong style="color: #8b5cf6;" id="crit-title-5">5. SẴN SÀNG (Shitsuke):</strong>
-                  <span style="font-size: 0.85rem; color: var(--gray-600); display: block;" id="crit-desc-5">Tuân thủ 5 thời điểm rửa tay, tinh thần tự giác của nhân viên y tế, hướng dẫn bệnh nhân giữ vệ sinh chung</span>
-                </div>
-                <div style="font-weight: 700; font-size: 1.1rem; color: #8b5cf6;" id="score-val-shitsuke">20.0đ</div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <input type="range" id="slider-shitsuke" min="0" max="20" step="0.5" value="20" style="flex:1;" oninput="updateScoreCalc()">
-                <div style="display: flex; gap: 6px;">
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-shitsuke', 20)">20đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-shitsuke', 17)">17đ</button>
-                  <button type="button" class="btn-outline btn-sm" onclick="setSlider('slider-shitsuke', 14)">14đ</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. Chụp ảnh minh chứng Trước / Sau (Camera & Watermark) -->
-          <div style="margin-bottom: 1.5rem; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.25rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <div style="font-weight: 700; color: var(--gray-800); display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-camera text-primary"></i> 3. CHỤP ẢNH BẰNG CHỨNG 5S (TỰ ĐỘNG ĐÓNG DẤU VPI)
-              </div>
-              <span style="font-size: 0.78rem; color: var(--gray-500);"><i class="fa-solid fa-stamp"></i> Watermark ngày giờ, khoa phòng</span>
-            </div>
-
-            <div class="camera-actions-row">
-              <!-- Nút chụp ảnh Vi phạm / Trước dọn -->
-              <div class="camera-button-box before-box">
-                <input type="file" accept="image/*" capture="environment" class="camera-file-input" onchange="handlePhotoUpload(event, 'before')">
-                <div class="camera-icon-circle" style="background:#fee2e2; color:#ef4444;">
-                  <i class="fa-solid fa-camera"></i>
-                </div>
-                <div style="font-weight: 700; color:#b91c1c; font-size: 0.95rem;">CHỤP ẢNH HIỆN TRẠNG (BEFORE)</div>
-                <div style="font-size: 0.78rem; color: var(--gray-500); margin-top: 4px;">Chụp vị trí vi phạm, lộn xộn, rác sai màu...</div>
-              </div>
-
-              <!-- Nút chụp ảnh Đã dọn / Sau khắc phục -->
-              <div class="camera-button-box after-box">
-                <input type="file" accept="image/*" capture="environment" class="camera-file-input" onchange="handlePhotoUpload(event, 'after')">
-                <div class="camera-icon-circle" style="background:#dcfce7; color:#10b981;">
-                  <i class="fa-solid fa-circle-check"></i>
-                </div>
-                <div style="font-weight: 700; color:#15803d; font-size: 0.95rem;">CHỤP ẢNH SAU KHI DỌN (AFTER)</div>
-                <div style="font-size: 0.78rem; color: var(--gray-500); margin-top: 4px;">Chụp vị trí đã khắc phục ngay ngắn, sạch sẽ...</div>
-              </div>
-            </div>
-
-            <!-- Gallery ảnh đang chụp của phiếu này -->
-            <div id="new-audit-photos-container" class="photo-gallery-grid">
-              <!-- Uploaded photos render here with thumbnails & watermark -->
-            </div>
-          </div>
-
-          <!-- 5. Nhận xét & Biện pháp khắc phục -->
-          <div style="margin-bottom: 1.5rem;">
-            <div class="form-group">
-              <label class="form-label">Ghi chú & Nhận xét tại hiện trường</label>
-              <textarea id="audit-notes" class="form-control" rows="2" placeholder="Ghi nhận cụ thể tình trạng buồng bệnh, thái độ nhân viên..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Yêu cầu cải tiến / Biện pháp khắc phục (nếu có)</label>
-              <textarea id="audit-action-required" class="form-control" rows="2" placeholder="Nêu rõ yêu cầu khắc phục, hạn hoàn thành..."></textarea>
-            </div>
-          </div>
-
-          <!-- Submit Buttons -->
-          <div style="display: flex; gap: 12px; justify-content: flex-end;">
-            <button type="button" class="btn-outline" onclick="resetNewAuditForm()">
-              <i class="fa-solid fa-rotate-left"></i> Làm mới
-            </button>
-            <button type="button" class="btn-primary" style="padding: 12px 24px; font-size: 1rem;" onclick="submitNewAudit()">
-              <i class="fa-solid fa-floppy-disk"></i> LƯU PHIẾU KIỂM TRA 5S
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 3: QUẢN LÝ KHOA & PHÒNG (HIERARCHY) ==================== -->
-    <section id="tab-hierarchy" class="tab-view-panel">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <div>
-          <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--gray-800);">Danh Mục Khoa & Buồng Phòng Bệnh Viện VPI</h2>
-          <p style="font-size: 0.85rem; color: var(--gray-500);">Tách các buồng bệnh, phòng thủ thuật theo từng khoa lâm sàng và cận lâm sàng</p>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button class="btn-outline btn-sm" onclick="showAddDeptModal()">
-            <i class="fa-solid fa-plus"></i> Thêm Khoa
-          </button>
-          <button class="btn-primary btn-sm" onclick="showAddRoomModal()">
-            <i class="fa-solid fa-plus"></i> Thêm Phòng
-          </button>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 340px 1fr; gap: 1.25rem;">
-        <!-- Cột Trái: Danh sách Khoa -->
-        <div class="content-card" style="height: fit-content;">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-building-user text-primary"></i> Danh Sách Khoa
-            </div>
-            <span class="badge badge-good" id="hierarchy-dept-count">10 Khoa</span>
-          </div>
-          <div style="padding: 0.5rem; max-height: 70vh; overflow-y: auto;" id="hierarchy-depts-list">
-            <!-- Dynamic departments list -->
-          </div>
-        </div>
-
-        <!-- Cột Phải: Danh sách Phòng thuộc Khoa đang chọn -->
-        <div class="content-card">
-          <div class="card-header-bar" id="hierarchy-room-header">
-            <div>
-              <div class="card-header-title" id="hierarchy-selected-dept-title">
-                Khoa Cấp Cứu
-              </div>
-              <div style="font-size: 0.78rem; color: var(--gray-500); margin-top: 2px;" id="hierarchy-selected-dept-sub">
-                ĐD Trưởng: ĐD. Trần Thị Lan Hương | BSCKII. Nguyễn Văn Toàn
-              </div>
-            </div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button class="btn-outline btn-sm" onclick="editSelectedDept()" title="Chỉnh sửa thông tin khoa này">
-                <i class="fa-solid fa-pen-to-square"></i> Sửa Khoa
-              </button>
-              <button class="btn-outline btn-sm" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteSelectedDept()" title="Xóa khoa này">
-                <i class="fa-solid fa-trash"></i> Xóa Khoa
-              </button>
-              <button class="btn-primary btn-sm" onclick="showAddRoomModal()">
-                <i class="fa-solid fa-plus"></i> Thêm Phòng Mới
-              </button>
-            </div>
-          </div>
-
-          <!-- Thanh tìm kiếm buồng phòng trong khoa -->
-          <div style="padding: 0.75rem 1.25rem; background: #fafbfc; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-            <div style="flex: 1; max-width: 320px;">
-              <input type="text" id="hierarchy-room-search" class="form-control" placeholder="🔍 Tìm nhanh buồng phòng..." oninput="filterHierarchyRooms()">
-            </div>
-            <span id="hierarchy-room-count-badge" class="badge badge-pass">Đang tải...</span>
-          </div>
-
-          <div class="vpi-table-wrap">
-            <table class="vpi-table">
-              <thead>
-                <tr>
-                  <th>Mã Phòng</th>
-                  <th>Tên Phòng / Buồng</th>
-                  <th>Vị Trí / Tầng</th>
-                  <th>Loại Phòng</th>
-                  <th>Người Phụ Trách 5S</th>
-                  <th>Mục Tiêu 5S</th>
-                  <th>Đánh Giá Gần Nhất</th>
-                  <th>Thao Tác</th>
-                </tr>
-              </thead>
-              <tbody id="hierarchy-rooms-tbody">
-                <!-- Dynamic rooms list -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 4: LỊCH SỬ & BÁO CÁO (HISTORY & WORD) ==================== -->
-    <section id="tab-history" class="tab-view-panel">
-      <div class="content-card">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-book-medical text-primary"></i> Sổ Nhật Ký Kiểm Tra 5S & Xuất Biên Bản Bệnh Viện
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn-outline btn-sm" onclick="loadAuditHistory()">
-              <i class="fa-solid fa-rotate-right"></i> Làm mới
-            </button>
-          </div>
-        </div>
-
-        <!-- Filter bar -->
-        <div style="padding: 1rem 1.25rem; background: #fafbfc; border-bottom: 1px solid var(--gray-200); display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-          <select id="hist-filter-dept" class="form-select" style="width: auto; min-width: 180px;" onchange="loadAuditHistory()">
-            <option value="">-- Tất cả các Khoa --</option>
-          </select>
-
-          <select id="hist-filter-rating" class="form-select" style="width: auto; min-width: 160px;" onchange="loadAuditHistory()">
-            <option value="">-- Tất cả xếp loại --</option>
-            <option value="Xuất sắc">Xuất sắc (>= 90đ)</option>
-            <option value="Tốt">Tốt (80 - 89đ)</option>
-            <option value="Đạt">Đạt (70 - 79đ)</option>
-            <option value="Cần khắc phục">Cần khắc phục (< 70đ)</option>
-          </select>
-        </div>
-
-        <div class="vpi-table-wrap">
-          <table class="vpi-table">
-            <thead>
-              <tr>
-                <th>Mã Phiếu</th>
-                <th>Khoa / Phòng</th>
-                <th>Thời Gian</th>
-                <th>Ca</th>
-                <th>Cán Bộ Kiểm Tra</th>
-                <th>Tổng Điểm</th>
-                <th>Xếp Loại</th>
-                <th>Ảnh Minh Chứng</th>
-                <th>Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="history-audits-tbody">
-              <!-- Dynamic rows -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB: QUẢN LÝ NHÂN SỰ & PHÂN QUYỀN (STAFF & RBAC) ==================== -->
-    <section id="tab-staff-mgmt" class="tab-view-panel">
-      <!-- 4 Stats Cards -->
-      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Tổng Cán Bộ Nhân Viên</div>
-            <div class="stat-value" id="staff-stat-total">0</div>
-            <div class="stat-sub">Đã cấp tài khoản</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#e0f2fe; color:#0284c7;">
-            <i class="fa-solid fa-users"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Ban QLCL / Admin Toàn Viện</div>
-            <div class="stat-value" id="staff-stat-admin" style="color:#ef4444;">0</div>
-            <div class="stat-sub">Toàn quyền hệ thống</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#fee2e2; color:#ef4444;">
-            <i class="fa-solid fa-crown"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Trưởng Khoa / ĐD Trưởng</div>
-            <div class="stat-value" id="staff-stat-manager" style="color:#0ea5e9;">0</div>
-            <div class="stat-sub">Quản lý cấp khoa</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#e0f2fe; color:#0369a1;">
-            <i class="fa-solid fa-user-shield"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Điều Dưỡng / Hộ Lý Đi Buồng</div>
-            <div class="stat-value" id="staff-stat-staff" style="color:#10b981;">0</div>
-            <div class="stat-sub">Cán bộ kiểm tra 5S</div>
-          </div>
-          <div class="stat-icon-wrap" style="background:#d1fae5; color:#10b981;">
-            <i class="fa-solid fa-user-nurse"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-card">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-users-gear text-primary"></i> <span id="staff-mgmt-title-text">Danh Sách Cán Bộ Nhân Viên & Phân Quyền Các Khoa Phòng</span>
-          </div>
-          <button class="btn-primary" onclick="showAddStaffModal()">
-            <i class="fa-solid fa-user-plus"></i> <span id="staff-add-btn-text">Thêm Cán Bộ / Nhân Viên Mới</span>
-          </button>
-        </div>
-
-        <!-- Filter bar -->
-        <div style="padding: 0.9rem 1.25rem; background: #fafbfc; border-bottom: 1px solid var(--gray-200); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <select id="staff-filter-dept" class="form-select" style="width: auto; min-width: 190px;" onchange="loadStaffList()">
-              <option value="">-- Tất cả các Khoa --</option>
-            </select>
-            <select id="staff-filter-role" class="form-select" style="width: auto; min-width: 160px;" onchange="loadStaffList()">
-              <option value="">-- Tất cả phân quyền --</option>
-              <option value="admin">👑 Admin - Toàn Viện</option>
-              <option value="manager">🛡️ Quản lý Khoa</option>
-              <option value="staff">👤 Nhân viên đi buồng</option>
-            </select>
-          </div>
-          <div style="min-width: 240px;">
-            <input type="text" id="staff-search-input" class="form-control" placeholder="Tìm theo tên hoặc mã NV..." oninput="filterStaffTable()">
-          </div>
-        </div>
-
-        <div class="vpi-table-wrap">
-          <table class="vpi-table">
-            <thead>
-              <tr>
-                <th>Mã NV / Username</th>
-                <th>Họ và Tên</th>
-                <th>Khoa Công Tác</th>
-                <th>Chức Vụ</th>
-                <th>Cấp Phân Quyền</th>
-                <th>Buồng Phòng Phụ Trách</th>
-                <th>Số Điện Thoại</th>
-                <th>Quyền Ngoại Viện</th>
-                <th>Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="staff-table-tbody">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB: CÀI ĐẶT & CHỈNH SỬA NỘI DUNG (SETTINGS) ==================== -->
-    <section id="tab-settings" class="tab-view-panel">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <div>
-          <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--gray-800);">Cấu Hình & Chỉnh Sửa Nội Dung App 5S</h2>
-          <p style="font-size: 0.85rem; color: var(--gray-500);">Tùy chỉnh thông tin bệnh viện hiển thị trên hệ thống và nội dung 5 tiêu chí 5S y tế</p>
-        </div>
-        <button class="btn-primary" onclick="saveAppSettings()">
-          <i class="fa-solid fa-floppy-disk"></i> LƯU CẤU HÌNH NỘI DUNG
-        </button>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.25rem;">
-        <!-- Cột Trái: Thông tin Bệnh viện -->
-        <div class="content-card">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-hospital text-primary"></i> 1. Thông Tin Cơ Sở Y Tế Hiển Thị
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <label class="form-label">Tên Cơ Sở Y Tế (Hiển thị trên Banner & Báo cáo) <span style="color:red;">*</span></label>
-              <input type="text" id="set-hospital-name" class="form-control" placeholder="Tên bệnh viện...">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Tiêu Đề Hệ Thống 5S</label>
-              <input type="text" id="set-system-title" class="form-control" placeholder="Tiêu đề...">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Khẩu Hiệu Hành Động 5S Bệnh Viện</label>
-              <textarea id="set-system-slogan" class="form-control" rows="3" placeholder="Khẩu hiệu 5S..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Hotline Đường Dây Nóng</label>
-              <input type="text" id="set-hotline" class="form-control" placeholder="Số điện thoại...">
-            </div>
-          </div>
-        </div>
-
-        <!-- Cột Phải: Tùy chỉnh 5 Tiêu chí 5S Y tế -->
-        <div class="content-card">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-list-check text-primary"></i> 2. Chỉnh Sửa Tiêu Chí Đánh Giá 5S Y Tế
-            </div>
-            <span class="badge badge-good">Thang 20đ / Tiêu chí</span>
-          </div>
-          <div class="card-body" style="max-height: 70vh; overflow-y: auto;">
-            <!-- Tiêu chí 1 -->
-            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-              <div class="form-group" style="margin-bottom: 6px;">
-                <label class="form-label" style="color: #0284c7;">Tiêu chí 1 (Sàng lọc - Seiri)</label>
-                <input type="text" id="set-crit-1-title" class="form-control" style="font-weight: 600;">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 0.78rem;">Mô tả hướng dẫn kiểm tra:</label>
-                <textarea id="set-crit-1-desc" class="form-control" rows="2"></textarea>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 2 -->
-            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-              <div class="form-group" style="margin-bottom: 6px;">
-                <label class="form-label" style="color: #0ea5e9;">Tiêu chí 2 (Sắp xếp - Seiton)</label>
-                <input type="text" id="set-crit-2-title" class="form-control" style="font-weight: 600;">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 0.78rem;">Mô tả hướng dẫn kiểm tra:</label>
-                <textarea id="set-crit-2-desc" class="form-control" rows="2"></textarea>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 3 -->
-            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-              <div class="form-group" style="margin-bottom: 6px;">
-                <label class="form-label" style="color: #10b981;">Tiêu chí 3 (Sạch sẽ - Seiso)</label>
-                <input type="text" id="set-crit-3-title" class="form-control" style="font-weight: 600;">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 0.78rem;">Mô tả hướng dẫn kiểm tra:</label>
-                <textarea id="set-crit-3-desc" class="form-control" rows="2"></textarea>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 4 -->
-            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-              <div class="form-group" style="margin-bottom: 6px;">
-                <label class="form-label" style="color: #f59e0b;">Tiêu chí 4 (Săn sóc - Seiketsu)</label>
-                <input type="text" id="set-crit-4-title" class="form-control" style="font-weight: 600;">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 0.78rem;">Mô tả hướng dẫn kiểm tra:</label>
-                <textarea id="set-crit-4-desc" class="form-control" rows="2"></textarea>
-              </div>
-            </div>
-
-            <!-- Tiêu chí 5 -->
-            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-              <div class="form-group" style="margin-bottom: 6px;">
-                <label class="form-label" style="color: #8b5cf6;">Tiêu chí 5 (Sẵn sàng - Shitsuke)</label>
-                <input type="text" id="set-crit-5-title" class="form-control" style="font-weight: 600;">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 0.78rem;">Mô tả hướng dẫn kiểm tra:</label>
-                <textarea id="set-crit-5-desc" class="form-control" rows="2"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hàng 2: Ngoại Viện Ngắn Gọn & Bảo Mật Chống Hack -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.25rem;">
-        
-        <!-- Khối 3: Địa Chỉ Ngoại Viện Ngắn Gọn (Chuẩn App CĐHA VPI) -->
-        <div class="content-card">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-cloud-arrow-up text-primary"></i> 3. Địa Chỉ Ngoại Viện Ngắn Gọn (Chuẩn CĐHA VPI)
-            </div>
-            <span class="badge badge-good">Vercel / Cloudflare</span>
-          </div>
-          <div class="card-body">
-            <p style="font-size: 0.82rem; color: var(--gray-600); margin-bottom: 12px;">
-              Tương tự hệ thống Quản lý Thiết bị Khoa CĐHA của BV VPI, hệ thống hỗ trợ 2 giải pháp kết nối ngoại viện 4G:
-            </p>
-
-            <!-- Giải pháp 1: Vercel Cloud Domain Ngắn Gọn -->
-            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-weight: 700; color: #0f172a; font-size: 0.85rem;">
-                  <i class="fa-solid fa-bolt" style="color: #0284c7;"></i> Tên Miền Vercel Ngắn Gọn (Khuyên dùng)
-                </span>
-                <span class="badge" style="background: #0284c7; color: #fff;">HTTPS 24/7</span>
-              </div>
-              <div style="background: #1e293b; color: #38bdf8; padding: 8px 12px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">
-                https://5s-vpi.vercel.app
-              </div>
-              <p style="font-size: 0.76rem; color: var(--gray-500); margin-bottom: 8px;">
-                Toàn bộ source code giao diện PWA đã được đóng gói sẵn trong file <code>5s-vpi-deploy.zip</code> kèm cấu hình <code>vercel.json</code>, đưa lên Vercel chỉ mất 1 phút.
-              </p>
-              <a href="/5s-vpi-deploy.zip" download="5s-vpi-deploy.zip" class="btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-                <i class="fa-solid fa-file-zipper"></i> Tải Gói Deploy Vercel (5s-vpi-deploy.zip)
-              </a>
-            </div>
-
-            <!-- Giải pháp 2: Đường truyền máy chủ Viện qua Cloudflare -->
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-weight: 700; color: #166534; font-size: 0.85rem;">
-                  <i class="fa-solid fa-shield-halved" style="color: #16a34a;"></i> Đường truyền Trực tiếp Máy chủ Viện (Cloudflare)
-                </span>
-                <span id="settings-tunnel-badge" class="badge badge-good">Đang hoạt động</span>
-              </div>
-              <div id="settings-tunnel-url-box" style="background: #1e293b; color: #4ade80; padding: 8px 12px; border-radius: 6px; font-family: monospace; font-size: 0.8rem; word-break: break-all; margin-bottom: 8px;">
-                Đang kiểm tra kết nối...
-              </div>
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn-outline btn-sm" onclick="restartTunnel()">
-                  <i class="fa-solid fa-rotate"></i> Làm mới Đường truyền
-                </button>
-                <button type="button" class="btn-outline btn-sm" onclick="copySettingsTunnelUrl()">
-                  <i class="fa-solid fa-copy"></i> Sao chép Link
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Khối 4: Bảo Mật An Toàn Thông Tin & Chống Hack -->
-        <div class="content-card">
-          <div class="card-header-bar">
-            <div class="card-header-title">
-              <i class="fa-solid fa-lock text-primary"></i> 4. An Toàn Thông Tin & Chống Hack (Security Hardening)
-            </div>
-            <span class="badge" style="background:#fee2e2; color:#ef4444;"><i class="fa-solid fa-shield"></i> OWASP Top 10</span>
-          </div>
-          <div class="card-body">
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              
-              <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px; background: #fafbfc; border-radius: 6px; border: 1px solid #e2e8f0;">
-                <i class="fa-solid fa-shield-virus" style="color: #10b981; font-size: 1.1rem; margin-top: 2px;"></i>
-                <div style="flex: 1;">
-                  <div style="font-weight: 600; font-size: 0.84rem; color: var(--gray-800);">Chống Brute-Force & Quét Mật Khẩu Tự Động</div>
-                  <div style="font-size: 0.76rem; color: var(--gray-500);">Tự động khóa IP 15 phút nếu nhập sai mật khẩu quá 5 lần liên tiếp. Loại bỏ hoàn toàn cửa sau (backdoor).</div>
-                </div>
-                <span class="badge badge-good">Đang bật</span>
-              </div>
-
-              <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px; background: #fafbfc; border-radius: 6px; border: 1px solid #e2e8f0;">
-                <i class="fa-solid fa-user-lock" style="color: #0ea5e9; font-size: 1.1rem; margin-top: 2px;"></i>
-                <div style="flex: 1;">
-                  <div style="font-weight: 600; font-size: 0.84rem; color: var(--gray-800);">Kiểm Soát Vị Trí Môi Trường (RBAC Ngoại Viện)</div>
-                  <div style="font-size: 0.76rem; color: var(--gray-500);">Chỉ nhân sự được cấp "Quyền Ngoại Viện" mới có thể đăng nhập bằng 4G ngoài bệnh viện.</div>
-                </div>
-                <span class="badge badge-good">Đang bật</span>
-              </div>
-
-              <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px; background: #fafbfc; border-radius: 6px; border: 1px solid #e2e8f0;">
-                <i class="fa-solid fa-file-shield" style="color: #8b5cf6; font-size: 1.1rem; margin-top: 2px;"></i>
-                <div style="flex: 1;">
-                  <div style="font-weight: 600; font-size: 0.84rem; color: var(--gray-800);">Bộ Lọc Tiêu Chuẩn Bảo Mật OWASP</div>
-                  <div style="font-size: 0.76rem; color: var(--gray-500);">X-Content-Type-Options: nosniff, X-Frame-Options: SAMEORIGIN (chống Clickjacking, XSS injection).</div>
-                </div>
-                <span class="badge badge-good">Bảo vệ</span>
-              </div>
-
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--gray-200);">
-                <span style="font-size: 0.8rem; color: var(--gray-600);">Lịch sử đăng nhập & cảnh báo an ninh:</span>
-                <button type="button" class="btn-outline btn-sm" onclick="openSecurityLogsModal()">
-                  <i class="fa-solid fa-clock-rotate-left"></i> Xem Nhật Ký An Ninh (Audit Logs)
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Hàng 3: Sao Lưu Toàn Diện & Khôi Phục Dữ Liệu Khi Bị Tấn Công -->
-      <div class="content-card" style="margin-top: 1.25rem;">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-database text-primary"></i> 5. Hệ Thống Sao Lưu & Khôi Phục Dữ Liệu Khi Bị Tấn Công (Disaster Recovery)
-          </div>
-          <button type="button" class="btn-primary btn-sm" onclick="createManualBackup()">
-            <i class="fa-solid fa-file-zipper"></i> TẠO BẢN SAO LƯU (.ZIP) NGAY
-          </button>
-        </div>
-        <div class="card-body">
-          <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.25rem;">
-            <div>
-              <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
-                <div style="font-weight: 700; color: #166534; font-size: 0.88rem; margin-bottom: 4px;">
-                  <i class="fa-solid fa-circle-check"></i> Chế Độ Tự Động Sao Lưu Định Kỳ
-                </div>
-                <p style="font-size: 0.78rem; color: #15803d; margin-bottom: 0;">
-                  Máy chủ tự động chụp snapshot CSDL SQLite và nén toàn bộ ảnh vi phạm 5S vào thư mục <code>backups/</code> định kỳ <strong>6 giờ/lần</strong>. Tự động lưu 15 bản gần nhất.
-                </p>
-              </div>
-
-              <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius-sm); padding: 12px;">
-                <div style="font-weight: 700; color: #92400e; font-size: 0.85rem; margin-bottom: 4px;">
-                  <i class="fa-solid fa-triangle-exclamation"></i> Quy Trình Khôi Phục Khi Bị Tấn Công:
-                </div>
-                <ol style="font-size: 0.76rem; color: #78350f; padding-left: 18px; margin-bottom: 0; line-height: 1.5;">
-                  <li>Nếu máy chủ bị virus, mất dữ liệu hoặc hỏng hóc, hãy chọn 1 bản sao lưu trong danh sách bên phải.</li>
-                  <li>Nhấn nút <strong>"Khôi phục"</strong>, hệ thống sẽ tự động tạo bản dự phòng an toàn và phục hồi CSDL về trạng thái sạch chỉ trong <strong>10 giây</strong>.</li>
-                  <li>Ngoài ra, file sao lưu ZIP chứa sẵn cả file <code>vpi_5s_dump.sql</code> văn bản để nhập thủ công nếu cần.</li>
-                </ol>
-              </div>
-            </div>
-
-            <!-- Bảng danh sách các bản sao lưu -->
-            <div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-weight: 700; font-size: 0.85rem; color: var(--gray-800);">Danh Sách Bản Sao Lưu Hiện Có:</span>
-                <button class="btn-outline btn-sm" onclick="loadBackupsList()"><i class="fa-solid fa-rotate"></i> Làm mới</button>
-              </div>
-              <div style="max-height: 240px; overflow-y: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm);">
-                <table class="vpi-table" style="font-size: 0.8rem;">
-                  <thead>
-                    <tr>
-                      <th>Tên Bản Sao Lưu</th>
-                      <th>Thời Gian</th>
-                      <th>Dung Lượng</th>
-                      <th>Loại</th>
-                      <th>Thao Tác</th>
-                    </tr>
-                  </thead>
-                  <tbody id="backup-table-tbody">
-                    <tr><td colspan="5" style="text-align:center; padding:15px; color:var(--gray-400);">Đang tải danh sách sao lưu...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hàng 4: Quản Lý Dữ Liệu Cục Bộ (Client-side Data Engine & JSON Sync) -->
-      <div class="content-card" style="margin-top: 1.25rem;">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-cloud-arrow-down text-primary"></i> 6. Đồng Bộ Dữ Liệu & Sao Lưu Cục Bộ (Hoạt động Ngoại Viện / Vercel)
-          </div>
-          <span class="badge badge-good"><i class="fa-solid fa-circle-check"></i> Sẵn sàng Ngoại viện</span>
-        </div>
-        <div class="card-body">
-          <p style="font-size: 0.82rem; color: var(--gray-600); margin-bottom: 12px;">
-            Hệ thống tích hợp công nghệ lưu trữ kép (Hybrid Database): Hoạt động mượt mà ngay trên trình duyệt (LocalStorage) khi không có mạng viện hoặc chạy trên nền tảng Cloud Vercel. Dữ liệu được đồng bộ tự động.
-          </p>
-          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            <button type="button" class="btn-primary btn-sm" onclick="exportDataJson()">
-              <i class="fa-solid fa-download"></i> Xuất Tệp Dữ Liệu (.JSON) Lưu Vào Máy
-            </button>
-            <button type="button" class="btn-outline btn-sm" onclick="triggerImportJson()">
-              <i class="fa-solid fa-upload"></i> Nạp Tệp Sao Lưu (.JSON) Phục Hồi
-            </button>
-            <input type="file" id="import-json-input" accept=".json,.vpi-backup" style="display: none;" onchange="handleImportJsonFile(event)">
-            <button type="button" class="btn-outline btn-sm" style="color: #ef4444; border-color: #fca5a5;" onclick="resetToHospitalDefaultData()">
-              <i class="fa-solid fa-arrow-rotate-left"></i> Khôi Phục Dữ Liệu Gốc BV VPI
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 6: CÁ NHÂN CỦA TÔI (MY PROFILE) ==================== -->
-    <section id="tab-my-profile" class="tab-view-panel">
-      <!-- Profile Hero Card -->
-      <div class="profile-card">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <div class="profile-avatar">
-            <i class="fa-solid fa-user-nurse" id="my-profile-icon"></i>
-          </div>
-          <div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <h2 style="font-size: 1.3rem; font-weight: 700;" id="my-profile-name">Chưa Đăng Nhập</h2>
-              <span class="badge" style="background: rgba(255,255,255,0.25); color: #fff;" id="my-profile-badge">Cá nhân</span>
-            </div>
-            <div style="font-size: 0.88rem; opacity: 0.95; margin-top: 3px;" id="my-profile-role">
-              Vui lòng chọn hoặc đăng nhập tài khoản cán bộ của bạn
-            </div>
-            <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 2px;" id="my-profile-dept">
-              Khoa: --- | Mã NV: ---
-            </div>
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <button class="btn-outline" style="background: #ffffff; color: var(--primary); border: none;" onclick="openPersonalModal()">
-            <i class="fa-solid fa-right-left"></i> Đổi Tài Khoản
-          </button>
-          <button class="btn-outline" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.4);" onclick="triggerPwaInstall()">
-            <i class="fa-solid fa-mobile-screen"></i> Cài App Vào ĐT
-          </button>
-        </div>
-      </div>
-
-      <!-- Khối Lối Tắt Quản Trị Dành Cho Admin & Quản Lý Khoa (Hữu ích cả trên PC & Mobile) -->
-      <div id="my-profile-admin-panel" class="content-card" style="margin-bottom: 1.25rem; display: none;">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-crown text-primary"></i> Quyền Quản Trị & Cấu Hình Hệ Thống
-          </div>
-          <span class="badge" id="my-profile-admin-badge">Admin</span>
-        </div>
-        <div style="padding: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
-          <button type="button" class="btn-outline" style="text-align: left; padding: 12px; display: flex; align-items: center; gap: 10px;" onclick="switchTab('staff-mgmt')">
-            <i class="fa-solid fa-users-gear" style="font-size: 1.2rem; color: #0284c7;"></i>
-            <div>
-              <strong>Nhân Sự & Phân Quyền</strong>
-              <div style="font-size: 0.75rem; color: var(--gray-500);">Thêm cán bộ, phân khoa phòng</div>
-            </div>
-          </button>
-          <button type="button" class="btn-outline" id="my-btn-shortcut-settings" style="text-align: left; padding: 12px; display: flex; align-items: center; gap: 10px;" onclick="switchTab('settings')">
-            <i class="fa-solid fa-sliders" style="font-size: 1.2rem; color: #10b981;"></i>
-            <div>
-              <strong>Cài Đặt & Nội Dung 5S</strong>
-              <div style="font-size: 0.75rem; color: var(--gray-500);">Sửa tên BV, chỉnh 5 tiêu chí</div>
-            </div>
-          </button>
-          <button type="button" class="btn-outline" style="text-align: left; padding: 12px; display: flex; align-items: center; gap: 10px;" onclick="switchTab('hierarchy')">
-            <i class="fa-solid fa-sitemap" style="font-size: 1.2rem; color: #f59e0b;"></i>
-            <div>
-              <strong>Khoa & Buồng Phòng</strong>
-              <div style="font-size: 0.75rem; color: var(--gray-500);">Tách phòng theo từng khoa</div>
-            </div>
-          </button>
-          <button type="button" class="btn-outline" style="text-align: left; padding: 12px; display: flex; align-items: center; gap: 10px; color: #ef4444; border-color: #fca5a5;" onclick="logoutUser()">
-            <i class="fa-solid fa-right-from-bracket" style="font-size: 1.2rem; color: #ef4444;"></i>
-            <div>
-              <strong>Đăng Xuất Tài Khoản</strong>
-              <div style="font-size: 0.75rem; color: #ef4444;">Thoát khỏi phiên làm việc</div>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <!-- Personal KPI Cards -->
-      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Lượt Đã Kiểm Tra 5S</div>
-            <div class="stat-value" id="my-stat-audits" style="color: #0284c7;">0</div>
-            <div class="stat-sub">Phiếu hoàn thành</div>
-          </div>
-          <div class="stat-icon-wrap" style="background: #e0f2fe; color: #0284c7;">
-            <i class="fa-solid fa-clipboard-check"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Điểm Trung Bình Đánh Giá</div>
-            <div class="stat-value" id="my-stat-avg" style="color: #10b981;">--</div>
-            <div class="stat-sub">Thang điểm 100</div>
-          </div>
-          <div class="stat-icon-wrap" style="background: #d1fae5; color: #10b981;">
-            <i class="fa-solid fa-star"></i>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="stat-label">Phòng Buồng Phụ Trách</div>
-            <div class="stat-value" id="my-stat-rooms" style="color: #f59e0b;">0</div>
-            <div class="stat-sub">Phòng phân công theo dõi 5S</div>
-          </div>
-          <div class="stat-icon-wrap" style="background: #fef3c7; color: #f59e0b;">
-            <i class="fa-solid fa-door-open"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- Danh sách Phòng do mình phụ trách -->
-      <div class="content-card" style="margin-bottom: 1.5rem;">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-hospital-user text-primary"></i> Buồng Phòng Phân Công Phụ Trách 5S Của Bạn
-          </div>
-          <button class="btn-primary btn-sm" onclick="switchTab('new-audit')">
-            <i class="fa-solid fa-camera"></i> Đi Buồng Kiểm Tra 5S Ngay
-          </button>
-        </div>
-        <div class="vpi-table-wrap">
-          <table class="vpi-table">
-            <thead>
-              <tr>
-                <th>Mã Phòng</th>
-                <th>Tên Phòng Buồng</th>
-                <th>Vị Trí / Tầng</th>
-                <th>Loại Phòng</th>
-                <th>Đánh Giá Gần Nhất</th>
-                <th>Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="my-rooms-tbody">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Lịch sử kiểm tra gần nhất của cá nhân này -->
-      <div class="content-card">
-        <div class="card-header-bar">
-          <div class="card-header-title">
-            <i class="fa-solid fa-clock-rotate-left text-primary"></i> Các Phiếu 5S Gần Nhất Bạn Đã Kiểm Tra
-          </div>
-        </div>
-        <div class="vpi-table-wrap">
-          <table class="vpi-table">
-            <thead>
-              <tr>
-                <th>Mã Phiếu</th>
-                <th>Phòng Buồng</th>
-                <th>Thời Gian</th>
-                <th>Điểm</th>
-                <th>Xếp Loại</th>
-                <th>Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="my-audits-tbody">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 5: KẾT NỐI ĐIỆN THOẠI & MẠNG NỘI / NGOẠI VIỆN ==================== -->
-    <section id="tab-mobile-qr" class="tab-view-panel">
-      <div style="max-width: 900px; margin: 0 auto;">
-        
-        <!-- Header giới thiệu -->
-        <div style="text-align: center; margin-bottom: 2rem;">
-          <div style="display: inline-flex; align-items: center; justify-content: center; width: 68px; height: 68px; background: #e0f2fe; color: #0284c7; border-radius: 50%; font-size: 1.8rem; margin-bottom: 0.75rem;">
-            <i class="fa-solid fa-mobile-screen-button"></i>
-          </div>
-          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--gray-800); margin-bottom: 6px;">
-            Kết Nối Điện Thoại & Cài Đặt App 5S VPI
-          </h2>
-          <p style="font-size: 0.92rem; color: var(--gray-500); max-width: 600px; margin: 0 auto;">
-            Hỗ trợ mở app và cài ra màn hình chính điện thoại hoạt động linh hoạt cả trong mạng <strong>Nội Viện</strong> (Wi-Fi bệnh viện) lẫn mạng <strong>Ngoại Viện</strong> (4G / 5G / ngoài viện / ở nhà).
-          </p>
-        </div>
-
-        <!-- 2 Cột: Mạng Nội Viện & Mạng Ngoại Viện -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-          
-          <!-- Card 1: Mạng Nội Viện -->
-          <div class="content-card" style="padding: 1.5rem; text-align: center; border-top: 4px solid #0284c7;">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 0.75rem;">
-              <span class="badge badge-pass" style="font-size: 0.85rem;"><i class="fa-solid fa-wifi"></i> MẠNG NỘI VIỆN</span>
-            </div>
-            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--gray-800); margin-bottom: 6px;">
-              Wi-Fi Bệnh Viện Vĩnh Phúc
-            </h3>
-            <p style="font-size: 0.82rem; color: var(--gray-500); margin-bottom: 1.25rem;">
-              Dành cho cán bộ, điều dưỡng khi đang trực tại viện và kết nối chung Wi-Fi nội bộ.
-            </p>
-
-            <div style="background: var(--white); padding: 1rem; border: 2px dashed #0284c7; border-radius: var(--radius); display: inline-block; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
-              <div id="lan-qr-code-box"></div>
-            </div>
-
-            <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-sm); padding: 10px; font-family: monospace; font-size: 1rem; font-weight: 700; color: #0369a1; word-break: break-all; margin-bottom: 10px;" id="lan-ip-display">
-              Đang lấy địa chỉ Wi-Fi...
-            </div>
-            <div style="font-size: 0.76rem; color: var(--gray-500);">
-              <i class="fa-solid fa-circle-check text-success"></i> Truy cập tốc độ cao qua mạng Wi-Fi nội bộ
-            </div>
-          </div>
-
-          <!-- Card 2: Mạng Ngoại Viện -->
-          <div class="content-card" style="padding: 1.5rem; text-align: center; border-top: 4px solid #10b981;">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 0.75rem;">
-              <span class="badge badge-good" style="font-size: 0.85rem;"><i class="fa-solid fa-earth-americas"></i> MẠNG NGOẠI VIỆN</span>
-            </div>
-            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--gray-800); margin-bottom: 6px;">
-              Internet / 4G / Ngoại Viện
-            </h3>
-            <p style="font-size: 0.82rem; color: var(--gray-500); margin-bottom: 1.25rem;">
-              Đường truyền bảo mật HTTPS Cloudflare giúp kiểm tra 5S khi ra khỏi viện hoặc ở nhà.
-            </p>
-
-            <div style="background: var(--white); padding: 1rem; border: 2px dashed #10b981; border-radius: var(--radius); display: inline-block; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
-              <div id="ext-qr-code-box">
-                <div style="width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; color: var(--gray-400); font-size: 0.85rem;">
-                  Đang khởi tạo...
-                </div>
-              </div>
-            </div>
-
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 10px; font-family: monospace; font-size: 0.95rem; font-weight: 700; color: #15803d; word-break: break-all; margin-bottom: 10px;" id="ext-url-display">
-              Đang kết nối...
-            </div>
-
-            <div style="display: flex; justify-content: center; gap: 8px;">
-              <button id="btn-toggle-tunnel" class="btn-primary btn-sm" onclick="toggleExternalTunnel()">
-                <i class="fa-solid fa-bolt"></i> Làm mới đường truyền
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Hướng dẫn Cài App ra màn hình chính -->
-        <div class="content-card" style="padding: 1.5rem; background: #fafbfc;">
-          <div style="font-weight: 700; color: var(--gray-800); font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-            <i class="fa-solid fa-download text-primary"></i> Hướng Dẫn Cài Đặt App 5S VPI Ra Màn Hình Điện Thoại
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; font-size: 0.88rem; color: var(--gray-700);">
-            <div style="background: white; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--gray-200);">
-              <strong style="color: #0284c7;"><i class="fa-brands fa-android"></i> Trên Điện Thoại Android (Chrome):</strong>
-              <ol style="margin: 8px 0 0 1.25rem; padding: 0; line-height: 1.6;">
-                <li>Mở liên kết hoặc quét mã QR bằng Google Chrome.</li>
-                <li>Bấm nút <strong>"Cài đặt ngay"</strong> ở đầu trang, hoặc bấm menu <strong>3 chấm (⋮)</strong> góc phải trên.</li>
-                <li>Chọn <strong>"Cài đặt ứng dụng"</strong> (hoặc "Thêm vào Màn hình chính").</li>
-                <li>Biểu tượng <strong>5S VPI</strong> sẽ xuất hiện ngoài màn hình chính để mở bất cứ lúc nào!</li>
-              </ol>
-            </div>
-            <div style="background: white; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--gray-200);">
-              <strong style="color: #0284c7;"><i class="fa-brands fa-apple"></i> Trên Điện Thoại iPhone (Safari):</strong>
-              <ol style="margin: 8px 0 0 1.25rem; padding: 0; line-height: 1.6;">
-                <li>Mở liên kết hoặc quét mã QR bằng <strong>trình duyệt Safari</strong>.</li>
-                <li>Bấm vào biểu tượng <strong>Chia sẻ</strong> (ô vuông có mũi tên chỉ lên ⬆️ ở thanh công cụ dưới).</li>
-                <li>Cuộn xuống và chọn <strong>"Thêm vào MH chính" (Add to Home Screen)</strong> ➕.</li>
-                <li>Bấm <strong>"Thêm"</strong> ở góc trên bên phải để hoàn tất.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Bottom Navigation Bar for Mobile -->
-  <nav class="bottom-nav-mobile">
-    <button class="mobile-nav-item active" onclick="switchTab('dashboard')">
-      <i class="fa-solid fa-chart-pie"></i>
-      <span>Tổng quan</span>
-    </button>
-    <button class="mobile-nav-item" onclick="switchTab('new-audit')">
-      <i class="fa-solid fa-camera"></i>
-      <span>Kiểm tra</span>
-    </button>
-    <button class="mobile-nav-item" onclick="switchTab('hierarchy')">
-      <i class="fa-solid fa-sitemap"></i>
-      <span>Khoa/Phòng</span>
-    </button>
-    <button class="mobile-nav-item" onclick="switchTab('history')">
-      <i class="fa-solid fa-clock-rotate-left"></i>
-      <span>Lịch sử</span>
-    </button>
-    <button class="mobile-nav-item" onclick="switchTab('my-profile')">
-      <i class="fa-solid fa-user-check"></i>
-      <span>Cá nhân</span>
-    </button>
-  </nav>
-  </div> <!-- end #app-wrapper -->
-
-  <!-- ==================== MODALS ==================== -->
-
-  <!-- Modal 1: Chi tiết Phiếu 5S & Bộ sưu tập ảnh Trước Sau -->
-  <div id="audit-detail-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 850px;">
-      <div class="modal-header">
-        <div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--gray-800);" id="modal-audit-code">Chi Tiết Phiếu Đánh Giá 5S</h3>
-          <div style="font-size: 0.8rem; color: var(--gray-500);" id="modal-audit-subtitle"></div>
-        </div>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('audit-detail-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body" id="modal-audit-body">
-        <!-- Rendered dynamically -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeModal('audit-detail-modal')">Đóng</button>
-        <button type="button" class="btn-primary" id="modal-download-docx-btn">
-          <i class="fa-solid fa-file-word"></i> Xuất Biên Bản Word (.docx)
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 2: Thêm / Sửa Khoa -->
-  <div id="dept-modal" class="modal-backdrop">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--gray-800);" id="m-dept-modal-title">Thêm Khoa / Phòng Ban Mới</h3>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('dept-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="m-dept-id" value="">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Mã Khoa <span style="color:red;">*</span></label>
-            <input type="text" id="m-dept-code" class="form-control" placeholder="Ví dụ: KCC...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tên Khoa / Trung Tâm <span style="color:red;">*</span></label>
-            <input type="text" id="m-dept-name" class="form-control" placeholder="Tên đầy đủ của khoa...">
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Điều Dưỡng Trưởng</label>
-            <input type="text" id="m-dept-nurse" class="form-control" placeholder="Họ tên điều dưỡng trưởng...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Bác Sĩ Trưởng Khoa</label>
-            <input type="text" id="m-dept-doctor" class="form-control" placeholder="Họ tên trưởng khoa...">
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Số Điện Thoại / Hotline</label>
-            <input type="text" id="m-dept-phone" class="form-control" placeholder="0211.xxx.xxx">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Màu Sắc Nhận Diện</label>
-            <select id="m-dept-color" class="form-select">
-              <option value="#0284c7">🔵 Xanh Dương (Mặc định)</option>
-              <option value="#10b981">🟢 Xanh Lá Cây</option>
-              <option value="#f59e0b">🟡 Vàng Cam</option>
-              <option value="#ef4444">🔴 Đỏ Cấp Cứu</option>
-              <option value="#8b5cf6">🟣 Tím Thần Kinh / Sản</option>
-              <option value="#06b6d4">🩵 Xanh Lơ Ngoại Trú</option>
-              <option value="#ec4899">🌸 Hồng Nhi Khoa</option>
-              <option value="#64748b">⚪ Xám Cận Lâm Sàng</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mô tả / Chức năng nhiệm vụ</label>
-          <textarea id="m-dept-desc" class="form-control" rows="2" placeholder="Chức năng nhiệm vụ, vị trí nhà..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeModal('dept-modal')">Hủy</button>
-        <button type="button" class="btn-primary" onclick="submitDept()">
-          <i class="fa-solid fa-floppy-disk"></i> Lưu Khoa
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 3: Thêm / Sửa Buồng Phòng -->
-  <div id="room-modal" class="modal-backdrop">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--gray-800);" id="m-room-modal-title">Thêm Buồng Phòng Mới</h3>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('room-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="m-room-id" value="">
-        <div class="form-group">
-          <label class="form-label">Thuộc Khoa / Trung Tâm <span style="color:red;">*</span></label>
-          <select id="m-room-dept-select" class="form-select"></select>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Mã Phòng <span style="color:red;">*</span></label>
-            <input type="text" id="m-room-code" class="form-control" placeholder="Ví dụ: KCC-P07, P.201...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tên Phòng / Buồng Bệnh <span style="color:red;">*</span></label>
-            <input type="text" id="m-room-name" class="form-control" placeholder="Ví dụ: Buồng Hậu Phẫu 201...">
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Loại Phòng</label>
-            <select id="m-room-type" class="form-select">
-              <option value="Phòng bệnh">Phòng bệnh</option>
-              <option value="Phòng thủ thuật">Phòng thủ thuật / Can thiệp</option>
-              <option value="Phòng khám">Phòng khám ngoại trú</option>
-              <option value="Phòng giao ban">Phòng trực / Giao ban bác sĩ</option>
-              <option value="Kho dược">Kho thuốc & vật tư</option>
-              <option value="Khu vệ sinh">Khu vệ sinh & Khử khuẩn</option>
-              <option value="Khác">Khu vực chức năng khác</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Vị trí / Tầng</label>
-            <input type="text" id="m-room-floor" class="form-control" placeholder="Ví dụ: Tầng 2 - Nhà C...">
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Người Phụ Trách 5S Buồng Phòng</label>
-            <input type="text" id="m-room-person" class="form-control" placeholder="Tên điều dưỡng / bác sĩ...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Mục Tiêu Điểm 5S</label>
-            <input type="number" id="m-room-target" class="form-control" value="90" min="50" max="100" step="1">
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeModal('room-modal')">Hủy</button>
-        <button type="button" class="btn-primary" onclick="submitRoom()">
-          <i class="fa-solid fa-floppy-disk"></i> Lưu Buồng Phòng
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 4: QR Code Phóng to -->
-  <div id="qr-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 440px; text-align: center;">
-      <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--gray-800);">Quét Mã Mở App Trên Điện Thoại</h3>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('qr-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 1rem;">
-          Mở Camera điện thoại hoặc Zalo để quét mã truy cập nhanh mạng nội bộ bệnh viện:
-        </p>
-        <div id="modal-qr-container" style="background:#fff; padding: 12px; display: inline-block; border: 1px solid var(--gray-200); border-radius: var(--radius);"></div>
-        <div style="margin-top: 1rem; font-family: monospace; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 8px; border-radius: var(--radius-sm);" id="modal-qr-link-text"></div>
-      </div>
-      <div class="modal-footer" style="justify-content: center;">
-        <button type="button" class="btn-primary" onclick="closeModal('qr-modal')">Đã hiểu</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 5: Đăng Nhập & Phân Quyền Tài Khoản -->
-  <div id="staff-login-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 520px;">
-      <div class="modal-header">
-        <div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--gray-800);">Đăng Nhập Tài Khoản & Phân Quyền</h3>
-          <div style="font-size: 0.78rem; color: var(--gray-500);">Xác thực phân quyền Admin / Quản lý khoa / Nhân viên kiểm tra 5S</div>
-        </div>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('staff-login-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- 1-Click Demo Accounts Bar -->
-        <div style="background: #f8fafc; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 1.25rem;">
-          <div style="font-size: 0.78rem; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-            <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> ĐĂNG NHẬP NHANH TÀI KHOẢN MẪU (1-CLICK):
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-            <button type="button" class="btn-outline btn-sm" style="font-size: 0.78rem; padding: 6px 4px; text-align: center; border-color: #fca5a5; background: #fff5f5; color: #b91c1c;" onclick="quickLogin('admin', '123456')">
-              👑 Admin<br><span style="font-size: 0.7rem; color: #dc2626;">Toàn viện</span>
-            </button>
-            <button type="button" class="btn-outline btn-sm" style="font-size: 0.78rem; padding: 6px 4px; text-align: center; border-color: #bae6fd; background: #f0f9ff; color: #0369a1;" onclick="quickLogin('truongkhoa_cc', '123456')">
-              🛡️ Quản Lý<br><span style="font-size: 0.7rem; color: #0284c7;">Khoa Cấp cứu</span>
-            </button>
-            <button type="button" class="btn-outline btn-sm" style="font-size: 0.78rem; padding: 6px 4px; text-align: center; border-color: #bbf7d0; background: #f0fdf4; color: #15803d;" onclick="quickLogin('dieuduong_cc', '123456')">
-              👤 Điều Dưỡng<br><span style="font-size: 0.7rem; color: #16a34a;">Đi buồng 5S</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Mode Switcher -->
-        <div style="display: flex; gap: 6px; margin-bottom: 1rem; border-bottom: 1px solid var(--gray-200); padding-bottom: 8px;">
-          <button type="button" id="login-tab-btn-user" class="btn-sm btn-primary" onclick="setLoginViewMode('user')">
-            <i class="fa-solid fa-key"></i> Tên Tài Khoản & Mật Khẩu
-          </button>
-          <button type="button" id="login-tab-btn-pin" class="btn-sm btn-outline" onclick="setLoginViewMode('pin')">
-            <i class="fa-solid fa-mobile-screen"></i> Chọn Tên & PIN (Mobile)
-          </button>
-        </div>
-
-        <!-- Form 1: Username & Password -->
-        <div id="login-mode-user">
-          <div class="form-group">
-            <label class="form-label">Tên Đăng Nhập hoặc Mã Cán Bộ <span style="color:red;">*</span></label>
-            <input type="text" id="login-username-input" class="form-control" placeholder="Ví dụ: admin, truongkhoa_cc, NV-KCC-03..." value="admin">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Mật Khẩu <span style="color:red;">*</span></label>
-            <input type="password" id="login-password-input" class="form-control" placeholder="Mật khẩu (mặc định: 123456)" value="123456">
-          </div>
-        </div>
-
-        <!-- Form 2: Department + Staff Name + PIN -->
-        <div id="login-mode-pin" style="display: none;">
-          <div class="form-group">
-            <label class="form-label">Khoa / Trung tâm của bạn <span style="color:red;">*</span></label>
-            <select id="login-dept-select" class="form-select" onchange="onLoginDeptChanged()">
-              <option value="">-- Chọn Khoa công tác --</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Chọn Tên Cán Bộ / Nhân Viên <span style="color:red;">*</span></label>
-            <select id="login-staff-select" class="form-select">
-              <option value="">-- Chọn Khoa trước --</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Mã PIN xác thực (Mặc định: 1234)</label>
-            <input type="password" id="login-pin-input" class="form-control" placeholder="Nhập mã PIN 4 số..." value="1234">
-          </div>
-        </div>
-
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.78rem; color: #166534; display: flex; align-items: center; gap: 8px;">
-          <i class="fa-solid fa-circle-check" style="font-size: 1rem; color: #16a34a;"></i>
-          <span>Hệ thống tự động ghi nhớ tài khoản trên thiết bị này cho mọi lượt kiểm tra sau.</span>
-        </div>
-      </div>
-      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <button type="button" id="btn-logout-current" class="btn-outline btn-sm" style="color: #ef4444; border-color: #fca5a5; display: none;" onclick="logoutUser()">
-            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
-          </button>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button type="button" class="btn-outline" onclick="closeModal('staff-login-modal')">Đóng</button>
-          <button type="button" class="btn-primary" onclick="submitCombinedLogin()">
-            <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 7: Thêm / Sửa Cán Bộ & Phân Quyền (Staff Edit & Room Assignment) -->
-  <div id="staff-edit-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 650px;">
-      <div class="modal-header">
-        <div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--gray-800);" id="staff-modal-title">Thêm Cán Bộ / Nhân Viên Mới</h3>
-          <div style="font-size: 0.78rem; color: var(--gray-500);">Cấp tài khoản, phân quyền và giao buồng phòng phụ trách 5S</div>
-        </div>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('staff-edit-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="m-staff-id" value="">
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Họ và Tên Cán Bộ <span style="color:red;">*</span></label>
-            <input type="text" id="m-staff-name" class="form-control" placeholder="Ví dụ: ĐD. Nguyễn Thị Thảo">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Mã Cán Bộ / Nhân Viên <span style="color:red;">*</span></label>
-            <input type="text" id="m-staff-code" class="form-control" placeholder="Ví dụ: NV-KCC-06">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Tên Đăng Nhập (Username)</label>
-            <input type="text" id="m-staff-username" class="form-control" placeholder="Để trống sẽ tự sinh theo mã NV">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Mật Khẩu Đăng Nhập</label>
-            <input type="password" id="m-staff-password" class="form-control" placeholder="Mặc định: 123456 (để trống nếu giữ nguyên)">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Khoa / Trung Tâm Công Tác <span style="color:red;">*</span></label>
-            <select id="m-staff-dept-select" class="form-select" onchange="onStaffDeptChanged()"></select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Chức Vụ Chuyên Môn <span style="color:red;">*</span></label>
-            <input type="text" id="m-staff-role" class="form-control" placeholder="Ví dụ: Điều dưỡng viên, Bác sĩ, Hộ lý..." list="staff-roles-list">
-            <datalist id="staff-roles-list">
-              <option value="Điều dưỡng viên">
-              <option value="Điều dưỡng Trưởng khoa">
-              <option value="Bác sĩ điều trị">
-              <option value="Bác sĩ Trưởng khoa">
-              <option value="Hộ lý buồng bệnh">
-              <option value="Kỹ thuật viên y">
-              <option value="Cán bộ Ban QLCL">
-            </datalist>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label">Cấp Phân Quyền Hệ Thống <span style="color:red;">*</span></label>
-            <select id="m-staff-role-type" class="form-select">
-              <option value="staff">👤 Nhân viên đi buồng (Kiểm tra 5S, chụp ảnh hiện trường)</option>
-              <option value="manager">🛡️ Quản lý Khoa / ĐD Trưởng (Quản lý buồng phòng, xem thống kê khoa)</option>
-              <option value="admin">👑 Admin / Ban QLCL (Toàn quyền hệ thống, sửa nội dung & tiêu chí)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Số Điện Thoại</label>
-            <input type="text" id="m-staff-phone" class="form-control" placeholder="09xx.xxx.xxx">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Mã PIN 4 số (Xác thực nhanh trên điện thoại)</label>
-          <input type="text" id="m-staff-pin" class="form-control" placeholder="1234" value="1234" maxlength="6" style="max-width: 200px;">
-        </div>
-
-        <div class="form-group" style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 15px;">
-          <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
-            <div>
-              <div style="font-weight: 700; color: #0369a1; font-size: 0.88rem;">
-                <i class="fa-solid fa-globe"></i> Cho Phép Truy Cập Ngoại Viện (4G / Internet)
-              </div>
-              <div style="font-size: 0.76rem; color: var(--gray-600); margin-top: 2px;">
-                Bật để nhân sự có thể đăng nhập bằng 4G ngoài viện. Nếu tắt, chỉ làm việc được khi kết nối Wi-Fi viện.
-              </div>
-            </div>
-            <input type="checkbox" id="m-staff-allow-external" checked style="width: 22px; height: 22px; cursor: pointer; accent-color: #0284c7;">
-          </label>
-        </div>
-
-        <!-- Buồng phòng phân công phụ trách 5S -->
-        <div class="form-group">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <label class="form-label" style="margin-bottom:0;">
-              <i class="fa-solid fa-door-open text-primary"></i> Phân Công Buồng Phòng Phụ Trách 5S:
-            </label>
-            <span style="font-size: 0.75rem; color: var(--gray-500);">Chọn các phòng do nhân viên này phụ trách</span>
-          </div>
-          <div id="m-staff-rooms-container" style="max-height: 160px; overflow-y: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 8px 12px; background: #fafbfc;">
-            <!-- Checkboxes rendered dynamically based on selected department -->
-            <div style="font-size: 0.8rem; color: var(--gray-400);">Vui lòng chọn Khoa công tác để tải danh sách phòng...</div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeModal('staff-edit-modal')">Hủy</button>
-        <button type="button" class="btn-primary" onclick="submitStaffEdit()">
-          <i class="fa-solid fa-floppy-disk"></i> Lưu Cán Bộ Nhân Viên
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 6: Hướng Dẫn Cài Đặt App Trên iPhone (iOS Safari) -->
-  <div id="ios-install-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--gray-800);">
-          <i class="fa-brands fa-apple"></i> Cài Đặt 5S VPI Vào Màn Hình iPhone
-        </h3>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('ios-install-modal')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size: 0.88rem; color: var(--gray-600); margin-bottom: 1rem;">
-          Thực hiện 2 bước đơn giản trên trình duyệt Safari để đưa biểu tượng app ra màn hình chính của iPhone:
-        </p>
-
-        <div class="ios-step-box">
-          <div class="ios-step-num">1</div>
-          <div style="font-size: 0.86rem; color: var(--gray-800);">
-            Nhấn vào biểu tượng <strong>Chia sẻ (Share)</strong> <i class="fa-solid fa-arrow-up-from-bracket" style="color: #0284c7;"></i> ở thanh công cụ dưới đáy màn hình Safari.
-          </div>
-        </div>
-
-        <div class="ios-step-box">
-          <div class="ios-step-num">2</div>
-          <div style="font-size: 0.86rem; color: var(--gray-800);">
-            Cuộn xuống và chọn <strong>"Thêm vào Màn hình chính" (Add to Home Screen)</strong> ➔ Bấm <strong>"Thêm" (Add)</strong>.
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 1rem;">
-          <img src="images/icon-192.png" style="width: 54px; height: 54px; border-radius: 12px; box-shadow: var(--shadow-sm);" alt="App Icon">
-          <div style="font-size: 0.8rem; font-weight: 700; color: #0284c7; margin-top: 4px;">5S VPI sẽ xuất hiện ngay ngoài màn hình iPhone!</div>
-        </div>
-      </div>
-      <div class="modal-footer" style="justify-content: center;">
-        <button type="button" class="btn-primary" onclick="closeModal('ios-install-modal')">Đã Hiểu</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Xem Nhật Ký An Ninh (Security Audit Logs) -->
-  <div id="modal-security-logs" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 820px;">
-      <div class="modal-header">
-        <div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--gray-800);">
-            <i class="fa-solid fa-clock-rotate-left text-primary"></i> Nhật Ký An Ninh & Truy Cập Hệ Thống
-          </h3>
-          <div style="font-size: 0.78rem; color: var(--gray-500);">Theo dõi và đối soát mọi lượt đăng nhập, chặn ngoại viện và sao lưu</div>
-        </div>
-        <button type="button" class="btn-outline btn-sm" onclick="closeModal('modal-security-logs')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
-        <table class="vpi-table" style="font-size: 0.78rem;">
-          <thead>
-            <tr>
-              <th>Thời Gian</th>
-              <th>Sự Kiện</th>
-              <th>Tài Khoản</th>
-              <th>Địa Chỉ IP</th>
-              <th>Chi Tiết</th>
-            </tr>
-          </thead>
-          <tbody id="security-logs-tbody">
-            <tr><td colspan="5" style="text-align:center; padding:20px; color:var(--gray-400);">Đang tải nhật ký...</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
-        <button type="button" class="btn-outline btn-sm" style="color: #ef4444; border-color: #fca5a5;" onclick="clearSecurityLogs()">
-          <i class="fa-solid fa-trash"></i> Làm Sạch Nhật Ký
-        </button>
-        <button type="button" class="btn-primary btn-sm" onclick="closeModal('modal-security-logs')">
-          Đóng
-        </button>
+  <!-- App Wrapper Container -->
+  <div id="app-container" class="flex-1 flex flex-col bg-slate-50 dark:bg-slate-900 overflow-hidden relative shadow-lg">
+    <!-- Nơi render giao diện ứng dụng từ app.js -->
+    <div class="flex items-center justify-center h-full">
+      <div class="text-center space-y-2 text-slate-400">
+        <div class="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-xs font-semibold">Đang tải cơ sở dữ liệu 5S VPI...</p>
       </div>
     </div>
   </div>
 
   <!-- ========================================================================= -->
-  <!-- PHẦN DÀNH RIÊNG CHO IN ẤN BÁO CÁO 5S A4 (Chuẩn thể thức Nghị định 30/2020) -->
+  <!-- PHẦN DÀNH RIÊNG CHO IN ẤN BÁO CÁO A4 (Chuẩn thể thức Nghị định 30/2020) -->
   <!-- ========================================================================= -->
-  <div class="print-only">
+  <div id="print-area" class="print-only hidden p-8 bg-white text-black" style="font-family: 'Times New Roman', Times, serif; line-height: 1.3;">
     <!-- Quốc hiệu - Tiêu ngữ & Đơn vị ban hành -->
     <table style="width: 100%; border: none; margin-bottom: 20px;">
       <tr>
         <td style="width: 50%; text-align: center; vertical-align: top;">
-          <strong>BỆNH VIỆN ĐA KHOA QUỐC TẾ VĨNH PHÚC (VPI)</strong><br>
-          <strong>HỘI ĐỒNG 5S & BAN KSNK</strong><br>
+          <strong>BỆNH VIỆN ĐA KHOA VĨNH PHÚC (VPI)</strong><br>
+          <strong>HỘI ĐỒNG QUẢN LÝ CHẤT LƯỢNG & 5S</strong><br>
           Số: ...../BC-5S-VPI
         </td>
         <td style="width: 50%; text-align: center; vertical-align: top;">
           <strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong><br>
           <strong>Độc lập - Tự do - Hạnh phúc</strong><br>
-          <em id="print-date-text">Vĩnh Phúc, ngày 14 tháng 10 năm 2026</em>
+          <em>Vĩnh Phúc, ngày 14 tháng 10 năm 2026</em>
         </td>
       </tr>
     </table>
 
     <!-- Tiêu đề Báo Cáo -->
-    <div style="text-align: center; margin-bottom: 25px;">
-      <h2 style="font-size: 16pt; font-weight: bold; margin-bottom: 6px; text-transform: uppercase;">
-        BÁO CÁO TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ 5S VỆ SINH BỆNH VIỆN
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h2 style="font-size: 15pt; font-weight: bold; margin-bottom: 4px; text-transform: uppercase;">
+        BÁO CÁO KẾT QUẢ ĐÁNH GIÁ 5S Y TẾ & VỆ SINH BUỒNG PHÒNG
       </h2>
       <div style="font-size: 11pt; font-style: italic;">
-        (Phục vụ quản lý chất lượng Tiêu chí C6 Bộ Y tế & Tiêu chuẩn ISO 9001:2015)
+        (Phục vụ Đề án Nâng cao Chất lượng Bệnh viện theo Quyết định số 6858/QĐ-BYT của Bộ Y tế)
       </div>
     </div>
 
-    <!-- I. Căn cứ và Mục tiêu -->
-    <div style="margin-bottom: 16px;">
-      <h3 style="font-size: 12pt; font-weight: bold; margin-bottom: 6px;">I. MỤC TIÊU VÀ NGUYÊN TẮC THỰC HIỆN</h3>
-      <p style="text-indent: 1.25cm; margin: 4px 0;">
-        Thực hiện phong trào "Xây dựng Cơ sở Y tế Xanh - Sạch - Đẹp", cải tiến chất lượng môi trường làm việc, loại bỏ lãng phí, giảm thiểu nhầm lẫn trong chăm sóc và điều trị người bệnh theo 5 tiêu chí: Sàng lọc (Seiri), Sắp xếp (Seiton), Sạch sẽ (Seiso), Săn sóc (Seiketsu) và Sẵn sàng (Shitsuke).
+    <!-- I. Căn cứ thực hiện -->
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12pt; font-weight: bold;">I. CĂN CỨ THỰC HIỆN</h3>
+      <p style="text-indent: 1.27cm; margin: 4px 0;">
+        1. Căn cứ Quyết định số 6858/QĐ-BYT ngày 18/11/2016 của Bộ Y tế về ban hành Bộ Tiêu chí Đánh giá chất lượng bệnh viện Việt Nam;
+      </p>
+      <p style="text-indent: 1.27cm; margin: 4px 0;">
+        2. Căn cứ Kế hoạch triển khai thực hành 5S (Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng) tại Bệnh viện Đa khoa Vĩnh Phúc;
+      </p>
+      <p style="text-indent: 1.27cm; margin: 4px 0;">
+        3. Căn cứ kết quả giám sát thực tế buồng phòng, trang thiết bị và hồ sơ bệnh án hằng ngày.
       </p>
     </div>
 
-    <!-- II. Bảng tổng hợp xếp hạng điểm 5S các Khoa -->
+    <!-- II. Bảng Tổng hợp Kết quả Đánh giá 5S -->
     <div style="margin-bottom: 20px;">
-      <h3 style="font-size: 12pt; font-weight: bold; margin-bottom: 6px;">II. BẢNG XẾP HẠNG ĐIỂM 5S CÁC KHOA / PHÒNG TOÀN VIỆN</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 10pt;" border="1">
+      <h3 style="font-size: 12pt; font-weight: bold;">II. BẢNG TỔNG HỢP ĐIỂM 5S CÁC KHOA / PHÒNG</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 10pt;" border="1">
         <thead>
-          <tr style="background-color: #f1f5f9; text-align: center;">
+          <tr style="background-color: #f2f2f2; text-align: center;">
             <th style="padding: 6px; width: 6%;">STT</th>
-            <th style="padding: 6px; width: 30%;">Tên Khoa / Phòng</th>
-            <th style="padding: 6px; width: 14%;">Số lượt kiểm tra</th>
-            <th style="padding: 6px; width: 16%;">Điểm TB (Thang 100)</th>
-            <th style="padding: 6px; width: 16%;">Xếp Loại 5S</th>
-            <th style="padding: 6px; width: 18%;">Đánh Giá</th>
+            <th style="padding: 6px; width: 22%;">Khoa / Trung tâm</th>
+            <th style="padding: 6px; width: 14%;">Số phòng KT</th>
+            <th style="padding: 6px; width: 14%;">Điểm 5S TB</th>
+            <th style="padding: 6px; width: 18%;">Xếp loại 5S</th>
+            <th style="padding: 6px; width: 26%;">Vấn đề cần cải tiến</th>
           </tr>
         </thead>
-        <tbody id="print-depts-tbody">
-          <!-- Rendered dynamically -->
+        <tbody id="print-table-body">
+          <tr>
+            <td align="center">1</td>
+            <td><strong>Khoa CĐHA</strong></td>
+            <td align="center">5 phòng</td>
+            <td align="center"><strong>99.0 / 100</strong></td>
+            <td align="center"><span style="color: green; font-weight: bold;">XUẤT SẮC</span></td>
+            <td>Duy trì tem nhãn vị trí máy</td>
+          </tr>
+          <tr>
+            <td align="center">2</td>
+            <td><strong>Khoa Cấp cứu</strong></td>
+            <td align="center">4 phòng</td>
+            <td align="center"><strong>98.5 / 100</strong></td>
+            <td align="center"><span style="color: green; font-weight: bold;">XUẤT SẮC</span></td>
+            <td>Sắp xếp xe tiêm ngăn nắp</td>
+          </tr>
+          <tr>
+            <td align="center">3</td>
+            <td><strong>Khoa Khám bệnh</strong></td>
+            <td align="center">7 phòng</td>
+            <td align="center"><strong>97.8 / 100</strong></td>
+            <td align="center"><span style="color: green; font-weight: bold;">XUẤT SẮC</span></td>
+            <td>Bổ sung thùng rác y tế buồng 102</td>
+          </tr>
+          <tr>
+            <td align="center">4</td>
+            <td><strong>Khoa YHCT-PHCN</strong></td>
+            <td align="center">4 phòng</td>
+            <td align="center"><strong>98.0 / 100</strong></td>
+            <td align="center"><span style="color: green; font-weight: bold;">XUẤT SẮC</span></td>
+            <td>Vạch kẻ định vị giường châm cứu</td>
+          </tr>
+          <tr>
+            <td align="center">5</td>
+            <td><strong>Khoa Ngoại Tổng hợp</strong></td>
+            <td align="center">4 phòng</td>
+            <td align="center"><strong>97.5 / 100</strong></td>
+            <td align="center"><span style="color: green; font-weight: bold;">XUẤT SẮC</span></td>
+            <td>Khử khuẩn định kỳ phòng thay băng</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- III. Các tồn đọng và Kiến nghị khắc phục -->
+    <!-- III. Đề xuất & Kiến nghị -->
     <div style="margin-bottom: 20px;">
-      <h3 style="font-size: 12pt; font-weight: bold; margin-bottom: 6px;">III. CÁC TỒN ĐỌNG VÀ BIỆN PHÁP KHẮC PHỤC</h3>
-      <p style="text-indent: 1.25cm; margin: 4px 0;">
-        Yêu cầu các Trưởng khoa/phòng có điểm đánh giá chưa đạt hoặc có tồn đọng khẩn trương triển khai khắc phục theo danh sách kiến nghị của Ban Giám sát 5S trong vòng 48 giờ.
+      <h3 style="font-size: 12pt; font-weight: bold;">III. NHẬN XÉT VÀ KẾ HOẠCH DUY TRÌ</h3>
+      <p style="text-indent: 1.27cm; margin: 4px 0;">
+        1. 100% các khoa phòng đã hoàn thành việc đánh giá 5S trong ca trực, không để xảy ra tình trạng bừa bộn hoặc vi phạm quy chế phân loại rác thải y tế.
+      </p>
+      <p style="text-indent: 1.27cm; margin: 4px 0;">
+        2. Các khoa tiếp tục duy trì 15 phút 5S đầu giờ và bàn giao buồng bệnh gọn gàng trước khi kết thúc ca trực.
       </p>
     </div>
 
-    <!-- Chữ ký Ban Giám đốc và Hội đồng 5S -->
-    <table style="width: 100%; border: none; margin-top: 40px;">
+    <!-- Chữ ký phê duyệt -->
+    <table style="width: 100%; border: none; margin-top: 30px;">
       <tr>
         <td style="width: 50%; text-align: center; vertical-align: top;">
-          <strong>THƯ KÝ HỘI ĐỒNG 5S</strong><br>
-          <em>(Ký và ghi rõ họ tên)</em><br><br><br><br>
+          <strong>CÁN BỘ KIỂM TRA 5S TOÀN VIỆN<br>HỘI ĐỒNG 5S</strong><br>
+          <em>(Ký, ghi rõ họ tên)</em><br><br><br><br>
           <strong>KTV. Vũ Bá Đạt</strong>
         </td>
         <td style="width: 50%; text-align: center; vertical-align: top;">
-          <strong>GIÁM ĐỐC BỆNH VIỆN VPI</strong><br>
-          <em>(Ký, đóng dấu)</em><br><br><br><br>
-          <strong>BSCKII. Nguyễn Văn Toàn</strong>
+          <strong>TRƯỞNG BAN CHỈ ĐẠO 5S<br>BỆNH VIỆN ĐA KHOA VĨNH PHÚC</strong><br>
+          <em>(Ký, ghi rõ họ tên)</em><br><br><br><br>
+          <strong>ThS. BSCKII. Phạm Quỳnh Hưng</strong>
         </td>
       </tr>
     </table>
   </div>
 
-  <!-- QR Code Generator Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- Application Core Script -->
-  <script src="js/app.js"></script>
+  <!-- Service Worker Registration cho PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('[5S-VPI] PWA Service Worker registered:', reg.scope))
+          .catch((err) => console.warn('[5S-VPI] PWA Service Worker failed:', err));
+      });
+    }
+  </script>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
 </body>
 </html>
