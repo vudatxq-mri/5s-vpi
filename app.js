@@ -15,8 +15,8 @@ const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 // CSDL Khởi tạo chuẩn Bệnh viện VPI
 const DEFAULT_SEED_DATA = {
   hospital: {
-    name: 'Bệnh viện Đa khoa Vĩnh Phúc (VPI)',
-    legalName: 'Bệnh viện Đa khoa Tỉnh Vĩnh Phúc',
+    name: 'Bệnh viện Vĩnh Phúc VPI',
+    legalName: 'Bệnh viện Vĩnh Phúc VPI',
     department: 'Hội đồng Quản lý Chất lượng & Ban Chỉ đạo 5S Toàn Viện',
     slogan: 'Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng',
     address: 'Lạc Ý, Định Trung, TP. Vĩnh Yên, Tỉnh Vĩnh Phúc',
@@ -81,13 +81,12 @@ class App5S {
     this.searchQuery = '';
     this.isReorderMode = false; // Chế độ sắp xếp Khoa & Phòng tùy chỉnh
     
-    // Form state cho Phiếu kiểm tra mới
+    // Form state cho Phiếu kiểm tra mới (Chỉ cần 1 ảnh sau khi 5S)
     this.newAuditState = {
       deptId: 1,
       roomId: 1,
       shift: 'Ca sáng (07:00 - 11:30)',
       scores: { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 },
-      beforePhoto: '',
       afterPhoto: '',
       notes: '',
       correctiveAction: ''
@@ -114,6 +113,13 @@ class App5S {
   normalizeData() {
     if (!this.data.hospital) {
       this.data.hospital = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital));
+    }
+    // Tự động đồng bộ chuẩn tên Bệnh viện Vĩnh Phúc VPI
+    if (!this.data.hospital.name || this.data.hospital.name.includes('Đa khoa Vĩnh Phúc')) {
+      this.data.hospital.name = 'Bệnh viện Vĩnh Phúc VPI';
+    }
+    if (!this.data.hospital.legalName || this.data.hospital.legalName.includes('Đa khoa Tỉnh')) {
+      this.data.hospital.legalName = 'Bệnh viện Vĩnh Phúc VPI';
     }
     if (!this.data.hospital.notice) {
       this.data.hospital.notice = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital.notice));
@@ -412,8 +418,11 @@ class App5S {
     this.data.hospital.officer = officer;
     this.data.hospital.supervisionCycle = cycle;
 
+    const topHosp = document.getElementById('top-hosp-name');
+    if (topHosp) topHosp.textContent = '• ' + name;
+
     this.saveData();
-    this.logSecurity('Cập nhật thông tin đơn vị & bệnh viện VPI');
+    this.logSecurity('Cập nhật thông tin đơn vị: ' + name);
     this.render();
     this.showToast('Đã lưu thông tin Đơn vị Bệnh viện VPI thành công!');
   }
@@ -484,7 +493,12 @@ class App5S {
   updateEnvLabels() {
     const topLoc = document.getElementById('top-location-label');
     const envBadge = document.getElementById('env-badge');
+    const topHosp = document.getElementById('top-hosp-name');
     const isExt = this.data.auth.locationMode === 'external';
+
+    if (topHosp && this.data.hospital && this.data.hospital.name) {
+      topHosp.textContent = '• ' + this.data.hospital.name;
+    }
 
     if (topLoc) {
       topLoc.textContent = isExt ? 'Ngoại viện (4G)' : 'Nội viện (LAN)';
@@ -633,7 +647,7 @@ class App5S {
                 <span class="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.2 rounded font-mono">BỆNH VIỆN</span>
               </div>
               <div class="flex items-center text-xs font-semibold text-slate-700 dark:text-slate-200">
-                <span class="truncate max-w-[150px] sm:max-w-[220px]">${hosp.name || 'BV Đa khoa Vĩnh Phúc'}</span>
+                <span class="truncate max-w-[150px] sm:max-w-[220px]">${hosp.name || 'Bệnh viện Vĩnh Phúc VPI'}</span>
               </div>
             </div>
           </div>
@@ -1002,44 +1016,53 @@ class App5S {
           </div>
         </div>
 
-        <!-- 2. Chụp ảnh Before & After -->
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-mono font-bold text-emerald-600">HÌNH ẢNH MINH CHỨNG 5S</h3>
-            <span class="text-[10px] text-slate-400">Chụp từ Camera hoặc Tải ảnh</span>
+        <!-- 2. HÌNH ẢNH MINH CHỨNG 5S (Chỉ 1 ô ảnh Sau khi đã 5S) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-mono font-bold text-emerald-600 uppercase tracking-wide">HÌNH ẢNH MINH CHỨNG 5S</span>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Chỉ cần 01 ảnh chụp thực tế buồng phòng sau khi đã thực hiện 5S sạch sẽ</p>
+            </div>
+            <span class="text-[10px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-bold px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
+              ✨ Sau 5S
+            </span>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
-            <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center relative overflow-hidden bg-slate-50 dark:bg-slate-900/50">
-              <div id="before-preview" class="mb-2">
-                ${this.newAuditState.beforePhoto ? `<img src="${this.newAuditState.beforePhoto}" class="w-full h-24 object-cover rounded-lg">` : `
-                  <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center mx-auto text-slate-400 mb-1">
-                    <i data-lucide="camera" class="w-5 h-5"></i>
+          <div class="border-2 border-dashed border-emerald-400/60 dark:border-emerald-600/60 hover:border-emerald-500 rounded-2xl p-4 text-center relative overflow-hidden bg-emerald-50/20 dark:bg-emerald-950/10 transition">
+            <div id="after-preview" class="mb-3">
+              ${this.newAuditState.afterPhoto ? `
+                <div class="relative group">
+                  <img src="${this.newAuditState.afterPhoto}" class="w-full h-48 object-cover rounded-xl shadow-md border border-emerald-300 dark:border-emerald-700">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center space-x-2">
+                    <button onclick="document.getElementById('after-file-input').click()" class="bg-white text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-slate-100">
+                      <i data-lucide="camera" class="w-3.5 h-3.5 inline mr-1"></i>Chụp lại
+                    </button>
+                    <button onclick="app5s.removeAuditPhoto()" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-red-700">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5 inline mr-1"></i>Xóa ảnh
+                    </button>
                   </div>
-                  <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block">ẢNH TRƯỚC (Before)</span>
-                  <span class="text-[9px] text-slate-400">Hiện trạng chưa 5S</span>
-                `}
-              </div>
-              <input type="file" accept="image/*" capture="environment" id="before-file-input" onchange="app5s.handlePhotoUpload(event, 'before')" class="hidden">
-              <button onclick="document.getElementById('before-file-input').click()" class="w-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-[10px] font-bold py-1 rounded-lg transition">
-                Chụp ảnh trước
-              </button>
+                </div>
+              ` : `
+                <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 flex items-center justify-center mx-auto mb-2 shadow-xs">
+                  <i data-lucide="camera" class="w-7 h-7"></i>
+                </div>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">Chụp hoặc Tải Ảnh Sau Khi Đã 5S</span>
+                <span class="text-[10px] text-slate-400">Hình ảnh góc buồng bệnh, máy móc, xe tiêm sạch sẽ, ngăn nắp</span>
+              `}
             </div>
 
-            <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center relative overflow-hidden bg-slate-50 dark:bg-slate-900/50">
-              <div id="after-preview" class="mb-2">
-                ${this.newAuditState.afterPhoto ? `<img src="${this.newAuditState.afterPhoto}" class="w-full h-24 object-cover rounded-lg">` : `
-                  <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center mx-auto text-emerald-600 mb-1">
-                    <i data-lucide="sparkles" class="w-5 h-5"></i>
-                  </div>
-                  <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300 block">ẢNH SAU (After)</span>
-                  <span class="text-[9px] text-emerald-600 font-semibold">Sau khi đã 5S sạch sẽ</span>
-                `}
-              </div>
-              <input type="file" accept="image/*" capture="environment" id="after-file-input" onchange="app5s.handlePhotoUpload(event, 'after')" class="hidden">
-              <button onclick="document.getElementById('after-file-input').click()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold py-1 rounded-lg transition">
-                Chụp ảnh sau
+            <input type="file" accept="image/*" capture="environment" id="after-file-input" onchange="app5s.handlePhotoUpload(event, 'after')" class="hidden">
+            
+            <div class="flex items-center justify-center gap-2">
+              <button onclick="document.getElementById('after-file-input').click()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm flex items-center justify-center space-x-1.5 transition">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>${this.newAuditState.afterPhoto ? 'Đổi Ảnh Khác' : 'Mở Camera / Tải Ảnh Sau 5S'}</span>
               </button>
+              ${this.newAuditState.afterPhoto ? `
+                <button onclick="app5s.removeAuditPhoto()" class="bg-slate-200 hover:bg-red-100 text-slate-600 hover:text-red-600 dark:bg-slate-700 dark:text-slate-300 p-2.5 rounded-xl transition" title="Xóa ảnh">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              ` : ''}
             </div>
           </div>
         </div>
@@ -1103,21 +1126,23 @@ class App5S {
     this.render();
   }
 
-  handlePhotoUpload(event, type) {
+  handlePhotoUpload(event, type = 'after') {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      if (type === 'before') {
-        this.newAuditState.beforePhoto = e.target.result;
-      } else {
-        this.newAuditState.afterPhoto = e.target.result;
-      }
+      this.newAuditState.afterPhoto = e.target.result;
       this.render();
-      this.showToast('Đã tải ảnh ' + (type === 'before' ? 'Trước' : 'Sau') + ' thành công!');
+      this.showToast('Đã tải ảnh sau khi 5S thành công!');
     };
     reader.readAsDataURL(file);
+  }
+
+  removeAuditPhoto() {
+    this.newAuditState.afterPhoto = '';
+    this.render();
+    this.showToast('Đã hủy ảnh minh chứng!');
   }
 
   submitAudit() {
@@ -1148,8 +1173,8 @@ class App5S {
       status: notes ? 'pending_fix' : 'completed',
       issues_found: notes,
       corrective_action: notes ? 'Yêu cầu khắc phục trong ca trực' : 'Duy trì chuẩn 5S',
-      before_photo: this.newAuditState.beforePhoto || 'logo-5s-vpi.png',
       after_photo: this.newAuditState.afterPhoto || 'logo-5s-vpi.png',
+      photo: this.newAuditState.afterPhoto || 'logo-5s-vpi.png',
       created_at: new Date().toISOString().replace('T', ' ').slice(0, 19)
     };
 
@@ -1158,7 +1183,6 @@ class App5S {
     this.logSecurity(`Tạo phiếu đánh giá 5S: ${newTicket.audit_code} (${room.name} - ${totalScore}đ)`);
     this.showToast(`Đã lưu phiếu 5S: ${newTicket.audit_code}!`);
 
-    this.newAuditState.beforePhoto = '';
     this.newAuditState.afterPhoto = '';
     this.newAuditState.scores = { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 };
 
@@ -1452,16 +1476,10 @@ class App5S {
                 </div>
               </div>
 
-              ${a.before_photo || a.after_photo ? `
-                <div class="grid grid-cols-2 gap-2 pt-1">
-                  <div>
-                    <span class="text-[9px] font-bold text-slate-500 block mb-0.5">Trước 5S:</span>
-                    <img src="${a.before_photo || 'logo-5s-vpi.png'}" class="w-full h-20 object-cover rounded-lg border border-slate-200">
-                  </div>
-                  <div>
-                    <span class="text-[9px] font-bold text-emerald-600 block mb-0.5">Sau 5S:</span>
-                    <img src="${a.after_photo || 'logo-5s-vpi.png'}" class="w-full h-20 object-cover rounded-lg border border-emerald-300">
-                  </div>
+              ${(a.after_photo || a.photo || a.before_photo) ? `
+                <div class="pt-1">
+                  <span class="text-[9px] font-bold text-emerald-600 block mb-1">Ảnh minh chứng sau khi 5S:</span>
+                  <img src="${a.after_photo || a.photo || a.before_photo || 'logo-5s-vpi.png'}" class="w-full h-36 object-cover rounded-xl border border-emerald-300 dark:border-emerald-700 shadow-xs">
                 </div>
               ` : ''}
 
@@ -1520,13 +1538,13 @@ class App5S {
           <form onsubmit="event.preventDefault(); app5s.saveHospitalSettings();" class="space-y-2.5 text-xs">
             <div>
               <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên Bệnh Viện *</label>
-              <input type="text" id="set-hosp-name" value="${h.name || 'Bệnh viện Đa khoa Vĩnh Phúc (VPI)'}" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-900 dark:text-white">
+              <input type="text" id="set-hosp-name" value="${h.name || 'Bệnh viện Vĩnh Phúc VPI'}" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-900 dark:text-white">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
                 <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên Đơn vị chủ quản / Pháp nhân</label>
-                <input type="text" id="set-hosp-legal" value="${h.legalName || 'Bệnh viện Đa khoa Tỉnh Vĩnh Phúc'}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-medium text-slate-900 dark:text-white">
+                <input type="text" id="set-hosp-legal" value="${h.legalName || 'Bệnh viện Vĩnh Phúc VPI'}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-medium text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Ban / Hội đồng phụ trách</label>

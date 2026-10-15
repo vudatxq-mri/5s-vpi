@@ -1,0 +1,144 @@
+/* ==========================================================================
+   5S VPI - GIAO DIỆN CHUYÊN DỤNG CHO BỆNH VIỆN VĨNH PHÚC
+   Hệ Thống Quản Lý Vệ Sinh & Chụp Ảnh Báo Cáo 5S Buồng Phòng Y Tế
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-light: #ecfdf5;
+  --secondary: #0284c7;
+  --secondary-hover: #0369a1;
+  --secondary-light: #f0f9ff;
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --warning: #d97706;
+  --warning-light: #fef3c7;
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --bg-main: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+}
+
+.dark-mode {
+  --bg-main: #0b1120;
+  --card-bg: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --primary-light: rgba(5, 150, 105, 0.2);
+  --danger-light: rgba(220, 38, 38, 0.2);
+  --warning-light: rgba(217, 119, 6, 0.2);
+  --success-light: rgba(22, 163, 74, 0.2);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile Frame Wrapper Simulation (Identical to RadOps CDHA) */
+.mobile-frame-mode #app-container {
+  max-width: 440px;
+  margin: 20px auto;
+  border-radius: 40px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 0 12px #1e293b, 0 0 0 14px #475569;
+  overflow: hidden;
+  height: calc(100vh - 40px);
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-main);
+}
+
+/* Phone Bezel Notch */
+.phone-notch {
+  display: none;
+}
+.mobile-frame-mode .phone-notch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px 4px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  user-select: none;
+  z-index: 45;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  background-color: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Pulse animation for live badges */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(0.98); }
+}
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Print Styling */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print,
+  #view-toggle,
+  #app-container,
+  nav,
+  .modal-backdrop {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
