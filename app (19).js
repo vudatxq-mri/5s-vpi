@@ -548,37 +548,45 @@ class App5S {
     // KIỂM TRA ĐĂNG NHẬP: Bắt buộc thoát khỏi tài khoản khi đã đăng xuất
     if (!this.data.auth || !this.data.auth.isLoggedIn) {
       container.innerHTML = this.renderLoginScreen();
-      this.renderBottomNavigation();
+      const existingNav = document.getElementById('bottom-nav');
+      if (existingNav) existingNav.classList.add('hidden');
       if (window.lucide) window.lucide.createIcons();
       return;
     }
 
-    let content = '';
+    let tabContent = '';
     switch (this.activeTab) {
       case 'overview':
-        content = this.renderOverviewTab();
+        tabContent = this.renderOverviewTab();
         break;
       case 'audit':
-        content = this.renderAuditTab();
+        tabContent = this.renderAuditTab();
         break;
       case 'departments':
-        content = this.renderDepartmentsTab();
+        tabContent = this.renderDepartmentsTab();
         break;
       case 'staff':
-        content = this.renderStaffTab();
+        tabContent = this.renderStaffTab();
         break;
       case 'history':
       case 'reports':
-        content = this.renderHistoryTab();
+        tabContent = this.renderHistoryTab();
         break;
       case 'settings':
-        content = this.renderSettingsTab();
+        tabContent = this.renderSettingsTab();
         break;
       default:
-        content = this.renderOverviewTab();
+        tabContent = this.renderOverviewTab();
     }
 
-    container.innerHTML = content;
+    // CẤU TRÚC CUỘN MƯỢT MÀ CHO MOBILE & THANH TAB CỐ ĐỊNH Ở ĐÁY MÀN HÌNH
+    container.innerHTML = `
+      <main id="main-content-scroll" class="flex-1 overflow-y-auto pb-28 px-1 pt-1 no-scrollbar">
+        ${tabContent}
+      </main>
+      ${this.renderBottomNavigationHtml()}
+    `;
+
     this.updateUserInterface();
     this.updateHospitalBranding();
     this.updateNoticeBanner();
@@ -587,11 +595,45 @@ class App5S {
     if (window.lucide) window.lucide.createIcons();
   }
 
+  renderBottomNavigationHtml() {
+    if (!this.data.auth || !this.data.auth.isLoggedIn) {
+      return '';
+    }
+
+    const tabs = [
+      { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
+      { id: 'audit', name: 'Chấm 5S', icon: 'camera' },
+      { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
+      { id: 'staff', name: 'Nhân sự', icon: 'users' },
+      { id: 'history', name: 'Lịch sử', icon: 'clipboard-list' },
+      { id: 'settings', name: 'Cài đặt', icon: 'settings' }
+    ];
+
+    return `
+      <nav id="bottom-nav" class="sticky bottom-0 left-0 right-0 w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700 py-1.5 px-1.5 z-40 shadow-lg">
+        <div class="grid grid-cols-6 gap-0.5">
+          ${tabs.map(t => {
+            const isActive = this.activeTab === t.id;
+            return `
+              <button onclick="app5s.switchTab('${t.id}')" class="flex flex-col items-center justify-center py-1 transition-all rounded-xl ${
+                isActive 
+                  ? 'text-emerald-600 dark:text-emerald-400 font-bold scale-105 bg-emerald-50 dark:bg-emerald-950/40 shadow-2xs' 
+                  : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+              }">
+                <i data-lucide="${t.icon}" class="w-5 h-5 mb-0.5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.75]'}"></i>
+                <span class="text-[9px] tracking-tight truncate max-w-full">${t.name}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </nav>
+    `;
+  }
+
   renderBottomNavigation() {
     const navContainer = document.getElementById('bottom-nav');
     if (!navContainer) return;
 
-    // Ẩn thanh điều hướng dưới khi chưa đăng nhập
     if (!this.data.auth || !this.data.auth.isLoggedIn) {
       navContainer.innerHTML = '';
       navContainer.classList.add('hidden');
@@ -608,18 +650,25 @@ class App5S {
       { id: 'settings', name: 'Cài đặt', icon: 'settings' }
     ];
 
-    navContainer.innerHTML = tabs.map(t => {
-      const isActive = this.activeTab === t.id;
-      return `
-        <button onclick="app5s.switchTab('${t.id}')" class="flex flex-col items-center justify-center py-1 transition-all ${
-          isActive ? 'text-emerald-600 dark:text-emerald-400 font-bold scale-105' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600'
-        }">
-          <i data-lucide="${t.icon}" class="w-5 h-5 mb-0.5"></i>
-          <span class="text-[10px] tracking-tight">${t.name}</span>
-        </button>
-      `;
-    }).join('');
+    navContainer.innerHTML = `
+      <div class="grid grid-cols-6 gap-0.5 w-full">
+        ${tabs.map(t => {
+          const isActive = this.activeTab === t.id;
+          return `
+            <button onclick="app5s.switchTab('${t.id}')" class="flex flex-col items-center justify-center py-1 transition-all rounded-xl ${
+              isActive 
+                ? 'text-emerald-600 dark:text-emerald-400 font-bold scale-105 bg-emerald-50 dark:bg-emerald-950/40 shadow-2xs' 
+                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+            }">
+              <i data-lucide="${t.icon}" class="w-5 h-5 mb-0.5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.75]'}"></i>
+              <span class="text-[9px] tracking-tight truncate max-w-full">${t.name}</span>
+            </button>
+          `;
+        }).join('')}
+      </div>
+    `;
   }
+
 
   // =========================================================================
   // TAB 1: TỔNG QUAN
@@ -708,25 +757,45 @@ class App5S {
           </div>
         ` : ''}
 
-        <!-- Thẻ Thống Kê 5S Bệnh Viện -->
+        <!-- Thẻ Thống Kê 5S Bệnh Viện (Có thể bấm để xem chi tiết ngay) -->
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1">
+          <div onclick="app5s.switchTab('departments')" class="cursor-pointer bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1 hover:border-emerald-500 active:scale-[0.98] transition">
             <div class="flex items-center justify-between text-slate-500 text-[11px]">
-              <span>Khoa / Phòng</span>
+              <span class="font-bold">Khoa / Phòng</span>
               <i data-lucide="building-2" class="w-4 h-4 text-emerald-600"></i>
             </div>
             <div class="text-2xl font-black font-mono text-slate-800 dark:text-slate-100">${depts.length}</div>
-            <div class="text-[10px] text-emerald-600 font-bold">${rooms.length} buồng phòng & khu vực</div>
+            <div class="text-[10px] text-emerald-600 font-bold flex items-center justify-between">
+              <span>${rooms.length} buồng phòng</span>
+              <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 px-1.5 py-0.5 rounded font-mono">Xem →</span>
+            </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1">
+          <div onclick="app5s.switchTab('history')" class="cursor-pointer bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1 hover:border-amber-500 active:scale-[0.98] transition">
             <div class="flex items-center justify-between text-slate-500 text-[11px]">
-              <span>Điểm TB Toàn Viện</span>
+              <span class="font-bold">Điểm TB Toàn Viện</span>
               <i data-lucide="award" class="w-4 h-4 text-amber-500"></i>
             </div>
             <div class="text-2xl font-black font-mono text-slate-800 dark:text-slate-100">${hosp.averageScore}</div>
-            <div class="text-[10px] text-emerald-600 font-bold">Tỷ lệ tuân thủ: 100%</div>
+            <div class="text-[10px] text-emerald-600 font-bold flex items-center justify-between">
+              <span>Tuân thủ: 100%</span>
+              <span class="text-[9px] bg-amber-100 dark:bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-700 dark:text-amber-300">Lịch sử →</span>
+            </div>
           </div>
         </div>
+
+        <!-- Nút Hành Động Nổi Bật Mở Ngay Danh Sách 20 Khoa Phòng & 75 Buồng Phòng -->
+        <button onclick="app5s.switchTab('departments')" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-[0.98] text-white p-3.5 rounded-2xl font-bold flex items-center justify-between shadow-sm transition">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <i data-lucide="building-2" class="w-5 h-5 text-white"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-xs font-black">Danh Mục 20 Khoa/Phòng & 75 Khu Vực Làm Việc</div>
+              <div class="text-[10px] text-emerald-100 font-normal">Chạm vào đây để xem chi tiết buồng phòng và tiêu chuẩn 5S</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
+        </button>
 
         <!-- Lối Tắt Nhanh -->
         <div class="grid grid-cols-3 gap-2">
