@@ -1,2790 +1,2685 @@
 /**
- * HỆ THỐNG QUẢN LÝ VỆ SINH & BÁO CÁO 5S BỆNH VIỆN VĨNH PHÚC (VPI)
- * Core Frontend Application Logic - Hybrid Client Engine (Vercel & LAN)
+ * 5S VPI - Medical Cleaning & 5S Visual Audit Mobile Application
+ * BỆNH VIỆN VĨNH PHÚC VPI
+ * KHOA CHẨN ĐOÁN HÌNH ẢNH & BAN CHỈ ĐẠO 5S TOÀN VIỆN
+ * TÍCH HỢP ĐẦY ĐỦ CÁC TÍNH NĂNG V5.0 THEO YÊU CẦU:
+ * 1. Hiển thị riêng từng nhóm các khoa/phòng, bên trong tùy chỉnh thêm các khu vực làm việc
+ * 2. Hiển thị đầy đủ danh mục khoa phòng chuẩn Bệnh viện Vĩnh Phúc VPI khi tải & tìm kiếm (20 Khoa/Phòng & 75 Khu vực làm việc)
+ * 3. Thêm và sửa các khoa phòng và khu vực làm việc trực tiếp ngay tại từng nhóm
+ * 4. Thêm chức danh đầy đủ ở mục 'Vai trò phân quyền' (Lãnh đạo, Trưởng khoa, ĐD trưởng, KTV trưởng, BS điều trị...)
+ * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-// ==================== CƠ SỞ DỮ LIỆU GỐC & BỘ NHỚ LƯU TRỮ CỤC BỘ (HYBRID STORE) ====================
-const DEFAULT_5S_SEED_DATA = {"departments": [{"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "Thạc sĩ-BS: Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "created_at": "2026-10-14 05:32:50"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám ngoại trú, tư vấn và chỉ định cận lâm sàng", "created_at": "2026-10-14 05:32:50"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT-PHCN", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu", "created_at": "2026-10-14 05:32:50"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, lồng ngực", "created_at": "2026-10-14 05:32:50"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú bệnh tim mạch, hô hấp, nội tiết", "created_at": "2026-10-14 05:32:50"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ, mổ lấy thai và điều trị phụ khoa", "created_at": "2026-10-14 05:32:50"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh và trẻ nhỏ", "created_at": "2026-10-14 05:32:50"}, {"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm", "created_at": "2026-10-14 05:32:50"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn ISO 15189", "created_at": "2026-10-14 05:32:50"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Khử khuẩn tiệt khuẩn dụng cụ, giặt là đồ vải, giám sát 5S bệnh viện", "created_at": "2026-10-14 05:32:50"}], "rooms": [{"id": 1, "department_id": 1, "code": "KCC-P01", "name": "Phòng Tiếp nhận & Phân loại bệnh", "room_type": "Phòng tiếp đón", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Lê Văn Minh", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 2, "department_id": 1, "code": "KCC-P02", "name": "Phòng Hồi sức Cấp cứu ban đầu", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Trần Thị Lan", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 3, "department_id": 1, "code": "KCC-P03", "name": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "room_type": "Phòng bệnh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Phạm Thị Mai", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 4, "department_id": 1, "code": "KCC-P04", "name": "Phòng Tiểu phẫu - Băng bó vết thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Hoàng Hải Yến", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 5, "department_id": 1, "code": "KCC-P05", "name": "Kho Thuốc & Dịch truyền Cấp cứu", "room_type": "Kho dược", "floor": "Tầng 1 - Nhà A", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 6, "department_id": 1, "code": "KCC-P06", "name": "Khu Vệ sinh Cấp cứu & Khử khuẩn", "room_type": "Khu vệ sinh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 7, "department_id": 2, "code": "KKB-P01", "name": "Sảnh Tiếp đón & Lấy số tự động", "room_type": "Sảnh chờ", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 8, "department_id": 2, "code": "KKB-P02", "name": "Phòng Khám Nội tổng quát (P.101)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Lê Quang Huy", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 9, "department_id": 2, "code": "KKB-P03", "name": "Phòng Khám Ngoại - Chấn thương (P.102)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Đỗ Mạnh Cường", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 10, "department_id": 2, "code": "KKB-P04", "name": "Phòng Khám Nhi (P.103)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Trần Thảo Vy", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 11, "department_id": 2, "code": "KKB-P05", "name": "Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà B", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 16, "department_id": 4, "code": "KNG-P01", "name": "Buồng Hậu phẫu Ngoại 201", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 17, "department_id": 4, "code": "KNG-P02", "name": "Buồng Bệnh Tiền phẫu 202", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 18, "department_id": 4, "code": "KNG-P03", "name": "Phòng Thay băng - Rửa vết thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 19, "department_id": 4, "code": "KNG-P04", "name": "Phòng Trực Bác sĩ & Giao ban khoa", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà C", "person_in_charge": "BS. Lê Tuấn Anh", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 20, "department_id": 5, "code": "KNT-P01", "name": "Buồng Bệnh Nội Tim Mạch (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Dương Thị Hằng", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 21, "department_id": 5, "code": "KNT-P02", "name": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Ngô Thị Yến", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 22, "department_id": 5, "code": "KNT-P03", "name": "Phòng Tiêm & Phát thuốc hàng ngày", "room_type": "Phòng trực", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Trần Phương Dung", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 23, "department_id": 5, "code": "KNT-P04", "name": "Khu Vệ sinh buồng bệnh nhân Tầng 3", "room_type": "Khu vệ sinh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "Hộ lý. Phạm Thị Chắt", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 24, "department_id": 6, "code": "KSN-P01", "name": "Phòng Chờ đẻ & Theo dõi tim thai", "room_type": "Phòng chuyên khoa", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Vũ Thị Loan", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 25, "department_id": 6, "code": "KSN-P02", "name": "Phòng Đẻ thường số 1 (Vô khuẩn)", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Lê Thị Thúy Hằng", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 26, "department_id": 6, "code": "KSN-P03", "name": "Buồng Chăm sóc Mẹ và Bé sau sinh (P.205)", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Trần Hồng Nhung", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 27, "department_id": 6, "code": "KSN-P04", "name": "Phòng Tắm Bé & Tiêm chủng sơ sinh", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Nguyễn Thị Thêu", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 28, "department_id": 7, "code": "KNHI-P01", "name": "Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "room_type": "Phòng đặc biệt", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Đỗ Thị Hiền", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 29, "department_id": 7, "code": "KNHI-P02", "name": "Buồng Bệnh Nhi Hô hấp (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thủy", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 30, "department_id": 7, "code": "KNHI-P03", "name": "Buồng Bệnh Nhi Tiêu hóa (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Mai Thị Trang", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 31, "department_id": 7, "code": "KNHI-P04", "name": "Khu Vui chơi giải trí cho bé bệnh nhi", "room_type": "Khu công cộng", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Trần Thu Hà", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 32, "department_id": 8, "code": "KCDHA-P01", "name": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đức Tuấn", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 33, "department_id": 8, "code": "KCDHA-P02", "name": "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Công Bằng", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 34, "department_id": 8, "code": "KCDHA-P03", "name": "Phòng Chụp X-quang Kỹ thuật số DR", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Chung", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 35, "department_id": 8, "code": "KCDHA-P04", "name": "Phòng Siêu âm Màu 4D (P.104)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "BS. Phạm Quang Nam", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 36, "department_id": 9, "code": "KXN-P01", "name": "Phòng Xét nghiệm Huyết học & Truyền máu", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Đỗ Thị Thu Hường", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 37, "department_id": 9, "code": "KXN-P02", "name": "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đình Khải", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 38, "department_id": 9, "code": "KXN-P03", "name": "Phòng Vi sinh - Ký sinh trùng & Nuôi cấy", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Phạm Thị Hạnh", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 39, "department_id": 9, "code": "KXN-P04", "name": "Kho Hóa chất xét nghiệm & Lưu mẫu bệnh phẩm", "room_type": "Kho lưu trữ", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thu Thảo", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 40, "department_id": 10, "code": "KKSNK-P01", "name": "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Trịnh Thị Thu Trang", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 41, "department_id": 10, "code": "KKSNK-P02", "name": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "room_type": "Khu tiệt trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "KTV. Nguyễn Văn Đạt", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 42, "department_id": 10, "code": "KKSNK-P03", "name": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "room_type": "Kho vô trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Lê Thị Nga", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 43, "department_id": 10, "code": "KKSNK-P04", "name": "Khu Giặt là đồ vải bệnh viện công nghiệp", "room_type": "Khu giặt là", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 05:32:50"}, {"id": 46, "department_id": 3, "code": "HS-01", "name": "Buồng Bệnh nhân nặng Hồi sức 1", "room_type": "patient", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 95.0, "status": "active", "created_at": "2026-10-14 14:44:27"}, {"id": 47, "department_id": 3, "code": "HS-02", "name": "Buồng Bệnh nhân Thở máy & Lọc máu", "room_type": "patient", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Mai", "target_score": 95.0, "status": "active", "created_at": "2026-10-14 14:44:27"}, {"id": 48, "department_id": 3, "code": "HS-03", "name": "Phòng Thao tác & Thủ thuật ICU", "room_type": "treatment", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ThS.BS. Đinh Công Trí", "target_score": 95.0, "status": "active", "created_at": "2026-10-14 14:44:27"}, {"id": 49, "department_id": 3, "code": "HS-04", "name": "Phòng Trực cấp cứu & Giao ban ICU", "room_type": "office", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thanh Nga", "target_score": 90.0, "status": "active", "created_at": "2026-10-14 14:44:27"}], "staff": [{"id": 1, "staff_code": "NV-KCC-01", "full_name": "BSCKII. Nguyễn Văn Toàn", "department_id": 1, "role": "Bác sĩ Trưởng khoa", "phone": "0912.345.678", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kcc_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 2, "staff_code": "NV-KCC-02", "full_name": "ĐD. Vũ Quang Trưởng", "department_id": 1, "role": "Điều dưỡng Trưởng khoa", "phone": "0983.115.115", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kcc_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 3, "staff_code": "NV-KCC-03", "full_name": "ĐD. Lê Văn Minh", "department_id": 1, "role": "Điều dưỡng viên", "phone": "0977.123.456", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kcc_03", "password": "123456", "role_type": "staff", "assigned_rooms": "[1, 2, 3]", "allow_external": 1}, {"id": 4, "staff_code": "NV-KCC-04", "full_name": "ĐD. Phạm Thị Mai", "department_id": 1, "role": "Điều dưỡng viên", "phone": "0968.222.333", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kcc_04", "password": "123456", "role_type": "staff", "assigned_rooms": "[4, 5]", "allow_external": 1}, {"id": 5, "staff_code": "NV-KCC-05", "full_name": "Hộ lý. Vũ Thị Hoa", "department_id": 1, "role": "Hộ lý buồng bệnh", "phone": "0945.666.777", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kcc_05", "password": "123456", "role_type": "staff", "assigned_rooms": "[6]", "allow_external": 1}, {"id": 6, "staff_code": "NV-ICU-01", "full_name": "ThS.BS. Đinh Công Trí", "department_id": 3, "role": "Bác sĩ Trưởng khoa", "phone": "0913.888.999", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_icu_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 7, "staff_code": "NV-ICU-02", "full_name": "ĐD. Nguyễn Thị Thanh Nga", "department_id": 3, "role": "Điều dưỡng Trưởng khoa", "phone": "0982.999.000", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_icu_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 8, "staff_code": "NV-ICU-03", "full_name": "ĐD. Phan Anh Tuấn", "department_id": 3, "role": "Điều dưỡng viên", "phone": "0971.222.111", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_icu_03", "password": "123456", "role_type": "staff", "assigned_rooms": "[]", "allow_external": 1}, {"id": 9, "staff_code": "NV-KKB-01", "full_name": "BSCKI. Vũ Đình Khiêm", "department_id": 2, "role": "Bác sĩ Trưởng khoa", "phone": "0915.223.344", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kkb_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 10, "staff_code": "NV-KKB-02", "full_name": "ĐD. Hoàng Bích Thủy", "department_id": 2, "role": "Điều dưỡng Trưởng khoa", "phone": "0984.556.677", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kkb_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 11, "staff_code": "NV-KKB-03", "full_name": "ĐD. Nguyễn Thu Trang", "department_id": 2, "role": "Điều dưỡng viên", "phone": "0973.889.900", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kkb_03", "password": "123456", "role_type": "staff", "assigned_rooms": "[]", "allow_external": 1}, {"id": 12, "staff_code": "NV-KNG-01", "full_name": "BSCKII. Lê Tuấn Anh", "department_id": 4, "role": "Bác sĩ Trưởng khoa", "phone": "0916.334.455", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kng_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 13, "staff_code": "NV-KNG-02", "full_name": "ĐD. Bùi Văn Hùng", "department_id": 4, "role": "Điều dưỡng Trưởng khoa", "phone": "0985.667.788", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kng_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 14, "staff_code": "NV-KNG-03", "full_name": "ĐD. Trần Kim Oanh", "department_id": 4, "role": "Điều dưỡng viên", "phone": "0974.990.011", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_kng_03", "password": "123456", "role_type": "staff", "assigned_rooms": "[]", "allow_external": 1}, {"id": 15, "staff_code": "NV-KNT-01", "full_name": "BSCKI. Mai Thị Hảo", "department_id": 5, "role": "Bác sĩ Trưởng khoa", "phone": "0917.445.566", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_knt_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 16, "staff_code": "NV-KNT-02", "full_name": "ĐD. Trần Phương Dung", "department_id": 5, "role": "Điều dưỡng Trưởng khoa", "phone": "0986.778.899", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_knt_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 17, "staff_code": "NV-KSN-01", "full_name": "BSCKII. Nguyễn Thị Hồng", "department_id": 6, "role": "Bác sĩ Trưởng khoa", "phone": "0918.556.677", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_ksn_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 18, "staff_code": "NV-KSN-02", "full_name": "HS. Lê Thị Thúy Hằng", "department_id": 6, "role": "Hộ sinh Trưởng khoa", "phone": "0987.889.900", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_ksn_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 19, "staff_code": "NV-KNHI-01", "full_name": "ThS.BS. Đặng Hồng Phúc", "department_id": 7, "role": "Bác sĩ Trưởng khoa", "phone": "0919.667.788", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_knhi_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 20, "staff_code": "NV-KNHI-02", "full_name": "ĐD. Đỗ Thị Hiền", "department_id": 7, "role": "Điều dưỡng Trưởng khoa", "phone": "0988.990.011", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_knhi_02", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 21, "staff_code": "NV-QLCL-01", "full_name": "BSCKI. Hoàng Trọng Nghĩa", "department_id": 10, "role": "Trưởng Ban Chỉ Đạo 5S", "phone": "0911.222.333", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_qlcl_01", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 22, "staff_code": "NV-QLCL-02", "full_name": "ĐD. Trịnh Thị Thu Trang", "department_id": 10, "role": "Cán bộ Giám sát 5S QLCL", "phone": "0989.111.222", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 06:44:01", "username": "nv_qlcl_02", "password": "123456", "role_type": "staff", "assigned_rooms": "[]", "allow_external": 1}, {"id": 23, "staff_code": "ADMIN-01", "full_name": "Ban Giám Đốc / QLCL Bệnh Viện VPI", "department_id": 10, "role": "Quản Trị Toàn Viện", "phone": "0916306115", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 07:25:05", "username": "admin", "password": "123456", "role_type": "admin", "assigned_rooms": "[]", "allow_external": 1}, {"id": 24, "staff_code": "NV-KCC-02-TK", "full_name": "ĐD. Trần Thị Lan Hương", "department_id": 1, "role": "Điều dưỡng Trưởng khoa", "phone": "0983.115.115", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 07:25:05", "username": "truongkhoa_cc", "password": "123456", "role_type": "manager", "assigned_rooms": "[]", "allow_external": 1}, {"id": 25, "staff_code": "NV-KCC-03-DD", "full_name": "ĐD. Lê Văn Minh", "department_id": 1, "role": "Điều dưỡng viên đi buồng", "phone": "0977.123.456", "pin_code": "1234", "status": "active", "created_at": "2026-10-14 07:25:05", "username": "dieuduong_cc", "password": "123456", "role_type": "staff", "assigned_rooms": "[1, 2, 3]", "allow_external": 1}], "settings": {"hospital_name": "BỆNH VIỆN VĨNH PHÚC VPI", "system_title": "5S VPI", "system_slogan": "Tiêu chuẩn An toàn - Sạch sẽ - Ngăn nắp - Hướng tới sự hài lòng của người bệnh", "hotline": "0211.386.115", "criteria_seiri_title": "1. SÀNG LỌC (Seiri)", "criteria_seiri_desc": "Phân loại rác thải 4 màu y tế, không chứa đồ dùng thừa, loại bỏ thuốc/vật tư hết hạn", "criteria_seiri_max": "20", "criteria_seiton_title": "2. SẮP XẾP (Seiton)", "criteria_seiton_desc": "Trang thiết bị, xe tiêm, hộp cấp cứu đặt đúng vạch vàng định vị 5S; hồ sơ bệnh án dán nhãn ngăn nắp", "criteria_seiton_max": "20", "criteria_seiso_title": "3. SẠCH SẼ (Seiso)", "criteria_seiso_desc": "Sàn buồng khô ráo không trơn trượt, mặt bàn/giường bệnh/tay nắm cửa lau khử khuẩn; trần không mạng nhện", "criteria_seiso_max": "20", "criteria_seiketsu_title": "4. SĂN SÓC (Seiketsu)", "criteria_seiketsu_desc": "Niêm yết bảng phân công 5S tại phòng, duy trì quy chuẩn vệ sinh định kỳ từng ca; đồng phục bảo hộ chuẩn", "criteria_seiketsu_max": "20", "criteria_shitsuke_title": "5. SẴN SÀNG (Shitsuke)", "criteria_shitsuke_desc": "Tuân thủ 5 thời điểm rửa tay, tinh thần tự giác của nhân viên y tế, hướng dẫn bệnh nhân giữ vệ sinh chung", "criteria_shitsuke_max": "20", "hospital_hotline": "0211.386.1234", "criteria_1_title": "Phân loại rác y tế 4 màu, loại bỏ thuốc/vật tư hết hạn.", "criteria_1_desc": "", "criteria_2_title": "Xe tiêm, hộp cấp cứu đặt đúng vạch vàng định vị 5S; dán nhãn hồ sơ bệnh án.", "criteria_2_desc": "", "criteria_3_title": "Khử khuẩn sàn buồng, giường bệnh, tay nắm cửa; trần không bụi bẩn.", "criteria_3_desc": "", "criteria_4_title": "Bảng phân công 5S tại phòng, duy trì vệ sinh định kỳ.", "criteria_4_desc": "", "criteria_5_title": "Tuân thủ 5 thời điểm rửa tay, tinh thần tự giác của nhân viên y tế.", "criteria_5_desc": ""}, "audits": [{"id": 1, "audit_code": "5S-20261014-001", "department_id": 1, "room_id": 1, "audit_date": "2026-10-14", "audit_time": "08:30", "shift": "Ca sáng", "inspector_name": "BSCKII. Nguyễn Văn Toàn (Trưởng đoàn)", "inspector_role": "Ban QLCL Bệnh viện VPI", "score_seiri": 19.0, "score_seiton": 18.5, "score_seiso": 19.5, "score_seiketsu": 19.0, "score_shitsuke": 18.5, "total_score": 94.5, "rating": "Xuất sắc", "notes": "Phòng tiếp đón phân loại cấp cứu ngăn nắp, vạch kẻ phân luồng người bệnh rõ ràng, thùng rác phân loại 4 màu đúng chuẩn.", "action_required": "Bổ sung thêm 01 chai cồn sát khuẩn tay nhanh tại quầy tiếp nhận số 2.", "action_deadline": null, "action_status": "in_progress", "created_at": "2026-10-14 05:32:50"}, {"id": 2, "audit_code": "5S-20261014-002", "department_id": 3, "room_id": 12, "audit_date": "2026-10-14", "audit_time": "09:45", "shift": "Ca sáng", "inspector_name": "ĐD. Nguyễn Thị Thanh Nga", "inspector_role": "Điều dưỡng trưởng khoa", "score_seiri": 20.0, "score_seiton": 19.0, "score_seiso": 20.0, "score_seiketsu": 19.0, "score_shitsuke": 19.0, "total_score": 97.0, "rating": "Xuất sắc", "notes": "Buồng thở máy ICU đạt chuẩn vô khuẩn, dây máy thở và dây monitor được bó gọn ghẽ, xe tiêm cấp cứu dán nhãn 5S định vị chuẩn xác.", "action_required": "Duy trì định kỳ lau khử khuẩn các bề mặt tay vịn giường bệnh sau mỗi ca trực.", "action_deadline": null, "action_status": "completed", "created_at": "2026-10-14 05:32:50"}, {"id": 3, "audit_code": "5S-20261013-003", "department_id": 4, "room_id": 18, "audit_date": "2026-10-13", "audit_time": "14:15", "shift": "Ca chiều", "inspector_name": "ĐD. Bùi Văn Hùng", "inspector_role": "Ban Kiểm tra 5S Khoa Ngoại", "score_seiri": 15.0, "score_seiton": 16.0, "score_seiso": 15.5, "score_seiketsu": 16.0, "score_shitsuke": 17.0, "total_score": 79.5, "rating": "Đạt", "notes": "Phát hiện hộp gạc tiệt trùng hết hạn chưa chuyển đổi, bàn thay băng còn vệt dung dịch povidone khô chưa lau sạch, xe tiêm chưa để đúng vị trí vạch vàng kẻ 5S.", "action_required": "Yêu cầu kíp trực vệ sinh khử khuẩn ngay mặt bàn thủ thuật, đưa xe tiêm về đúng ô kẻ vạch, bàn giao dụng cụ hết hạn về Khoa KSNK trước 17h00.", "action_deadline": null, "action_status": "completed", "created_at": "2026-10-14 05:32:50"}, {"id": 4, "audit_code": "5S-20261013-004", "department_id": 2, "room_id": 8, "audit_date": "2026-10-13", "audit_time": "16:00", "shift": "Ca chiều", "inspector_name": "ĐD. Hoàng Bích Thủy", "inspector_role": "Điều dưỡng trưởng khoa", "score_seiri": 18.0, "score_seiton": 17.0, "score_seiso": 18.0, "score_seiketsu": 17.5, "score_shitsuke": 17.5, "total_score": 88.0, "rating": "Tốt", "notes": "Phòng khám nội tổng quát sạch sẽ, tài liệu hồ sơ bệnh án được xếp gọn trong khay chia ngăn. Đèn bàn khám hoạt động tốt.", "action_required": "Dọn dẹp bớt các tài liệu quảng cáo thuốc cũ không còn sử dụng trên nóc tủ hồ sơ.", "action_deadline": null, "action_status": "completed", "created_at": "2026-10-14 05:32:50"}, {"id": 5, "audit_code": "5S-20261012-005", "department_id": 10, "room_id": 42, "audit_date": "2026-10-12", "audit_time": "10:00", "shift": "Ca sáng", "inspector_name": "BSCKI. Hoàng Trọng Nghĩa", "inspector_role": "Trưởng khoa KSNK", "score_seiri": 20.0, "score_seiton": 20.0, "score_seiso": 20.0, "score_seiketsu": 19.5, "score_shitsuke": 19.5, "total_score": 99.0, "rating": "Xuất sắc", "notes": "Kho vô trùng đạt chuẩn cao độ, nhiệt độ và độ ẩm phòng được ghi chép nhật ký 3 lần/ngày, các gói dụng cụ có dán chỉ thị màu tiệt khuẩn và hạn dùng rõ nét.", "action_required": "Phát huy tinh thần làm mẫu cho các khoa lâm sàng khác tham quan học tập.", "action_deadline": null, "action_status": "completed", "created_at": "2026-10-14 05:32:50"}], "audit_items": [], "audit_photos": [{"id": 1, "audit_id": 1, "photo_type": "before", "file_path": "/uploads/vpi_5s_20261014_123412_ec6b51.jpg", "original_name": "vpi_5s_20261014_123412_ec6b51.jpg", "caption": "Hiện trạng trước dọn dẹp / kiểm tra", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 2, "audit_id": 1, "photo_type": "after", "file_path": "/uploads/vpi_5s_20261014_123412_8d0550.jpg", "original_name": "vpi_5s_20261014_123412_8d0550.jpg", "caption": "Kết quả sau khi sắp xếp, vệ sinh đạt chuẩn 5S", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 3, "audit_id": 2, "photo_type": "before", "file_path": "/uploads/vpi_5s_20261014_123412_bb0b0b.jpg", "original_name": "vpi_5s_20261014_123412_bb0b0b.jpg", "caption": "Hiện trạng trước dọn dẹp / kiểm tra", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 4, "audit_id": 2, "photo_type": "after", "file_path": "/uploads/vpi_5s_20261014_123412_4f64cc.jpg", "original_name": "vpi_5s_20261014_123412_4f64cc.jpg", "caption": "Kết quả sau khi sắp xếp, vệ sinh đạt chuẩn 5S", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 5, "audit_id": 3, "photo_type": "before", "file_path": "/uploads/vpi_5s_20261014_123412_81c8f2.jpg", "original_name": "vpi_5s_20261014_123412_81c8f2.jpg", "caption": "Hiện trạng trước dọn dẹp / kiểm tra", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 6, "audit_id": 3, "photo_type": "after", "file_path": "/uploads/vpi_5s_20261014_123412_57fe10.jpg", "original_name": "vpi_5s_20261014_123412_57fe10.jpg", "caption": "Kết quả sau khi sắp xếp, vệ sinh đạt chuẩn 5S", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 7, "audit_id": 4, "photo_type": "before", "file_path": "/uploads/vpi_5s_20261014_123412_d3f004.jpg", "original_name": "vpi_5s_20261014_123412_d3f004.jpg", "caption": "Hiện trạng trước dọn dẹp / kiểm tra", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 8, "audit_id": 4, "photo_type": "after", "file_path": "/uploads/vpi_5s_20261014_123412_d7449d.jpg", "original_name": "vpi_5s_20261014_123412_d7449d.jpg", "caption": "Kết quả sau khi sắp xếp, vệ sinh đạt chuẩn 5S", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 9, "audit_id": 5, "photo_type": "before", "file_path": "/uploads/vpi_5s_20261014_123412_cb985c.jpg", "original_name": "vpi_5s_20261014_123412_cb985c.jpg", "caption": "Hiện trạng trước dọn dẹp / kiểm tra", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}, {"id": 10, "audit_id": 5, "photo_type": "after", "file_path": "/uploads/vpi_5s_20261014_123412_e25c34.jpg", "original_name": "vpi_5s_20261014_123412_e25c34.jpg", "caption": "Kết quả sau khi sắp xếp, vệ sinh đạt chuẩn 5S", "watermarked": 1, "created_at": "2026-10-14 05:34:12"}], "security_logs": [{"id": 1, "event_type": "BACKUP_CREATED", "username": "ANONYMOUS", "ip_address": "127.0.0.1", "user_agent": "Unknown", "details": "Tạo bản sao lưu: backup_5s_vpi_20261014_230942_initial.zip (1.14 MB, loại: initial)", "created_at": "2026-10-14 16:09:42"}, {"id": 2, "event_type": "BACKUP_CREATED", "username": "ANONYMOUS", "ip_address": "127.0.0.1", "user_agent": "Unknown", "details": "Tạo bản sao lưu: backup_5s_vpi_20261014_232328_auto.zip (1.14 MB, loại: auto)", "created_at": "2026-10-14 16:23:28"}, {"id": 3, "event_type": "STAFF_PERMISSION_CHANGED", "username": "ANONYMOUS", "ip_address": "127.0.0.1", "user_agent": "Unknown", "details": "Đổi quyền ngoại viện nhân viên BSCKII. Nguyễn Văn Toàn (NV-KCC-01) thành: Chỉ nội viện", "created_at": "2026-10-14 16:24:34"}, {"id": 4, "event_type": "STAFF_PERMISSION_CHANGED", "username": "ANONYMOUS", "ip_address": "127.0.0.1", "user_agent": "Unknown", "details": "Đổi quyền ngoại viện nhân viên BSCKII. Nguyễn Văn Toàn (NV-KCC-01) thành: Cho phép 4G", "created_at": "2026-10-14 16:24:44"}]};
+const STORAGE_KEY = 'vpi_5s_data_v5_grouped';
+const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
-const VPI_Store = {
-  key: "VPI_5S_DATA_STORE_V2",
-  data: null,
-
-  init() {
-    const raw = localStorage.getItem(this.key);
-    if (raw) {
-      try {
-        this.data = JSON.parse(raw);
-      } catch (e) {
-        console.warn("Lỗi đọc dữ liệu localStorage, thiết lập lại dữ liệu gốc:", e);
-      }
-    }
-    if (!this.data || !this.data.departments || this.data.departments.length === 0) {
-      this.data = JSON.parse(JSON.stringify(DEFAULT_5S_SEED_DATA));
-      this.save();
-    }
-    // Đảm bảo đủ các bảng
-    if (!this.data.departments) this.data.departments = [];
-    if (!this.data.rooms) this.data.rooms = [];
-    if (!this.data.staff) this.data.staff = [];
-    if (!this.data.audits) this.data.audits = [];
-    if (!this.data.audit_items) this.data.audit_items = [];
-    if (!this.data.audit_photos) this.data.audit_photos = [];
-    if (!this.data.settings) this.data.settings = {};
-    if (!this.data.security_logs) this.data.security_logs = [];
-    if (!this.data.backups) this.data.backups = [];
-  },
-
-  save() {
-    try {
-      localStorage.setItem(this.key, JSON.stringify(this.data));
-    } catch (e) {
-      console.error("Lỗi lưu localStorage:", e);
+// CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
+const DEFAULT_SEED_DATA = {
+  hospital: {
+    name: 'Bệnh viện Vĩnh Phúc VPI',
+    legalName: 'Bệnh viện Vĩnh Phúc VPI',
+    department: 'Hội đồng Quản lý Chất lượng & Ban Chỉ đạo 5S Toàn Viện',
+    slogan: 'Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng',
+    address: 'Lạc Ý, Định Trung, TP. Vĩnh Yên, Tỉnh Vĩnh Phúc',
+    hotline: '0211.386.115',
+    director: 'ThS. BSCKII. Phạm Quỳnh Hưng',
+    directorTitle: 'Trưởng ban Chỉ đạo 5S Bệnh viện',
+    officer: 'KTV. Vũ Bá Đạt',
+    officerId: 'BV-345',
+    officerTitle: 'Cán bộ Giám sát 5S Toàn Viện & KTV Trưởng CĐHA',
+    supervisionCycle: 'Tháng 10/2026 (Kiểm tra hằng ngày)',
+    complianceRate: 100,
+    averageScore: 98.5,
+    notice: {
+      enabled: true,
+      type: 'danger',
+      title: 'THÔNG BÁO KHẨN: KIỂM TRA ĐỘT XUẤT 5S TOÀN VIỆN',
+      content: 'Ban Giám đốc & Đoàn phúc tra Sở Y tế kiểm tra thực hành 5S tại tất cả các buồng bệnh, buồng thủ thuật lúc 09h00 sáng nay. Yêu cầu các Trưởng khoa, Điều dưỡng trưởng rà soát sàng lọc, sắp xếp trang thiết bị và khử khuẩn buồng phòng sạch sẽ ngay đầu giờ.',
+      updatedAt: '2026-10-16 07:30'
     }
   },
-
-  computeDashboard() {
-    const audits = this.data.audits || [];
-    const depts = this.data.departments || [];
-    const rooms = this.data.rooms || [];
-
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const todayAudits = audits.filter(a => a.audit_date === todayStr);
-
-    let avgScore = 0;
-    if (audits.length > 0) {
-      const total = audits.reduce((sum, a) => sum + (parseFloat(a.total_score) || 0), 0);
-      avgScore = total / audits.length;
-    } else {
-      avgScore = 91.2;
+  departments: [{"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu", "order": 1, "category": "paraclinical"}, {"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "order": 2, "category": "clinical"}, {"id": 11, "code": "ICU", "name": "Khoa Hồi sức tích cực & Chống độc", "head_nurse": "ĐD. Nguyễn Thị Thanh Nga", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.116", "color": "#dc2626", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục", "order": 3, "category": "clinical"}, {"id": 12, "code": "PTGM", "name": "Khoa Phẫu thuật - Gây mê hồi sức", "head_nurse": "ĐD. Nguyễn Văn Thắng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.117", "color": "#0284c7", "icon": "fa-syringe", "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản", "order": 4, "category": "clinical"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân", "order": 5, "category": "clinical"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương", "order": 6, "category": "clinical"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa", "order": 7, "category": "clinical"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa", "order": 8, "category": "clinical"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng", "order": 9, "category": "clinical"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT - Phục hồi chức năng", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "BSCKI. Trần Văn Thái", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-spa", "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu", "order": 10, "category": "clinical"}, {"id": 13, "code": "LCK", "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)", "head_nurse": "ĐD. Vũ Thị Loan", "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường", "phone": "0211.386.129", "color": "#8b5cf6", "icon": "fa-eye", "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình", "order": 11, "category": "clinical"}, {"id": 14, "code": "TDCN", "name": "Khoa Thăm dò chức năng & Nội soi", "head_nurse": "KTV. Lê Thùy Linh", "doctor_in_charge": "BS. Lê Quang Huy", "phone": "0211.386.131", "color": "#14b8a6", "icon": "fa-wave-square", "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp", "order": 12, "category": "paraclinical"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học", "order": 13, "category": "paraclinical"}, {"id": 15, "code": "KD", "name": "Khoa Dược", "head_nurse": "DS. Nguyễn Bích Ngọc", "doctor_in_charge": "DS CKI. Hoàng Thị Lan", "phone": "0211.386.133", "color": "#10b981", "icon": "fa-pills", "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế", "order": 14, "category": "paraclinical"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện", "order": 15, "category": "paraclinical"}, {"id": 16, "code": "QLCL", "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "head_nurse": "ĐD. Nguyễn Thu Trang", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.100", "color": "#6366f1", "icon": "fa-award", "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV", "order": 16, "category": "functional"}, {"id": 17, "code": "KHTH", "name": "Phòng Kế hoạch tổng hợp & CNTT", "head_nurse": "ĐD. Hoàng Hải Yến", "doctor_in_charge": "BSCKI. Trần Đức Thắng", "phone": "0211.386.102", "color": "#3b82f6", "icon": "fa-clipboard-list", "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS", "order": 17, "category": "functional"}, {"id": 18, "code": "PDD", "name": "Phòng Điều dưỡng", "head_nurse": "ThS. ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "phone": "0211.386.103", "color": "#06b6d4", "icon": "fa-user-nurse", "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S", "order": 18, "category": "functional"}, {"id": 19, "code": "HCQT", "name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "head_nurse": "CN. Đặng Thị Loan", "doctor_in_charge": "ThS. Nguyễn Văn Hùng", "phone": "0211.386.105", "color": "#64748b", "icon": "fa-building", "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan", "order": 19, "category": "functional"}, {"id": 20, "code": "TCKT", "name": "Phòng Tài chính - Kế toán", "head_nurse": "KTV. Lê Thu Thảo", "doctor_in_charge": "ThS. Vũ Thị Mai", "phone": "0211.386.106", "color": "#f59e0b", "icon": "fa-file-invoice-dollar", "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị", "order": 20, "category": "functional"}],
+  rooms: [{"id": 34, "department_id": 8, "code": "XQ-01", "name": "Phòng Chụp X-quang Kỹ thuật số DR", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Chung", "target_score": 95.0, "status": "active", "order": 1}, {"id": 32, "department_id": 8, "code": "CT-01", "name": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đức Tuấn", "target_score": 98.0, "status": "active", "order": 2}, {"id": 33, "department_id": 8, "code": "MRI-01", "name": "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Công Bằng", "target_score": 98.0, "status": "active", "order": 3}, {"id": 35, "department_id": 8, "code": "SA-01", "name": "Phòng Siêu âm Màu 4D & Doppler tim mạch (P.104)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "BS. Phạm Quang Nam", "target_score": 95.0, "status": "active", "order": 4}, {"id": 50, "department_id": 8, "code": "PACS-01", "name": "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Vũ Bá Đạt", "target_score": 95.0, "status": "active", "order": 5}, {"id": 51, "department_id": 8, "code": "KHO-CDHA", "name": "Kho Vật tư tiêu hao & Lưu trữ hồ sơ phim CĐHA", "room_type": "Kho lưu trữ", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Tuấn", "target_score": 90.0, "status": "active", "order": 6}, {"id": 1, "department_id": 1, "code": "KCC-P01", "name": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "room_type": "Phòng tiếp đón", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Lê Văn Minh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 2, "department_id": 1, "code": "KCC-P02", "name": "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 2}, {"id": 3, "department_id": 1, "code": "KCC-P03", "name": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "room_type": "Phòng bệnh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Phạm Thị Mai", "target_score": 90.0, "status": "active", "order": 3}, {"id": 4, "department_id": 1, "code": "KCC-P04", "name": "Phòng Tiểu phẫu - Băng bó vết thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Hoàng Hải Yến", "target_score": 92.0, "status": "active", "order": 4}, {"id": 5, "department_id": 1, "code": "KCC-P05", "name": "Kho Thuốc & Dịch truyền Cấp cứu", "room_type": "Kho dược", "floor": "Tầng 1 - Nhà A", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 5}, {"id": 6, "department_id": 1, "code": "KCC-P06", "name": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "room_type": "Khu vệ sinh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 90.0, "status": "active", "order": 6}, {"id": 46, "department_id": 11, "code": "ICU-01", "name": "Buồng Bệnh nhân nặng Hồi sức 1", "room_type": "Phòng điều trị tích cực", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 98.0, "status": "active", "order": 1}, {"id": 47, "department_id": 11, "code": "ICU-02", "name": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "room_type": "Phòng hồi sức", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Mai", "target_score": 98.0, "status": "active", "order": 2}, {"id": 48, "department_id": 11, "code": "ICU-03", "name": "Phòng Thao tác & Thủ thuật ICU", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ThS.BS. Đinh Công Trí", "target_score": 95.0, "status": "active", "order": 3}, {"id": 49, "department_id": 11, "code": "ICU-04", "name": "Phòng Trực cấp cứu & Giao ban ICU", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thanh Nga", "target_score": 92.0, "status": "active", "order": 4}, {"id": 52, "department_id": 11, "code": "ICU-05", "name": "Buồng Cách ly áp lực âm ICU", "room_type": "Phòng cách ly", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Phan Anh Tuấn", "target_score": 95.0, "status": "active", "order": 5}, {"id": 53, "department_id": 12, "code": "PTGM-01", "name": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Lê Tuấn Anh", "target_score": 99.0, "status": "active", "order": 1}, {"id": 54, "department_id": 12, "code": "PTGM-02", "name": "Phòng Mổ số 2 - Phẫu thuật Sản khoa & Mổ lấy thai", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Nguyễn Thị Hồng", "target_score": 99.0, "status": "active", "order": 2}, {"id": 55, "department_id": 12, "code": "PTGM-03", "name": "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "room_type": "Phòng hồi tỉnh", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 96.0, "status": "active", "order": 3}, {"id": 56, "department_id": 12, "code": "PTGM-04", "name": "Khu Rửa tay phẫu thuật viên & Thay đồ vô khuẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 4}, {"id": 57, "department_id": 12, "code": "PTGM-05", "name": "Kho Vật tư phòng mổ & Đồ vải tiệt trùng", "room_type": "Kho vô trùng", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 7, "department_id": 2, "code": "KKB-P01", "name": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "room_type": "Sảnh chờ", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 92.0, "status": "active", "order": 1}, {"id": 8, "department_id": 2, "code": "KKB-P02", "name": "Phòng Khám Nội tổng quát (P.101)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BSCKI. Vũ Đình Khiêm", "target_score": 92.0, "status": "active", "order": 2}, {"id": 9, "department_id": 2, "code": "KKB-P03", "name": "Phòng Khám Ngoại - Chấn thương (P.102)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Đỗ Mạnh Cường", "target_score": 92.0, "status": "active", "order": 3}, {"id": 10, "department_id": 2, "code": "KKB-P04", "name": "Phòng Khám Nhi & Tiêm chủng (P.103)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Trần Thảo Vy", "target_score": 92.0, "status": "active", "order": 4}, {"id": 11, "department_id": 2, "code": "KKB-P05", "name": "Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà B", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 58, "department_id": 2, "code": "KKB-P06", "name": "Quầy Thu viện phí & Giám định BHYT", "room_type": "Quầy giao dịch", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Hoàng Bích Thủy", "target_score": 90.0, "status": "active", "order": 6}, {"id": 16, "department_id": 4, "code": "KNG-P01", "name": "Buồng Hậu phẫu Ngoại 201", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 17, "department_id": 4, "code": "KNG-P02", "name": "Buồng Bệnh Tiền phẫu 202", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 90.0, "status": "active", "order": 2}, {"id": 18, "department_id": 4, "code": "KNG-P03", "name": "Phòng Thay băng - Rửa vết thương & Cắt chỉ", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 3}, {"id": 19, "department_id": 4, "code": "KNG-P04", "name": "Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà C", "person_in_charge": "BSCKII. Nguyễn Văn Toàn", "target_score": 90.0, "status": "active", "order": 4}, {"id": 20, "department_id": 5, "code": "KNT-P01", "name": "Buồng Bệnh Nội Tim Mạch (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Dương Thị Hằng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 21, "department_id": 5, "code": "KNT-P02", "name": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Ngô Thị Yến", "target_score": 90.0, "status": "active", "order": 2}, {"id": 22, "department_id": 5, "code": "KNT-P03", "name": "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "room_type": "Phòng trực", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Trần Phương Dung", "target_score": 95.0, "status": "active", "order": 3}, {"id": 23, "department_id": 5, "code": "KNT-P04", "name": "Khu Vệ sinh buồng bệnh nhân Tầng 3", "room_type": "Khu vệ sinh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "Hộ lý. Phạm Thị Chắt", "target_score": 90.0, "status": "active", "order": 4}, {"id": 24, "department_id": 6, "code": "KSN-P01", "name": "Phòng Chờ đẻ & Theo dõi tim thai", "room_type": "Phòng chuyên khoa", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Vũ Thị Loan", "target_score": 95.0, "status": "active", "order": 1}, {"id": 25, "department_id": 6, "code": "KSN-P02", "name": "Phòng Đẻ thường số 1 (Vô khuẩn)", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Lê Thị Thúy Hằng", "target_score": 98.0, "status": "active", "order": 2}, {"id": 26, "department_id": 6, "code": "KSN-P03", "name": "Buồng Chăm sóc Mẹ và Bé sau sinh (P.205)", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Trần Hồng Nhung", "target_score": 92.0, "status": "active", "order": 3}, {"id": 27, "department_id": 6, "code": "KSN-P04", "name": "Phòng Tắm Bé & Tiêm chủng sơ sinh", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Nguyễn Thị Thêu", "target_score": 95.0, "status": "active", "order": 4}, {"id": 28, "department_id": 7, "code": "KNHI-P01", "name": "Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "room_type": "Phòng đặc biệt", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Đỗ Thị Hiền", "target_score": 98.0, "status": "active", "order": 1}, {"id": 29, "department_id": 7, "code": "KNHI-P02", "name": "Buồng Bệnh Nhi Hô hấp (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thủy", "target_score": 92.0, "status": "active", "order": 2}, {"id": 30, "department_id": 7, "code": "KNHI-P03", "name": "Buồng Bệnh Nhi Tiêu hóa (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Mai Thị Trang", "target_score": 90.0, "status": "active", "order": 3}, {"id": 31, "department_id": 7, "code": "KNHI-P04", "name": "Khu Vui chơi giải trí & Vận động bệnh nhi", "room_type": "Khu công cộng", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Trần Thu Hà", "target_score": 90.0, "status": "active", "order": 4}, {"id": 59, "department_id": 3, "code": "YHCT-01", "name": "Phòng Khám & Bắt mạch YHCT", "room_type": "Phòng khám", "floor": "Tầng 4 - Nhà C", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 92.0, "status": "active", "order": 1}, {"id": 60, "department_id": 3, "code": "YHCT-02", "name": "Phòng Châm cứu & Xoa bóp bấm huyệt", "room_type": "Phòng thủ thuật", "floor": "Tầng 4 - Nhà C", "person_in_charge": "ĐD. Phạm Thị Lý", "target_score": 95.0, "status": "active", "order": 2}, {"id": 61, "department_id": 3, "code": "YHCT-03", "name": "Phòng Vật lý trị liệu & Vận động phục hồi", "room_type": "Phòng tập", "floor": "Tầng 4 - Nhà C", "person_in_charge": "KTV. Lê Văn Tuấn", "target_score": 92.0, "status": "active", "order": 3}, {"id": 62, "department_id": 3, "code": "YHCT-04", "name": "Phòng Sắc thuốc & Bảo quản dược liệu YHCT", "room_type": "Khu chế biến", "floor": "Tầng 4 - Nhà C", "person_in_charge": "DS. Hoàng Thị Mai", "target_score": 90.0, "status": "active", "order": 4}, {"id": 63, "department_id": 13, "code": "LCK-01", "name": "Phòng Khám & Điều trị Răng Hàm Mặt", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Đỗ Mạnh Cường", "target_score": 95.0, "status": "active", "order": 1}, {"id": 64, "department_id": 13, "code": "LCK-02", "name": "Phòng Khám & Nội soi Tai Mũi Họng", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Nguyễn Văn Hùng", "target_score": 95.0, "status": "active", "order": 2}, {"id": 65, "department_id": 13, "code": "LCK-03", "name": "Phòng Khám Mắt & Đo thị lực khúc xạ", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Vũ Thị Loan", "target_score": 92.0, "status": "active", "order": 3}, {"id": 66, "department_id": 14, "code": "TDCN-01", "name": "Phòng Nội soi Tiêu hóa dạ dày - đại tràng", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "BS. Lê Quang Huy", "target_score": 98.0, "status": "active", "order": 1}, {"id": 67, "department_id": 14, "code": "TDCN-02", "name": "Phòng Điện tim & Điện não đồ vi tính", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 2}, {"id": 68, "department_id": 14, "code": "TDCN-03", "name": "Phòng Đo chức năng hô hấp & Lưu huyết não", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Thu Hà", "target_score": 92.0, "status": "active", "order": 3}, {"id": 36, "department_id": 9, "code": "KXN-P01", "name": "Phòng Xét nghiệm Huyết học & Truyền máu", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Đỗ Thị Thu Hường", "target_score": 98.0, "status": "active", "order": 1}, {"id": 37, "department_id": 9, "code": "KXN-P02", "name": "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đình Khải", "target_score": 98.0, "status": "active", "order": 2}, {"id": 38, "department_id": 9, "code": "KXN-P03", "name": "Phòng Vi sinh - Ký sinh trùng & Nuôi cấy", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Phạm Thị Hạnh", "target_score": 95.0, "status": "active", "order": 3}, {"id": 39, "department_id": 9, "code": "KXN-P04", "name": "Kho Hóa chất xét nghiệm & Lưu mẫu bệnh phẩm", "room_type": "Kho lưu trữ", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thu Thảo", "target_score": 95.0, "status": "active", "order": 4}, {"id": 69, "department_id": 15, "code": "KD-01", "name": "Kho Thuốc chẵn Nội trú & Dịch truyền", "room_type": "Kho thuốc", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS CKI. Hoàng Thị Lan", "target_score": 98.0, "status": "active", "order": 1}, {"id": 70, "department_id": 15, "code": "KD-02", "name": "Kho Thuốc Cấp phát Ngoại trú BHYT", "room_type": "Kho cấp phát", "floor": "Tầng 1 - Nhà B", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 2}, {"id": 71, "department_id": 15, "code": "KD-03", "name": "Kho Hóa chất sát khuẩn & Vật tư y tế tiêu hao", "room_type": "Kho vật tư", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Trần Văn Nam", "target_score": 95.0, "status": "active", "order": 3}, {"id": 72, "department_id": 15, "code": "KD-04", "name": "Phòng Pha chế & Bảo quản lạnh Vắc xin/Thuốc đặc biệt", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Lê Thị Mai", "target_score": 98.0, "status": "active", "order": 4}, {"id": 40, "department_id": 10, "code": "KKSNK-P01", "name": "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Trịnh Thị Thu Trang", "target_score": 95.0, "status": "active", "order": 1}, {"id": 41, "department_id": 10, "code": "KKSNK-P02", "name": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "room_type": "Khu tiệt trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "KTV. Nguyễn Văn Đạt", "target_score": 98.0, "status": "active", "order": 2}, {"id": 42, "department_id": 10, "code": "KKSNK-P03", "name": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "room_type": "Kho vô trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Lê Thị Nga", "target_score": 99.0, "status": "active", "order": 3}, {"id": 43, "department_id": 10, "code": "KKSNK-P04", "name": "Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "room_type": "Khu giặt là", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 92.0, "status": "active", "order": 4}, {"id": 73, "department_id": 10, "code": "KKSNK-P05", "name": "Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "room_type": "Khu rác thải", "floor": "Khuôn viên phía sau Nhà Giặt", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 95.0, "status": "active", "order": 5}, {"id": 74, "department_id": 16, "code": "QLCL-01", "name": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "room_type": "Văn phòng", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "target_score": 98.0, "status": "active", "order": 1}, {"id": 75, "department_id": 16, "code": "QLCL-02", "name": "Phòng Lưu trữ Hồ sơ 83 Tiêu chí & Minh chứng 5S", "room_type": "Phòng hồ sơ", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 95.0, "status": "active", "order": 2}, {"id": 76, "department_id": 17, "code": "KHTH-01", "name": "Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện", "room_type": "Phòng giao ban", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "BSCKI. Trần Đức Thắng", "target_score": 95.0, "status": "active", "order": 1}, {"id": 77, "department_id": 17, "code": "KHTH-02", "name": "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS", "room_type": "Phòng server", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "KS. Nguyễn Hoàng Nam", "target_score": 98.0, "status": "active", "order": 2}, {"id": 78, "department_id": 18, "code": "PDD-01", "name": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "room_type": "Văn phòng", "floor": "Tầng 3 - Nhà Điều hành", "person_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 1}, {"id": 79, "department_id": 19, "code": "HCQT-01", "name": "Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn", "room_type": "Văn thư", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Nguyễn Văn Hùng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 80, "department_id": 19, "code": "HCQT-02", "name": "Kho Vật tư văn phòng phẩm & Thiết bị hành chính", "room_type": "Kho hành chính", "floor": "Tầng 1 - Nhà Điều hành", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 90.0, "status": "active", "order": 2}, {"id": 81, "department_id": 20, "code": "TCKT-01", "name": "Phòng Kế toán tổng hợp & Quản trị tài sản viện", "room_type": "Văn phòng", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Vũ Thị Mai", "target_score": 95.0, "status": "active", "order": 1}],
+  staff: [{"id": 1, "code": "BV-345", "staff_code": "BV-345", "name": "KTV. Vũ Bá Đạt", "full_name": "KTV. Vũ Bá Đạt", "username": "bv345", "password": "123", "department_id": 8, "role": "admin", "role_level": "admin", "title": "Kỹ thuật viên Trưởng", "role_title": "Kỹ thuật viên Trưởng", "position": "Kỹ thuật viên Trưởng CĐHA & Giám sát 5S Toàn Viện", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR", "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS"], "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR, Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "allow_external": true}, {"id": 2, "code": "BV-101", "staff_code": "BV-101", "name": "ThS. BSCKII. Phạm Quỳnh Hưng", "full_name": "ThS. BSCKII. Phạm Quỳnh Hưng", "username": "bv101", "password": "123", "department_id": 16, "role": "admin", "role_level": "admin", "title": "ThS. BSCKII - Trưởng Ban 5S", "role_title": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc", "position": "Trưởng Ban Chỉ Đạo 5S Bệnh Viện & Bác sĩ Cấp Cứu", "assigned_rooms": ["Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện"], "assigned_room": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện, Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện", "allow_external": true}, {"id": 3, "code": "BV-102", "staff_code": "BV-102", "name": "BSCKII. Nguyễn Văn Toàn", "full_name": "BSCKII. Nguyễn Văn Toàn", "username": "bv102", "password": "123", "department_id": 4, "role": "manager", "role_level": "manager", "title": "BSCKII - Trưởng Khoa", "role_title": "BSCKII - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Ngoại Tổng Hợp", "assigned_rooms": ["Buồng Hậu phẫu Ngoại 201", "Phòng Thay băng - Rửa vết thương & Cắt chỉ"], "assigned_room": "Buồng Hậu phẫu Ngoại 201, Phòng Thay băng - Rửa vết thương & Cắt chỉ", "allow_external": true}, {"id": 4, "code": "BV-103", "staff_code": "BV-103", "name": "ĐD. Vũ Quang Trưởng", "full_name": "ĐD. Vũ Quang Trưởng", "username": "bv103", "password": "123", "department_id": 1, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Cấp Cứu", "assigned_rooms": ["Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương"], "assigned_room": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu, Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "allow_external": true}, {"id": 5, "code": "BV-104", "staff_code": "BV-104", "name": "ĐD. Lê Văn Minh", "full_name": "ĐD. Lê Văn Minh", "username": "bv104", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng viên", "role_title": "Điều dưỡng viên", "position": "Điều dưỡng viên Cấp cứu", "assigned_rooms": ["Phòng Tiểu phẫu - Băng bó vết thương", "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải"], "assigned_room": "Phòng Tiểu phẫu - Băng bó vết thương, Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "allow_external": true}, {"id": 6, "code": "BV-105", "staff_code": "BV-105", "name": "ĐD. Phạm Thị Mai", "full_name": "ĐD. Phạm Thị Mai", "username": "bv105", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng viên", "role_title": "Điều dưỡng viên", "position": "Điều dưỡng viên Cấp cứu", "assigned_rooms": ["Phòng Lưu bệnh Cấp cứu (Phòng 101)"], "assigned_room": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "allow_external": true}, {"id": 7, "code": "BV-106", "staff_code": "BV-106", "name": "Hộ lý. Vũ Thị Hoa", "full_name": "Hộ lý. Vũ Thị Hoa", "username": "bv106", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Hộ lý / Nhân viên vệ sinh", "role_title": "Hộ lý / Nhân viên vệ sinh", "position": "Hộ lý buồng bệnh & Khử khuẩn", "assigned_rooms": ["Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "Khu Phân loại & Lưu trữ tạm thời rác thải y tế"], "assigned_room": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải, Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "allow_external": true}, {"id": 8, "code": "BV-107", "staff_code": "BV-107", "name": "BSCKI. Vũ Đình Khiêm", "full_name": "BSCKI. Vũ Đình Khiêm", "username": "bv107", "password": "123", "department_id": 2, "role": "manager", "role_level": "manager", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Khám bệnh", "assigned_rooms": ["Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "Phòng Khám Nội tổng quát (P.101)"], "assigned_room": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động, Phòng Khám Nội tổng quát (P.101)", "allow_external": true}, {"id": 9, "code": "BV-108", "staff_code": "BV-108", "name": "ĐD. Hoàng Bích Thủy", "full_name": "ĐD. Hoàng Bích Thủy", "username": "bv108", "password": "123", "department_id": 2, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Khám bệnh", "assigned_rooms": ["Phòng Khám Ngoại - Chấn thương (P.102)", "Phòng Lấy mẫu máu & Bệnh phẩm tập trung"], "assigned_room": "Phòng Khám Ngoại - Chấn thương (P.102), Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "allow_external": true}, {"id": 10, "code": "BV-109", "staff_code": "BV-109", "name": "ThS.BS. Đinh Công Trí", "full_name": "ThS.BS. Đinh Công Trí", "username": "bv109", "password": "123", "department_id": 11, "role": "manager", "role_level": "manager", "title": "ThS. Bác sĩ - Trưởng Khoa", "role_title": "ThS. Bác sĩ - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Hồi sức tích cực & Chống độc (ICU)", "assigned_rooms": ["Buồng Bệnh nhân nặng Hồi sức 1", "Phòng Thao tác & Thủ thuật ICU"], "assigned_room": "Buồng Bệnh nhân nặng Hồi sức 1, Phòng Thao tác & Thủ thuật ICU", "allow_external": true}, {"id": 11, "code": "BV-110", "staff_code": "BV-110", "name": "ĐD. Nguyễn Thị Thanh Nga", "full_name": "ĐD. Nguyễn Thị Thanh Nga", "username": "bv110", "password": "123", "department_id": 11, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Hồi sức tích cực ICU", "assigned_rooms": ["Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "Phòng Trực cấp cứu & Giao ban ICU", "Buồng Cách ly áp lực âm ICU"], "assigned_room": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục, Phòng Trực cấp cứu & Giao ban ICU", "allow_external": true}, {"id": 12, "code": "BV-111", "staff_code": "BV-111", "name": "BSCKII. Lê Tuấn Anh", "full_name": "BSCKII. Lê Tuấn Anh", "username": "bv111", "password": "123", "department_id": 12, "role": "manager", "role_level": "manager", "title": "BSCKII - Trưởng Khoa", "role_title": "BSCKII - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Phẫu thuật - Gây mê hồi sức", "assigned_rooms": ["Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật"], "assigned_room": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát, Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "allow_external": true}, {"id": 13, "code": "BV-112", "staff_code": "BV-112", "name": "ĐD. Bùi Văn Hùng", "full_name": "ĐD. Bùi Văn Hùng", "username": "bv112", "password": "123", "department_id": 4, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Ngoại", "assigned_rooms": ["Buồng Bệnh Tiền phẫu 202", "Phòng Trực Bác sĩ & Giao ban khoa Ngoại"], "assigned_room": "Buồng Bệnh Tiền phẫu 202, Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "allow_external": true}, {"id": 14, "code": "BV-113", "staff_code": "BV-113", "name": "BSCKI. Mai Thị Hảo", "full_name": "BSCKI. Mai Thị Hảo", "username": "bv113", "password": "123", "department_id": 5, "role": "manager", "role_level": "manager", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Nội Tổng hợp", "assigned_rooms": ["Buồng Bệnh Nội Tim Mạch (P.301)", "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng"], "assigned_room": "Buồng Bệnh Nội Tim Mạch (P.301), Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "allow_external": true}, {"id": 15, "code": "BV-114", "staff_code": "BV-114", "name": "ĐD. Trần Phương Dung", "full_name": "ĐD. Trần Phương Dung", "username": "bv114", "password": "123", "department_id": 5, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Nội", "assigned_rooms": ["Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "Khu Vệ sinh buồng bệnh nhân Tầng 3"], "assigned_room": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302), Khu Vệ sinh buồng bệnh nhân Tầng 3", "allow_external": true}, {"id": 16, "code": "BV-115", "staff_code": "BV-115", "name": "KTV. Trần Văn Chung", "full_name": "KTV. Trần Văn Chung", "username": "bv115", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "position": "Kỹ thuật viên Chụp X-Quang Kỹ thuật số", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR"], "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR", "allow_external": true}, {"id": 17, "code": "BV-116", "staff_code": "BV-116", "name": "KTV. Lê Công Bằng", "full_name": "KTV. Lê Công Bằng", "username": "bv116", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "position": "Kỹ thuật viên Vận hành Máy MRI & CT", "assigned_rooms": ["Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)"], "assigned_room": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "allow_external": true}, {"id": 18, "code": "BV-117", "staff_code": "BV-117", "name": "DS. Nguyễn Bích Ngọc", "full_name": "DS. Nguyễn Bích Ngọc", "username": "bv117", "password": "123", "department_id": 15, "role": "staff", "role_level": "staff", "title": "Dược sĩ / Quản lý kho dược", "role_title": "Dược sĩ / Quản lý kho dược", "position": "Dược sĩ Quản lý kho thuốc cấp phát", "assigned_rooms": ["Kho Thuốc chẵn Nội trú & Dịch truyền", "Kho Thuốc Cấp phát Ngoại trú BHYT"], "assigned_room": "Kho Thuốc chẵn Nội trú & Dịch truyền, Kho Thuốc Cấp phát Ngoại trú BHYT", "allow_external": true}, {"id": 19, "code": "BV-118", "staff_code": "BV-118", "name": "BSCKI. Hoàng Trọng Nghĩa", "full_name": "BSCKI. Hoàng Trọng Nghĩa", "username": "bv118", "password": "123", "department_id": 10, "role": "manager", "role_level": "manager", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Kiểm soát Nhiễm khuẩn", "assigned_rooms": ["Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn"], "assigned_room": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm, Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "allow_external": true}, {"id": 20, "code": "BV-119", "staff_code": "BV-119", "name": "ĐD. Trịnh Thị Thu Trang", "full_name": "ĐD. Trịnh Thị Thu Trang", "username": "bv119", "password": "123", "department_id": 10, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Kiểm soát Nhiễm khuẩn", "assigned_rooms": ["Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "Khu Giặt là & Khử khuẩn đồ vải bệnh viện"], "assigned_room": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao, Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "allow_external": true}, {"id": 21, "code": "BV-120", "staff_code": "BV-120", "name": "ThS. ĐD. Trần Thị Lan Hương", "full_name": "ThS. ĐD. Trần Thị Lan Hương", "username": "bv120", "password": "123", "department_id": 18, "role": "manager", "role_level": "manager", "title": "Trưởng Phòng Chức Năng", "role_title": "Trưởng Phòng Chức Năng", "position": "Trưởng Phòng Điều dưỡng Bệnh viện VPI", "assigned_rooms": ["Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S"], "assigned_room": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "allow_external": true}],
+  audits: [
+    {
+      id: 1,
+      audit_code: "5S-20261016-001",
+      department_id: 8,
+      room_id: 34,
+      audit_date: "2026-10-16",
+      audit_time: "08:30",
+      shift: "Ca sáng",
+      inspector_name: "KTV. Vũ Bá Đạt",
+      inspector_role: "Kỹ thuật viên Trưởng CĐHA",
+      score_seiri: 20.0,
+      score_seiton: 19.5,
+      score_seiso: 20.0,
+      score_seiketsu: 20.0,
+      score_shitsuke: 19.5,
+      total_score: 99.0,
+      rating: "Xuất sắc",
+      notes: "Phòng Chụp X-Quang kỹ thuật số DR đạt chuẩn 5S tối ưu: tủ vật tư ngăn nắp, áo chì bảo hộ treo đúng giá định vị, bàn điều khiển sạch bóng không bụi bẩn.",
+      action_required: "Duy trì kiểm tra nhiệt độ điều hòa phòng máy hàng ngày.",
+      action_deadline: null,
+      action_status: "completed",
+      created_at: "2026-10-16 08:30:00"
+    },
+    {
+      id: 2,
+      audit_code: "5S-20261016-002",
+      department_id: 8,
+      room_id: 32,
+      audit_date: "2026-10-16",
+      audit_time: "09:15",
+      shift: "Ca sáng",
+      inspector_name: "ThS. BSCKII. Phạm Quỳnh Hưng",
+      inspector_role: "Trưởng ban Chỉ đạo 5S",
+      score_seiri: 20.0,
+      score_seiton: 20.0,
+      score_seiso: 20.0,
+      score_seiketsu: 19.0,
+      score_shitsuke: 19.5,
+      total_score: 98.5,
+      rating: "Xuất sắc",
+      notes: "Phòng CT 128 dãy vệ sinh đạt chuẩn vô trùng, bơm tiêm điện đặt đúng vạch vàng 5S, sổ theo dõi ca bệnh lưu trữ gọn gàng trên kệ mica.",
+      action_required: "Bổ sung găng tay y tế cỡ M tại khay tiêm thuốc cản quang.",
+      action_deadline: null,
+      action_status: "in_progress",
+      created_at: "2026-10-16 09:15:00"
     }
-
-    // 5 tiêu chí averages
-    let c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0;
-    if (audits.length > 0) {
-      audits.forEach(a => {
-        c1 += parseFloat(a.score_seiri) || 18.5;
-        c2 += parseFloat(a.score_seiton) || 18.2;
-        c3 += parseFloat(a.score_seiso) || 19.0;
-        c4 += parseFloat(a.score_seiketsu) || 18.6;
-        c5 += parseFloat(a.score_shitsuke) || 18.4;
-      });
-      c1 = c1 / audits.length;
-      c2 = c2 / audits.length;
-      c3 = c3 / audits.length;
-      c4 = c4 / audits.length;
-      c5 = c5 / audits.length;
-    } else {
-      c1 = 18.5; c2 = 18.2; c3 = 19.0; c4 = 18.6; c5 = 18.4;
-    }
-
-    // Top departments
-    const deptStats = depts.map(d => {
-      const dAudits = audits.filter(a => a.department_id === d.id);
-      const score = dAudits.length > 0
-        ? dAudits.reduce((s, a) => s + (parseFloat(a.total_score) || 0), 0) / dAudits.length
-        : 88.5;
-      return {
-        id: d.id,
-        name: d.name,
-        code: d.code,
-        audit_count: dAudits.length || 2,
-        avg_score: score
-      };
-    }).sort((a, b) => b.avg_score - a.avg_score);
-
-    // Pending actions
-    const pendingActions = audits
-      .filter(a => a.action_required && a.action_required.trim().length > 0)
-      .map(a => {
-        const dept = depts.find(d => d.id === a.department_id);
-        const rm = rooms.find(r => r.id === a.room_id);
-        return {
-          id: a.id,
-          audit_code: a.audit_code || ('5S-' + a.id),
-          department_name: dept ? dept.name : 'Khoa công tác',
-          room_name: rm ? rm.name : 'Phòng bệnh',
-          audit_date: a.audit_date,
-          total_score: a.total_score,
-          rating: a.rating || 'Đạt',
-          action_required: a.action_required,
-          action_status: a.action_status || 'in_progress'
-        };
-      });
-
-    return {
-      avg_score: Number(avgScore).toFixed(1),
-      today_audits: todayAudits.length,
-      total_departments: depts.length,
-      total_rooms: rooms.length,
-      criteria_averages: {
-        seiri: c1,
-        seiton: c2,
-        seiso: c3,
-        seiketsu: c4,
-        shitsuke: c5
-      },
-      top_departments: deptStats.slice(0, 5),
-      pending_actions: pendingActions
-    };
-  }
+  ],
+  criteria: [
+    { id: 1, name: 'S1 - Sàng lọc (Seiri)', max: 20, desc: 'Phân loại rác thải, thuốc, vật tư y tế, loại bỏ vật dụng thừa thãi khỏi buồng phòng' },
+    { id: 2, name: 'S2 - Sắp xếp (Seiton)', max: 20, desc: 'Vạch kẻ định vị trang thiết bị y tế, tem nhãn rõ ràng, hồ sơ bệnh án ngăn nắp' },
+    { id: 3, name: 'S3 - Sạch sẽ (Seiso)', max: 20, desc: 'Khử khuẩn bề mặt tiếp xúc, sàn buồng bệnh, trang thiết bị máy móc sáng bóng' },
+    { id: 4, name: 'S4 - Săn sóc (Seiketsu)', max: 20, desc: 'Chuẩn hóa quy trình vệ sinh, duy trì lịch trực vệ sinh hằng ngày và kiểm tra chéo' },
+    { id: 5, name: 'S5 - Sẵn sàng (Shitsuke)', max: 20, desc: 'Văn hóa tự giác, tinh thần 5S y tế, trang phục bảo hộ và biển tên đúng quy định' }
+  ],
+  auth: {
+    isLoggedIn: true,
+    currentUserId: 'BV-345',
+    locationMode: 'internal'
+  },
+  securityLogs: [
+    { time: '2026-10-16 07:15:20', ip: '192.168.1.105', user: 'KTV. Vũ Bá Đạt', action: 'Đăng nhập hệ thống (Nội viện Wi-Fi)', status: 'success' },
+    { time: '2026-10-16 07:22:11', ip: '113.160.224.45', user: 'ThS. BSCKII. Phạm Quỳnh Hưng', action: 'Truy cập ngoại viện an toàn qua Cloudflare HTTPS', status: 'success' },
+    { time: '2026-10-16 07:30:00', ip: '192.168.1.105', user: 'Ban Chỉ đạo 5S', action: 'Phát Bảng tin Thông báo khẩn cấp toàn viện', status: 'success' }
+  ]
 };
 
-// Khởi tạo ngay lập tức Store
-VPI_Store.init();
+class App5S {
+  constructor() {
+    this.data = this.loadData();
+    this.normalizeData();
 
-// ==================== ĐIỀU HƯỚNG MÔI TRƯỜNG & CHẾ ĐỘ XEM ====================
-function initViewAndLocationModes() {
-  // 1. Chế độ xem: Mobile frame vs Desktop
-  const savedView = localStorage.getItem("vpi_5s_view_mode");
-  if (savedView === "mobile") {
-    document.body.classList.add("mobile-frame-mode");
-    updateViewModeUI(true);
-  } else {
-    document.body.classList.remove("mobile-frame-mode");
-    updateViewModeUI(false);
-  }
-
-  // 2. Chế độ môi trường: Nội viện vs Ngoại viện
-  const savedLoc = localStorage.getItem("vpi_5s_location_mode") || "internal";
-  updateLocationModeUI(savedLoc);
-
-  // 3. Chuẩn bị báo cáo in ấn
-  window.addEventListener("beforeprint", preparePrintReport);
-}
-
-function toggleViewMode() {
-  const isMobile = document.body.classList.toggle("mobile-frame-mode");
-  localStorage.setItem("vpi_5s_view_mode", isMobile ? "mobile" : "desktop");
-  updateViewModeUI(isMobile);
-}
-
-function updateViewModeUI(isMobile) {
-  const label = document.getElementById("view-mode-label");
-  const icon = document.getElementById("view-mode-icon");
-  if (label) label.textContent = isMobile ? "📱 Khung Mobile" : "💻 Toàn Màn Hình";
-  if (icon) icon.className = isMobile ? "fa-solid fa-mobile-screen" : "fa-solid fa-desktop";
-}
-
-function toggleLocationMode() {
-  const current = localStorage.getItem("vpi_5s_location_mode") || "internal";
-  const next = current === "internal" ? "external" : "internal";
-
-  // Kiểm soát an ninh: Nếu người dùng đang đăng nhập và allow_external == 0
-  if (next === "external" && currentUser && !currentUser.allow_external && currentUser.role_type !== "admin") {
-    alert(`⚠️ TÀI KHOẢN BỊ GIỚI HẠN NGOẠI VIỆN:\n\nNhân sự: ${currentUser.full_name} (${currentUser.role || "Cán bộ"})\nKhoa: ${currentUser.department_name || "Khoa công tác"}\n\nTài khoản của bạn chưa được cấp "Quyền Ngoại Viện" để truy cập ngoài mạng bệnh viện.\nVui lòng liên hệ Quản lý 5S hoặc kết nối Wi-Fi Bệnh viện VPI!`);
-    return;
-  }
-
-  localStorage.setItem("vpi_5s_location_mode", next);
-  updateLocationModeUI(next);
-
-  // Ghi nhật ký an ninh
-  const logEntry = {
-    id: Date.now(),
-    event_type: next === "external" ? "Chuyển sang Ngoại Viện" : "Chuyển sang Nội Viện",
-    username: currentUser ? currentUser.username : "khach",
-    ip_address: next === "external" ? "4G / Internet (Ngoại Viện)" : "192.168.0.171 (Mạng LAN VPI)",
-    details: `Người dùng đổi môi trường sang ${next.toUpperCase()}`,
-    created_at: new Date().toISOString().replace('T', ' ').slice(0, 19)
-  };
-  VPI_Store.data.security_logs.unshift(logEntry);
-  VPI_Store.save();
-
-  alert(next === "external"
-    ? "🌐 ĐÃ CHUYỂN SANG CHẾ ĐỘ NGOẠI VIỆN (Internet / 4G toàn quốc)!\nKết nối bảo mật qua Vercel HTTPS & Cloudflare Tunnel."
-    : "🏢 ĐÃ CHUYỂN SANG CHẾ ĐỘ NỘI VIỆN (Mạng LAN Wi-Fi VPI)!\nKết nối tốc độ cao trực tiếp máy chủ bệnh viện.");
-}
-
-function updateLocationModeUI(mode) {
-  const btn = document.getElementById("btn-toggle-location");
-  const label = document.getElementById("location-mode-label");
-  const icon = document.getElementById("location-mode-icon");
-  const isExt = mode === "external";
-
-  if (btn) {
-    btn.className = isExt ? "top-btn btn-location-external" : "top-btn btn-location-internal";
-  }
-  if (label) {
-    label.textContent = isExt ? "🌐 Ngoại viện (4G)" : "🏢 Nội viện (Wi-Fi)";
-  }
-  if (icon) {
-    icon.className = isExt ? "fa-solid fa-globe" : "fa-solid fa-building";
-  }
-}
-
-// ==================== XUẤT & NẠP SAO LƯU DỮ LIỆU CỤC BỘ JSON ====================
-function exportDataJson() {
-  const data = VPI_Store.data;
-  const jsonStr = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonStr], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  const now = new Date().toISOString().slice(0, 10);
-  a.href = url;
-  a.download = `5s-vpi-backup-${now}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  alert("✅ ĐÃ XUẤT TỆP SAO LƯU DỮ LIỆU (.JSON) THÀNH CÔNG!\nVui lòng lưu trữ tệp tại nơi an toàn.");
-}
-
-function triggerImportJson() {
-  const input = document.getElementById("import-json-input");
-  if (input) input.click();
-}
-
-function handleImportJsonFile(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
+    this.activeTab = 'overview';
+    this.viewMode = 'mobile';
     try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported.departments || !Array.isArray(imported.departments)) {
-        throw new Error("Tệp không đúng định dạng sao lưu chuẩn của hệ thống 5S VPI!");
-      }
-      if (confirm(`Bạn có chắc chắn muốn nạp dữ liệu từ tệp "${file.name}"?\nDữ liệu hiện tại sẽ được cập nhật đồng bộ.`)) {
-        VPI_Store.data = imported;
-        VPI_Store.save();
-        alert("✅ ĐÃ NẠP VÀ KHÔI PHỤC DỮ LIỆU THÀNH CÔNG!");
-        window.location.reload();
-      }
-    } catch (err) {
-      alert("❌ Lỗi nạp tệp: " + err.message);
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = "";
-}
-
-function resetToHospitalDefaultData() {
-  if (confirm("⚠️ BẠN CÓ CHẮC CHẮN MUỐN ĐẶT LẠI DỮ LIỆU GỐC?\nToàn bộ 10 khoa, 43 buồng phòng, danh sách 25 nhân sự chuẩn của Bệnh viện Quốc tế Vĩnh Phúc sẽ được khôi phục.")) {
-    VPI_Store.data = JSON.parse(JSON.stringify(DEFAULT_5S_SEED_DATA));
-    VPI_Store.save();
-    alert("✅ ĐÃ KHÔI PHỤC TOÀN BỘ CƠ SỞ DỮ LIỆU GỐC BỆNH VIỆN VPI THÀNH CÔNG!");
-    window.location.reload();
-  }
-}
-
-// ==================== BÁO CÁO IN ẤN A4 ====================
-function preparePrintReport() {
-  const dateEl = document.getElementById("print-date-text");
-  if (dateEl) {
-    const now = new Date();
-    dateEl.textContent = `Vĩnh Phúc, ngày ${now.getDate()} tháng ${now.getMonth() + 1} năm ${now.getFullYear()}`;
-  }
-  const tbody = document.getElementById("print-depts-tbody");
-  if (tbody) {
-    const depts = (allDepartments && allDepartments.length > 0) ? allDepartments : (VPI_Store.data.departments || []);
-    const audits = VPI_Store.data.audits || [];
-    const deptScores = depts.map(d => {
-      const dAudits = audits.filter(a => a.department_id === d.id);
-      const avg = dAudits.length > 0
-        ? dAudits.reduce((sum, a) => sum + (parseFloat(a.total_score) || 0), 0) / dAudits.length
-        : 88.5;
-      return {
-        name: d.name,
-        code: d.code,
-        count: dAudits.length || 2,
-        score: avg,
-        rating: avg >= 90 ? "Xuất sắc" : (avg >= 80 ? "Tốt" : (avg >= 70 ? "Đạt" : "Chưa đạt")),
-        note: avg >= 90 ? "Đạt chuẩn 5S y tế kiểu mẫu" : (avg >= 80 ? "Duy trì vệ sinh tốt" : "Cần tăng cường sàng lọc")
-      };
-    }).sort((a, b) => b.score - a.score);
-
-    tbody.innerHTML = deptScores.map((item, i) => `
-      <tr>
-        <td align="center">${i + 1}</td>
-        <td><strong>${item.name}</strong> (${item.code})</td>
-        <td align="center">${item.count}</td>
-        <td align="center"><strong>${item.score.toFixed(1)}</strong></td>
-        <td align="center"><span style="font-weight:bold; color:${item.score >= 90 ? '#15803d' : (item.score >= 80 ? '#0369a1' : '#b45309')};">${item.rating}</span></td>
-        <td>${item.note}</td>
-      </tr>
-    `).join("");
-  }
-}
-
-let allDepartments = [];
-let allRooms = [];
-let selectedHierarchyDeptId = null;
-let currentAuditPhotos = [];
-let sysInfo = { lan_ip: "127.0.0.1", port: 8000, mobile_url: "http://localhost:8000" };
-let currentUser = null;
-let deferredInstallPrompt = null;
-
-// Khởi chạy khi tài liệu sẵn sàng
-document.addEventListener("DOMContentLoaded", async () => {
-  registerServiceWorker();
-  initPwaInstall();
-  initCurrentUser();
-  initViewAndLocationModes();
-  await fetchSystemInfo();
-  await loadDepartmentsData();
-  await loadAppSettings();
-  await loadDashboard();
-  setupQrCode();
-});
-
-// ==================== HỆ THỐNG & QR CODE ====================
-async function fetchSystemInfo() {
-  try {
-    const res = await fetch("/api/system/info");
-    sysInfo = await res.json();
-    const ipDisplay = document.getElementById("lan-ip-display");
-    if (ipDisplay) {
-      ipDisplay.textContent = sysInfo.mobile_url;
-    }
-  } catch (e) {
-    console.error("Lỗi lấy thông tin hệ thống:", e);
-  }
-}
-
-let currentNetworkInfo = null;
-
-async function setupQrCode() {
-  const lanContainer = document.getElementById("lan-qr-code-box");
-  const extContainer = document.getElementById("ext-qr-code-box");
-  const modalContainer = document.getElementById("modal-qr-container");
-  const modalLink = document.getElementById("modal-qr-link-text");
-  const lanDisplay = document.getElementById("lan-ip-display");
-  const extDisplay = document.getElementById("ext-url-display");
-  const toggleBtn = document.getElementById("btn-toggle-tunnel");
-
-  try {
-    const res = await fetch("/api/network-info");
-    currentNetworkInfo = await res.json();
-  } catch (e) {
-    console.error("Lỗi lấy thông tin mạng:", e);
-    currentNetworkInfo = {
-      lan_ip: "127.0.0.1",
-      local_url: window.location.origin,
-      tunnel: { active: false, url: null }
-    };
-  }
-
-  const lanUrl = currentNetworkInfo.local_url || window.location.origin;
-  if (lanDisplay) lanDisplay.textContent = lanUrl;
-
-  // 1. Vẽ QR Code Mạng Nội Viện (Wi-Fi)
-  if (lanContainer && typeof QRCode !== "undefined") {
-    lanContainer.innerHTML = "";
-    new QRCode(lanContainer, {
-      text: lanUrl,
-      width: 170,
-      height: 170,
-      colorDark: "#0369a1",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
-    });
-  }
-
-  // 2. Cập nhật Mạng Ngoại Viện (Cloudflare HTTPS)
-  const tunnel = currentNetworkInfo.tunnel || {};
-  if (tunnel.active && tunnel.url) {
-    if (extDisplay) {
-      extDisplay.textContent = tunnel.url;
-      extDisplay.style.color = "#15803d";
-      extDisplay.style.background = "#f0fdf4";
-    }
-    if (extContainer && typeof QRCode !== "undefined") {
-      extContainer.innerHTML = "";
-      new QRCode(extContainer, {
-        text: tunnel.url,
-        width: 170,
-        height: 170,
-        colorDark: "#15803d",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-    if (toggleBtn) {
-      toggleBtn.innerHTML = '<i class="fa-solid fa-power-off"></i> Ngắt Mạng Ngoại Viện';
-      toggleBtn.className = "btn-outline btn-sm";
-      toggleBtn.style.color = "#ef4444";
-      toggleBtn.style.borderColor = "#fca5a5";
-    }
-  } else {
-    if (extDisplay) {
-      extDisplay.textContent = "Chưa phát sóng (Bấm nút bên dưới để bật HTTPS)";
-      extDisplay.style.color = "var(--gray-500)";
-      extDisplay.style.background = "#f8fafc";
-    }
-    if (extContainer) {
-      extContainer.innerHTML = `
-        <div style="width: 170px; height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray-400); font-size: 0.82rem; text-align: center; padding: 10px;">
-          <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.2rem; color: #cbd5e1; margin-bottom: 8px;"></i>
-          Bấm nút bên dưới để tạo QR ngoại viện
-        </div>
-      `;
-    }
-    if (toggleBtn) {
-      toggleBtn.innerHTML = '<i class="fa-solid fa-bolt"></i> Bật Mạng Ngoại Viện (Cloudflare HTTPS)';
-      toggleBtn.className = "btn-primary btn-sm";
-      toggleBtn.style.color = "";
-      toggleBtn.style.borderColor = "";
-    }
-  }
-
-  // Modal QR chung
-  const bestUrl = (tunnel.active && tunnel.url) ? tunnel.url : lanUrl;
-  if (modalContainer && typeof QRCode !== "undefined") {
-    modalContainer.innerHTML = "";
-    new QRCode(modalContainer, {
-      text: bestUrl,
-      width: 220,
-      height: 220,
-      colorDark: "#0369a1",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
-    });
-  }
-  if (modalLink) {
-    modalLink.textContent = bestUrl;
-  }
-}
-
-async function toggleExternalTunnel() {
-  const toggleBtn = document.getElementById("btn-toggle-tunnel");
-  if (!currentNetworkInfo) return;
-
-  const isRunning = currentNetworkInfo.tunnel && currentNetworkInfo.tunnel.active;
-  if (toggleBtn) {
-    toggleBtn.disabled = true;
-    toggleBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý đường truyền...';
-  }
-
-  try {
-    const endpoint = isRunning ? "/api/tunnel/stop" : "/api/tunnel/start";
-    const res = await fetch(endpoint, { method: "POST" });
-    const result = await res.json();
-    if (!isRunning && !result.success) {
-      alert("⚠️ Không thể khởi động đường truyền ngoại viện. Kiểm tra kết nối Internet!");
-    }
-  } catch (e) {
-    alert("Lỗi điều khiển đường truyền: " + e.message);
-  } finally {
-    if (toggleBtn) toggleBtn.disabled = false;
-    await setupQrCode();
-  }
-}
-
-function showQrModal() {
-  setupQrCode();
-  openModal("qr-modal");
-}
-
-// ==================== ĐIỀU HƯỚNG TABS ====================
-function switchTab(tabName) {
-  // Desktop tabs
-  document.querySelectorAll(".nav-tab-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.getAttribute("onclick")?.includes(tabName));
-  });
-
-  // Mobile bottom bar items
-  document.querySelectorAll(".mobile-nav-item").forEach(item => {
-    item.classList.toggle("active", item.getAttribute("onclick")?.includes(tabName));
-  });
-
-  // Panels
-  document.querySelectorAll(".tab-view-panel").forEach(panel => {
-    panel.classList.remove("active");
-  });
-
-  const targetPanel = document.getElementById(`tab-${tabName}`);
-  if (targetPanel) {
-    targetPanel.classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  // Tải dữ liệu tương ứng theo tab
-  if (tabName === "dashboard") loadDashboard();
-  if (tabName === "new-audit") populateNewAuditDropdowns();
-  if (tabName === "hierarchy") loadHierarchy();
-  if (tabName === "history") loadAuditHistory();
-  if (tabName === "staff-mgmt") loadStaffList();
-  if (tabName === "settings") {
-    loadAppSettings();
-    loadBackupsList();
-    updateSettingsTunnelStatus();
-  }
-  if (tabName === "my-profile") loadMyProfile();
-  if (tabName === "mobile-qr") setupQrCode();
-}
-
-// ==================== TẢI DỮ LIỆU CHUNG ====================
-async function loadDepartmentsData() {
-  try {
-    const res = await fetch("/api/departments");
-    if (res.ok) {
-      allDepartments = await res.json();
-      VPI_Store.data.departments = allDepartments;
-      VPI_Store.save();
-    } else {
-      allDepartments = VPI_Store.data.departments || [];
-    }
-  } catch (e) {
-    allDepartments = VPI_Store.data.departments || [];
-  }
-  populateDepartmentSelects();
-}
-
-function populateDepartmentSelects() {
-  const auditDeptSelect = document.getElementById("audit-dept-select");
-  const histDeptSelect = document.getElementById("hist-filter-dept");
-  const mRoomDeptSelect = document.getElementById("m-room-dept-select");
-  const staffFilterDept = document.getElementById("staff-filter-dept");
-  const mStaffDeptSelect = document.getElementById("m-staff-dept-select");
-
-  let opts = '<option value="">-- Chọn Khoa --</option>';
-  let filterOpts = '<option value="">-- Tất cả các Khoa --</option>';
-
-  allDepartments.forEach(d => {
-    opts += `<option value="${d.id}">${d.name} (${d.code})</option>`;
-    filterOpts += `<option value="${d.id}">${d.name} (${d.code})</option>`;
-  });
-
-  if (auditDeptSelect) auditDeptSelect.innerHTML = opts;
-  if (histDeptSelect) histDeptSelect.innerHTML = filterOpts;
-  if (mRoomDeptSelect) mRoomDeptSelect.innerHTML = opts;
-  if (staffFilterDept) staffFilterDept.innerHTML = filterOpts;
-  if (mStaffDeptSelect) mStaffDeptSelect.innerHTML = opts;
-}
-
-// ==================== 1. TỔNG QUAN (DASHBOARD) ====================
-async function loadDashboard() {
-  let data = null;
-  try {
-    const res = await fetch("/api/dashboard");
-    if (res.ok) {
-      data = await res.json();
-    }
-  } catch (e) {}
-
-  if (!data) {
-    data = VPI_Store.computeDashboard();
-  }
-  try {
-
-    // KPI Cards
-    document.getElementById("dash-avg-score").textContent = data.avg_score ? `${data.avg_score}` : "0.0";
-    document.getElementById("dash-today-audits").textContent = data.today_audits;
-    document.getElementById("dash-total-rooms").textContent = `${data.total_departments} Khoa / ${data.total_rooms} P.`;
-    document.getElementById("dash-pending-actions").textContent = data.pending_actions ? data.pending_actions.filter(a => a.action_status !== 'completed').length : 0;
-
-    // 5 Tiêu chí tiến trình
-    const crit = data.criteria_averages || {};
-    updateCriteriaBar("seiri", crit.seiri || 0);
-    updateCriteriaBar("seiton", crit.seiton || 0);
-    updateCriteriaBar("seiso", crit.seiso || 0);
-    updateCriteriaBar("seiketsu", crit.seiketsu || 0);
-    updateCriteriaBar("shitsuke", crit.shitsuke || 0);
-
-    // Top Khoa xuất sắc
-    const topContainer = document.getElementById("dash-top-depts-list");
-    if (topContainer && data.top_departments) {
-      topContainer.innerHTML = data.top_departments.map((dept, idx) => `
-        <div class="dept-rank-item">
-          <div class="dept-rank-left">
-            <span class="rank-badge top-${idx + 1}">${idx + 1}</span>
-            <div>
-              <strong style="color: var(--gray-800);">${dept.name}</strong>
-              <div style="font-size: 0.76rem; color: var(--gray-500);">${dept.audit_count} lượt kiểm tra hoàn thành</div>
-            </div>
-          </div>
-          <div>
-            <span class="badge ${dept.avg_score >= 90 ? 'badge-excellent' : (dept.avg_score >= 80 ? 'badge-good' : 'badge-pass')}">
-              ${Number(dept.avg_score).toFixed(1)} Điểm
-            </span>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    // Bảng vấn đề cần khắc phục
-    const actionTbody = document.getElementById("dash-pending-actions-tbody");
-    const actionCountBadge = document.getElementById("dash-action-count");
-    if (actionTbody) {
-      if (!data.pending_actions || data.pending_actions.length === 0) {
-        actionTbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px; color: var(--gray-400);">Không có vấn đề vi phạm nào cần khắc phục. Toàn viện đạt chuẩn!</td></tr>`;
-        if (actionCountBadge) actionCountBadge.textContent = "Không có tồn đọng";
-      } else {
-        if (actionCountBadge) actionCountBadge.textContent = `${data.pending_actions.length} tồn đọng ghi nhận`;
-        actionTbody.innerHTML = data.pending_actions.map(item => `
-          <tr>
-            <td><strong>${item.audit_code}</strong></td>
-            <td>
-              <div style="font-weight:600;">${item.department_name}</div>
-              <div style="font-size:0.78rem; color:var(--gray-500);">${item.room_name}</div>
-            </td>
-            <td>${item.audit_date}</td>
-            <td>
-              <span class="badge ${item.rating === 'Xuất sắc' ? 'badge-excellent' : (item.rating === 'Tốt' ? 'badge-good' : (item.rating === 'Đạt' ? 'badge-pass' : 'badge-fail'))}">
-                ${item.total_score}đ - ${item.rating}
-              </span>
-            </td>
-            <td style="color:#b91c1c; font-weight:500;">${item.action_required}</td>
-            <td>
-              <span class="badge ${item.action_status === 'completed' ? 'badge-excellent' : 'badge-fail'}">
-                ${item.action_status === 'completed' ? 'Đã hoàn thành' : 'Đang xử lý'}
-              </span>
-            </td>
-            <td>
-              <button class="btn-outline btn-sm" onclick="toggleActionStatus(${item.id}, '${item.action_status === 'completed' ? 'in_progress' : 'completed'}')">
-                ${item.action_status === 'completed' ? 'Mở lại' : 'Đánh dấu ĐÃ XỬ LÝ'}
-              </button>
-            </td>
-          </tr>
-        `).join("");
-      }
-    }
-
-    // Render buồng phòng được phân công cho cán bộ đăng nhập
-    const assignedWidget = document.getElementById("dash-assigned-rooms-widget");
-    const assignedList = document.getElementById("dash-assigned-rooms-list");
-    const assignedCount = document.getElementById("dash-assigned-count");
-
-    if (currentUser && currentUser.assigned_rooms && currentUser.assigned_rooms.length > 0) {
-      if (assignedWidget) assignedWidget.style.display = "block";
-      try {
-        const roomsRes = await fetch(`/api/rooms?department_id=${currentUser.department_id}`);
-        const allDeptRooms = await roomsRes.json();
-        const myRooms = allDeptRooms.filter(r => currentUser.assigned_rooms.includes(r.id));
-
-        if (assignedCount) assignedCount.textContent = `${myRooms.length} Phòng Được Phân Công`;
-
-        if (assignedList) {
-          if (myRooms.length === 0) {
-            assignedList.innerHTML = `<div style="grid-column: 1/-1; color: var(--gray-400); text-align: center; padding: 10px;">Chưa tìm thấy phòng trong khoa của bạn.</div>`;
-          } else {
-            assignedList.innerHTML = myRooms.map(r => `
-              <div style="background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <div>
-                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                    <span class="badge badge-pass" style="font-weight: 700;">${r.code}</span>
-                    <span class="badge" style="background: #f1f5f9; color: var(--gray-600); font-size: 0.72rem;">${r.floor || 'Tầng 1'}</span>
-                  </div>
-                  <div style="font-weight: 700; color: var(--gray-900); font-size: 0.95rem; margin-bottom: 4px;">${r.name}</div>
-                  <div style="font-size: 0.78rem; color: var(--gray-500); margin-bottom: 10px;">
-                    Mục tiêu: <strong style="color: #0284c7;">${r.target_score || 90}đ</strong> | Đã kiểm: ${r.audit_count || 0} lần
-                  </div>
-                </div>
-                <button class="btn-primary btn-sm" style="width: 100%;" onclick="auditRoomDirectly(${r.department_id}, ${r.id})">
-                  <i class="fa-solid fa-camera"></i> Đi Buồng Kiểm Tra 5S
-                </button>
-              </div>
-            `).join("");
-          }
-        }
-      } catch (err) {
-        console.error("Lỗi nạp phòng phân công:", err);
-      }
-    } else {
-      if (assignedWidget) assignedWidget.style.display = "none";
-    }
-  } catch (e) {
-    console.error("Lỗi nạp dashboard:", e);
-  }
-}
-
-function updateCriteriaBar(code, score) {
-  const labelEl = document.getElementById(`crit-${code}-val`);
-  const barEl = document.getElementById(`crit-${code}-bar`);
-  if (labelEl) labelEl.textContent = `${Number(score).toFixed(1)} / 20đ`;
-  if (barEl) {
-    const pct = Math.min(100, Math.max(0, (score / 20) * 100));
-    barEl.style.width = `${pct}%`;
-  }
-}
-
-async function toggleActionStatus(auditId, newStatus) {
-  try {
-    const res = await fetch(`/api/audits/${auditId}/status`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action_status: newStatus })
-    });
-    if (res.ok) {
-      loadDashboard();
-    }
-  } catch (e) {
-    alert("Lỗi cập nhật trạng thái: " + e.message);
-  }
-}
-
-// ==================== 2. KIỂM TRA 5S MỚI (NEW AUDIT) ====================
-function populateNewAuditDropdowns() {
-  populateDepartmentSelects();
-  updateScoreCalc();
-
-  // Tự động điền thông tin cá nhân nếu điện thoại đã lưu tài khoản
-  if (currentUser) {
-    const deptSelect = document.getElementById("audit-dept-select");
-    const inspectorInput = document.getElementById("audit-inspector-name");
-    if (deptSelect && (!deptSelect.value || deptSelect.value == "") && currentUser.department_id) {
-      deptSelect.value = currentUser.department_id;
-      onAuditDeptChanged();
-    }
-    if (inspectorInput && currentUser.full_name) {
-      inspectorInput.value = currentUser.full_name;
-    }
-  }
-}
-
-async function onAuditDeptChanged() {
-  const deptSelect = document.getElementById("audit-dept-select");
-  const roomSelect = document.getElementById("audit-room-select");
-  const badge = document.getElementById("room-info-badge");
-
-  const deptId = deptSelect.value;
-  if (!deptId) {
-    roomSelect.innerHTML = '<option value="">-- Chọn Khoa trước --</option>';
-    if (badge) badge.style.display = "none";
-    return;
-  }
-
-  let rooms = [];
-  try {
-    const res = await fetch(`/api/rooms?department_id=${deptId}`);
-    if (res.ok) rooms = await res.json();
-  } catch (e) {}
-
-  if (!rooms || rooms.length === 0) {
-    rooms = (VPI_Store.data.rooms || []).filter(r => r.department_id == deptId);
-  }
-
-  let opts = '<option value="">-- Chọn Phòng / Buồng bệnh --</option>';
-  rooms.forEach(r => {
-    opts += `<option value="${r.id}" data-floor="${r.floor}" data-person="${r.person_in_charge}" data-type="${r.room_type}">${r.name} (${r.code})</option>`;
-  });
-  roomSelect.innerHTML = opts;
-  if (badge) badge.style.display = "none";
-}
-
-function onAuditRoomChanged() {
-  const roomSelect = document.getElementById("audit-room-select");
-  const badge = document.getElementById("room-info-badge");
-  const selectedOpt = roomSelect.options[roomSelect.selectedIndex];
-
-  if (!roomSelect.value || !selectedOpt) {
-    if (badge) badge.style.display = "none";
-    return;
-  }
-
-  const floor = selectedOpt.getAttribute("data-floor") || "Tầng 1";
-  const person = selectedOpt.getAttribute("data-person") || "Chưa phân công";
-  const type = selectedOpt.getAttribute("data-type") || "Phòng bệnh";
-
-  badge.style.display = "block";
-  badge.innerHTML = `
-    <strong>📍 Vị trí:</strong> ${floor} &nbsp;|&nbsp; 
-    <strong>🏷️ Loại phòng:</strong> ${type} &nbsp;|&nbsp; 
-    <strong>👤 Phụ trách 5S phòng:</strong> ${person}
-  `;
-}
-
-function setSlider(sliderId, value) {
-  const el = document.getElementById(sliderId);
-  if (el) {
-    el.value = value;
-    updateScoreCalc();
-  }
-}
-
-function updateScoreCalc() {
-  const s1 = parseFloat(document.getElementById("slider-seiri")?.value || 20);
-  const s2 = parseFloat(document.getElementById("slider-seiton")?.value || 20);
-  const s3 = parseFloat(document.getElementById("slider-seiso")?.value || 20);
-  const s4 = parseFloat(document.getElementById("slider-seiketsu")?.value || 20);
-  const s5 = parseFloat(document.getElementById("slider-shitsuke")?.value || 20);
-
-  document.getElementById("score-val-seiri").textContent = `${s1.toFixed(1)}đ`;
-  document.getElementById("score-val-seiton").textContent = `${s2.toFixed(1)}đ`;
-  document.getElementById("score-val-seiso").textContent = `${s3.toFixed(1)}đ`;
-  document.getElementById("score-val-seiketsu").textContent = `${s4.toFixed(1)}đ`;
-  document.getElementById("score-val-shitsuke").textContent = `${s5.toFixed(1)}đ`;
-
-  const total = s1 + s2 + s3 + s4 + s5;
-  document.getElementById("audit-live-total").textContent = total.toFixed(1);
-
-  const badgeEl = document.getElementById("audit-live-badge");
-  if (total >= 90) {
-    badgeEl.textContent = "🟢 XUẤT SẮC";
-    badgeEl.style.color = "#065f46";
-  } else if (total >= 80) {
-    badgeEl.textContent = "🔵 TỐT";
-    badgeEl.style.color = "#0369a1";
-  } else if (total >= 70) {
-    badgeEl.textContent = "🟡 ĐẠT";
-    badgeEl.style.color = "#92400e";
-  } else {
-    badgeEl.textContent = "🔴 CẦN KHẮC PHỤC";
-    badgeEl.style.color = "#991b1b";
-  }
-}
-
-// Xử lý Chụp ảnh & Watermarking tự động
-async function handlePhotoUpload(event, photoType) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const deptSelect = document.getElementById("audit-dept-select");
-  const roomSelect = document.getElementById("audit-room-select");
-  const inspectorName = document.getElementById("audit-inspector-name").value.trim() || "Cán bộ kiểm tra";
-  const shift = document.getElementById("audit-shift-select").value;
-
-  const deptName = deptSelect.selectedIndex > 0 ? deptSelect.options[deptSelect.selectedIndex].text : "Khoa kiểm tra";
-  const roomName = roomSelect.selectedIndex > 0 ? roomSelect.options[roomSelect.selectedIndex].text : "Phòng buồng kiểm tra";
-
-  // Hiển thị indicator đang xử lý đóng dấu
-  const container = document.getElementById("new-audit-photos-container");
-  const loadingId = `upload-loading-${Date.now()}`;
-  container.insertAdjacentHTML("beforeend", `
-    <div id="${loadingId}" class="photo-preview-card" style="padding: 30px; text-align: center; background: #f8fafc;">
-      <i class="fa-solid fa-spinner fa-spin text-primary" style="font-size: 2rem;"></i>
-      <div style="font-size: 0.82rem; color: var(--gray-600); margin-top: 8px;">Đang đóng dấu Watermark VPI...</div>
-    </div>
-  `);
-
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const base64Data = e.target.result;
-    try {
-      const res = await fetch("/api/upload-photo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          image_base64: base64Data,
-          department_name: deptName,
-          room_name: roomName,
-          inspector_name: inspectorName,
-          photo_type: photoType,
-          shift: shift
-        })
-      });
-
-      const result = await res.json();
-      document.getElementById(loadingId)?.remove();
-
-      if (result.success && result.photo) {
-        currentAuditPhotos.push(result.photo);
-        renderAuditPhotosPreview();
-      } else {
-        alert("Lỗi tải ảnh: " + (result.error || "Không xác định"));
-      }
-    } catch (err) {
-      document.getElementById(loadingId)?.remove();
-      alert("Lỗi kết nối máy chủ khi xử lý ảnh: " + err.message);
-    }
-  };
-  reader.readAsDataURL(file);
-
-  // Reset input để có thể chụp tiếp ảnh khác
-  event.target.value = "";
-}
-
-function renderAuditPhotosPreview() {
-  const container = document.getElementById("new-audit-photos-container");
-  if (!container) return;
-
-  container.innerHTML = currentAuditPhotos.map((photo, idx) => `
-    <div class="photo-preview-card">
-      <div class="photo-badge-overlay">
-        <span class="badge ${photo.photo_type === 'before' ? 'badge-fail' : 'badge-excellent'}">
-          ${photo.photo_type === 'before' ? '⚠️ Trước dọn' : '✅ Sau khi dọn'}
-        </span>
-      </div>
-      <button type="button" class="photo-delete-btn" onclick="removePhoto(${idx})" title="Xóa ảnh này">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <img src="${photo.relative_thumb_url || photo.relative_url}" alt="Bằng chứng 5S" onclick="window.open('${photo.relative_url}', '_blank')">
-      <div class="photo-caption-bar">
-        <input type="text" class="form-control" style="padding: 4px 8px; font-size: 0.78rem;" 
-               placeholder="Nhập chú thích ảnh..." 
-               value="${photo.caption || ''}" 
-               onchange="currentAuditPhotos[${idx}].caption = this.value">
-      </div>
-    </div>
-  `).join("");
-}
-
-function removePhoto(index) {
-  currentAuditPhotos.splice(index, 1);
-  renderAuditPhotosPreview();
-}
-
-async function submitNewAudit() {
-  const deptId = document.getElementById("audit-dept-select").value;
-  const roomId = document.getElementById("audit-room-select").value;
-  const inspectorName = document.getElementById("audit-inspector-name").value.trim();
-  const shift = document.getElementById("audit-shift-select").value;
-
-  if (!deptId || !roomId) {
-    alert("Vui lòng chọn Khoa và Phòng cần kiểm tra 5S!");
-    return;
-  }
-  if (!inspectorName) {
-    alert("Vui lòng nhập Họ tên cán bộ kiểm tra!");
-    return;
-  }
-
-  const s1 = parseFloat(document.getElementById("slider-seiri").value);
-  const s2 = parseFloat(document.getElementById("slider-seiton").value);
-  const s3 = parseFloat(document.getElementById("slider-seiso").value);
-  const s4 = parseFloat(document.getElementById("slider-seiketsu").value);
-  const s5 = parseFloat(document.getElementById("slider-shitsuke").value);
-
-  const notes = document.getElementById("audit-notes").value.trim();
-  const actionRequired = document.getElementById("audit-action-required").value.trim();
-
-  const payload = {
-    department_id: parseInt(deptId),
-    room_id: parseInt(roomId),
-    shift: shift,
-    inspector_name: inspectorName,
-    inspector_role: "Cán bộ kiểm tra 5S VPI",
-    score_seiri: s1,
-    score_seiton: s2,
-    score_seiso: s3,
-    score_seiketsu: s4,
-    score_shitsuke: s5,
-    notes: notes,
-    action_required: actionRequired,
-    photos: currentAuditPhotos
-  };
-
-  try {
-    const res = await fetch("/api/audits", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await res.json();
-    if (result.success) {
-      alert(`🎉 Đã lưu thành công phiếu kiểm tra 5S!\nMã phiếu: ${result.audit_code}\nTổng điểm: ${result.total_score}đ (${result.rating})`);
-      
-      // Tùy chọn tải file Word ngay lập tức
-      if (confirm("Bạn có muốn tải về ngay Biên bản Báo cáo Word (.docx) của phiếu này không?")) {
-        downloadDocxReport(result.audit_id);
-      }
-
-      resetNewAuditForm();
-      switchTab("history");
-    } else {
-      alert("Lỗi khi lưu phiếu: " + (result.error || "Không xác định"));
-    }
-  } catch (err) {
-    alert("Lỗi kết nối máy chủ: " + err.message);
-  }
-}
-
-function resetNewAuditForm() {
-  document.getElementById("audit-dept-select").value = "";
-  document.getElementById("audit-room-select").innerHTML = '<option value="">-- Chọn Khoa trước --</option>';
-  document.getElementById("room-info-badge").style.display = "none";
-  setSlider("slider-seiri", 20);
-  setSlider("slider-seiton", 20);
-  setSlider("slider-seiso", 20);
-  setSlider("slider-seiketsu", 20);
-  setSlider("slider-shitsuke", 20);
-  document.getElementById("audit-notes").value = "";
-  document.getElementById("audit-action-required").value = "";
-  currentAuditPhotos = [];
-  renderAuditPhotosPreview();
-}
-
-// ==================== 3. QUẢN LÝ KHOA & PHÒNG (HIERARCHY) ====================
-async function loadHierarchy() {
-  await loadDepartmentsData();
-  const deptListContainer = document.getElementById("hierarchy-depts-list");
-  document.getElementById("hierarchy-dept-count").textContent = `${allDepartments.length} Khoa`;
-
-  if (!selectedHierarchyDeptId && allDepartments.length > 0) {
-    selectedHierarchyDeptId = allDepartments[0].id;
-  }
-
-  if (deptListContainer) {
-    deptListContainer.innerHTML = allDepartments.map(d => `
-      <div class="dept-rank-item" style="cursor: pointer; border-left: 4px solid ${d.color || '#0284c7'}; ${selectedHierarchyDeptId === d.id ? 'background: #e0f2fe; border-color: #0284c7;' : ''}" 
-           onclick="selectHierarchyDept(${d.id})">
-        <div class="dept-rank-left">
-          <div style="font-size: 1.2rem; color: ${d.color || '#0284c7'}; width: 28px; text-align: center;">
-            <i class="fa-solid ${d.icon || 'fa-hospital'}"></i>
-          </div>
-          <div>
-            <strong style="font-size: 0.88rem; color: var(--gray-800);">${d.name}</strong>
-            <div style="font-size: 0.74rem; color: var(--gray-500);">${d.room_count || 0} buồng phòng</div>
-          </div>
-        </div>
-        <div style="font-size: 0.8rem; font-weight: 700; color: #0284c7;">
-          ${d.avg_score ? Number(d.avg_score).toFixed(1) + 'đ' : '--'}
-        </div>
-      </div>
-    `).join("");
-  }
-
-  loadRoomsForSelectedDept();
-}
-
-function selectHierarchyDept(deptId) {
-  selectedHierarchyDeptId = deptId;
-  loadHierarchy();
-}
-
-let currentDeptRooms = [];
-
-async function loadRoomsForSelectedDept() {
-  if (!selectedHierarchyDeptId) return;
-
-  const currentDept = allDepartments.find(d => d.id === selectedHierarchyDeptId);
-  if (currentDept) {
-    document.getElementById("hierarchy-selected-dept-title").innerHTML = `
-      <i class="fa-solid ${currentDept.icon || 'fa-hospital'}" style="color:${currentDept.color};"></i>
-      ${currentDept.name} (${currentDept.code})
-    `;
-    document.getElementById("hierarchy-selected-dept-sub").textContent = 
-      `ĐD Trưởng: ${currentDept.head_nurse || '---'} | BS Trưởng khoa: ${currentDept.doctor_in_charge || '---'} | Hotline: ${currentDept.phone || '---'}`;
-  }
-
-  try {
-    const res = await fetch(`/api/rooms?department_id=${selectedHierarchyDeptId}`);
-    if (res.ok) currentDeptRooms = await res.json();
-    else currentDeptRooms = (VPI_Store.data.rooms || []).filter(r => r.department_id == selectedHierarchyDeptId);
-    filterHierarchyRooms();
-  } catch (e) {
-    currentDeptRooms = (VPI_Store.data.rooms || []).filter(r => r.department_id == selectedHierarchyDeptId);
-    filterHierarchyRooms();
-  }
-}
-
-function filterHierarchyRooms() {
-  const searchInput = document.getElementById("hierarchy-room-search");
-  const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
-  let filtered = currentDeptRooms;
-  if (query) {
-    filtered = filtered.filter(r => 
-      r.name.toLowerCase().includes(query) ||
-      r.code.toLowerCase().includes(query) ||
-      (r.person_in_charge && r.person_in_charge.toLowerCase().includes(query)) ||
-      (r.floor && r.floor.toLowerCase().includes(query)) ||
-      (r.room_type && r.room_type.toLowerCase().includes(query))
-    );
-  }
-
-  const badge = document.getElementById("hierarchy-room-count-badge");
-  if (badge) {
-    badge.textContent = `${filtered.length} / ${currentDeptRooms.length} Buồng Phòng`;
-  }
-
-  renderHierarchyRooms(filtered);
-}
-
-function renderHierarchyRooms(rooms) {
-  const tbody = document.getElementById("hierarchy-rooms-tbody");
-  if (!tbody) return;
-
-  if (rooms.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 25px; color: var(--gray-400);">Không tìm thấy buồng phòng nào phù hợp.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = rooms.map(r => `
-    <tr>
-      <td><strong>${r.code}</strong></td>
-      <td style="font-weight: 600;">${r.name}</td>
-      <td><span class="badge" style="background:#f1f5f9; color:var(--gray-700);">${r.floor}</span></td>
-      <td>${r.room_type}</td>
-      <td>${r.person_in_charge || '<span style="color:var(--gray-400);">---</span>'}</td>
-      <td><span class="badge badge-good">${r.target_score || 90}đ</span></td>
-      <td>
-        ${r.last_score ? `
-          <span class="badge ${r.last_score >= 90 ? 'badge-excellent' : (r.last_score >= 80 ? 'badge-good' : 'badge-pass')}">
-            ${r.last_score}đ - ${r.last_rating}
-          </span>
-        ` : '<span style="color:var(--gray-400); font-size:0.78rem;">Chưa có dữ liệu</span>'}
-      </td>
-      <td>
-        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-          <button class="btn-primary btn-sm" onclick="auditRoomDirectly(${r.department_id}, ${r.id})" title="Tạo phiếu kiểm tra 5S ngay">
-            <i class="fa-solid fa-camera"></i> KT 5S
-          </button>
-          <button class="btn-outline btn-sm" onclick="editRoom(${r.id})" title="Chỉnh sửa thông tin phòng này">
-            <i class="fa-solid fa-pen"></i> Sửa
-          </button>
-          <button class="btn-outline btn-sm" style="color:red; border-color:#fca5a5;" onclick="deleteRoom(${r.id}, '${r.name}')" title="Xóa phòng">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join("");
-}
-
-function auditRoomDirectly(deptId, roomId) {
-  switchTab("new-audit");
-  setTimeout(async () => {
-    const deptSelect = document.getElementById("audit-dept-select");
-    deptSelect.value = deptId;
-    await onAuditDeptChanged();
-    const roomSelect = document.getElementById("audit-room-select");
-    roomSelect.value = roomId;
-    onAuditRoomChanged();
-  }, 100);
-}
-
-// ==================== QUẢN LÝ KHOA (DEPARTMENT CRUD) ====================
-function showAddDeptModal() {
-  document.getElementById("m-dept-modal-title").textContent = "Thêm Khoa / Phòng Ban Mới";
-  document.getElementById("m-dept-id").value = "";
-  document.getElementById("m-dept-code").value = "";
-  document.getElementById("m-dept-name").value = "";
-  document.getElementById("m-dept-nurse").value = "";
-  document.getElementById("m-dept-doctor").value = "";
-  document.getElementById("m-dept-phone").value = "";
-  document.getElementById("m-dept-color").value = "#0284c7";
-  document.getElementById("m-dept-desc").value = "";
-  openModal("dept-modal");
-}
-
-function editSelectedDept() {
-  if (!selectedHierarchyDeptId) {
-    alert("Vui lòng chọn một Khoa để chỉnh sửa!");
-    return;
-  }
-  editDept(selectedHierarchyDeptId);
-}
-
-function editDept(deptId) {
-  const dept = allDepartments.find(d => d.id === deptId);
-  if (!dept) return;
-
-  document.getElementById("m-dept-modal-title").textContent = `Cập Nhật Khoa: ${dept.name}`;
-  document.getElementById("m-dept-id").value = dept.id;
-  document.getElementById("m-dept-code").value = dept.code;
-  document.getElementById("m-dept-name").value = dept.name;
-  document.getElementById("m-dept-nurse").value = dept.head_nurse || "";
-  document.getElementById("m-dept-doctor").value = dept.doctor_in_charge || "";
-  document.getElementById("m-dept-phone").value = dept.phone || "";
-  document.getElementById("m-dept-color").value = dept.color || "#0284c7";
-  document.getElementById("m-dept-desc").value = dept.description || "";
-  openModal("dept-modal");
-}
-
-async function submitDept() {
-  const deptId = document.getElementById("m-dept-id").value;
-  const code = document.getElementById("m-dept-code").value.trim().toUpperCase();
-  const name = document.getElementById("m-dept-name").value.trim();
-
-  if (!code || !name) {
-    alert("Vui lòng điền Mã khoa và Tên khoa!");
-    return;
-  }
-
-  const payload = {
-    code: code,
-    name: name,
-    head_nurse: document.getElementById("m-dept-nurse").value.trim(),
-    doctor_in_charge: document.getElementById("m-dept-doctor").value.trim(),
-    phone: document.getElementById("m-dept-phone").value.trim(),
-    color: document.getElementById("m-dept-color").value,
-    description: document.getElementById("m-dept-desc").value.trim(),
-    icon: "fa-hospital"
-  };
-
-  try {
-    let url = "/api/departments";
-    let method = "POST";
-    if (deptId) {
-      url = `/api/departments/${deptId}`;
-      method = "PUT";
-    }
-
-    if (deptId) {
-      const idx = VPI_Store.data.departments.findIndex(d => d.id == deptId);
-      if (idx !== -1) {
-        VPI_Store.data.departments[idx] = { ...VPI_Store.data.departments[idx], ...payload };
-      }
-    } else {
-      const newId = Math.max(...VPI_Store.data.departments.map(d => d.id), 0) + 1;
-      VPI_Store.data.departments.push({ id: newId, ...payload, created_at: new Date().toISOString() });
-    }
-    VPI_Store.save();
-    allDepartments = VPI_Store.data.departments;
-
-    try {
-      await fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    } catch (apiErr) {}
-
-    alert("✅ Lưu thông tin Khoa thành công!");
-    closeModal("dept-modal");
-    populateDepartmentSelects();
-    selectedHierarchyDeptId = deptId ? parseInt(deptId) : allDepartments[allDepartments.length - 1]?.id;
-    loadHierarchy();
-    return;
-  } catch (e) {
-    alert("Lỗi kết nối: " + e.message);
-  }
-}
-
-function deleteSelectedDept() {
-  if (!selectedHierarchyDeptId) return;
-  deleteDept(selectedHierarchyDeptId);
-}
-
-async function deleteDept(deptId) {
-  const dept = allDepartments.find(d => d.id === deptId);
-  if (!dept) return;
-
-  if (!confirm(`⚠️ CẢNH BÁO: Bạn có chắc chắn muốn xóa "${dept.name}" (${dept.code}) cùng toàn bộ buồng phòng bên trong không?`)) {
-    return;
-  }
-
-  try {
-    VPI_Store.data.departments = VPI_Store.data.departments.filter(d => d.id !== deptId);
-    VPI_Store.data.rooms = VPI_Store.data.rooms.filter(r => r.department_id !== deptId);
-    VPI_Store.save();
-    allDepartments = VPI_Store.data.departments;
-
-    try {
-      await fetch(`/api/departments/${deptId}`, { method: "DELETE" });
-    } catch (apiErr) {}
-
-    alert("✅ Đã xóa Khoa thành công!");
-    populateDepartmentSelects();
-    selectedHierarchyDeptId = allDepartments[0]?.id || null;
-    loadHierarchy();
-    return;
-  } catch (e) {
-    alert("Lỗi khi xóa Khoa: " + e.message);
-  }
-}
-
-// ==================== QUẢN LÝ BUỒNG PHÒNG (ROOM CRUD) ====================
-function showAddRoomModal(deptId = null) {
-  populateDepartmentSelects();
-  const targetDeptId = deptId || selectedHierarchyDeptId || (allDepartments[0]?.id);
-  document.getElementById("m-room-modal-title").textContent = "Thêm Buồng Phòng Mới";
-  document.getElementById("m-room-id").value = "";
-  document.getElementById("m-room-dept-select").value = targetDeptId;
-  document.getElementById("m-room-code").value = "";
-  document.getElementById("m-room-name").value = "";
-  document.getElementById("m-room-floor").value = "Tầng 1";
-  document.getElementById("m-room-person").value = "";
-  document.getElementById("m-room-type").value = "Phòng bệnh";
-  document.getElementById("m-room-target").value = "90";
-  openModal("room-modal");
-}
-
-function editRoom(roomId) {
-  const room = currentDeptRooms.find(r => r.id === roomId);
-  if (!room) return;
-
-  populateDepartmentSelects();
-  document.getElementById("m-room-modal-title").textContent = `Cập Nhật Buồng Phòng: ${room.name}`;
-  document.getElementById("m-room-id").value = room.id;
-  document.getElementById("m-room-dept-select").value = room.department_id;
-  document.getElementById("m-room-code").value = room.code;
-  document.getElementById("m-room-name").value = room.name;
-  document.getElementById("m-room-type").value = room.room_type || "Phòng bệnh";
-  document.getElementById("m-room-floor").value = room.floor || "Tầng 1";
-  document.getElementById("m-room-person").value = room.person_in_charge || "";
-  document.getElementById("m-room-target").value = room.target_score || 90;
-  openModal("room-modal");
-}
-
-async function submitRoom() {
-  const roomId = document.getElementById("m-room-id").value;
-  const deptId = document.getElementById("m-room-dept-select").value;
-  const code = document.getElementById("m-room-code").value.trim().toUpperCase();
-  const name = document.getElementById("m-room-name").value.trim();
-
-  if (!deptId || !code || !name) {
-    alert("Vui lòng điền đủ Khoa, Mã phòng và Tên phòng!");
-    return;
-  }
-
-  const payload = {
-    department_id: parseInt(deptId),
-    code: code,
-    name: name,
-    room_type: document.getElementById("m-room-type").value,
-    floor: document.getElementById("m-room-floor").value.trim(),
-    person_in_charge: document.getElementById("m-room-person").value.trim(),
-    target_score: parseFloat(document.getElementById("m-room-target").value) || 90.0
-  };
-
-  try {
-    let url = "/api/rooms";
-    let method = "POST";
-    if (roomId) {
-      url = `/api/rooms/${roomId}`;
-      method = "PUT";
-    }
-
-    if (roomId) {
-      const idx = VPI_Store.data.rooms.findIndex(r => r.id == roomId);
-      if (idx !== -1) {
-        VPI_Store.data.rooms[idx] = { ...VPI_Store.data.rooms[idx], ...payload };
-      }
-    } else {
-      const newId = Math.max(...VPI_Store.data.rooms.map(r => r.id), 0) + 1;
-      VPI_Store.data.rooms.push({ id: newId, ...payload, created_at: new Date().toISOString() });
-    }
-    VPI_Store.save();
-
-    try {
-      await fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    } catch (apiErr) {}
-
-    alert("✅ Lưu buồng phòng thành công!");
-    closeModal("room-modal");
-    selectedHierarchyDeptId = parseInt(deptId);
-    await loadDepartmentsData();
-    await loadRoomsForSelectedDept();
-    return;
-  } catch (e) {
-    alert("Lỗi kết nối: " + e.message);
-  }
-}
-
-async function deleteRoom(roomId, roomName) {
-  if (!confirm(`Bạn có chắc muốn xóa phòng "${roomName}" không?`)) return;
-  try {
-    VPI_Store.data.rooms = VPI_Store.data.rooms.filter(r => r.id !== roomId);
-    VPI_Store.save();
-
-    try {
-      await fetch(`/api/rooms/${roomId}`, { method: "DELETE" });
-    } catch (apiErr) {}
-
-    alert("✅ Đã xóa phòng thành công!");
-    await loadDepartmentsData();
-    await loadRoomsForSelectedDept();
-    return;
-  } catch (e) {
-    alert("Lỗi khi xóa phòng: " + e.message);
-  }
-}
-
-// ==================== 4. LỊCH SỬ & BÁO CÁO (HISTORY & WORD) ====================
-async function loadAuditHistory() {
-  const deptFilter = document.getElementById("hist-filter-dept")?.value || "";
-  const ratingFilter = document.getElementById("hist-filter-rating")?.value || "";
-
-  let url = "/api/audits?";
-  if (deptFilter) url += `department_id=${deptFilter}&`;
-  if (ratingFilter) url += `rating=${encodeURIComponent(ratingFilter)}&`;
-
-  try {
-    let audits = [];
-    try {
-      const res = await fetch(url);
-      if (res.ok) audits = await res.json();
-    } catch (apiErr) {}
-
-    if (!audits || audits.length === 0) {
-      audits = VPI_Store.data.audits || [];
-      if (deptFilter) {
-        audits = audits.filter(a => a.department_id == deptFilter);
-      }
-      if (ratingFilter) {
-        audits = audits.filter(a => a.rating === ratingFilter);
-      }
-      audits = audits.map(a => {
-        const dept = (VPI_Store.data.departments || []).find(d => d.id == a.department_id);
-        const rm = (VPI_Store.data.rooms || []).find(r => r.id == a.room_id);
-        return {
-          ...a,
-          department_name: dept ? dept.name : "Khoa công tác",
-          room_name: rm ? rm.name : "Phòng bệnh",
-          room_code: rm ? rm.code : ""
-        };
-      });
-    }
-    const tbody = document.getElementById("history-audits-tbody");
-
-    if (tbody) {
-      if (audits.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 25px; color: var(--gray-400);">Không có dữ liệu phiếu kiểm tra phù hợp bộ lọc.</td></tr>`;
-      } else {
-        tbody.innerHTML = audits.map(a => `
-          <tr>
-            <td><strong>${a.audit_code}</strong></td>
-            <td>
-              <div style="font-weight:600; color:var(--gray-800);">${a.department_name}</div>
-              <div style="font-size:0.78rem; color:var(--gray-500);">${a.room_name} (${a.room_code})</div>
-            </td>
-            <td>${a.audit_date} ${a.audit_time}</td>
-            <td><span class="badge" style="background:#f1f5f9; color:var(--gray-700);">${a.shift}</span></td>
-            <td>${a.inspector_name}</td>
-            <td><strong style="font-size:1rem; color:#0284c7;">${Number(a.total_score).toFixed(1)}</strong></td>
-            <td>
-              <span class="badge ${a.rating === 'Xuất sắc' ? 'badge-excellent' : (a.rating === 'Tốt' ? 'badge-good' : (a.rating === 'Đạt' ? 'badge-pass' : 'badge-fail'))}">
-                ${a.rating}
-              </span>
-            </td>
-            <td>
-              <span class="badge" style="background:#e0f2fe; color:#0369a1;">
-                <i class="fa-solid fa-camera"></i> ${a.photo_count || 0} ảnh
-              </span>
-            </td>
-            <td>
-              <div style="display:flex; gap:6px;">
-                <button class="btn-outline btn-sm" onclick="viewAuditDetail(${a.id})" title="Xem chi tiết & ảnh">
-                  <i class="fa-solid fa-eye"></i> Xem
-                </button>
-                <button class="btn-primary btn-sm" onclick="downloadDocxReport(${a.id})" title="Tải về file Word (.docx)">
-                  <i class="fa-solid fa-file-word"></i> Word
-                </button>
-              </div>
-            </td>
-          </tr>
-        `).join("");
-      }
-    }
-  } catch (e) {
-    console.error("Lỗi nạp lịch sử phiếu 5S:", e);
-  }
-}
-
-async function viewAuditDetail(auditId) {
-  try {
-    let audit = null;
-    try {
-      const res = await fetch(`/api/audits/${auditId}`);
-      if (res.ok) audit = await res.json();
+      this.viewMode = localStorage.getItem('vpi_5s_view_mode') || 'mobile';
     } catch (e) {}
 
-    if (!audit) {
-      const raw = (VPI_Store.data.audits || []).find(a => a.id == auditId);
+    this.theme = 'light';
+    try {
+      this.theme = localStorage.getItem('vpi_5s_theme') || 'light';
+    } catch (e) {}
+
+    // State cho tab Khoa Phòng theo nhóm
+    this.filterDept = 'all';
+    this.filterDeptCategory = 'all'; // 'all', 'paraclinical', 'clinical', 'functional'
+    this.searchQuery = '';
+    this.isReorderMode = false;
+    this.collapsedDepts = {}; // deptId: true if collapsed
+
+    // Filter cho tab Nhân sự
+    this.filterStaffDept = 'all';
+    this.staffSearchQuery = '';
+    
+    // Form state cho Phiếu kiểm tra mới (Chỉ 1 ảnh sau 5S)
+    this.newAuditState = {
+      deptId: 8,
+      roomId: 34,
+      shift: 'Ca sáng (07:00 - 11:30)',
+      scores: { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 },
+      afterPhoto: '',
+      notes: '',
+      correctiveAction: ''
+    };
+
+    this.init();
+  }
+
+  loadData() {
+    try {
+      // Thử đọc v5 trước, sau đó fallback sang v4 hoặc v3
+      let raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        raw = localStorage.getItem('vpi_5s_data_v4_enhanced');
+      }
+      if (!raw) {
+        raw = localStorage.getItem('vpi_5s_data_v3_rbac');
+      }
       if (raw) {
-        const dept = (VPI_Store.data.departments || []).find(d => d.id == raw.department_id);
-        const rm = (VPI_Store.data.rooms || []).find(r => r.id == raw.room_id);
-        const photos = (VPI_Store.data.audit_photos || []).filter(p => p.audit_id == raw.id);
-        audit = {
-          ...raw,
-          department_name: dept ? dept.name : "Khoa lâm sàng",
-          head_nurse: dept ? dept.head_nurse : "---",
-          room_name: rm ? rm.name : "Phòng bệnh",
-          photos: photos
-        };
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.departments) && Array.isArray(parsed.rooms) && Array.isArray(parsed.staff)) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Lỗi đọc LocalStorage:', e);
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+  }
+
+  normalizeData() {
+    if (!this.data.hospital) {
+      this.data.hospital = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital));
+    }
+    this.data.hospital.name = 'Bệnh viện Vĩnh Phúc VPI';
+    this.data.hospital.legalName = 'Bệnh viện Vĩnh Phúc VPI';
+    if (!this.data.hospital.notice) {
+      this.data.hospital.notice = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital.notice));
+    }
+
+    // Đảm bảo có đầy đủ 20 khoa phòng mẫu (Smart Merging - Không làm mất khoa người dùng tạo mới)
+    if (!this.data.departments || !Array.isArray(this.data.departments) || this.data.departments.length === 0) {
+      this.data.departments = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.departments));
+    } else {
+      // Kiểm tra và bổ sung những khoa chuẩn VPI còn thiếu vào danh sách
+      const existingDeptIds = new Set(this.data.departments.map(d => d.id));
+      DEFAULT_SEED_DATA.departments.forEach(stdDept => {
+        if (!existingDeptIds.has(stdDept.id)) {
+          this.data.departments.push(JSON.parse(JSON.stringify(stdDept)));
+        }
+      });
+    }
+
+    this.data.departments.forEach((d, idx) => {
+      if (typeof d.order !== 'number') d.order = idx + 1;
+      if (!d.code) d.code = 'K-' + (d.id || idx + 1);
+      if (!d.category) {
+        if ([8, 9, 14, 15, 10].includes(d.id)) d.category = 'paraclinical';
+        else if ([16, 17, 18, 19, 20].includes(d.id)) d.category = 'functional';
+        else d.category = 'clinical';
+      }
+    });
+    this.data.departments.sort((a, b) => (a.order || 99) - (b.order || 99));
+
+    // Đảm bảo có đầy đủ buồng phòng / khu vực làm việc (Smart Merging)
+    if (!this.data.rooms || !Array.isArray(this.data.rooms) || this.data.rooms.length === 0) {
+      this.data.rooms = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.rooms));
+    } else {
+      const existingRoomIds = new Set(this.data.rooms.map(r => r.id));
+      DEFAULT_SEED_DATA.rooms.forEach(stdRoom => {
+        if (!existingRoomIds.has(stdRoom.id)) {
+          this.data.rooms.push(JSON.parse(JSON.stringify(stdRoom)));
+        }
+      });
+    }
+
+    this.data.rooms.forEach((r, idx) => {
+      if (typeof r.order !== 'number') r.order = idx + 1;
+      if (!r.department_id) r.department_id = 8;
+      if (!r.floor) r.floor = 'Tầng 1';
+      if (!r.target_score) r.target_score = 95.0;
+    });
+
+    // Đảm bảo Nhân viên có đầy đủ thông tin, chức danh và nhiều vị trí phụ trách
+    if (!this.data.staff || !Array.isArray(this.data.staff) || this.data.staff.length === 0) {
+      this.data.staff = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.staff));
+    } else {
+      const existingStaffCodes = new Set(this.data.staff.map(s => s.code || s.staff_code));
+      DEFAULT_SEED_DATA.staff.forEach(stdStaff => {
+        if (!existingStaffCodes.has(stdStaff.code)) {
+          this.data.staff.push(JSON.parse(JSON.stringify(stdStaff)));
+        }
+      });
+    }
+
+    this.data.staff = this.data.staff.map((s, idx) => {
+      const code = s.code || s.staff_code || ('BV-' + (idx + 101));
+      const name = s.name || s.full_name || 'Cán bộ 5S';
+      const role = s.role || 'staff';
+      let title = s.title || s.role_title || s.position;
+      if (!title) {
+        if (role === 'admin') title = 'Trưởng Ban 5S';
+        else if (role === 'manager') title = 'Điều dưỡng Trưởng Khoa';
+        else title = 'Cán bộ 5S';
+      }
+
+      let deptId = s.department_id;
+      if (!deptId) {
+        deptId = 8;
+      }
+
+      let assigned_rooms = [];
+      if (Array.isArray(s.assigned_rooms)) {
+        assigned_rooms = s.assigned_rooms;
+      } else if (typeof s.assigned_room === 'string' && s.assigned_room.trim()) {
+        assigned_rooms = s.assigned_room.split(/[;,\n\r•]+/).map(x => x.trim()).filter(Boolean);
+      }
+      if (assigned_rooms.length === 0) {
+        assigned_rooms = ['Buồng bệnh được phân công'];
+      }
+
+      return {
+        ...s,
+        id: s.id || (idx + 1),
+        code: code,
+        staff_code: code,
+        name: name,
+        full_name: name,
+        username: s.username || code.toLowerCase().replace('-', ''),
+        password: s.password || '123',
+        department_id: deptId,
+        role: role,
+        role_level: s.role_level || role,
+        role_title: s.role_title || title,
+        title: title,
+        position: s.position || title,
+        assigned_rooms: assigned_rooms,
+        assigned_room: assigned_rooms.join(', '),
+        allow_external: true
+      };
+    });
+
+    if (!this.data.auth) {
+      this.data.auth = { isLoggedIn: true, currentUserId: 'BV-345', locationMode: 'internal' };
+    }
+  }
+
+  saveData() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+    } catch (e) {
+      console.error('Lỗi lưu LocalStorage:', e);
+    }
+  }
+
+  resetToVpiStandard() {
+    if (!confirm('Khôi phục toàn bộ danh mục 20 Khoa/Phòng và 75 Khu vực làm việc chuẩn Bệnh viện Vĩnh Phúc VPI?')) return;
+    this.data = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+    this.saveData();
+    this.render();
+    this.showToast('Đã khôi phục toàn bộ 20 Khoa và 75 Khu vực làm việc chuẩn VPI!');
+  }
+
+  getSortedDepartments() {
+    return [...this.data.departments].sort((a, b) => (a.order || 99) - (b.order || 99));
+  }
+
+  getSortedRooms(deptId = null) {
+    let rooms = [...this.data.rooms];
+    if (deptId !== null) {
+      rooms = rooms.filter(r => r.department_id == deptId);
+    }
+    return rooms.sort((a, b) => (a.order || 99) - (b.order || 99));
+  }
+
+  moveDeptUp(deptId) {
+    const sorted = this.getSortedDepartments();
+    const idx = sorted.findIndex(d => d.id == deptId);
+    if (idx <= 0) return;
+
+    const current = sorted[idx];
+    const prev = sorted[idx - 1];
+    const tempOrder = current.order || (idx + 1);
+    current.order = prev.order || idx;
+    prev.order = tempOrder;
+
+    this.saveData();
+    this.render();
+    this.showToast(`Đã đẩy khoa ${current.name} lên trên!`);
+  }
+
+  moveDeptDown(deptId) {
+    const sorted = this.getSortedDepartments();
+    const idx = sorted.findIndex(d => d.id == deptId);
+    if (idx === -1 || idx >= sorted.length - 1) return;
+
+    const current = sorted[idx];
+    const next = sorted[idx + 1];
+    const tempOrder = current.order || (idx + 1);
+    current.order = next.order || (idx + 2);
+    next.order = tempOrder;
+
+    this.saveData();
+    this.render();
+    this.showToast(`Đã chuyển khoa ${current.name} xuống dưới!`);
+  }
+
+  toggleCollapseDept(deptId) {
+    this.collapsedDepts[deptId] = !this.collapsedDepts[deptId];
+    this.render();
+  }
+
+  collapseAllDepts() {
+    this.data.departments.forEach(d => {
+      this.collapsedDepts[d.id] = true;
+    });
+    this.render();
+  }
+
+  expandAllDepts() {
+    this.collapsedDepts = {};
+    this.render();
+  }
+
+  moveRoomUp(roomId) {
+    const room = this.data.rooms.find(r => r.id == roomId);
+    if (!room) return;
+    const sameDeptRooms = this.getSortedRooms(room.department_id);
+    const idx = sameDeptRooms.findIndex(r => r.id == roomId);
+    if (idx <= 0) return;
+
+    const current = sameDeptRooms[idx];
+    const prev = sameDeptRooms[idx - 1];
+    const tempOrder = current.order || (idx + 1);
+    current.order = prev.order || idx;
+    prev.order = tempOrder;
+
+    this.saveData();
+    this.render();
+    this.showToast(`Đã đẩy khu vực ${current.name} lên!`);
+  }
+
+  moveRoomDown(roomId) {
+    const room = this.data.rooms.find(r => r.id == roomId);
+    if (!room) return;
+    const sameDeptRooms = this.getSortedRooms(room.department_id);
+    const idx = sameDeptRooms.findIndex(r => r.id == roomId);
+    if (idx === -1 || idx >= sameDeptRooms.length - 1) return;
+
+    const current = sameDeptRooms[idx];
+    const next = sameDeptRooms[idx + 1];
+    const tempOrder = current.order || (idx + 1);
+    current.order = next.order || (idx + 2);
+    next.order = tempOrder;
+
+    this.saveData();
+    this.render();
+    this.showToast(`Đã chuyển khu vực ${current.name} xuống!`);
+  }
+
+  toggleReorderMode() {
+    this.isReorderMode = !this.isReorderMode;
+    this.render();
+  }
+
+  getCurrentUser() {
+    const auth = this.data.auth;
+    if (!auth || !auth.isLoggedIn) return null;
+    return this.data.staff.find(s => s.code === auth.currentUserId || s.username === auth.currentUserId) || this.data.staff[0];
+  }
+
+  init() {
+    this.applyTheme();
+    this.applyLocationMode();
+    this.updateUserInterface();
+    this.updateHospitalBranding();
+    this.updateNoticeBanner();
+    this.render();
+  }
+
+  applyTheme() {
+    if (this.theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    try {
+      localStorage.setItem('vpi_5s_theme', this.theme);
+    } catch (e) {}
+  }
+
+  toggleTheme() {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    this.applyTheme();
+    this.render();
+  }
+
+  toggleViewMode() {
+    this.viewMode = this.viewMode === 'mobile' ? 'full' : 'mobile';
+    try {
+      localStorage.setItem('vpi_5s_view_mode', this.viewMode);
+    } catch (e) {}
+
+    const mobileFrame = document.getElementById('mobile-frame');
+    const viewLabel = document.getElementById('view-mode-label');
+
+    if (mobileFrame) {
+      if (this.viewMode === 'full') {
+        mobileFrame.classList.remove('max-w-md', 'mx-auto', 'border-slate-800', 'shadow-2xl', 'rounded-[44px]');
+        mobileFrame.classList.add('w-full', 'max-w-7xl', 'mx-auto', 'border-transparent', 'shadow-sm', 'rounded-2xl');
+      } else {
+        mobileFrame.classList.add('max-w-md', 'mx-auto', 'border-slate-800', 'shadow-2xl', 'rounded-[44px]');
+        mobileFrame.classList.remove('w-full', 'max-w-7xl', 'mx-auto', 'border-transparent', 'shadow-sm', 'rounded-2xl');
       }
     }
-    if (!audit) {
-      alert("Không tìm thấy thông tin phiếu kiểm tra!");
-      return;
+
+    if (viewLabel) {
+      viewLabel.innerText = this.viewMode === 'mobile' ? 'Mobile Frame' : 'Toàn màn hình';
+    }
+  }
+
+  applyLocationMode() {
+    const mode = this.data.auth.locationMode || 'internal';
+    const topBadge = document.getElementById('top-location-label');
+    const envBadge = document.getElementById('env-badge');
+    const netStatus = document.getElementById('network-status');
+
+    if (topBadge) {
+      topBadge.innerText = mode === 'internal' ? 'Nội viện (Wi-Fi VPI)' : 'Ngoại viện (Cloudflare)';
+    }
+    if (envBadge) {
+      envBadge.innerText = mode === 'internal' ? 'Mạng: Nội viện (LAN)' : 'Mạng: Ngoại viện (WAN)';
+    }
+    if (netStatus) {
+      netStatus.className = `inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+        mode === 'internal' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+      }`;
+    }
+  }
+
+  toggleLocationMode() {
+    this.data.auth.locationMode = this.data.auth.locationMode === 'internal' ? 'external' : 'internal';
+    this.saveData();
+    this.applyLocationMode();
+    this.render();
+    this.showToast(`Đã chuyển sang môi trường: ${this.data.auth.locationMode === 'internal' ? 'Mạng Nội Viện' : 'Truy Cập Ngoại Viện'}!`);
+  }
+
+  updateHospitalBranding() {
+    const hosp = this.data.hospital;
+    const nameEls = document.querySelectorAll('#hosp-brand-name, #top-hosp-name, #banner-hosp-name');
+    nameEls.forEach(el => {
+      if (el) el.innerText = hosp.name;
+    });
+
+    const legalEls = document.querySelectorAll('#legal-hosp-name');
+    legalEls.forEach(el => {
+      if (el) el.innerText = hosp.legalName;
+    });
+  }
+
+  updateNoticeBanner() {
+    const notice = this.data.hospital.notice;
+    const banner = document.getElementById('emergency-notice-banner');
+    const textEl = document.getElementById('notice-banner-text');
+
+    if (banner && textEl) {
+      if (notice && notice.enabled) {
+        banner.classList.remove('hidden');
+        textEl.innerText = notice.content || notice.title;
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+  }
+
+  updateUserInterface() {
+    const user = this.getCurrentUser();
+    const avatar = document.getElementById('user-avatar');
+    const nameEl = document.getElementById('user-name');
+    const roleEl = document.getElementById('user-role');
+
+    if (user) {
+      if (avatar) avatar.innerText = (user.name || 'D').split(' ').pop().charAt(0);
+      if (nameEl) nameEl.innerText = user.name.split(' ').slice(-2).join(' ');
+      if (roleEl) roleEl.innerText = user.title || user.role_title || user.position || 'Cán bộ 5S';
+    }
+  }
+
+  switchTab(tabName) {
+    this.activeTab = tabName;
+    this.render();
+  }
+
+  render() {
+    const container = document.getElementById('app-container');
+    if (!container) return;
+
+    let content = '';
+    switch (this.activeTab) {
+      case 'overview':
+        content = this.renderOverviewTab();
+        break;
+      case 'audit':
+        content = this.renderAuditTab();
+        break;
+      case 'departments':
+        content = this.renderDepartmentsTab();
+        break;
+      case 'staff':
+        content = this.renderStaffTab();
+        break;
+      case 'history':
+      case 'reports':
+        content = this.renderHistoryTab();
+        break;
+      case 'settings':
+        content = this.renderSettingsTab();
+        break;
+      default:
+        content = this.renderOverviewTab();
     }
 
-    document.getElementById("modal-audit-code").textContent = `Biên Bản Đánh Giá: ${audit.audit_code}`;
-    document.getElementById("modal-audit-subtitle").textContent = 
-      `${audit.department_name} - ${audit.room_name} | Ngày kiểm tra: ${audit.audit_date} (${audit.shift})`;
+    container.innerHTML = content;
+    this.updateUserInterface();
+    this.updateHospitalBranding();
+    this.updateNoticeBanner();
+    this.renderBottomNavigation();
 
-    const modalBody = document.getElementById("modal-audit-body");
-    modalBody.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; background: #f8fafc; padding: 12px; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.85rem;">
-        <div><strong>Cán bộ kiểm tra:</strong> ${audit.inspector_name}</div>
-        <div><strong>Điều dưỡng trưởng:</strong> ${audit.head_nurse || '---'}</div>
-        <div><strong>Tổng điểm:</strong> <span style="font-size:1.1rem; font-weight:800; color:#0284c7;">${audit.total_score}đ</span></div>
-        <div><strong>Xếp loại:</strong> <span class="badge ${audit.rating === 'Xuất sắc' ? 'badge-excellent' : (audit.rating === 'Tốt' ? 'badge-good' : 'badge-pass')}">${audit.rating}</span></div>
-      </div>
+    if (window.lucide) window.lucide.createIcons();
+  }
 
-      <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--gray-800); margin-bottom: 8px;">1. Điểm Chi Tiết 5 Tiêu Chí (Thang 20đ):</h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px;">
-          <div style="background:#e0f2fe; padding:8px; border-radius:6px; text-align:center;">
-            <div style="font-size:0.75rem; color:#0369a1;">Sàng lọc</div>
-            <strong style="font-size:1.1rem; color:#0284c7;">${audit.score_seiri}đ</strong>
+  renderBottomNavigation() {
+    const tabs = [
+      { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
+      { id: 'audit', name: 'Chấm 5S', icon: 'camera' },
+      { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
+      { id: 'staff', name: 'Nhân sự', icon: 'users' },
+      { id: 'history', name: 'Lịch sử', icon: 'clipboard-list' },
+      { id: 'settings', name: 'Cài đặt', icon: 'settings' }
+    ];
+
+    const navContainer = document.getElementById('bottom-nav');
+    if (!navContainer) return;
+
+    navContainer.innerHTML = tabs.map(t => {
+      const isActive = this.activeTab === t.id;
+      return `
+        <button onclick="app5s.switchTab('${t.id}')" class="flex flex-col items-center justify-center py-1 transition-all ${
+          isActive ? 'text-emerald-600 dark:text-emerald-400 font-bold scale-105' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600'
+        }">
+          <i data-lucide="${t.icon}" class="w-5 h-5 mb-0.5"></i>
+          <span class="text-[10px] tracking-tight">${t.name}</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  // =========================================================================
+  // TAB 1: TỔNG QUAN
+  // =========================================================================
+  renderOverviewTab() {
+    const hosp = this.data.hospital;
+    const depts = this.getSortedDepartments();
+    const rooms = this.data.rooms;
+    const user = this.getCurrentUser();
+    const userName = (user && user.name) ? user.name : 'Vũ Bá Đạt';
+    const userTitle = (user && (user.title || user.role_title || user.position)) ? (user.title || user.role_title || user.position) : 'Cán bộ 5S';
+    const initial = userName.split(' ').pop().charAt(0) || 'Đ';
+    const shortName = userName.split(' ').slice(-2).join(' ') || userName;
+
+    return `
+      <div class="p-4 space-y-4">
+        <!-- Top Bar Profile -->
+        <div class="flex items-center justify-between bg-white dark:bg-slate-800 rounded-2xl p-3 border border-slate-200/80 dark:border-slate-700 shadow-2xs">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-bold flex items-center justify-center text-sm shadow-xs">
+              ${initial}
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <span class="text-xs font-black text-slate-800 dark:text-slate-100">${shortName}</span>
+                <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold px-1.5 py-0.5 rounded-full border border-emerald-300">
+                  ${user ? user.code : 'BV-345'}
+                </span>
+              </div>
+              <div class="text-[10px] text-slate-500 flex items-center space-x-1 mt-0.5">
+                <span>👨‍⚕️ ${userTitle}</span>
+              </div>
+            </div>
           </div>
-          <div style="background:#e0f2fe; padding:8px; border-radius:6px; text-align:center;">
-            <div style="font-size:0.75rem; color:#0369a1;">Sắp xếp</div>
-            <strong style="font-size:1.1rem; color:#0284c7;">${audit.score_seiton}đ</strong>
+          <div class="flex items-center space-x-1">
+            <button onclick="app5s.openNoticeEditModal()" title="Chỉnh sửa thông báo khẩn" class="p-2 rounded-xl text-amber-600 hover:bg-amber-50 dark:hover:bg-slate-700 transition">
+              <i data-lucide="bell" class="w-4 h-4"></i>
+            </button>
+            <button onclick="app5s.toggleTheme()" title="Đổi giao diện sáng/tối" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+              <i data-lucide="${this.theme === 'dark' ? 'sun' : 'moon'}" class="w-4 h-4"></i>
+            </button>
+            <button onclick="app5s.openLoginModal()" title="Tài khoản / Đổi mật khẩu" class="p-2 rounded-xl text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
+              <i data-lucide="user-cog" class="w-4 h-4"></i>
+            </button>
           </div>
-          <div style="background:#d1fae5; padding:8px; border-radius:6px; text-align:center;">
-            <div style="font-size:0.75rem; color:#065f46;">Sạch sẽ</div>
-            <strong style="font-size:1.1rem; color:#10b981;">${audit.score_seiso}đ</strong>
+        </div>
+
+        <!-- Banner Bệnh viện Vĩnh Phúc VPI -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-800 p-5 text-white shadow-lg">
+          <div class="relative z-10 space-y-2">
+            <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-300"></i>
+              <span>5S BỆNH VIỆN CHUẨN QUỐC GIA</span>
+            </div>
+            <h1 class="text-lg font-black tracking-tight leading-tight">${hosp.name}</h1>
+            <p class="text-[11px] text-emerald-100 opacity-90 line-clamp-1">${hosp.slogan}</p>
+            <div class="pt-2 flex items-center justify-between border-t border-white/20 text-[10px]">
+              <div>
+                <span class="opacity-75 block text-[9px]">Trưởng Ban 5S:</span>
+                <span class="font-bold">${hosp.director}</span>
+              </div>
+              <div class="text-right">
+                <span class="opacity-75 block text-[9px]">Cán bộ Giám sát:</span>
+                <span class="font-bold">${hosp.officer}</span>
+              </div>
+            </div>
           </div>
-          <div style="background:#fef3c7; padding:8px; border-radius:6px; text-align:center;">
-            <div style="font-size:0.75rem; color:#92400e;">Săn sóc</div>
-            <strong style="font-size:1.1rem; color:#f59e0b;">${audit.score_seiketsu}đ</strong>
+        </div>
+
+        <!-- THÔNG BÁO KHẨN CẤP TOÀN VIỆN -->
+        ${hosp.notice && hosp.notice.enabled ? `
+          <div class="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 rounded-2xl p-3.5 shadow-xs space-y-1.5 animate-pulse">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-1.5 text-red-700 dark:text-red-400 font-extrabold text-xs">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                <span>${hosp.notice.title}</span>
+              </div>
+              <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-red-600 hover:underline font-bold">Chỉnh sửa</button>
+            </div>
+            <p class="text-xs text-red-900 dark:text-red-200 leading-relaxed font-medium">
+              ${hosp.notice.content}
+            </p>
+            <div class="text-[10px] text-red-500 text-right">
+              Cập nhật: ${hosp.notice.updatedAt}
+            </div>
           </div>
-          <div style="background:#ede9fe; padding:8px; border-radius:6px; text-align:center;">
-            <div style="font-size:0.75rem; color:#5b21b6;">Sẵn sàng</div>
-            <strong style="font-size:1.1rem; color:#8b5cf6;">${audit.score_shitsuke}đ</strong>
+        ` : ''}
+
+        <!-- Thẻ Thống Kê 5S Bệnh Viện -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1">
+            <div class="flex items-center justify-between text-slate-500 text-[11px]">
+              <span>Khoa / Phòng</span>
+              <i data-lucide="building-2" class="w-4 h-4 text-emerald-600"></i>
+            </div>
+            <div class="text-2xl font-black font-mono text-slate-800 dark:text-slate-100">${depts.length}</div>
+            <div class="text-[10px] text-emerald-600 font-bold">${rooms.length} buồng phòng & khu vực</div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1">
+            <div class="flex items-center justify-between text-slate-500 text-[11px]">
+              <span>Điểm TB Toàn Viện</span>
+              <i data-lucide="award" class="w-4 h-4 text-amber-500"></i>
+            </div>
+            <div class="text-2xl font-black font-mono text-slate-800 dark:text-slate-100">${hosp.averageScore}</div>
+            <div class="text-[10px] text-emerald-600 font-bold">Tỷ lệ tuân thủ: 100%</div>
+          </div>
+        </div>
+
+        <!-- Lối Tắt Nhanh -->
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="app5s.switchTab('audit')" class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-center space-y-1 hover:bg-emerald-100 transition">
+            <i data-lucide="camera" class="w-5 h-5 mx-auto text-emerald-600"></i>
+            <span class="block text-xs font-bold text-emerald-900 dark:text-emerald-200">Chấm 5S</span>
+          </button>
+          <button onclick="app5s.switchTab('departments')" class="p-3 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-center space-y-1 hover:bg-teal-100 transition">
+            <i data-lucide="building-2" class="w-5 h-5 mx-auto text-teal-600"></i>
+            <span class="block text-xs font-bold text-teal-900 dark:text-teal-200">Khoa Phòng</span>
+          </button>
+          <button onclick="app5s.switchTab('staff')" class="p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-center space-y-1 hover:bg-blue-100 transition">
+            <i data-lucide="users" class="w-5 h-5 mx-auto text-blue-600"></i>
+            <span class="block text-xs font-bold text-blue-900 dark:text-blue-200">Nhân Sự</span>
+          </button>
+        </div>
+
+        <!-- Giới thiệu 5 Tiêu chuẩn 5S Y Tế -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">Bộ Tiêu Chí 5S Y Tế VPI</h3>
+            <span class="text-[10px] text-emerald-600 font-bold">Chuẩn Bộ Y Tế</span>
+          </div>
+          <div class="space-y-2">
+            ${this.data.criteria.map(c => `
+              <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 flex items-start space-x-2.5">
+                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center shrink-0 font-mono">
+                  ${c.id}
+                </span>
+                <div class="text-xs">
+                  <span class="font-bold text-slate-800 dark:text-slate-200">${c.name}</span>
+                  <p class="text-[10.5px] text-slate-500 mt-0.5">${c.desc}</p>
+                </div>
+              </div>
+            `).join('')}
           </div>
         </div>
       </div>
-
-      <div style="margin-bottom: 1.25rem; font-size: 0.88rem;">
-        <p><strong>• Nhận xét tại hiện trường:</strong> ${audit.notes || 'Không có ghi chú thêm.'}</p>
-        <p style="margin-top: 4px;"><strong>• Yêu cầu cải tiến / Khắc phục:</strong> <span style="color:#b91c1c;">${audit.action_required || 'Đạt chuẩn, duy trì tốt.'}</span></p>
-      </div>
-
-      <div>
-        <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--gray-800); margin-bottom: 8px;">
-          2. Hình Ảnh Minh Chứng Thực Tế (Watermark Bệnh Viện VPI):
-        </h4>
-        ${(!audit.photos || audit.photos.length === 0) ? `
-          <div style="color:var(--gray-400); font-size:0.85rem; font-style:italic;">Phiếu này không đính kèm hình ảnh.</div>
-        ` : `
-          <div class="photo-gallery-grid">
-            ${audit.photos.map(p => `
-              <div class="photo-preview-card">
-                <div class="photo-badge-overlay">
-                  <span class="badge ${p.photo_type === 'before' ? 'badge-fail' : 'badge-excellent'}">
-                    ${p.photo_type === 'before' ? '⚠️ Trước dọn' : '✅ Sau khắc phục'}
-                  </span>
-                </div>
-                <img src="${p.file_path}" alt="Minh chứng 5S" onclick="window.open('${p.file_path}', '_blank')">
-                <div class="photo-caption-bar">${p.caption || 'Ảnh chụp kiểm tra 5S'}</div>
-              </div>
-            `).join("")}
-          </div>
-        `}
-      </div>
     `;
-
-    document.getElementById("modal-download-docx-btn").onclick = () => downloadDocxReport(auditId);
-    openModal("audit-detail-modal");
-  } catch (e) {
-    alert("Lỗi tải chi tiết phiếu: " + e.message);
-  }
-}
-
-async function downloadDocxReport(auditId) {
-  try {
-    const res = await fetch(`/api/export/docx/${auditId}`);
-    const data = await res.json();
-    if (data.success && data.download_url) {
-      window.location.href = data.download_url;
-    } else {
-      alert("Lỗi xuất file Word: " + (data.error || "Không thể tạo file"));
-    }
-  } catch (e) {
-    alert("Lỗi kết nối tải file Word: " + e.message);
-  }
-}
-
-// ==================== MODAL HELPERS ====================
-function openModal(id) {
-  const modal = document.getElementById(id);
-  if (modal) modal.classList.add("show");
-}
-
-function closeModal(id) {
-  const modal = document.getElementById(id);
-  if (modal) modal.classList.remove("show");
-}
-
-window.onclick = function(event) {
-  if (event.target.classList.contains("modal-backdrop")) {
-    event.target.classList.remove("show");
-  }
-};
-
-// ==================== PWA INSTALLATION MODULE ====================
-function registerServiceWorker() {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/static/sw.js")
-        .then(reg => console.log("[PWA] Service Worker đăng ký thành công:", reg.scope))
-        .catch(err => console.warn("[PWA] Lỗi đăng ký Service Worker:", err));
-    });
-  }
-}
-
-function initPwaInstall() {
-  const banner = document.getElementById("pwa-install-banner");
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-
-  // Nếu app đã được cài đặt và đang mở dưới dạng App độc lập -> Ẩn banner
-  if (isStandalone) {
-    if (banner) banner.style.display = "none";
-    return;
   }
 
-  // Bắt sự kiện cài đặt trên Android / Chrome
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-    if (banner) banner.style.display = "flex";
-  });
+  // =========================================================================
+  // TAB 2: CHẤM 5S (1 ẢNH MINH CHỨNG SAU KHI 5S)
+  // =========================================================================
+  renderAuditTab() {
+    const sortedDepts = this.getSortedDepartments();
+    const currentDeptId = parseInt(this.newAuditState.deptId) || sortedDepts[0].id;
+    const sortedRooms = this.getSortedRooms(currentDeptId);
+    const user = this.getCurrentUser();
+    const userName = (user && user.name) ? user.name : 'Vũ Bá Đạt';
+    const userTitle = (user && (user.title || user.role_title || user.position)) ? (user.title || user.role_title || user.position) : 'Cán bộ 5S';
 
-  // Kiểm tra thiết bị iOS (iPhone / iPad) để hiển thị banner cài đặt
-  const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-  if (isIos && !isStandalone) {
-    if (banner) banner.style.display = "flex";
-  }
-}
-
-function triggerPwaInstall() {
-  const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-
-  // 1. Nếu là thiết bị Android / Chrome hỗ trợ Native Prompt
-  if (deferredInstallPrompt) {
-    deferredInstallPrompt.prompt();
-    deferredInstallPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("[PWA] Người dùng đã chấp nhận cài đặt App 5S VPI");
-        const banner = document.getElementById("pwa-install-banner");
-        if (banner) banner.style.display = "none";
-      }
-      deferredInstallPrompt = null;
-    });
-    return;
-  }
-
-  // 2. Nếu là thiết bị iPhone / iPad (Safari)
-  if (isIos) {
-    openModal("ios-install-modal");
-    return;
-  }
-
-  // 3. Nếu trên trình duyệt máy tính hoặc không có prompt
-  alert("💡 Để cài đặt App vào màn hình điện thoại:\n\n1. Trên Android: Bấm menu '...' của trình duyệt ➔ Chọn 'Cài đặt ứng dụng' hoặc 'Thêm vào Màn hình chính'.\n2. Trên iPhone: Bấm nút Chia sẻ (Share) ➔ Chọn 'Thêm vào MH chính'.");
-}
-
-// ==================== CÁ NHÂN HÓA & ĐĂNG NHẬP PHÂN QUYỀN ====================
-let currentLoginMode = 'user';
-let allStaffList = [];
-let appSettings = {};
-
-function initCurrentUser() {
-  const savedUser = localStorage.getItem("vpi_current_user");
-  const headerName = document.getElementById("header-user-name");
-  const navBtnStaff = document.getElementById("nav-btn-staff");
-  const navBtnSettings = document.getElementById("nav-btn-settings");
-  const logoutBtn = document.getElementById("btn-logout-current");
-
-  if (savedUser) {
-    try {
-      currentUser = JSON.parse(savedUser);
-      let roleIcon = "fa-user-nurse";
-      let roleBadge = "👤 ";
-      if (currentUser.role_type === "admin") {
-        roleIcon = "fa-crown";
-        roleBadge = "👑 Admin: ";
-      } else if (currentUser.role_type === "manager") {
-        roleIcon = "fa-user-shield";
-        roleBadge = "🛡️ Quản lý: ";
-      }
-
-      if (headerName) {
-        headerName.innerHTML = `<i class="fa-solid ${roleIcon}"></i> ${roleBadge}${currentUser.full_name}`;
-      }
-
-      if (logoutBtn) logoutBtn.style.display = "inline-flex";
-
-      // Phân quyền hiển thị các tab quản trị trên Desktop
-      if (currentUser.role_type === "admin") {
-        if (navBtnStaff) navBtnStaff.style.display = "";
-        if (navBtnSettings) navBtnSettings.style.display = "";
-      } else if (currentUser.role_type === "manager") {
-        if (navBtnStaff) navBtnStaff.style.display = "";
-        if (navBtnSettings) navBtnSettings.style.display = "none";
-      } else {
-        // Staff bình thường
-        if (navBtnStaff) navBtnStaff.style.display = "none";
-        if (navBtnSettings) navBtnSettings.style.display = "none";
-      }
-    } catch (e) {
-      currentUser = null;
-    }
-  } else {
-    currentUser = null;
-    if (headerName) {
-      headerName.innerHTML = `<i class="fa-solid fa-user-doctor"></i> Đăng nhập cá nhân`;
-    }
-    if (logoutBtn) logoutBtn.style.display = "none";
-    if (navBtnStaff) navBtnStaff.style.display = "";
-    if (navBtnSettings) navBtnSettings.style.display = "";
-  }
-  loadMyProfile();
-}
-
-function openPersonalModal() {
-  const select = document.getElementById("login-dept-select");
-  if (select && allDepartments.length > 0) {
-    let opts = '<option value="">-- Chọn Khoa công tác --</option>';
-    allDepartments.forEach(d => {
-      opts += `<option value="${d.id}" ${currentUser && currentUser.department_id === d.id ? 'selected' : ''}>${d.name} (${d.code})</option>`;
-    });
-    select.innerHTML = opts;
-    if (currentUser && currentUser.department_id) {
-      onLoginDeptChanged();
-    }
-  }
-
-  // Cập nhật nút đăng xuất trong modal nếu đã đăng nhập
-  const logoutBtn = document.getElementById("btn-logout-current");
-  if (logoutBtn) {
-    logoutBtn.style.display = currentUser ? "inline-flex" : "none";
-  }
-
-  openModal("staff-login-modal");
-}
-
-function setLoginViewMode(mode) {
-  currentLoginMode = mode;
-  const userBox = document.getElementById("login-mode-user");
-  const pinBox = document.getElementById("login-mode-pin");
-  const tabBtnUser = document.getElementById("login-tab-btn-user");
-  const tabBtnPin = document.getElementById("login-tab-btn-pin");
-
-  if (mode === "user") {
-    if (userBox) userBox.style.display = "block";
-    if (pinBox) pinBox.style.display = "none";
-    if (tabBtnUser) {
-      tabBtnUser.className = "btn-sm btn-primary";
-    }
-    if (tabBtnPin) {
-      tabBtnPin.className = "btn-sm btn-outline";
-    }
-  } else {
-    if (userBox) userBox.style.display = "none";
-    if (pinBox) pinBox.style.display = "block";
-    if (tabBtnUser) {
-      tabBtnUser.className = "btn-sm btn-outline";
-    }
-    if (tabBtnPin) {
-      tabBtnPin.className = "btn-sm btn-primary";
-    }
-  }
-}
-
-async function quickLogin(username, password) {
-  setLoginViewMode("user");
-  const uInput = document.getElementById("login-username-input");
-  const pInput = document.getElementById("login-password-input");
-  if (uInput) uInput.value = username;
-  if (pInput) pInput.value = password;
-  await loginWithCredentials(username, password);
-}
-
-async function loginWithCredentials(username, password) {
-  try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    });
-    if (res.ok) {
-      const result = await res.json();
-      if (result.success && result.user) {
-        currentUser = result.user;
-        localStorage.setItem("vpi_current_user", JSON.stringify(currentUser));
-        initCurrentUser();
-        closeModal("staff-login-modal");
-        const roleLabel = currentUser.role_type === "admin" ? "👑 Admin (Toàn viện)" : (currentUser.role_type === "manager" ? "🛡️ Quản lý Khoa" : "👤 Nhân viên đi buồng");
-        alert(`🎉 Đăng nhập thành công!\n\nXin chào: ${currentUser.full_name}\nKhoa: ${currentUser.department_name}\nCấp quyền: ${roleLabel}`);
-        populateNewAuditDropdowns();
-        loadMyProfile();
-        if (document.getElementById("tab-staff-mgmt")?.classList.contains("active")) {
-          loadStaffList();
-        }
-        return;
-      }
-    }
-  } catch (e) {}
-
-  // Fallback xác thực cục bộ
-  const loc = localStorage.getItem("vpi_5s_location_mode") || "internal";
-  const user = (VPI_Store.data.staff || []).find(s => 
-    (s.username === username || s.staff_code.toLowerCase() === username.toLowerCase()) && 
-    (s.password === password || password === "123456" || password === "1234")
-  );
-
-  if (user) {
-    if (loc === "external" && !user.allow_external && user.role_type !== "admin") {
-      alert(`⚠️ TÀI KHOẢN BỊ GIỚI HẠN NGOẠI VIỆN:\n\nNhân sự: ${user.full_name}\nTài khoản chưa được cấp quyền truy cập ngoại viện! Vui lòng kết nối mạng Wi-Fi bệnh viện.`);
-      return;
-    }
-    const dept = (VPI_Store.data.departments || []).find(d => d.id === user.department_id);
-    currentUser = { ...user, department_name: dept ? dept.name : "Khoa công tác" };
-    localStorage.setItem("vpi_current_user", JSON.stringify(currentUser));
-    initCurrentUser();
-    closeModal("staff-login-modal");
-    const roleLabel = currentUser.role_type === "admin" ? "👑 Admin (Toàn viện)" : (currentUser.role_type === "manager" ? "🛡️ Quản lý Khoa" : "👤 Nhân viên đi buồng");
-    alert(`🎉 Đăng nhập thành công!\n\nXin chào: ${currentUser.full_name}\nKhoa: ${currentUser.department_name}\nCấp quyền: ${roleLabel}`);
-    populateNewAuditDropdowns();
-    loadMyProfile();
-    if (document.getElementById("tab-staff-mgmt")?.classList.contains("active")) {
-      loadStaffList();
-    }
-  } else {
-    alert("❌ Đăng nhập thất bại: Sai tên đăng nhập hoặc mật khẩu! (Mật khẩu mặc định: 123456)");
-  }
-}
-
-async function submitCombinedLogin() {
-  if (currentLoginMode === "user") {
-    const username = document.getElementById("login-username-input").value.trim();
-    const password = document.getElementById("login-password-input").value.trim();
-    if (!username) {
-      alert("Vui lòng nhập tên đăng nhập hoặc mã nhân viên!");
-      return;
-    }
-    await loginWithCredentials(username, password);
-  } else {
-    await submitStaffLogin();
-  }
-}
-
-async function onLoginDeptChanged() {
-  const deptSelect = document.getElementById("login-dept-select");
-  const staffSelect = document.getElementById("login-staff-select");
-  const deptId = deptSelect.value;
-
-  if (!deptId) {
-    staffSelect.innerHTML = '<option value="">-- Chọn Khoa trước --</option>';
-    return;
-  }
-
-  let staffList = [];
-  try {
-    const res = await fetch(`/api/staff?department_id=${deptId}`);
-    if (res.ok) staffList = await res.json();
-  } catch (e) {}
-
-  if (!staffList || staffList.length === 0) {
-    staffList = (VPI_Store.data.staff || []).filter(s => s.department_id == deptId);
-  }
-
-  let opts = '<option value="">-- Chọn Tên của bạn --</option>';
-  staffList.forEach(s => {
-    opts += `<option value="${s.id}" ${currentUser && currentUser.id === s.id ? 'selected' : ''}>${s.full_name} - ${s.role}</option>`;
-  });
-  staffSelect.innerHTML = opts;
-}
-
-async function submitStaffLogin() {
-  const staffSelect = document.getElementById("login-staff-select");
-  const staffId = staffSelect ? parseInt(staffSelect.value) : null;
-  const pin = document.getElementById("login-pin-input") ? document.getElementById("login-pin-input").value.trim() : "1234";
-
-  if (!staffId) {
-    alert("Vui lòng chọn Khoa và Tên cán bộ của bạn!");
-    return;
-  }
-
-  try {
-    const res = await fetch("/api/staff/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ staff_id: staffId, pin_code: pin })
-    });
-    if (res.ok) {
-      const result = await res.json();
-      if (result.success && result.user) {
-        currentUser = result.user;
-        localStorage.setItem("vpi_current_user", JSON.stringify(currentUser));
-        initCurrentUser();
-        closeModal("staff-login-modal");
-        alert(`🎉 Xin chào ${currentUser.full_name}!\nThiết bị đã ghi nhớ tài khoản của bạn.`);
-        populateNewAuditDropdowns();
-        loadMyProfile();
-        return;
-      }
-    }
-  } catch (e) {}
-
-  // Fallback PIN login
-  const loc = localStorage.getItem("vpi_5s_location_mode") || "internal";
-  const user = (VPI_Store.data.staff || []).find(s => s.id === staffId);
-  if (user && (user.pin_code === pin || pin === "1234" || pin === "123456")) {
-    if (loc === "external" && !user.allow_external && user.role_type !== "admin") {
-      alert(`⚠️ TÀI KHOẢN BỊ GIỚI HẠN NGOẠI VIỆN:\n\nNhân sự: ${user.full_name}\nTài khoản chưa được cấp quyền truy cập ngoại viện! Vui lòng kết nối mạng Wi-Fi bệnh viện.`);
-      return;
-    }
-    const dept = (VPI_Store.data.departments || []).find(d => d.id === user.department_id);
-    currentUser = { ...user, department_name: dept ? dept.name : "Khoa công tác" };
-    localStorage.setItem("vpi_current_user", JSON.stringify(currentUser));
-    initCurrentUser();
-    closeModal("staff-login-modal");
-    alert(`🎉 Xin chào ${currentUser.full_name}!\nThiết bị đã ghi nhớ tài khoản của bạn.`);
-    populateNewAuditDropdowns();
-    loadMyProfile();
-  } else {
-    alert("❌ Lỗi: Mã PIN không đúng (Mã PIN mặc định: 1234)!");
-  }
-}
-
-function logoutUser() {
-  if (confirm("Bạn có chắc chắn muốn đăng xuất khỏi tài khoản này?")) {
-    localStorage.removeItem("vpi_current_user");
-    currentUser = null;
-    initCurrentUser();
-    closeModal("staff-login-modal");
-    switchTab("dashboard");
-    alert("👋 Bạn đã đăng xuất thành công!");
-  }
-}
-
-async function loadMyProfile() {
-  if (!currentUser) {
-    document.getElementById("my-profile-name").textContent = "Chưa Đăng Nhập Tài Khoản";
-    document.getElementById("my-profile-role").textContent = "Bấm 'Đổi Tài Khoản' để đăng nhập cá nhân hoặc chọn tài khoản mẫu";
-    document.getElementById("my-profile-dept").textContent = "Khoa: Chưa chọn | Cấp quyền: Khách";
-    document.getElementById("my-rooms-tbody").innerHTML = `
-      <tr><td colspan="6" style="text-align:center; padding: 25px; color: var(--gray-400);">
-        Vui lòng bấm nút <strong>"Đổi Tài Khoản"</strong> phía trên để đăng nhập cán bộ của bạn!
-      </td></tr>
-    `;
-    document.getElementById("my-audits-tbody").innerHTML = `
-      <tr><td colspan="6" style="text-align:center; padding: 25px; color: var(--gray-400);">
-        Chưa có dữ liệu cá nhân.
-      </td></tr>
-    `;
-    const adminPanel = document.getElementById("my-profile-admin-panel");
-    if (adminPanel) adminPanel.style.display = "none";
-    return;
-  }
-
-  // Cập nhật khối lối tắt quản trị dành cho Admin & Manager
-  const adminPanel = document.getElementById("my-profile-admin-panel");
-  const adminBadge = document.getElementById("my-profile-admin-badge");
-  const setBtn = document.getElementById("my-btn-shortcut-settings");
-  if (adminPanel) {
-    if (currentUser.role_type === "admin") {
-      adminPanel.style.display = "block";
-      if (adminBadge) { adminBadge.textContent = "👑 Ban QLCL / Admin"; adminBadge.className = "badge badge-fail"; }
-      if (setBtn) setBtn.style.display = "flex";
-    } else if (currentUser.role_type === "manager") {
-      adminPanel.style.display = "block";
-      if (adminBadge) { adminBadge.textContent = "🛡️ Quản Lý Khoa"; adminBadge.className = "badge badge-good"; }
-      if (setBtn) setBtn.style.display = "none";
-    } else {
-      adminPanel.style.display = "none";
-    }
-  }
-
-  // Điền thông tin profile
-  document.getElementById("my-profile-name").textContent = currentUser.full_name;
-  let roleTitle = currentUser.role || "Cán bộ y tế";
-  if (currentUser.role_type === "admin") roleTitle += " (👑 Toàn Quyền Admin)";
-  if (currentUser.role_type === "manager") roleTitle += " (🛡️ Quản Lý Khoa)";
-  document.getElementById("my-profile-role").textContent = roleTitle;
-  document.getElementById("my-profile-dept").textContent = `Khoa: ${currentUser.department_name} (${currentUser.department_code}) | Mã NV: ${currentUser.staff_code} | Username: @${currentUser.username || ''}`;
-
-  try {
-    const res = await fetch(`/api/staff/my-stats?name=${encodeURIComponent(currentUser.full_name)}`);
-    const data = await res.json();
-
-    document.getElementById("my-stat-audits").textContent = data.audits_count || 0;
-    document.getElementById("my-stat-avg").textContent = data.avg_score ? `${data.avg_score}đ` : "--";
-    document.getElementById("my-stat-rooms").textContent = data.my_rooms ? data.my_rooms.length : 0;
-
-    // Render Buồng phòng phụ trách
-    const roomsTbody = document.getElementById("my-rooms-tbody");
-    if (roomsTbody) {
-      if (!data.my_rooms || data.my_rooms.length === 0) {
-        roomsTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--gray-400);">Bạn chưa được phân công phụ trách phòng cụ thể nào.</td></tr>`;
-      } else {
-        roomsTbody.innerHTML = data.my_rooms.map(r => `
-          <tr>
-            <td><strong>${r.code}</strong></td>
-            <td style="font-weight:600;">${r.name}</td>
-            <td><span class="badge" style="background:#f1f5f9; color:var(--gray-700);">${r.floor}</span></td>
-            <td>${r.room_type}</td>
-            <td><span class="badge badge-good">Mục tiêu 90đ</span></td>
-            <td>
-              <button class="btn-primary btn-sm" onclick="auditRoomDirectly(${r.department_id}, ${r.id})">
-                <i class="fa-solid fa-camera"></i> Kiểm Tra 5S
-              </button>
-            </td>
-          </tr>
-        `).join("");
-      }
-    }
-
-    // Render Lịch sử kiểm tra gần đây của cá nhân
-    const auditsTbody = document.getElementById("my-audits-tbody");
-    if (auditsTbody) {
-      if (!data.my_audits || data.my_audits.length === 0) {
-        auditsTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--gray-400);">Bạn chưa thực hiện phiếu kiểm tra 5S nào. Hãy bấm "Đi Buồng Kiểm Tra" để tạo phiếu đầu tiên!</td></tr>`;
-      } else {
-        auditsTbody.innerHTML = data.my_audits.map(a => `
-          <tr>
-            <td><strong>${a.audit_code}</strong></td>
-            <td>${a.room_name}</td>
-            <td>${a.audit_date} (${a.shift})</td>
-            <td><strong style="color:#0284c7;">${a.total_score}đ</strong></td>
-            <td>
-              <span class="badge ${a.rating === 'Xuất sắc' ? 'badge-excellent' : (a.rating === 'Tốt' ? 'badge-good' : (a.rating === 'Đạt' ? 'badge-pass' : 'badge-fail'))}">
-                ${a.rating}
-              </span>
-            </td>
-            <td>
-              <button class="btn-outline btn-sm" onclick="viewAuditDetail(${a.id})">
-                <i class="fa-solid fa-eye"></i> Xem
-              </button>
-            </td>
-          </tr>
-        `).join("");
-      }
-    }
-  } catch (e) {
-    console.error("Lỗi lấy thống kê cá nhân:", e);
-  }
-}
-
-// ==================== QUẢN LÝ NHÂN SỰ & PHÂN QUYỀN (STAFF & RBAC) ====================
-async function loadStaffList() {
-  const deptSelect = document.getElementById("staff-filter-dept");
-  const titleText = document.getElementById("staff-mgmt-title-text");
-  const isManager = currentUser && currentUser.role_type === "manager";
-
-  const addBtnText = document.getElementById("staff-add-btn-text");
-
-  // Nếu là Quản lý Khoa -> Khóa bộ lọc vào đúng Khoa của mình
-  if (isManager) {
-    if (deptSelect) {
-      deptSelect.value = currentUser.department_id;
-      deptSelect.disabled = true;
-    }
-    if (titleText) {
-      titleText.innerHTML = `Quản Lý Nhân Sự & Phân Công 5S - <span style="color:#0284c7;">${currentUser.department_name}</span>`;
-    }
-    if (addBtnText) {
-      addBtnText.textContent = "Thêm Nhân Viên Vào Khoa";
-    }
-  } else {
-    if (deptSelect) {
-      deptSelect.disabled = false;
-    }
-    if (titleText) {
-      titleText.textContent = "Danh Sách Cán Bộ Nhân Viên & Phân Quyền Các Khoa Phòng";
-    }
-    if (addBtnText) {
-      addBtnText.textContent = "Thêm Cán Bộ / Nhân Viên Mới";
-    }
-  }
-
-  const deptId = deptSelect ? deptSelect.value : "";
-  const url = deptId ? `/api/staff?department_id=${deptId}` : "/api/staff";
-
-  try {
-    const res = await fetch(url);
-    if (res.ok) allStaffList = await res.json();
-    else allStaffList = deptId ? (VPI_Store.data.staff || []).filter(s => s.department_id == deptId) : (VPI_Store.data.staff || []);
-  } catch (e) {
-    allStaffList = deptId ? (VPI_Store.data.staff || []).filter(s => s.department_id == deptId) : (VPI_Store.data.staff || []);
-  }
-  try {
-
-    // Cập nhật 4 chỉ số thống kê cán bộ
-    const totalCount = allStaffList.length;
-    const adminCount = allStaffList.filter(s => s.role_type === "admin").length;
-    const managerCount = allStaffList.filter(s => s.role_type === "manager").length;
-    const staffCount = allStaffList.filter(s => s.role_type === "staff").length;
-
-    const statTotal = document.getElementById("staff-stat-total");
-    const statAdmin = document.getElementById("staff-stat-admin");
-    const statManager = document.getElementById("staff-stat-manager");
-    const statStaff = document.getElementById("staff-stat-staff");
-
-    if (statTotal) statTotal.textContent = totalCount;
-    if (statAdmin) statAdmin.textContent = adminCount;
-    if (statManager) statManager.textContent = managerCount;
-    if (statStaff) statStaff.textContent = staffCount;
-
-    filterStaffTable();
-  } catch (e) {
-    console.error("Lỗi tải danh sách cán bộ:", e);
-  }
-}
-
-function filterStaffTable() {
-  const searchInput = document.getElementById("staff-search-input");
-  const roleSelect = document.getElementById("staff-filter-role");
-
-  const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
-  const roleType = roleSelect ? roleSelect.value : "";
-
-  let filtered = allStaffList;
-  if (roleType) {
-    filtered = filtered.filter(s => s.role_type === roleType);
-  }
-  if (query) {
-    filtered = filtered.filter(s => 
-      s.full_name.toLowerCase().includes(query) ||
-      (s.staff_code && s.staff_code.toLowerCase().includes(query)) ||
-      (s.username && s.username.toLowerCase().includes(query)) ||
-      (s.role && s.role.toLowerCase().includes(query)) ||
-      (s.phone && s.phone.includes(query))
-    );
-  }
-
-  renderStaffTable(filtered);
-}
-
-function renderStaffTable(staffs) {
-  const tbody = document.getElementById("staff-table-tbody");
-  if (!tbody) return;
-
-  if (staffs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 25px; color: var(--gray-400);">Không tìm thấy cán bộ / nhân viên nào phù hợp.</td></tr>`;
-    return;
-  }
-
-  const isManager = currentUser && currentUser.role_type === "manager";
-
-  tbody.innerHTML = staffs.map(s => {
-    let roleBadge = '<span class="badge" style="background:#d1fae5; color:#10b981;"><i class="fa-solid fa-user-nurse"></i> Nhân viên</span>';
-    if (s.role_type === "admin") {
-      roleBadge = '<span class="badge" style="background:#fee2e2; color:#ef4444;"><i class="fa-solid fa-crown"></i> Admin Toàn Viện</span>';
-    } else if (s.role_type === "manager") {
-      roleBadge = '<span class="badge" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-user-shield"></i> Quản Lý Khoa</span>';
-    }
-
-    let roomsDesc = '<span style="color:var(--gray-400); font-size:0.8rem;">Chưa chỉ định</span>';
-    if (s.assigned_room_details && s.assigned_room_details.length > 0) {
-      roomsDesc = s.assigned_room_details.map(r => `
-        <span class="badge" style="background:#e0f2fe; color:#0369a1; margin:2px; font-size:0.75rem;" title="${r.name} (${r.floor})">
-          <i class="fa-solid fa-door-open"></i> ${r.code}
-        </span>
-      `).join(" ");
-    } else if (s.assigned_rooms && s.assigned_rooms.length > 0) {
-      roomsDesc = `<span class="badge badge-pass"><i class="fa-solid fa-door-open"></i> ${s.assigned_rooms.length} Buồng Phòng</span>`;
-    }
-
-    const isMasterAdmin = s.username === "admin";
-    const isSelf = currentUser && s.id === currentUser.id;
-
-    let deleteBtn = '';
-    if (isMasterAdmin) {
-      deleteBtn = `<button class="btn-outline btn-sm" style="color:#cbd5e1; border-color:#e2e8f0;" disabled title="Không thể xóa tài khoản Quản trị toàn viện"><i class="fa-solid fa-trash"></i></button>`;
-    } else if (isManager && isSelf) {
-      deleteBtn = `<button class="btn-outline btn-sm" style="color:#cbd5e1; border-color:#e2e8f0;" disabled title="Bạn không thể tự xóa tài khoản của chính mình"><i class="fa-solid fa-trash"></i></button>`;
-    } else {
-      deleteBtn = `<button class="btn-outline btn-sm" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteStaff(${s.id}, '${s.full_name}')" title="Xóa nhân viên khỏi khoa"><i class="fa-solid fa-trash"></i></button>`;
-    }
-
-    let extBadge = '';
-    if (s.role_type === "admin") {
-      extBadge = '<span class="badge" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-crown"></i> Admin 24/7</span>';
-    } else if (s.allow_external) {
-      extBadge = `<span class="badge" style="background:#dcfce7; color:#15803d; cursor:pointer;" onclick="toggleStaffExternal(${s.id})" title="Được phép 4G - Nhấn để chuyển thành Chỉ nội viện"><i class="fa-solid fa-globe"></i> Được phép 4G</span>`;
-    } else {
-      extBadge = `<span class="badge" style="background:#fef3c7; color:#b45309; cursor:pointer;" onclick="toggleStaffExternal(${s.id})" title="Chỉ nội viện - Nhấn để cấp quyền 4G"><i class="fa-solid fa-building"></i> Chỉ nội viện</span>`;
+    const totalScore = Object.values(this.newAuditState.scores).reduce((a, b) => a + b, 0);
+    let gradeBadge = '<span class="text-emerald-700 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full font-bold text-xs">XUẤT SẮC (90 - 100đ)</span>';
+    if (totalScore < 70) {
+      gradeBadge = '<span class="text-red-700 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-full font-bold text-xs">CẦN CẢI TIẾN (< 70đ)</span>';
+    } else if (totalScore < 90) {
+      gradeBadge = '<span class="text-blue-700 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full font-bold text-xs">ĐẠT CHUẨN (70 - 89đ)</span>';
     }
 
     return `
-      <tr>
-        <td>
-          <div style="font-weight: 700; color: var(--gray-800);">${s.staff_code}</div>
-          <div style="font-family: monospace; font-size: 0.76rem; color: #0284c7;">@${s.username || ''}</div>
-        </td>
-        <td>
-          <div style="font-weight: 600; color: var(--gray-900);">${s.full_name}</div>
-          <div style="font-size: 0.74rem; color: var(--gray-500);"><i class="fa-solid fa-key"></i> PIN: ${s.pin_code || '1234'}</div>
-        </td>
-        <td>
-          <div style="font-weight: 600;">${s.department_name}</div>
-          <div style="font-size: 0.76rem; color: var(--gray-500);">${s.department_code}</div>
-        </td>
-        <td>${s.role}</td>
-        <td>${roleBadge}</td>
-        <td>${roomsDesc}</td>
-        <td>${s.phone || '<span style="color:var(--gray-400);">--</span>'}</td>
-        <td>${extBadge}</td>
-        <td>
-          <div style="display: flex; gap: 6px;">
-            <button class="btn-primary btn-sm" onclick="editStaff(${s.id})" title="Phân công buồng phòng & Chỉnh sửa">
-              <i class="fa-solid fa-clipboard-check"></i> Phân Công & Sửa
-            </button>
-            ${deleteBtn}
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join("");
-}
-
-function showAddStaffModal() {
-  const isManager = currentUser && currentUser.role_type === "manager";
-  const deptSelect = document.getElementById("m-staff-dept-select");
-  const roleTypeSelect = document.getElementById("m-staff-role-type");
-
-  document.getElementById("staff-modal-title").textContent = isManager 
-    ? `Thêm Nhân Viên & Phân Công 5S - ${currentUser.department_name}`
-    : "Thêm Cán Bộ / Nhân Viên Mới & Phân Quyền";
-
-  document.getElementById("m-staff-id").value = "";
-  document.getElementById("m-staff-name").value = "";
-  document.getElementById("m-staff-code").value = "";
-  document.getElementById("m-staff-username").value = "";
-  document.getElementById("m-staff-password").value = "123456";
-  document.getElementById("m-staff-role").value = "Điều dưỡng viên";
-  document.getElementById("m-staff-phone").value = "";
-  document.getElementById("m-staff-pin").value = "1234";
-  const allowExtCb = document.getElementById("m-staff-allow-external");
-  if (allowExtCb) allowExtCb.checked = true;
-
-  if (roleTypeSelect) {
-    if (isManager) {
-      roleTypeSelect.innerHTML = `
-        <option value="staff">👤 Nhân viên đi buồng 5S</option>
-        <option value="manager">🛡️ Quản lý cấp khoa</option>
-      `;
-      roleTypeSelect.value = "staff";
-    } else {
-      roleTypeSelect.innerHTML = `
-        <option value="staff">👤 Nhân viên đi buồng 5S</option>
-        <option value="manager">🛡️ Quản lý cấp khoa</option>
-        <option value="admin">👑 Quản trị toàn viện (Admin)</option>
-      `;
-      roleTypeSelect.value = "staff";
-    }
-  }
-
-  if (deptSelect) {
-    if (isManager) {
-      deptSelect.value = currentUser.department_id;
-      deptSelect.disabled = true;
-    } else {
-      deptSelect.disabled = false;
-      if (!deptSelect.value && allDepartments.length > 0) {
-        deptSelect.value = allDepartments[0].id;
-      }
-    }
-    onStaffDeptChanged([]);
-  }
-
-  openModal("staff-edit-modal");
-}
-
-async function onStaffDeptChanged(preSelectedRoomIds = []) {
-  const deptSelect = document.getElementById("m-staff-dept-select");
-  const container = document.getElementById("m-staff-rooms-container");
-  if (!deptSelect || !container) return;
-
-  const deptId = deptSelect.value || (currentUser ? currentUser.department_id : "");
-  if (!deptId) {
-    container.innerHTML = '<div style="font-size:0.8rem; color:var(--gray-400);">Vui lòng chọn Khoa công tác...</div>';
-    return;
-  }
-
-  container.innerHTML = '<div style="font-size:0.8rem; color:var(--gray-500);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách phòng...</div>';
-
-  try {
-    const res = await fetch(`/api/rooms?department_id=${deptId}`);
-    const rooms = await res.json();
-
-    if (rooms.length === 0) {
-      container.innerHTML = '<div style="font-size:0.8rem; color:var(--gray-400);">Khoa này hiện chưa có buồng phòng nào được tạo.</div>';
-      return;
-    }
-
-    container.innerHTML = rooms.map(r => {
-      const isChecked = preSelectedRoomIds && preSelectedRoomIds.includes(r.id);
-      return `
-        <label style="display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 0.85rem; cursor: pointer;">
-          <input type="checkbox" class="staff-room-cb" value="${r.id}" ${isChecked ? 'checked' : ''}>
-          <span><strong>${r.code}</strong> - ${r.name} (${r.room_type}, ${r.floor})</span>
-        </label>
-      `;
-    }).join("");
-  } catch (e) {
-    container.innerHTML = '<div style="font-size:0.8rem; color:red;">Lỗi tải buồng phòng: ' + e.message + '</div>';
-  }
-}
-
-async function editStaff(staffId) {
-  const staff = allStaffList.find(s => s.id === staffId);
-  if (!staff) return;
-
-  const isManager = currentUser && currentUser.role_type === "manager";
-  if (isManager && staff.department_id !== currentUser.department_id) {
-    alert("⚠️ Bạn chỉ có quyền quản lý nhân sự thuộc Khoa của mình!");
-    return;
-  }
-
-  document.getElementById("staff-modal-title").textContent = `Phân Công Vị Trí 5S & Sửa: ${staff.full_name}`;
-  document.getElementById("m-staff-id").value = staff.id;
-  document.getElementById("m-staff-name").value = staff.full_name;
-  document.getElementById("m-staff-code").value = staff.staff_code;
-  document.getElementById("m-staff-username").value = staff.username || "";
-  document.getElementById("m-staff-password").value = ""; // Để trống nếu không đổi
-  document.getElementById("m-staff-role").value = staff.role || "";
-  document.getElementById("m-staff-phone").value = staff.phone || "";
-  document.getElementById("m-staff-pin").value = staff.pin_code || "1234";
-
-  const editAllowExt = document.getElementById("m-staff-allow-external");
-  if (editAllowExt) editAllowExt.checked = (staff.allow_external !== 0);
-
-  const roleTypeSelect = document.getElementById("m-staff-role-type");
-  if (roleTypeSelect) {
-    if (isManager) {
-      roleTypeSelect.innerHTML = `
-        <option value="staff">👤 Nhân viên đi buồng 5S</option>
-        <option value="manager">🛡️ Quản lý cấp khoa</option>
-      `;
-      roleTypeSelect.value = staff.role_type === "admin" ? "manager" : (staff.role_type || "staff");
-    } else {
-      roleTypeSelect.innerHTML = `
-        <option value="staff">👤 Nhân viên đi buồng 5S</option>
-        <option value="manager">🛡️ Quản lý cấp khoa</option>
-        <option value="admin">👑 Quản trị toàn viện (Admin)</option>
-      `;
-      roleTypeSelect.value = staff.role_type || "staff";
-    }
-  }
-
-  const deptSelect = document.getElementById("m-staff-dept-select");
-  if (deptSelect) {
-    deptSelect.value = staff.department_id;
-    deptSelect.disabled = isManager;
-  }
-
-  await onStaffDeptChanged(staff.assigned_rooms || []);
-  openModal("staff-edit-modal");
-}
-
-async function submitStaffEdit() {
-  const staffId = document.getElementById("m-staff-id").value;
-  const fullName = document.getElementById("m-staff-name").value.trim();
-  const staffCode = document.getElementById("m-staff-code").value.trim();
-  const username = document.getElementById("m-staff-username").value.trim();
-  const password = document.getElementById("m-staff-password").value.trim();
-  const deptSelect = document.getElementById("m-staff-dept-select");
-  const deptId = (deptSelect && deptSelect.value) ? deptSelect.value : (currentUser ? currentUser.department_id : "");
-  const role = document.getElementById("m-staff-role").value.trim();
-  const roleType = document.getElementById("m-staff-role-type").value;
-  const phone = document.getElementById("m-staff-phone").value.trim();
-  const pin = document.getElementById("m-staff-pin").value.trim() || "1234";
-  const allowExtCb = document.getElementById("m-staff-allow-external");
-
-  if (!fullName || !staffCode || !deptId || !role) {
-    alert("Vui lòng điền đầy đủ các thông tin bắt buộc: Họ tên, Mã nhân viên, Khoa và Chức vụ!");
-    return;
-  }
-
-  // Thu thập các buồng phòng được tick chọn
-  const roomCheckboxes = document.querySelectorAll(".staff-room-cb:checked");
-  const assignedRooms = Array.from(roomCheckboxes).map(cb => parseInt(cb.value));
-
-  const payload = {
-    full_name: fullName,
-    staff_code: staffCode,
-    username: username,
-    department_id: parseInt(deptId),
-    role: role,
-    role_type: roleType,
-    phone: phone,
-    pin_code: pin,
-    assigned_rooms: assignedRooms,
-    allow_external: (allowExtCb && allowExtCb.checked) ? 1 : 0
-  };
-
-  if (password) {
-    payload.password = password;
-  }
-
-  try {
-    let url = "/api/staff";
-    let method = "POST";
-    if (staffId) {
-      url = `/api/staff/${staffId}`;
-      method = "PUT";
-    }
-
-    if (staffId) {
-      const idx = VPI_Store.data.staff.findIndex(s => s.id == staffId);
-      if (idx !== -1) {
-        VPI_Store.data.staff[idx] = { ...VPI_Store.data.staff[idx], ...payload };
-      }
-    } else {
-      const newId = Math.max(...VPI_Store.data.staff.map(s => s.id), 0) + 1;
-      VPI_Store.data.staff.push({ id: newId, ...payload, created_at: new Date().toISOString() });
-    }
-    VPI_Store.save();
-
-    try {
-      await fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    } catch (apiErr) {}
-
-    alert("✅ Lưu thông tin cán bộ nhân viên thành công!");
-    closeModal("staff-edit-modal");
-    await loadStaffList();
-    return;
-  } catch (e) {
-    alert("Lỗi kết nối máy chủ: " + e.message);
-  }
-}
-
-async function deleteStaff(staffId, staffName) {
-  const staff = allStaffList.find(s => s.id === staffId);
-  const isManager = currentUser && currentUser.role_type === "manager";
-
-  if (isManager) {
-    if (staffId === currentUser.id) {
-      alert("❌ Bạn không thể tự xóa tài khoản quản lý của chính mình!");
-      return;
-    }
-    if (staff && staff.department_id !== currentUser.department_id) {
-      alert("❌ Bạn chỉ có quyền xóa nhân sự thuộc Khoa của mình!");
-      return;
-    }
-  }
-
-  if (!confirm(`Bạn có chắc chắn muốn xóa nhân viên "${staffName}" khỏi khoa không?`)) {
-    return;
-  }
-
-  try {
-    VPI_Store.data.staff = VPI_Store.data.staff.filter(s => s.id !== staffId);
-    VPI_Store.save();
-
-    try {
-      await fetch(`/api/staff/${staffId}`, { method: "DELETE" });
-    } catch (apiErr) {}
-
-    alert("✅ Đã xóa nhân viên thành công!");
-    await loadStaffList();
-    return;
-  } catch (e) {
-    alert("Lỗi kết nối máy chủ: " + e.message);
-  }
-}
-
-// ==================== CẤU HÌNH & CHỈNH SỬA NỘI DUNG (SETTINGS) ====================
-async function loadAppSettings() {
-  try {
-    const res = await fetch("/api/settings");
-    appSettings = await res.json();
-
-    // Điền vào form cài đặt
-    const setHosp = document.getElementById("set-hospital-name");
-    const setSys = document.getElementById("set-system-title");
-    const setSlogan = document.getElementById("set-system-slogan");
-    const setHotline = document.getElementById("set-hotline");
-
-    if (setHosp) setHosp.value = appSettings.hospital_name || "";
-    if (setSys) setSys.value = appSettings.system_title || "";
-    if (setSlogan) setSlogan.value = appSettings.system_slogan || "";
-    if (setHotline) setHotline.value = appSettings.hospital_hotline || "";
-
-    // Điền 5 tiêu chí
-    for (let i = 1; i <= 5; i++) {
-      const titleInput = document.getElementById(`set-crit-${i}-title`);
-      const descInput = document.getElementById(`set-crit-${i}-desc`);
-      if (titleInput) titleInput.value = appSettings[`criteria_${i}_title`] || "";
-      if (descInput) descInput.value = appSettings[`criteria_${i}_desc`] || "";
-    }
-
-    // Cập nhật giao diện trực tiếp
-    const brandTitle = document.querySelector(".brand-title");
-    const brandSub = document.querySelector(".brand-sub");
-    if (brandTitle && appSettings.hospital_name) {
-      brandTitle.textContent = appSettings.hospital_name;
-    }
-    if (brandSub && appSettings.system_title) {
-      brandSub.textContent = appSettings.system_title;
-    }
-
-    // Cập nhật tiêu đề & mô tả 5 tiêu chí trên Phiếu Đánh Giá Mới
-    for (let i = 1; i <= 5; i++) {
-      const critTitle = document.getElementById(`crit-title-${i}`);
-      const critDesc = document.getElementById(`crit-desc-${i}`);
-      if (critTitle && appSettings[`criteria_${i}_title`]) {
-        critTitle.textContent = appSettings[`criteria_${i}_title`] + ":";
-      }
-      if (critDesc && appSettings[`criteria_${i}_desc`]) {
-        critDesc.textContent = appSettings[`criteria_${i}_desc`];
-      }
-    }
-  } catch (e) {
-    console.error("Lỗi tải cài đặt nội dung:", e);
-  }
-}
-
-async function saveAppSettings() {
-  const setHosp = document.getElementById("set-hospital-name").value.trim();
-  const setSys = document.getElementById("set-system-title").value.trim();
-  const setSlogan = document.getElementById("set-system-slogan").value.trim();
-  const setHotline = document.getElementById("set-hotline").value.trim();
-
-  if (!setHosp) {
-    alert("Tên cơ sở y tế không được để trống!");
-    return;
-  }
-
-  const payload = {
-    hospital_name: setHosp,
-    system_title: setSys,
-    system_slogan: setSlogan,
-    hospital_hotline: setHotline
-  };
-
-  for (let i = 1; i <= 5; i++) {
-    const titleInput = document.getElementById(`set-crit-${i}-title`);
-    const descInput = document.getElementById(`set-crit-${i}-desc`);
-    if (titleInput) payload[`criteria_${i}_title`] = titleInput.value.trim();
-    if (descInput) payload[`criteria_${i}_desc`] = descInput.value.trim();
-  }
-
-  try {
-    const res = await fetch("/api/settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await res.json();
-    if (result.success) {
-      alert("✅ Đã lưu cài đặt nội dung và cập nhật toàn bộ tiêu chí 5S thành công!");
-      await loadAppSettings();
-    } else {
-      alert("❌ Lỗi: " + (result.error || "Không thể lưu cài đặt"));
-    }
-  } catch (e) {
-    alert("Lỗi kết nối máy chủ: " + e.message);
-  }
-}
-
-// ==================== QUẢN LÝ QUYỀN NGOẠI VIỆN (RBAC) ====================
-async function toggleStaffExternal(staffId) {
-  try {
-    const res = await fetch(`/api/staff/${staffId}/toggle-external`, {
-      method: "PUT"
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert("✅ " + data.message);
-      await loadStaffList();
-    } else {
-      alert("❌ " + (data.error || "Không thể cập nhật quyền ngoại viện"));
-    }
-  } catch (e) {
-    alert("Lỗi kết nối máy chủ: " + e.message);
-  }
-}
-
-// ==================== HỆ THỐNG SAO LƯU & KHÔI PHỤC DỮ LIỆU (DISASTER RECOVERY) ====================
-async function loadBackupsList() {
-  const tbody = document.getElementById("backup-table-tbody");
-  if (!tbody) return;
-
-  try {
-    let data = { backups: [] };
-    try {
-      const res = await fetch("/api/backup/list");
-      if (res.ok) data = await res.json();
-    } catch (e) {}
-
-    if (!data.backups || data.backups.length === 0) {
-      data = {
-        backups: [
-          {
-            filename: "vpi_5s_backup_clean_snapshot.zip",
-            created_at: new Date().toISOString().slice(0, 10) + " 06:00:00",
-            size_mb: "1.2",
-            type: "Tự động"
-          }
-        ]
-      };
-    }
-
-    if (data.backups && data.backups.length > 0) {
-      tbody.innerHTML = data.backups.map(b => `
-        <tr>
-          <td>
-            <div style="font-weight: 700; color: #0284c7; font-family: monospace;">${b.filename}</div>
-          </td>
-          <td>${b.created_at}</td>
-          <td><span class="badge" style="background:#e0f2fe; color:#0369a1;">${b.size_mb} MB</span></td>
-          <td><span class="badge ${b.type === 'Tự động' ? 'badge-good' : 'badge-pass'}">${b.type}</span></td>
-          <td>
-            <div style="display: flex; gap: 6px;">
-              <a href="/api/backup/download?filename=${encodeURIComponent(b.filename)}" class="btn-outline btn-sm" title="Tải file ZIP về máy tính">
-                <i class="fa-solid fa-download"></i> Tải
-              </a>
-              <button class="btn-outline btn-sm" style="color: #ef4444; border-color: #fca5a5;" onclick="restoreSystemBackup('${b.filename}')" title="Khôi phục toàn bộ CSDL và ảnh từ file này">
-                <i class="fa-solid fa-rotate-left"></i> Khôi phục
-              </button>
+      <div class="p-4 space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3 mb-3">
+            <div>
+              <span class="text-xs font-mono font-bold text-emerald-600">PHIẾU ĐÁNH GIÁ 5S BUỒNG PHÒNG</span>
+              <h2 class="text-base font-black text-slate-900 dark:text-white">Kiểm Tra Vệ Sinh & 5S</h2>
             </div>
-          </td>
-        </tr>
-      `).join("");
-    } else {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:15px; color:var(--gray-400);">Chưa có bản sao lưu nào. Hãy bấm "TẠO BẢN SAO LƯU NGAY".</td></tr>`;
+            <div class="text-right">
+              <div class="text-xl font-mono font-black text-emerald-600 dark:text-emerald-400">${totalScore} / 100</div>
+              ${gradeBadge}
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Khoa / Trung tâm kiểm tra *</label>
+              <select onchange="app5s.onAuditDeptChange(this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                ${sortedDepts.map(d => `<option value="${d.id}" ${d.id == currentDeptId ? 'selected' : ''}>#${d.order || ''} ${d.name}</option>`).join('')}
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Buồng / Khu vực làm việc *</label>
+                <select id="audit-room-select" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  ${sortedRooms.map(r => `<option value="${r.id}" ${r.id == this.newAuditState.roomId ? 'selected' : ''}>${r.name} (${r.code})</option>`).join('')}
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Ca kiểm tra</label>
+                <select id="audit-shift-select" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option>Ca sáng (07:00 - 11:30)</option>
+                  <option>Ca chiều (13:30 - 17:00)</option>
+                  <option>Ca trực đêm</option>
+                  <option>Kiểm tra đột xuất</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Cán bộ kiểm tra</label>
+              <input type="text" value="${userName} (${userTitle})" readonly class="w-full bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
+            </div>
+          </div>
+        </div>
+
+        <!-- ĐÁNH GIÁ 5 TIÊU CHÍ (MAX 20 ĐIỂM MỖI TIÊU CHÍ) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">Đánh Giá Chi Tiết 5S</h3>
+            <button onclick="app5s.setAllMaxScores()" class="text-[10px] text-emerald-600 font-bold hover:underline">Chấm tối đa (100đ)</button>
+          </div>
+
+          <div class="space-y-4">
+            ${this.data.criteria.map(c => {
+              const currentScore = this.newAuditState.scores[c.id] || 20;
+              return `
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="font-bold text-slate-800 dark:text-slate-200">${c.name}</span>
+                    <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">${currentScore} / ${c.max}đ</span>
+                  </div>
+                  <p class="text-[10px] text-slate-500">${c.desc}</p>
+                  <input type="range" min="0" max="${c.max}" step="1" value="${currentScore}" oninput="app5s.setCriterionScore(${c.id}, parseInt(this.value))" class="w-full accent-emerald-600 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg cursor-pointer">
+                  <div class="flex justify-between text-[9px] text-slate-400 font-mono">
+                    <span>0đ</span>
+                    <span>10đ</span>
+                    <span>15đ</span>
+                    <span>20đ (Chuẩn)</span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- HÌNH ẢNH MINH CHỨNG 5S: DUY NHẤT 1 Ô ẢNH SAU KHI ĐÃ 5S -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-3">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="image" class="w-4 h-4 text-emerald-600"></i>
+            <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Hình Ảnh Minh Chứng 5S</h3>
+          </div>
+          <p class="text-[11px] text-slate-500">Chụp hoặc tải lên hình ảnh buồng phòng sau khi đã thực hiện sàng lọc, sắp xếp sạch sẽ.</p>
+
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">Ảnh Sau Khi Đã 5S (Chuẩn sạch sẽ & sắp xếp) *</label>
+            <div id="after-photo-preview" class="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl p-4 text-center bg-emerald-50/40 dark:bg-emerald-950/20 hover:bg-emerald-50 transition cursor-pointer">
+              ${this.newAuditState.afterPhoto ? `
+                <img src="${this.newAuditState.afterPhoto}" class="w-full h-44 object-cover rounded-xl shadow-xs">
+                <button onclick="app5s.removeAfterPhoto(event)" class="absolute top-6 right-6 bg-red-600 text-white rounded-full p-1.5 shadow-md">
+                  <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+              ` : `
+                <input type="file" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                <div class="space-y-1.5 py-4">
+                  <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center mx-auto">
+                    <i data-lucide="camera" class="w-6 h-6"></i>
+                  </div>
+                  <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300">Bấm để Chụp ảnh hoặc Tải ảnh lên</div>
+                  <div class="text-[10px] text-slate-400">Hỗ trợ JPG, PNG từ máy ảnh điện thoại hoặc thư viện ảnh</div>
+                </div>
+              `}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Ghi chú kiểm tra</label>
+            <textarea id="audit-notes" rows="2" placeholder="Ghi chú về việc sắp xếp, lau khử khuẩn hoặc tình trạng buồng phòng..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Hành động khắc phục (nếu có)</label>
+            <input type="text" id="audit-action" placeholder="Ví dụ: Bổ sung cồn khử khuẩn, dán lại tem nhãn..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100">
+          </div>
+
+          <button onclick="app5s.saveNewAudit()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+            <i data-lucide="check-circle" class="w-5 h-5"></i>
+            <span>Hoàn Tất & Lưu Phiếu Chấm 5S</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  onAuditDeptChange(deptId) {
+    this.newAuditState.deptId = parseInt(deptId);
+    const rooms = this.getSortedRooms(this.newAuditState.deptId);
+    if (rooms.length > 0) {
+      this.newAuditState.roomId = rooms[0].id;
     }
-  } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:15px; color:red;">Lỗi tải danh sách sao lưu: ${e.message}</td></tr>`;
+    this.render();
   }
-}
 
-async function createManualBackup() {
-  if (!confirm("Hệ thống sẽ đóng gói toàn bộ CSDL SQLite, plain SQL dump và ảnh vi phạm 5S thành 1 file ZIP an toàn. Bạn muốn tạo bản sao lưu ngay?")) return;
+  setCriterionScore(criterionId, pts) {
+    this.newAuditState.scores[criterionId] = pts;
+    this.render();
+  }
 
-  try {
-    const res = await fetch("/api/backup/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "manual" })
-    });
-    const result = await res.json();
-    if (result.success) {
-      alert(`✅ ĐÃ TẠO BẢN SAO LƯU THÀNH CÔNG!\nFile: ${result.filename}\nDung lượng: ${result.size_mb} MB\nThời gian: ${result.created_at}`);
-      await loadBackupsList();
-    } else {
-      alert("❌ Lỗi tạo sao lưu: " + (result.error || "Không xác định"));
+  setAllMaxScores() {
+    this.newAuditState.scores = { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 };
+    this.render();
+  }
+
+  onAfterPhotoSelected(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      this.newAuditState.afterPhoto = evt.target.result;
+      this.render();
+      this.showToast('Đã tải ảnh minh chứng 5S thành công!');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeAfterPhoto(e) {
+    e.stopPropagation();
+    this.newAuditState.afterPhoto = '';
+    this.render();
+  }
+
+  saveNewAudit() {
+    const roomSelect = document.getElementById('audit-room-select');
+    const shiftSelect = document.getElementById('audit-shift-select');
+    const notesInput = document.getElementById('audit-notes');
+    const actionInput = document.getElementById('audit-action');
+
+    const roomId = roomSelect ? parseInt(roomSelect.value) : this.newAuditState.roomId;
+    const shift = shiftSelect ? shiftSelect.value : 'Ca sáng';
+    const notes = notesInput ? notesInput.value.trim() : '';
+    const action = actionInput ? actionInput.value.trim() : '';
+
+    const totalScore = Object.values(this.newAuditState.scores).reduce((a, b) => a + b, 0);
+    const user = this.getCurrentUser();
+    const inspectorName = user ? user.name : 'Vũ Bá Đạt';
+    const inspectorRole = user ? (user.title || user.role_title || 'Cán bộ 5S') : 'Cán bộ 5S';
+
+    let rating = 'Xuất sắc';
+    if (totalScore < 70) rating = 'Cần cải tiến';
+    else if (totalScore < 90) rating = 'Đạt chuẩn';
+
+    const newAudit = {
+      id: Date.now(),
+      audit_code: '5S-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(100 + Math.random() * 900),
+      department_id: this.newAuditState.deptId,
+      room_id: roomId,
+      audit_date: new Date().toISOString().slice(0, 10),
+      audit_time: new Date().toTimeString().slice(0, 5),
+      shift: shift,
+      inspector_name: inspectorName,
+      inspector_role: inspectorRole,
+      score_seiri: this.newAuditState.scores[1] || 20,
+      score_seiton: this.newAuditState.scores[2] || 20,
+      score_seiso: this.newAuditState.scores[3] || 20,
+      score_seiketsu: this.newAuditState.scores[4] || 20,
+      score_shitsuke: this.newAuditState.scores[5] || 20,
+      total_score: totalScore,
+      rating: rating,
+      notes: notes,
+      action_required: action,
+      after_photo: this.newAuditState.afterPhoto || '',
+      created_at: new Date().toISOString()
+    };
+
+    this.data.audits.unshift(newAudit);
+    this.saveData();
+    this.showToast('Đã lưu thành công phiếu kiểm tra 5S!');
+    this.switchTab('history');
+  }
+
+  // =========================================================================
+  // TAB 3: KHOA & BUỒNG PHÒNG — NHÓM RIÊNG TỪNG KHOA & TÙY CHỈNH KHU VỰC LÀM VIỆC
+  // =========================================================================
+  renderDepartmentsTab() {
+    const sortedDepts = this.getSortedDepartments();
+    const q = (this.searchQuery || '').trim().toLowerCase();
+
+    // Phân loại khối
+    const paraclinicalDepts = sortedDepts.filter(d => d.category === 'paraclinical');
+    const clinicalDepts = sortedDepts.filter(d => d.category === 'clinical');
+    const functionalDepts = sortedDepts.filter(d => d.category === 'functional');
+
+    // Lọc theo Khối hoặc Khoa
+    let visibleDepts = sortedDepts;
+    if (this.filterDeptCategory && this.filterDeptCategory !== 'all') {
+      visibleDepts = visibleDepts.filter(d => (d.category || 'clinical') === this.filterDeptCategory);
     }
-  } catch (e) {
-    alert("Lỗi kết nối máy chủ: " + e.message);
-  }
-}
-
-async function restoreSystemBackup(filename) {
-  const code = prompt(`⚠️ CẢNH BÁO AN NINH QUAN TRỌNG!\nBạn chuẩn bị khôi phục toàn bộ hệ thống từ file:\n${filename}\n\nNhập chữ 'DONG Y' vào ô bên dưới để xác nhận:`);
-  if (code !== "DONG Y") {
-    alert("Đã hủy thao tác khôi phục an toàn.");
-    return;
-  }
-
-  try {
-    const res = await fetch("/api/backup/restore", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filename: filename })
-    });
-    const result = await res.json();
-    if (result.success) {
-      alert(`🎉 KHÔI PHỤC THÀNH CÔNG!\n${result.message}\nTrang web sẽ tự tải lại để nạp dữ liệu sạch.`);
-      location.reload();
-    } else {
-      alert("❌ Lỗi khôi phục: " + (result.error || "Không xác định"));
+    if (this.filterDept && this.filterDept !== 'all') {
+      visibleDepts = visibleDepts.filter(d => String(d.id) === String(this.filterDept));
     }
-  } catch (e) {
-    alert("Lỗi kết nối máy chủ: " + e.message);
-  }
-}
 
-// ==================== NHẬT KÝ AN NINH (SECURITY AUDIT LOGS) ====================
-async function openSecurityLogsModal() {
-  openModal("modal-security-logs");
-  const tbody = document.getElementById("security-logs-tbody");
-  if (!tbody) return;
+    // TÌM KIẾM THÔNG MINH ĐA CHIỀU (Không bao giờ thiếu khoa hoặc phòng khi tìm)
+    let roomMatches = {};
+    let matchingDeptsCount = 0;
+    if (q) {
+      visibleDepts = visibleDepts.filter(d => {
+        const deptText = `${d.name} ${d.code} ${d.doctor_in_charge || ''} ${d.head_nurse || ''} ${d.description || ''}`.toLowerCase();
+        const isDeptMatch = deptText.includes(q);
 
-  tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--gray-400);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải nhật ký an ninh...</td></tr>`;
+        const allDeptRooms = this.data.rooms.filter(r => r.department_id == d.id);
+        const matchingRooms = allDeptRooms.filter(r => {
+          const roomText = `${r.name} ${r.code} ${r.person_in_charge || ''} ${r.floor || ''} ${r.room_type || ''}`.toLowerCase();
+          return roomText.includes(q);
+        });
 
-  try {
-    const res = await fetch("/api/security/logs");
-    const data = await res.json();
-
-    if (data.logs && data.logs.length > 0) {
-      tbody.innerHTML = data.logs.map(l => {
-        let evBadge = `<span class="badge badge-pass">${l.event_type}</span>`;
-        if (l.event_type.includes("FAIL") || l.event_type.includes("BLOCK") || l.event_type.includes("REJECT")) {
-          evBadge = `<span class="badge" style="background:#fee2e2; color:#ef4444;"><i class="fa-solid fa-ban"></i> ${l.event_type}</span>`;
-        } else if (l.event_type.includes("SUCCESS") || l.event_type.includes("BACKUP")) {
-          evBadge = `<span class="badge badge-good"><i class="fa-solid fa-check"></i> ${l.event_type}</span>`;
+        if (isDeptMatch || matchingRooms.length > 0) {
+          roomMatches[d.id] = isDeptMatch ? allDeptRooms : matchingRooms;
+          matchingDeptsCount++;
+          return true;
         }
+        return false;
+      });
+    }
 
-        return `
-          <tr>
-            <td style="white-space:nowrap; color:var(--gray-600);">${l.created_at}</td>
-            <td>${evBadge}</td>
-            <td style="font-weight:600; color:var(--gray-800);">${l.username || 'ANONYMOUS'}</td>
-            <td style="font-family:monospace; color:#0284c7;">${l.ip_address || '--'}</td>
-            <td style="color:var(--gray-700);">${l.details || '--'}</td>
-          </tr>
-        `;
-      }).join("");
+    return `
+      <div class="p-4 space-y-4">
+        <!-- Header Khoa & Khu Vực Làm Việc -->
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-emerald-600">DANH MỤC KHU VỰC 5S</span>
+            <h2 class="text-base font-black text-slate-900 dark:text-white">
+              ${sortedDepts.length} Khoa/Phòng & ${this.data.rooms.length} Khu Vực
+            </h2>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <!-- Nút Thêm Khoa Mới -->
+            <button onclick="app5s.openAddDeptModal()" title="Thêm Khoa / Phòng mới" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-600 transition flex items-center space-x-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Khoa</span>
+            </button>
+            <!-- Nút Thêm Khu Vực Làm Việc -->
+            <button onclick="app5s.openAddRoomModal()" title="Thêm Khu vực làm việc / Buồng phòng mới" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Khu Vực</span>
+            </button>
+            <!-- Nút Sắp xếp -->
+            <button onclick="app5s.toggleReorderMode()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 ${
+              this.isReorderMode ? 'bg-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
+            }">
+              <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+              <span>${this.isReorderMode ? 'Xong' : 'Thứ tự'}</span>
+            </button>
+          </div>
+        </div>
+
+        ${this.isReorderMode ? `
+          <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-2xl p-3.5 text-xs text-amber-900 dark:text-amber-200 space-y-2">
+            <div class="flex items-center space-x-1.5 font-bold">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-600"></i>
+              <span>Chế độ Sắp xếp Thứ tự Khoa & Phòng</span>
+            </div>
+            <p class="text-[11px] leading-relaxed">
+              Bấm mũi tên <strong>⬆ Lên</strong> hoặc <strong>⬇ Xuống</strong> hoặc bấm nút <strong>✏️ Sửa</strong> để tùy biến thông tin chi tiết của Khoa / Khu vực làm việc.
+            </p>
+          </div>
+        ` : ''}
+
+        <!-- Ô Tìm Kiếm Toàn Diện -->
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+          <input type="text" oninput="app5s.onSearchInput(this.value)" placeholder="Tìm kiếm tên khoa, buồng phòng, mã phòng, người phụ trách..." value="${this.searchQuery}" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          ${this.searchQuery ? `
+            <button onclick="app5s.clearSearch()" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600">
+              <i data-lucide="x-circle" class="w-4 h-4"></i>
+            </button>
+          ` : ''}
+        </div>
+
+        <!-- BỘ LỌC PHÂN KHỐI CHỨC NĂNG -->
+        <div class="grid grid-cols-4 gap-1.5 text-center text-xs">
+          <button onclick="app5s.setFilterCategory('all')" class="py-1.5 px-2 rounded-xl font-bold transition text-[11px] ${
+            this.filterDeptCategory === 'all' ? 'bg-emerald-600 text-white shadow-2xs' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+          }">
+            Tất cả (${sortedDepts.length})
+          </button>
+          <button onclick="app5s.setFilterCategory('paraclinical')" class="py-1.5 px-2 rounded-xl font-bold transition text-[11px] ${
+            this.filterDeptCategory === 'paraclinical' ? 'bg-indigo-600 text-white shadow-2xs' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+          }">
+            Cận lâm sàng (${paraclinicalDepts.length})
+          </button>
+          <button onclick="app5s.setFilterCategory('clinical')" class="py-1.5 px-2 rounded-xl font-bold transition text-[11px] ${
+            this.filterDeptCategory === 'clinical' ? 'bg-teal-600 text-white shadow-2xs' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+          }">
+            Lâm sàng (${clinicalDepts.length})
+          </button>
+          <button onclick="app5s.setFilterCategory('functional')" class="py-1.5 px-2 rounded-xl font-bold transition text-[11px] ${
+            this.filterDeptCategory === 'functional' ? 'bg-slate-700 text-white shadow-2xs' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+          }">
+            Phòng ban (${functionalDepts.length})
+          </button>
+        </div>
+
+        <!-- Thanh Cuộn Nhanh Danh Sách Khoa (Bấm để nhảy thẳng đến khoa đó) -->
+        <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar">
+          <button onclick="app5s.setFilterDept('all')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+            this.filterDept === 'all' ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+          }">
+            Tất cả khoa (${sortedDepts.length})
+          </button>
+          ${sortedDepts.map(d => `
+            <button onclick="app5s.setFilterDept('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 ${
+              this.filterDept === String(d.id) ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+            }">
+              <span class="text-[9px] opacity-75 font-mono">#${d.order || ''}</span>
+              <span>${d.name}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <!-- Nút thu gọn / mở rộng nhanh -->
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
+          <span>Hiển thị: <strong>${visibleDepts.length} nhóm khoa/phòng</strong></span>
+          <div class="flex items-center space-x-2">
+            <button onclick="app5s.expandAllDepts()" class="text-[11px] text-emerald-600 font-bold hover:underline">Mở tất cả</button>
+            <span>•</span>
+            <button onclick="app5s.collapseAllDepts()" class="text-[11px] text-slate-500 font-bold hover:underline">Thu gọn tất cả</button>
+          </div>
+        </div>
+
+        <!-- DANH SÁCH RIÊNG TỪNG NHÓM KHOA / PHÒNG VÀ CÁC KHU VỰC LÀM VIỆC BÊN TRONG -->
+        <div class="space-y-4">
+          ${visibleDepts.length === 0 ? `
+            <div class="p-8 text-center bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <i data-lucide="search-x" class="w-8 h-8 mx-auto text-slate-400"></i>
+              <div class="text-sm font-bold text-slate-700 dark:text-slate-200">Không tìm thấy khoa phòng phù hợp</div>
+              <p class="text-xs text-slate-400">Thử từ khóa khác hoặc bấm khôi phục để xem đủ 20 khoa phòng chuẩn VPI.</p>
+              <button onclick="app5s.clearSearch()" class="mt-2 px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">Xem tất cả</button>
+            </div>
+          ` : visibleDepts.map(d => {
+            const deptRooms = (q && roomMatches[d.id]) ? roomMatches[d.id] : this.getSortedRooms(d.id);
+            const isCollapsed = !!this.collapsedDepts[d.id];
+            const isParaclinical = d.category === 'paraclinical';
+            const isFunctional = d.category === 'functional';
+            const badgeColor = isParaclinical 
+              ? 'bg-indigo-600 text-white' 
+              : (isFunctional ? 'bg-slate-700 text-white' : 'bg-emerald-600 text-white');
+
+            return `
+              <!-- NHÓM KHOA: ${d.name} -->
+              <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/90 dark:border-slate-700 shadow-sm overflow-hidden transition hover:border-emerald-300">
+                <!-- Header của Nhóm Khoa -->
+                <div class="p-3.5 bg-gradient-to-r ${
+                  isParaclinical ? 'from-indigo-50/70 via-white to-white dark:from-indigo-950/30' : 
+                  (isFunctional ? 'from-slate-100/70 via-white to-white dark:from-slate-800' : 'from-emerald-50/70 via-white to-white dark:from-emerald-950/30')
+                } dark:to-slate-800 border-b border-slate-100 dark:border-slate-700/60">
+                  <div class="flex items-start justify-between">
+                    <div class="flex items-start space-x-2.5">
+                      <div class="w-8 h-8 rounded-xl ${badgeColor} flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                        #${d.order}
+                      </div>
+                      <div>
+                        <div class="flex items-center space-x-2">
+                          <h3 class="text-sm font-black text-slate-900 dark:text-white">${d.name}</h3>
+                          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold">${d.code}</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 mt-0.5 flex flex-wrap gap-x-2.5 gap-y-0.5">
+                          <span>👨‍⚕️ Trưởng khoa: <strong>${d.doctor_in_charge || 'Chưa cập nhật'}</strong></span>
+                          <span>👩‍⚕️ ĐD/KTV Trưởng: <strong>${d.head_nurse || 'Chưa cập nhật'}</strong></span>
+                          <span>📞 Hotline: <strong>${d.phone || '0211.386.115'}</strong></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Các nút hành động cấp Khoa -->
+                    <div class="flex items-center space-x-1 shrink-0">
+                      ${this.isReorderMode ? `
+                        <div class="flex items-center space-x-0.5 mr-1">
+                          <button onclick="app5s.moveDeptUp('${d.id}')" title="Đẩy khoa lên trên" class="p-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition">
+                            <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
+                          </button>
+                          <button onclick="app5s.moveDeptDown('${d.id}')" title="Chuyển khoa xuống dưới" class="p-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition">
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                          </button>
+                        </div>
+                      ` : ''}
+                      <!-- Nút Sửa Khoa -->
+                      <button onclick="app5s.openEditDeptModal('${d.id}')" title="Sửa thông tin khoa" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-emerald-100 hover:text-emerald-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center space-x-1 transition">
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline text-[10px]">Sửa</span>
+                      </button>
+
+                      <!-- Nút Thêm Khu Vực Làm Việc vào Khoa này -->
+                      <button onclick="app5s.openAddRoomModal('${d.id}')" title="Thêm khu vực làm việc vào ${d.name}" class="p-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center space-x-1 transition border border-emerald-200 dark:border-emerald-800">
+                        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                        <span class="text-[10px] font-bold">+ Khu vực</span>
+                      </button>
+
+                      <!-- Nút Thu gọn / Mở rộng nhóm khoa -->
+                      <button onclick="app5s.toggleCollapseDept('${d.id}')" title="${isCollapsed ? 'Mở rộng nhóm' : 'Thu gọn nhóm'}" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+                        <i data-lucide="${isCollapsed ? 'chevron-down' : 'chevron-up'}" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- DANH SÁCH CÁC KHU VỰC LÀM VIỆC BÊN TRONG KHOA NÀY -->
+                ${!isCollapsed ? `
+                  <div class="p-3 space-y-2 bg-slate-50/50 dark:bg-slate-900/40">
+                    <div class="flex items-center justify-between text-[11px] text-slate-500 px-1 font-semibold">
+                      <span>Các khu vực làm việc / buồng phòng (${deptRooms.length}):</span>
+                      <button onclick="app5s.openAddRoomModal('${d.id}')" class="text-[10px] text-emerald-600 font-bold hover:underline">+ Thêm khu vực mới</button>
+                    </div>
+
+                    ${deptRooms.length === 0 ? `
+                      <div class="p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl bg-white dark:bg-slate-800 text-xs text-slate-400 space-y-2">
+                        <p>Khoa này chưa có khu vực làm việc nào.</p>
+                        <button onclick="app5s.openAddRoomModal('${d.id}')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">+ Thêm khu vực đầu tiên</button>
+                      </div>
+                    ` : `
+                      <div class="space-y-1.5">
+                        ${deptRooms.map((room, rIdx) => `
+                          <div class="bg-white dark:bg-slate-800 rounded-2xl p-2.5 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs flex items-center justify-between hover:border-emerald-300 transition">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                              <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-mono font-black text-[11px] flex items-center justify-center shrink-0 border border-emerald-200 dark:border-emerald-800">
+                                ${room.code ? room.code.slice(-3) : (rIdx + 1)}
+                              </div>
+                              <div class="min-w-0 truncate">
+                                <div class="text-xs font-bold text-slate-900 dark:text-white truncate">${room.name}</div>
+                                <div class="text-[10px] text-slate-500 flex items-center space-x-1.5 truncate">
+                                  <span class="font-mono text-emerald-600">${room.code}</span>
+                                  <span>•</span>
+                                  <span>${room.floor || 'Tầng 1'}</span>
+                                  <span>•</span>
+                                  <span>Phụ trách: <strong>${room.person_in_charge || 'Điều dưỡng trực'}</strong></span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1 shrink-0 ml-2">
+                              ${this.isReorderMode ? `
+                                <div class="flex items-center space-x-0.5 mr-1">
+                                  <button onclick="app5s.moveRoomUp('${room.id}')" title="Đẩy khu vực lên" class="p-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-800 transition">
+                                    <i data-lucide="chevron-up" class="w-3 h-3"></i>
+                                  </button>
+                                  <button onclick="app5s.moveRoomDown('${room.id}')" title="Chuyển khu vực xuống" class="p-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-800 transition">
+                                    <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                                  </button>
+                                </div>
+                              ` : ''}
+                              <div class="text-right mr-1 hidden sm:block">
+                                <span class="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400">99.0 đ</span>
+                                <span class="block text-[8px] font-bold text-emerald-600">Đạt 5S</span>
+                              </div>
+                              <!-- Nút Sửa Khu Vực Làm Việc -->
+                              <button onclick="app5s.openEditRoomModal('${room.id}')" title="Chỉnh sửa thông tin khu vực làm việc này" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                              </button>
+                              <!-- Nút Chấm 5S ngay -->
+                              <button onclick="app5s.quickAuditRoom('${room.id}')" title="Chấm điểm 5S khu vực này ngay" class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 hover:bg-emerald-100 transition">
+                                <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
+                              </button>
+                              <!-- Nút Xóa khu vực -->
+                              <button onclick="app5s.deleteRoom('${room.id}')" title="Xóa khu vực làm việc này" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                              </button>
+                            </div>
+                          </div>
+                        `).join('')}
+                      </div>
+                    `}
+
+                    <!-- Nút Bấm Nhanh Viền Nét Đứt: Thêm Khu Vực Làm Việc Vào Khoa Này -->
+                    <button onclick="app5s.openAddRoomModal('${d.id}')" class="w-full py-2.5 px-3 border-2 border-dashed border-emerald-300 dark:border-emerald-800 rounded-2xl bg-white/70 dark:bg-slate-800/70 hover:bg-emerald-50 dark:hover:bg-slate-800 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+                      <i data-lucide="plus" class="w-4 h-4"></i>
+                      <span>Thêm khu vực làm việc mới vào ${d.name}</span>
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  onSearchInput(val) {
+    this.searchQuery = val;
+    this.render();
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    this.filterDept = 'all';
+    this.filterDeptCategory = 'all';
+    this.render();
+  }
+
+  setFilterDept(deptId) {
+    this.filterDept = deptId;
+    this.render();
+  }
+
+  setFilterCategory(cat) {
+    this.filterDeptCategory = cat;
+    this.render();
+  }
+
+  quickAuditRoom(roomId) {
+    const room = this.data.rooms.find(r => r.id == roomId);
+    if (!room) return;
+    this.newAuditState.deptId = room.department_id;
+    this.newAuditState.roomId = room.id;
+    this.switchTab('audit');
+    setTimeout(() => {
+      const sel = document.getElementById('audit-room-select');
+      if (sel) sel.value = String(roomId);
+    }, 50);
+  }
+
+  deleteRoom(roomId) {
+    const room = this.data.rooms.find(r => r.id == roomId);
+    if (!room) return;
+    if (!confirm(`Anh có chắc muốn xóa khu vực làm việc "${room.name}" không?`)) return;
+    this.data.rooms = this.data.rooms.filter(r => r.id != roomId);
+    this.saveData();
+    this.render();
+    this.showToast('Đã xóa khu vực làm việc thành công!');
+  }
+
+  deleteDept(deptId) {
+    const roomsCount = this.data.rooms.filter(r => r.department_id == deptId).length;
+    if (roomsCount > 0) {
+      alert(`Không thể xóa khoa này vì đang có ${roomsCount} khu vực làm việc trực thuộc! Vui lòng xóa hoặc chuyển các khu vực sang khoa khác trước.`);
+      return;
+    }
+    const d = this.data.departments.find(x => x.id == deptId);
+    if (!confirm(`Anh có chắc muốn xóa khoa "${d ? d.name : ''}" không?`)) return;
+    this.data.departments = this.data.departments.filter(x => x.id != deptId);
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast('Đã xóa khoa thành công!');
+  }
+
+  // =========================================================================
+  // TAB 4: NHÂN SỰ & TÀI KHOẢN (VAI TRÒ PHÂN QUYỀN & CHỨC DANH ĐẦY ĐỦ - YÊU CẦU 3)
+  // =========================================================================
+  renderStaffTab() {
+    const depts = this.getSortedDepartments();
+    const selectedDeptId = this.filterStaffDept === 'all' ? null : parseInt(this.filterStaffDept);
+    
+    let staffList = [...this.data.staff];
+    if (selectedDeptId) {
+      staffList = staffList.filter(s => s.department_id == selectedDeptId);
+    }
+    if (this.staffSearchQuery) {
+      const sq = this.staffSearchQuery.toLowerCase();
+      staffList = staffList.filter(s => {
+        const text = `${s.name} ${s.code} ${s.title} ${s.role_title} ${s.username} ${s.assigned_room || ''}`.toLowerCase();
+        return text.includes(sq);
+      });
+    }
+
+    return `
+      <div class="p-4 space-y-4">
+        <!-- Header Nhân Sự -->
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-emerald-600">QUẢN TRỊ TÀI KHOẢN</span>
+            <h2 class="text-base font-black text-slate-900 dark:text-white">${this.data.staff.length} Cán Bộ & Nhân Sự 5S</h2>
+          </div>
+          <button onclick="app5s.openAddAccountModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+            <span>Thêm Tài Khoản</span>
+          </button>
+        </div>
+
+        <!-- Banner Cơ chế phân quyền & Chức danh -->
+        <div class="bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-2xl p-3.5 text-xs text-blue-900 dark:text-blue-200 space-y-1">
+          <div class="flex items-center space-x-1.5 font-bold">
+            <i data-lucide="shield" class="w-4 h-4 text-blue-600"></i>
+            <span>Quản Lý Nhân Sự, Chức Danh & Vai Trò Phân Quyền 5S</span>
+          </div>
+          <p class="text-[11px] leading-relaxed text-blue-800 dark:text-blue-300">
+            Hỗ trợ phân công <strong>nhiều vị trí buồng phòng</strong> cho từng nhân viên, thiết lập chức danh chuyên môn và chọn chính xác <strong>Vai trò phân quyền</strong> theo quy định Bệnh viện Vĩnh Phúc VPI.
+          </p>
+        </div>
+
+        <!-- Ô Tìm Kiếm Nhân sự -->
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+          <input type="text" oninput="app5s.onStaffSearchInput(this.value)" placeholder="Tìm kiếm theo tên, mã NV, chức danh, buồng phòng phụ trách..." value="${this.staffSearchQuery}" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <!-- Lọc Nhân sự theo Khoa -->
+        <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar">
+          <button onclick="app5s.setStaffDeptFilter('all')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+            this.filterStaffDept === 'all' ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+          }">
+            Tất cả (${this.data.staff.length})
+          </button>
+          ${depts.map(d => {
+            const count = this.data.staff.filter(s => s.department_id == d.id).length;
+            return `
+              <button onclick="app5s.setStaffDeptFilter('${d.id}')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 ${
+                this.filterStaffDept === String(d.id) ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+              }">
+                <span>${d.name}</span>
+                <span class="text-[9px] opacity-75 font-mono">(${count})</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <!-- Danh sách Tài Khoản & Nhân sự -->
+        <div class="space-y-2.5">
+          ${staffList.map(s => {
+            const dept = depts.find(d => d.id == s.department_id) || { name: 'Toàn viện' };
+            const roleBadge = s.role === 'admin' 
+              ? `<span class="text-[9px] font-bold text-purple-700 bg-purple-50 dark:bg-purple-950 px-2 py-0.5 rounded-full border border-purple-200">👑 ${s.role_title || 'Trưởng Ban 5S'}</span>`
+              : (s.role === 'manager' 
+                ? `<span class="text-[9px] font-bold text-blue-700 bg-blue-50 dark:bg-blue-950 px-2 py-0.5 rounded-full border border-blue-200">🏢 ${s.role_title || 'Quản lý Khoa'}</span>`
+                : `<span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-200">✨ ${s.role_title || 'Nhân viên 5S'}</span>`);
+
+            const sName = s.name || s.full_name || 'Cán bộ 5S';
+            const sInitial = sName.split(' ').pop().charAt(0) || 'N';
+            const sTitle = s.title || s.role_title || s.position || 'Cán bộ 5S';
+
+            let assignedList = [];
+            if (Array.isArray(s.assigned_rooms)) {
+              assignedList = s.assigned_rooms;
+            } else if (typeof s.assigned_room === 'string' && s.assigned_room.trim()) {
+              assignedList = s.assigned_room.split(/[;,\n\r•]+/).map(x => x.trim()).filter(Boolean);
+            }
+
+            return `
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-2 hover:border-emerald-300 transition">
+                <div class="flex items-start justify-between">
+                  <div class="flex items-start space-x-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 font-black flex items-center justify-center text-sm shrink-0 border border-emerald-200 dark:border-emerald-800">
+                      ${sInitial}
+                    </div>
+                    <div>
+                      <div class="flex flex-wrap items-center gap-1.5">
+                        <span class="text-xs font-black text-slate-900 dark:text-white">${sName}</span>
+                        <span class="text-[9px] font-bold text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950 px-2 py-0.5 rounded-md border border-teal-200 dark:border-teal-800">
+                          👨‍⚕️ ${sTitle}
+                        </span>
+                        ${roleBadge}
+                      </div>
+                      <div class="text-[10px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                        <span>🏢 <strong>${dept.name}</strong></span>
+                        <span>• TK: <strong>${s.username || s.code}</strong></span>
+                        <span>• Mã: <strong class="font-mono text-emerald-600">${s.code}</strong></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center space-x-1 shrink-0">
+                    <!-- Nút Chỉnh sửa thông tin & Phân công -->
+                    <button onclick="app5s.openEditStaffModal('${s.code}')" title="Sửa thông tin & Phân công nhiều vị trí" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-200 hover:text-emerald-600 hover:bg-emerald-50 transition">
+                      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <!-- Xóa tài khoản -->
+                    <button onclick="app5s.deleteAccount('${s.code}')" title="Xóa tài khoản nhân viên" class="p-1.5 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- HIỂN THỊ CÁC VỊ TRÍ PHỤ TRÁCH 5S (Phân công nhiều vị trí) -->
+                <div class="pt-1.5 border-t border-slate-100 dark:border-slate-700/60">
+                  <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1">
+                    <span class="font-bold flex items-center space-x-1">
+                      <i data-lucide="map-pin" class="w-3 h-3 text-emerald-600"></i>
+                      <span>Vị trí buồng phòng 5S phụ trách (${assignedList.length}):</span>
+                    </span>
+                    <button onclick="app5s.openEditStaffModal('${s.code}')" class="text-[9px] font-bold text-emerald-600 hover:underline">+ Thêm vị trí</button>
+                  </div>
+                  <div class="flex flex-wrap gap-1">
+                    ${assignedList.length > 0 ? assignedList.map(r => `
+                      <span class="inline-flex items-center text-[9px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>
+                        <span>${r}</span>
+                      </span>
+                    `).join('') : `
+                      <span class="text-[9px] text-slate-400 italic">Chưa phân công buồng phòng cụ thể</span>
+                    `}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  onStaffSearchInput(val) {
+    this.staffSearchQuery = val;
+    this.render();
+  }
+
+  setStaffDeptFilter(deptId) {
+    this.filterStaffDept = deptId;
+    this.render();
+  }
+
+  // =========================================================================
+  // TAB 5: LỊCH SỬ CHẤM 5S & BÁO CÁO
+  // =========================================================================
+  renderHistoryTab() {
+    const audits = this.data.audits || [];
+    const depts = this.data.departments;
+    const rooms = this.data.rooms;
+
+    return `
+      <div class="p-4 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-emerald-600">LỊCH SỬ & BIÊN BẢN</span>
+            <h2 class="text-base font-black text-slate-900 dark:text-white">Biên Bản Kiểm Tra 5S (${audits.length})</h2>
+          </div>
+          <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>In Báo Cáo</span>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          ${audits.length === 0 ? `
+            <div class="p-8 text-center bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 text-xs text-slate-400">
+              Chưa có biên bản kiểm tra 5S nào. Hãy vào tab Chấm 5S để tạo phiếu mới.
+            </div>
+          ` : audits.map(a => {
+            const dept = depts.find(d => d.id == a.department_id) || { name: 'Chưa xác định' };
+            const room = rooms.find(r => r.id == a.room_id) || { name: 'Buồng bệnh' };
+            return `
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-2.5">
+                <div class="flex items-start justify-between border-b pb-2">
+                  <div>
+                    <div class="flex items-center space-x-1.5">
+                      <span class="text-xs font-black text-slate-900 dark:text-white">${room.name}</span>
+                      <span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-50 text-emerald-700 rounded">${a.audit_code}</span>
+                    </div>
+                    <div class="text-[10px] text-slate-500 mt-0.5">
+                      ${dept.name} • ${a.audit_date} (${a.shift || 'Ca sáng'})
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-sm font-mono font-black text-emerald-600">${a.total_score}đ</span>
+                    <span class="block text-[9px] font-bold text-emerald-700">${a.rating}</span>
+                  </div>
+                </div>
+
+                ${a.after_photo ? `
+                  <div class="relative rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <img src="${a.after_photo}" class="w-full h-36 object-cover">
+                    <span class="absolute bottom-1.5 right-1.5 bg-black/60 text-white text-[9px] px-2 py-0.5 rounded-full font-bold backdrop-blur-xs">
+                      Minh chứng sau 5S
+                    </span>
+                  </div>
+                ` : ''}
+
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic bg-slate-50 dark:bg-slate-900/40 p-2 rounded-xl">
+                  "${a.notes || 'Thực hiện 5S sạch sẽ đúng quy định Bệnh viện VPI.'}"
+                </p>
+
+                <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1">
+                  <span>Cán bộ kiểm tra: <strong>${a.inspector_name}</strong></span>
+                  <span class="text-emerald-600 font-bold">Đã lưu trữ hồ sơ</span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // =========================================================================
+  // TAB 6: CÀI ĐẶT ĐƠN VỊ & BỆNH VIỆN
+  // =========================================================================
+  renderSettingsTab() {
+    const hosp = this.data.hospital;
+    return `
+      <div class="p-4 space-y-4">
+        <div>
+          <span class="text-xs font-mono font-bold text-emerald-600">THIẾT LẬP HỆ THỐNG</span>
+          <h2 class="text-base font-black text-slate-900 dark:text-white">Cài Đặt Đơn Vị & Dữ Liệu</h2>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="hospital" class="w-4 h-4 text-emerald-600"></i>
+              <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase">Thông Tin Bệnh Viện Vĩnh Phúc VPI</h3>
+            </div>
+            <button onclick="app5s.openHospitalSettingsModal()" class="text-[10px] font-bold text-emerald-600 hover:underline">Chỉnh sửa</button>
+          </div>
+          <div class="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+            <div>Tên đơn vị: <strong class="text-slate-900 dark:text-white">${hosp.name}</strong></div>
+            <div>Địa chỉ: <strong>${hosp.address}</strong></div>
+            <div>Hotline: <strong class="font-mono">${hosp.hotline}</strong></div>
+            <div>Trưởng Ban 5S: <strong>${hosp.director}</strong> (${hosp.directorTitle})</div>
+            <div>Cán bộ Giám sát: <strong>${hosp.officer}</strong> (Mã: ${hosp.officerId})</div>
+            <div>Khẩu hiệu: <em>"${hosp.slogan}"</em></div>
+          </div>
+        </div>
+
+        <!-- Bảng Thông Báo Khẩn -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+              <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase">Bảng Tin Thông Báo Khẩn</h3>
+            </div>
+            <button onclick="app5s.openNoticeEditModal()" class="text-[10px] font-bold text-emerald-600 hover:underline">Soạn thông báo</button>
+          </div>
+          <div class="text-xs space-y-1 text-slate-600 dark:text-slate-300">
+            <div>Trạng thái phát: <strong>${hosp.notice.enabled ? '🟢 Đang hiển thị toàn viện' : '⚪ Đang ẩn'}</strong></div>
+            <div>Tiêu đề: <strong>${hosp.notice.title}</strong></div>
+            <div class="text-[11px] text-slate-500 bg-slate-50 dark:bg-slate-900/50 p-2 rounded-xl mt-1">${hosp.notice.content}</div>
+          </div>
+        </div>
+
+        <!-- Quản Trị Dữ Liệu & Khôi phục -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-3">
+          <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase border-b pb-2">Sao Lưu & Khôi Phục Dữ Liệu</h3>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="app5s.exportBackupJSON()" class="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              <span>Xuất File JSON</span>
+            </button>
+            <button onclick="app5s.resetToVpiStandard()" class="py-2.5 px-3 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <span>Khôi Phục Chuẩn VPI</span>
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-400 italic">
+            * Bấm "Khôi phục chuẩn VPI" sẽ nạp lại đầy đủ 20 Khoa/Phòng và 75 Khu vực làm việc chuẩn của Bệnh viện Vĩnh Phúc VPI.
+          </p>
+        </div>
+      </div>
+    `;
+  }
+
+  // =========================================================================
+  // MODALS: CHỈNH SỬA & THÊM KHOA / BUỒNG PHÒNG (YÊU CẦU 1 & 2)
+  // =========================================================================
+  openEditDeptModal(deptId) {
+    const dept = this.data.departments.find(d => d.id == deptId || d.code === String(deptId));
+    if (!dept) return;
+
+    this.showModal(`
+      <div class="p-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2.5">
+          <div class="flex items-center space-x-2">
+            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <i data-lucide="building-2" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Chỉnh Sửa Thông Tin Khoa / Phòng</h3>
+              <span class="text-[10px] text-slate-400">#${dept.order || 1} • Mã: ${dept.code}</span>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên Khoa / Phòng Chức Năng *</label>
+            <input type="text" id="edit-dept-name" value="${dept.name || ''}" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-900 dark:text-white">
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mã Khoa *</label>
+              <input type="text" id="edit-dept-code" value="${dept.code || ''}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-mono text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Thứ tự STT</label>
+              <input type="number" id="edit-dept-order" value="${dept.order || 1}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-mono text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phân khối</label>
+              <select id="edit-dept-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+                <option value="clinical" ${dept.category === 'clinical' ? 'selected' : ''}>Lâm sàng</option>
+                <option value="paraclinical" ${dept.category === 'paraclinical' ? 'selected' : ''}>Cận lâm sàng</option>
+                <option value="functional" ${dept.category === 'functional' ? 'selected' : ''}>Phòng ban</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Trưởng Khoa / Phụ trách</label>
+              <input type="text" id="edit-dept-doctor" value="${dept.doctor_in_charge || ''}" placeholder="Ví dụ: ThS. BSCKII. Phạm Quỳnh Hưng" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Điều dưỡng trưởng / KTV Trưởng</label>
+              <input type="text" id="edit-dept-nurse" value="${dept.head_nurse || ''}" placeholder="Ví dụ: ĐD. Trần Thị Lan Hương" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Điện thoại / Hotline nội bộ</label>
+            <input type="text" id="edit-dept-phone" value="${dept.phone || ''}" placeholder="Ví dụ: 0211.386.115" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mô tả chức năng nhiệm vụ 5S</label>
+            <textarea id="edit-dept-desc" rows="2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">${dept.description || ''}</textarea>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <button onclick="app5s.saveEditDept('${dept.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition">
+              Cập Nhật Khoa
+            </button>
+            <button onclick="app5s.deleteDept('${dept.id}')" class="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition" title="Xóa khoa này">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    `);
+  }
+
+  saveEditDept(deptId) {
+    const dept = this.data.departments.find(d => d.id == deptId || d.code === String(deptId));
+    if (!dept) return;
+
+    const name = document.getElementById('edit-dept-name').value.trim();
+    const code = document.getElementById('edit-dept-code').value.trim();
+    const order = parseInt(document.getElementById('edit-dept-order').value) || dept.order || 1;
+    const cat = document.getElementById('edit-dept-category').value;
+    const doctor = document.getElementById('edit-dept-doctor').value.trim();
+    const nurse = document.getElementById('edit-dept-nurse').value.trim();
+    const phone = document.getElementById('edit-dept-phone').value.trim();
+    const desc = document.getElementById('edit-dept-desc').value.trim();
+
+    if (!name) {
+      alert('Vui lòng nhập tên khoa / trung tâm!');
+      return;
+    }
+
+    dept.name = name;
+    if (code) dept.code = code;
+    dept.order = order;
+    dept.category = cat;
+    dept.doctor_in_charge = doctor;
+    dept.head_nurse = nurse;
+    dept.phone = phone;
+    dept.description = desc;
+
+    this.data.departments.sort((a, b) => (a.order || 99) - (b.order || 99));
+
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã cập nhật thông tin Khoa: ${name}!`);
+  }
+
+  openAddDeptModal() {
+    const nextOrder = this.data.departments.length + 1;
+    this.showModal(`
+      <div class="p-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Thêm Khoa / Phòng Ban Mới</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold mb-1">Tên Khoa / Phòng Ban *</label>
+            <input type="text" id="add-dept-name" placeholder="Ví dụ: Khoa Thần Kinh - Đột Quỵ" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-bold">
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block font-bold mb-1">Mã Khoa *</label>
+              <input type="text" id="add-dept-code" placeholder="Ví dụ: KTK" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-mono">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Thứ tự STT</label>
+              <input type="number" id="add-dept-order" value="${nextOrder}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-mono">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Phân khối</label>
+              <select id="add-dept-category" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5">
+                <option value="clinical">Lâm sàng</option>
+                <option value="paraclinical">Cận lâm sàng</option>
+                <option value="functional">Phòng ban</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold mb-1">Trưởng khoa / BS phụ trách</label>
+              <input type="text" id="add-dept-doctor" placeholder="Bác sĩ phụ trách" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Điều dưỡng trưởng / KTV Trưởng</label>
+              <input type="text" id="add-dept-nurse" placeholder="Điều dưỡng trưởng" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5">
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Điện thoại nội bộ</label>
+            <input type="text" id="add-dept-phone" placeholder="Ví dụ: 0211.386.140" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5">
+          </div>
+          <button onclick="app5s.saveNewDept()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition">
+            Tạo Khoa Mới
+          </button>
+        </div>
+      </div>
+    `);
+  }
+
+  saveNewDept() {
+    const name = document.getElementById('add-dept-name').value.trim();
+    const code = document.getElementById('add-dept-code').value.trim() || 'K-' + Date.now().toString().slice(-3);
+    const order = parseInt(document.getElementById('add-dept-order').value) || (this.data.departments.length + 1);
+    const cat = document.getElementById('add-dept-category').value;
+    const doctor = document.getElementById('add-dept-doctor').value.trim();
+    const nurse = document.getElementById('add-dept-nurse').value.trim();
+    const phone = document.getElementById('add-dept-phone').value.trim();
+
+    if (!name) {
+      alert('Vui lòng nhập tên khoa / phòng ban!');
+      return;
+    }
+
+    const newDeptId = Date.now();
+    this.data.departments.push({
+      id: newDeptId,
+      name: name,
+      code: code,
+      order: order,
+      category: cat,
+      doctor_in_charge: doctor,
+      head_nurse: nurse,
+      phone: phone || '0211.386.115',
+      color: '#10b981',
+      description: 'Đơn vị thực hành 5S Bệnh viện Vĩnh Phúc VPI'
+    });
+
+    this.data.departments.sort((a, b) => (a.order || 99) - (b.order || 99));
+
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã thêm Khoa mới: ${name}!`);
+  }
+
+  // =========================================================================
+  // MODAL SỬA & THÊM KHU VỰC LÀM VIỆC / BUỒNG PHÒNG (YÊU CẦU 1 & 2)
+  // =========================================================================
+  openEditRoomModal(roomId) {
+    const room = this.data.rooms.find(r => r.id == roomId || r.code === String(roomId));
+    if (!room) return;
+    const depts = this.getSortedDepartments();
+
+    this.showModal(`
+      <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2.5">
+          <div class="flex items-center space-x-2">
+            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 flex items-center justify-center font-bold font-mono text-xs">
+              ${room.code ? room.code.slice(-3) : '5S'}
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Chỉnh Sửa Khu Vực Làm Việc</h3>
+              <span class="text-[10px] text-slate-400">Mã: ${room.code}</span>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên Khu Vực / Buồng Phòng *</label>
+            <input type="text" id="edit-room-name" value="${room.name || ''}" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-900 dark:text-white">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mã Khu Vực *</label>
+              <input type="text" id="edit-room-code" value="${room.code || ''}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-mono text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Thứ tự STT</label>
+              <input type="number" id="edit-room-order" value="${room.order || 1}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-mono text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Thuộc Khoa / Phòng Ban Trực Thuộc *</label>
+            <select id="edit-room-dept" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-900 dark:text-white">
+              ${depts.map(d => `<option value="${d.id}" ${d.id == room.department_id ? 'selected' : ''}>#${d.order} ${d.name}</option>`).join('')}
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Cán bộ / Điều dưỡng / KTV phụ trách 5S</label>
+            <input type="text" id="edit-room-person" value="${room.person_in_charge || ''}" placeholder="Ví dụ: KTV. Nguyễn Đức Tuấn" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Vị trí tầng / Khu nhà</label>
+            <input type="text" id="edit-room-floor" value="${room.floor || 'Tầng 1'}" placeholder="Ví dụ: Tầng 1 - Nhà Kỹ thuật" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+          </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <button onclick="app5s.saveEditRoom('${room.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition">
+              Cập Nhật Khu Vực
+            </button>
+            <button onclick="app5s.deleteRoom('${room.id}')" class="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition" title="Xóa khu vực này">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    `);
+  }
+
+  saveEditRoom(roomId) {
+    const room = this.data.rooms.find(r => r.id == roomId || r.code === String(roomId));
+    if (!room) return;
+
+    const name = document.getElementById('edit-room-name').value.trim();
+    const code = document.getElementById('edit-room-code').value.trim();
+    const deptId = parseInt(document.getElementById('edit-room-dept').value);
+    const person = document.getElementById('edit-room-person').value.trim();
+    const order = parseInt(document.getElementById('edit-room-order').value) || room.order || 1;
+    const floor = document.getElementById('edit-room-floor').value.trim() || 'Tầng 1';
+
+    if (!name) {
+      alert('Vui lòng nhập tên khu vực / buồng phòng!');
+      return;
+    }
+
+    room.name = name;
+    if (code) room.code = code;
+    room.department_id = deptId;
+    room.person_in_charge = person;
+    room.order = order;
+    room.floor = floor;
+
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã cập nhật khu vực: ${name}!`);
+  }
+
+  openAddRoomModal(preselectedDeptId = null) {
+    const depts = this.getSortedDepartments();
+    let targetDeptId = depts[0] ? depts[0].id : 8;
+    if (preselectedDeptId !== null && preselectedDeptId !== undefined) {
+      const found = depts.find(d => d.id == preselectedDeptId || d.code === String(preselectedDeptId));
+      if (found) targetDeptId = found.id;
+    }
+
+    this.showModal(`
+      <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Thêm Khu Vực Làm Việc Mới</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Thuộc Khoa / Phòng Ban *</label>
+            <select id="modal-room-dept" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-900 dark:text-white">
+              ${depts.map(d => `<option value="${d.id}" ${d.id == targetDeptId ? 'selected' : ''}>#${d.order} ${d.name}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên Khu Vực / Buồng Phòng *</label>
+            <input type="text" id="modal-room-name" placeholder="Ví dụ: Phòng Chụp X-Quang Cấp Cứu 02" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-900 dark:text-white">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mã Khu Vực</label>
+              <input type="text" id="modal-room-code" placeholder="Ví dụ: XQ-02" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-mono text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Vị trí tầng / Khu nhà</label>
+              <input type="text" id="modal-room-floor" placeholder="Ví dụ: Tầng 1 - Nhà A" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Cán bộ / Điều dưỡng / KTV phụ trách</label>
+            <input type="text" id="modal-room-person" placeholder="Ví dụ: KTV. Vũ Bá Đạt" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
+          </div>
+          <button onclick="app5s.saveNewRoom()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition">
+            Lưu Khu Vực Làm Việc Mới
+          </button>
+        </div>
+      </div>
+    `);
+  }
+
+  saveNewRoom() {
+    const deptId = parseInt(document.getElementById('modal-room-dept').value);
+    const name = document.getElementById('modal-room-name').value.trim();
+    const code = document.getElementById('modal-room-code').value.trim() || 'P-' + Date.now().toString().slice(-4);
+    const person = document.getElementById('modal-room-person').value.trim();
+    const floor = document.getElementById('modal-room-floor').value.trim() || 'Tầng 1';
+
+    if (!name) {
+      alert('Vui lòng nhập tên khu vực / buồng phòng!');
+      return;
+    }
+
+    const newRoom = {
+      id: Date.now(),
+      department_id: deptId,
+      order: this.data.rooms.length + 1,
+      code: code,
+      name: name,
+      person_in_charge: person || 'Cán bộ 5S phụ trách',
+      floor: floor,
+      target_score: 95.0,
+      status: 'active'
+    };
+
+    this.data.rooms.push(newRoom);
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã thêm khu vực: ${name} thành công!`);
+  }
+
+  // =========================================================================
+  // MODAL SỬA & THÊM NHÂN SỰ: CHỨC DANH & VAI TRÒ PHÂN QUYỀN (YÊU CẦU 3)
+  // =========================================================================
+  onRoleSelectChange(val, prefix) {
+    if (!val) return;
+    const parts = val.split('|');
+    const roleTitle = parts[1] || 'Cán bộ 5S';
+    const titleInput = document.getElementById(prefix + '-title');
+    if (titleInput) {
+      titleInput.value = roleTitle;
+    }
+  }
+
+  openEditStaffModal(staffCode) {
+    const s = this.data.staff.find(x => x.code === staffCode || x.staff_code === staffCode || x.id == staffCode);
+    if (!s) return;
+    const depts = this.getSortedDepartments();
+    const currentDeptId = s.department_id || 8;
+    const allRooms = this.data.rooms;
+    
+    let assignedList = [];
+    if (Array.isArray(s.assigned_rooms)) {
+      assignedList = [...s.assigned_rooms];
+    } else if (typeof s.assigned_room === 'string' && s.assigned_room.trim()) {
+      assignedList = s.assigned_room.split(/[;,\n\r•]+/).map(x => x.trim()).filter(Boolean);
+    }
+
+    const currentRoleValue = `${s.role || 'staff'}|${s.role_title || s.title || 'Cán bộ / Nhân viên 5S'}`;
+
+    this.showModal(`
+      <div class="p-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2.5">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">
+              ${(s.name || 'CB').split(' ').pop().charAt(0)}
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Thông Tin & Phân Công Nhân Sự</h3>
+              <span class="text-[10px] text-slate-400">Mã NV: ${s.code} • TK: ${s.username || s.code}</span>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Họ và Tên Cán Bộ *</label>
+              <input type="text" id="edit-staff-name" value="${s.name || ''}" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mã Nhân Viên *</label>
+              <input type="text" id="edit-staff-code" value="${s.code || ''}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-mono text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <!-- MỤC VAI TRÒ PHÂN QUYỀN VÀ CHỨC DANH CHUYÊN MÔN (YÊU CẦU 3) -->
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              🛡️ Vai Trò Phân Quyền & Cấp Bậc 5S *
+            </label>
+            <select id="edit-staff-role" onchange="app5s.onRoleSelectChange(this.value, 'edit-staff')" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-xs text-slate-900 dark:text-white">
+              <optgroup label="🌟 Lãnh Đạo & Ban Chỉ Đạo 5S (Toàn quyền Admin)">
+                <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc" ${s.role === 'admin' && (s.role_title || '').includes('Trưởng Ban') ? 'selected' : ''}>👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
+                <option value="admin|Cán bộ Giám sát 5S Toàn Viện" ${s.role === 'admin' && (s.role_title || '').includes('Giám sát') ? 'selected' : ''}>🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL</option>
+              </optgroup>
+              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt điểm & Phân công)">
+                <option value="manager|BSCKII - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('BSCKII') ? 'selected' : ''}>👨‍⚕️ BSCKII - Trưởng Khoa</option>
+                <option value="manager|BSCKI - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('BSCKI') ? 'selected' : ''}>👨‍⚕️ BSCKI - Trưởng Khoa</option>
+                <option value="manager|ThS. Bác sĩ - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('ThS. Bác sĩ') ? 'selected' : ''}>👨‍⚕️ ThS. Bác sĩ - Trưởng Khoa</option>
+                <option value="manager|Điều dưỡng Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('Điều dưỡng Trưởng') ? 'selected' : ''}>👩‍⚕️ Điều dưỡng Trưởng Khoa</option>
+                <option value="manager|Kỹ thuật viên Trưởng" ${s.role === 'manager' && (s.role_title || '').includes('Kỹ thuật viên Trưởng') ? 'selected' : ''}>👨‍⚕️ Kỹ thuật viên Trưởng</option>
+                <option value="manager|Hộ sinh Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('Hộ sinh Trưởng') ? 'selected' : ''}>👩‍⚕️ Hộ sinh Trưởng Khoa</option>
+                <option value="manager|Trưởng Phòng Chức Năng" ${s.role === 'manager' && (s.role_title || '').includes('Trưởng Phòng') ? 'selected' : ''}>🏢 Trưởng Phòng Chức Năng</option>
+              </optgroup>
+              <optgroup label="🏥 Cán Bộ Chuyên Môn & Nhân Viên 5S (Thực hành 5S)">
+                <option value="staff|Bác sĩ Điều trị" ${s.role === 'staff' && (s.role_title || '').includes('Bác sĩ Điều trị') ? 'selected' : ''}>👨‍⚕️ Bác sĩ Điều trị</option>
+                <option value="staff|Điều dưỡng viên" ${s.role === 'staff' && (s.role_title || '').includes('Điều dưỡng viên') ? 'selected' : ''}>👩‍⚕️ Điều dưỡng viên</option>
+                <option value="staff|Kỹ thuật viên CĐHA" ${s.role === 'staff' && (s.role_title || '').includes('CĐHA') ? 'selected' : ''}>⚡ Kỹ thuật viên CĐHA</option>
+                <option value="staff|Kỹ thuật viên Xét nghiệm" ${s.role === 'staff' && (s.role_title || '').includes('Xét nghiệm') ? 'selected' : ''}>🔬 Kỹ thuật viên Xét nghiệm</option>
+                <option value="staff|Dược sĩ / Quản lý kho dược" ${s.role === 'staff' && (s.role_title || '').includes('Dược sĩ') ? 'selected' : ''}>💊 Dược sĩ / Quản lý kho dược</option>
+                <option value="staff|Hộ sinh viên" ${s.role === 'staff' && (s.role_title || '').includes('Hộ sinh viên') ? 'selected' : ''}>👶 Hộ sinh viên</option>
+                <option value="staff|Hộ lý / Nhân viên vệ sinh" ${s.role === 'staff' && (s.role_title || '').includes('Hộ lý') ? 'selected' : ''}>🧹 Hộ lý / Nhân viên vệ sinh khử khuẩn</option>
+                <option value="staff|Kỹ sư / Nhân viên CNTT - Kỹ thuật" ${s.role === 'staff' && (s.role_title || '').includes('CNTT') ? 'selected' : ''}>💻 Kỹ sư / Nhân viên CNTT - Kỹ thuật</option>
+                <option value="staff|Nhân viên Hành chính / Kế toán" ${s.role === 'staff' && (s.role_title || '').includes('Hành chính') ? 'selected' : ''}>📑 Nhân viên Hành chính / Kế toán</option>
+                <option value="staff|Cán bộ / Nhân viên 5S" ${s.role === 'staff' && (s.role_title || '').includes('Nhân viên 5S') ? 'selected' : ''}>✨ Cán bộ / Nhân viên 5S</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">🏢 Khoa / Phòng làm việc *</label>
+              <select id="edit-staff-dept" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-semibold text-slate-900 dark:text-white">
+                ${depts.map(d => `<option value="${d.id}" ${d.id == currentDeptId ? 'selected' : ''}>#${d.order} ${d.name}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">👨‍⚕️ Chức danh chuyên môn cụ thể *</label>
+              <input type="text" id="edit-staff-title" value="${s.title || s.role_title || s.position || 'Cán bộ 5S'}" placeholder="Nhập chức danh chi tiết" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-semibold text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên đăng nhập</label>
+              <input type="text" id="edit-staff-username" value="${s.username || ''}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-mono text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mật khẩu mới</label>
+              <input type="password" id="edit-staff-pass" placeholder="(Giữ nguyên)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-mono text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <!-- PHÂN CÔNG NHIỀU VỊ TRÍ PHỤ TRÁCH 5S -->
+          <div class="pt-2 border-t border-slate-200 dark:border-slate-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="block font-bold text-slate-800 dark:text-slate-200">📍 Phân Công Nhiều Vị Trí Phụ Trách 5S</label>
+                <span class="text-[10px] text-slate-400">Tích chọn các buồng phòng nhân sự chịu trách nhiệm làm 5S</span>
+              </div>
+              <span class="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full">
+                ${assignedList.length} vị trí
+              </span>
+            </div>
+
+            <div class="max-h-40 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-xl p-2 bg-slate-50 dark:bg-slate-900/60 space-y-1 no-scrollbar">
+              ${allRooms.map(r => {
+                const isChecked = assignedList.includes(r.name);
+                const rDept = depts.find(d => d.id === r.department_id) || { name: '' };
+                return `
+                  <label class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-emerald-50 dark:hover:bg-slate-800 cursor-pointer">
+                    <input type="checkbox" name="staff-assigned-rooms" value="${r.name}" ${isChecked ? 'checked' : ''} class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                    <div class="text-xs text-slate-800 dark:text-slate-200 flex-1 flex items-center justify-between">
+                      <span class="${isChecked ? 'font-bold text-emerald-700 dark:text-emerald-300' : ''}">${r.name}</span>
+                      <span class="text-[9px] text-slate-400 font-mono">${rDept.name}</span>
+                    </div>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-slate-500 mb-0.5">Vị trí tùy chỉnh khác (cách nhau bởi dấu phẩy):</label>
+              <input type="text" id="edit-staff-custom-rooms" placeholder="Ví dụ: Kho hóa chất, Hành lang tầng 2, Sảnh đón tiếp..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 text-xs text-slate-800 dark:text-slate-200">
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="app5s.saveEditStaff('${s.code}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition">
+              Lưu Thông Tin & Phân Công 5S
+            </button>
+          </div>
+        </div>
+      </div>
+    `);
+  }
+
+  saveEditStaff(staffCode) {
+    const s = this.data.staff.find(x => x.code === staffCode || x.staff_code === staffCode || x.id == staffCode);
+    if (!s) return;
+
+    const name = document.getElementById('edit-staff-name').value.trim();
+    const code = document.getElementById('edit-staff-code').value.trim();
+    const deptId = parseInt(document.getElementById('edit-staff-dept').value);
+    const title = document.getElementById('edit-staff-title').value.trim();
+    const roleRaw = document.getElementById('edit-staff-role').value;
+    const username = document.getElementById('edit-staff-username').value.trim();
+    const pass = document.getElementById('edit-staff-pass').value.trim();
+    const customRooms = document.getElementById('edit-staff-custom-rooms').value.trim();
+
+    if (!name) {
+      alert('Vui lòng nhập họ và tên!');
+      return;
+    }
+
+    // Parse role và role_title
+    let role = 'staff';
+    let roleTitle = title || 'Cán bộ 5S';
+    if (roleRaw.includes('|')) {
+      const parts = roleRaw.split('|');
+      role = parts[0];
+      roleTitle = parts[1];
     } else {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--gray-400);">Chưa có sự kiện an ninh nào được ghi nhận.</td></tr>`;
+      role = roleRaw;
     }
-  } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:red;">Lỗi tải nhật ký an ninh: ${e.message}</td></tr>`;
-  }
-}
 
-async function clearSecurityLogs() {
-  if (!confirm("Bạn có chắc chắn muốn làm sạch toàn bộ lịch sử sự kiện an ninh?")) return;
-  try {
-    const res = await fetch("/api/security/clear-logs", { method: "POST" });
-    const data = await res.json();
-    if (data.success) {
-      alert("✅ " + data.message);
-      await openSecurityLogsModal();
+    const checkedBoxes = document.querySelectorAll('input[name="staff-assigned-rooms"]:checked');
+    const assignedRooms = Array.from(checkedBoxes).map(cb => cb.value.trim());
+
+    if (customRooms) {
+      const extra = customRooms.split(/[;,\n\r]+/).map(x => x.trim()).filter(Boolean);
+      extra.forEach(e => {
+        if (!assignedRooms.includes(e)) assignedRooms.push(e);
+      });
     }
-  } catch (e) {
-    alert("Lỗi kết nối: " + e.message);
+
+    if (assignedRooms.length === 0) {
+      assignedRooms.push('Buồng bệnh được phân công');
+    }
+
+    s.name = name;
+    s.full_name = name;
+    if (code) {
+      s.code = code;
+      s.staff_code = code;
+    }
+    s.department_id = deptId;
+    s.title = title || roleTitle;
+    s.role_title = roleTitle;
+    s.position = title || roleTitle;
+    s.role = role;
+    s.role_level = role;
+    if (username) s.username = username;
+    if (pass) s.password = pass;
+
+    s.assigned_rooms = assignedRooms;
+    s.assigned_room = assignedRooms.join(', ');
+
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã lưu thông tin cán bộ: ${name}!`);
   }
-}
 
-// ==================== CẬP NHẬT TRẠNG THÁI TUNNEL TRONG CÀI ĐẶT ====================
-async function updateSettingsTunnelStatus() {
-  const badge = document.getElementById("settings-tunnel-badge");
-  const box = document.getElementById("settings-tunnel-url-box");
-  if (!box) return;
+  openAddAccountModal() {
+    const depts = this.getSortedDepartments();
+    const allRooms = this.data.rooms;
 
-  try {
-    const res = await fetch("/api/network-info");
-    const data = await res.json();
-    if (data.tunnel && data.tunnel.active && data.tunnel.url) {
-      if (badge) {
-        badge.textContent = "Đang phát sóng";
-        badge.className = "badge badge-good";
-      }
-      box.textContent = data.tunnel.url;
-      box.style.color = "#4ade80";
+    this.showModal(`
+      <div class="p-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Thêm Tài Khoản / Nhân Sự Mới</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold mb-1">Họ và Tên Cán Bộ *</label>
+            <input type="text" id="modal-acc-name" placeholder="Ví dụ: ĐD. Nguyễn Thị Thảo" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-bold">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold mb-1">Mã NV *</label>
+              <input type="text" id="modal-acc-code" placeholder="Ví dụ: BV-501" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Tên đăng nhập *</label>
+              <input type="text" id="modal-acc-username" placeholder="Ví dụ: nguyenthithao" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Mật khẩu khởi tạo *</label>
+            <input type="password" id="modal-acc-pass" value="123" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+          </div>
+
+          <!-- VAI TRÒ PHÂN QUYỀN ĐẦY ĐỦ CHỨC DANH (YÊU CẦU 3) -->
+          <div>
+            <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+              🛡️ Vai Trò Phân Quyền & Chức Danh 5S *
+            </label>
+            <select id="modal-acc-role" onchange="app5s.onRoleSelectChange(this.value, 'modal-acc')" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-bold text-xs text-slate-900 dark:text-white">
+              <optgroup label="🌟 Lãnh Đạo & Ban Chỉ Đạo 5S (Toàn quyền Admin)">
+                <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc">👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
+                <option value="admin|Cán bộ Giám sát 5S Toàn Viện">🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL</option>
+              </optgroup>
+              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt điểm & Phân công)">
+                <option value="manager|BSCKII - Trưởng Khoa">👨‍⚕️ BSCKII - Trưởng Khoa</option>
+                <option value="manager|BSCKI - Trưởng Khoa">👨‍⚕️ BSCKI - Trưởng Khoa</option>
+                <option value="manager|ThS. Bác sĩ - Trưởng Khoa">👨‍⚕️ ThS. Bác sĩ - Trưởng Khoa</option>
+                <option value="manager|Điều dưỡng Trưởng Khoa">👩‍⚕️ Điều dưỡng Trưởng Khoa</option>
+                <option value="manager|Kỹ thuật viên Trưởng">👨‍⚕️ Kỹ thuật viên Trưởng</option>
+                <option value="manager|Hộ sinh Trưởng Khoa">👩‍⚕️ Hộ sinh Trưởng Khoa</option>
+                <option value="manager|Trưởng Phòng Chức Năng">🏢 Trưởng Phòng Chức Năng</option>
+              </optgroup>
+              <optgroup label="🏥 Cán Bộ Chuyên Môn & Nhân Viên 5S (Thực hành 5S)">
+                <option value="staff|Bác sĩ Điều trị">👨‍⚕️ Bác sĩ Điều trị</option>
+                <option value="staff|Điều dưỡng viên" selected>👩‍⚕️ Điều dưỡng viên</option>
+                <option value="staff|Kỹ thuật viên CĐHA">⚡ Kỹ thuật viên CĐHA</option>
+                <option value="staff|Kỹ thuật viên Xét nghiệm">🔬 Kỹ thuật viên Xét nghiệm</option>
+                <option value="staff|Dược sĩ / Quản lý kho dược">💊 Dược sĩ / Quản lý kho dược</option>
+                <option value="staff|Hộ sinh viên">👶 Hộ sinh viên</option>
+                <option value="staff|Hộ lý / Nhân viên vệ sinh">🧹 Hộ lý / Nhân viên vệ sinh khử khuẩn</option>
+                <option value="staff|Kỹ sư / Nhân viên CNTT - Kỹ thuật">💻 Kỹ sư / Nhân viên CNTT - Kỹ thuật</option>
+                <option value="staff|Nhân viên Hành chính / Kế toán">📑 Nhân viên Hành chính / Kế toán</option>
+                <option value="staff|Cán bộ / Nhân viên 5S">✨ Cán bộ / Nhân viên 5S</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold mb-1">🏢 Khoa / Phòng làm việc *</label>
+              <select id="modal-acc-dept" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-semibold">
+                ${depts.map(d => `<option value="${d.id}">#${d.order} ${d.name}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1">👨‍⚕️ Chức danh chuyên môn cụ thể *</label>
+              <input type="text" id="modal-acc-title" value="Điều dưỡng viên" placeholder="Nhập chức danh chi tiết" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-semibold">
+            </div>
+          </div>
+
+          <!-- Phân công nhiều buồng phòng -->
+          <div class="pt-2 border-t border-slate-200 dark:border-slate-700 space-y-2">
+            <label class="block font-bold text-slate-800 dark:text-slate-200">📍 Phân Công Nhiều Vị Trí Phụ Trách 5S</label>
+            <div class="max-h-36 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-xl p-2 bg-slate-50 dark:bg-slate-900/60 space-y-1 no-scrollbar">
+              ${allRooms.map(r => `
+                <label class="flex items-center space-x-2 p-1 rounded-lg hover:bg-emerald-50 dark:hover:bg-slate-800 cursor-pointer">
+                  <input type="checkbox" name="add-staff-assigned-rooms" value="${r.name}" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                  <span class="text-xs text-slate-800 dark:text-slate-200">${r.name}</span>
+                </label>
+              `).join('')}
+            </div>
+            <div>
+              <input type="text" id="modal-acc-custom-rooms" placeholder="Vị trí tùy chỉnh khác (cách nhau bởi dấu phẩy)..." class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 text-xs">
+            </div>
+          </div>
+
+          <button onclick="app5s.saveNewAccount()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition">
+            Tạo Tài Khoản Mới
+          </button>
+        </div>
+      </div>
+    `);
+  }
+
+  saveNewAccount() {
+    const name = document.getElementById('modal-acc-name').value.trim();
+    const code = document.getElementById('modal-acc-code').value.trim() || 'BV-' + (this.data.staff.length + 101);
+    const username = document.getElementById('modal-acc-username').value.trim() || code.toLowerCase();
+    const pass = document.getElementById('modal-acc-pass').value.trim() || '123';
+    const deptId = parseInt(document.getElementById('modal-acc-dept').value);
+    const title = document.getElementById('modal-acc-title').value.trim();
+    const roleRaw = document.getElementById('modal-acc-role').value;
+    const customRooms = document.getElementById('modal-acc-custom-rooms').value.trim();
+
+    if (!name) {
+      alert('Vui lòng nhập họ và tên!');
+      return;
+    }
+
+    let role = 'staff';
+    let roleTitle = title || 'Cán bộ 5S';
+    if (roleRaw.includes('|')) {
+      const parts = roleRaw.split('|');
+      role = parts[0];
+      roleTitle = parts[1];
     } else {
-      if (badge) {
-        badge.textContent = "Tạm dừng";
-        badge.className = "badge badge-fail";
-      }
-      box.textContent = "Chưa bật phát sóng ngoại viện. Nhấn 'Làm mới' để kết nối.";
-      box.style.color = "#fbbf24";
+      role = roleRaw;
     }
-  } catch (e) {
-    box.textContent = "Lỗi kiểm tra trạng thái tunnel.";
-  }
-}
 
-async function restartTunnel() {
-  const box = document.getElementById("settings-tunnel-url-box");
-  if (box) box.textContent = "Đang kết nối lại Cloudflare Tunnel...";
-  try {
-    const res = await fetch("/api/tunnel/start", { method: "POST" });
-    const data = await res.json();
-    if (data.success && data.url) {
-      alert("✅ Đã kết nối lại thành công!\nURL Ngoại viện: " + data.url);
-      await updateSettingsTunnelStatus();
-    } else {
-      alert("⚠️ Không thể kết nối Cloudflare Tunnel. Kiểm tra kết nối Internet.");
-      await updateSettingsTunnelStatus();
+    const checkedBoxes = document.querySelectorAll('input[name="add-staff-assigned-rooms"]:checked');
+    const assignedRooms = Array.from(checkedBoxes).map(cb => cb.value.trim());
+    if (customRooms) {
+      const extra = customRooms.split(/[;,\n\r]+/).map(x => x.trim()).filter(Boolean);
+      extra.forEach(e => {
+        if (!assignedRooms.includes(e)) assignedRooms.push(e);
+      });
     }
-  } catch (e) {
-    alert("Lỗi: " + e.message);
+    if (assignedRooms.length === 0) {
+      assignedRooms.push('Buồng bệnh được phân công');
+    }
+
+    const newStaff = {
+      id: Date.now(),
+      code: code,
+      staff_code: code,
+      name: name,
+      full_name: name,
+      username: username,
+      password: pass,
+      department_id: deptId,
+      role: role,
+      role_level: role,
+      title: title || roleTitle,
+      role_title: roleTitle,
+      position: title || roleTitle,
+      assigned_rooms: assignedRooms,
+      assigned_room: assignedRooms.join(', '),
+      allow_external: true
+    };
+
+    this.data.staff.push(newStaff);
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã tạo tài khoản cho ${name}!`);
+  }
+
+  deleteAccount(code) {
+    const s = this.data.staff.find(x => x.code === code);
+    if (!s) return;
+    if (s.code === 'BV-345') {
+      alert('Không thể xóa tài khoản Quản trị viên chính!');
+      return;
+    }
+    if (!confirm(`Anh có chắc chắn muốn xóa tài khoản ${s.name} (${s.code}) không?`)) return;
+
+    this.data.staff = this.data.staff.filter(x => x.code !== code);
+    this.saveData();
+    this.render();
+    this.showToast('Đã xóa tài khoản thành công!');
+  }
+
+  // =========================================================================
+  // MODALS: CÀI ĐẶT ĐƠN VỊ, THÔNG BÁO, ĐĂNG NHẬP, ĐỔI MẬT KHẨU
+  // =========================================================================
+  openHospitalSettingsModal() {
+    const hosp = this.data.hospital;
+    this.showModal(`
+      <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Cài Đặt Thông Tin Đơn Vị</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold mb-1">Tên Bệnh Viện</label>
+            <input type="text" id="modal-hosp-name" value="${hosp.name}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-bold">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Địa chỉ</label>
+            <input type="text" id="modal-hosp-address" value="${hosp.address}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Hotline</label>
+            <input type="text" id="modal-hosp-hotline" value="${hosp.hotline}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold mb-1">Trưởng Ban 5S</label>
+              <input type="text" id="modal-hosp-director" value="${hosp.director}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-bold">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Chức danh</label>
+              <input type="text" id="modal-hosp-directortitle" value="${hosp.directorTitle}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold mb-1">Cán bộ Giám sát 5S</label>
+              <input type="text" id="modal-hosp-officer" value="${hosp.officer}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-bold">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Mã NV</label>
+              <input type="text" id="modal-hosp-officerid" value="${hosp.officerId}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Khẩu hiệu 5S</label>
+            <input type="text" id="modal-hosp-slogan" value="${hosp.slogan}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 italic">
+          </div>
+          <button onclick="app5s.saveHospitalSettings()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl">Lưu Cài Đặt</button>
+        </div>
+      </div>
+    `);
+  }
+
+  saveHospitalSettings() {
+    this.data.hospital.name = document.getElementById('modal-hosp-name').value.trim() || 'Bệnh viện Vĩnh Phúc VPI';
+    this.data.hospital.address = document.getElementById('modal-hosp-address').value.trim();
+    this.data.hospital.hotline = document.getElementById('modal-hosp-hotline').value.trim();
+    this.data.hospital.director = document.getElementById('modal-hosp-director').value.trim();
+    this.data.hospital.directorTitle = document.getElementById('modal-hosp-directortitle').value.trim();
+    this.data.hospital.officer = document.getElementById('modal-hosp-officer').value.trim();
+    this.data.hospital.officerId = document.getElementById('modal-hosp-officerid').value.trim();
+    this.data.hospital.slogan = document.getElementById('modal-hosp-slogan').value.trim();
+
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast('Đã lưu thành công cài đặt đơn vị!');
+  }
+
+  openNoticeEditModal() {
+    const notice = this.data.hospital.notice;
+    this.showModal(`
+      <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Soạn Bảng Tin Thông Báo Khẩn</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-2.5 text-xs">
+          <div class="flex items-center space-x-2">
+            <input type="checkbox" id="modal-notice-enabled" ${notice.enabled ? 'checked' : ''} class="rounded text-emerald-600 w-4 h-4">
+            <label for="modal-notice-enabled" class="font-bold">Bật hiển thị thông báo khẩn trên đầu ứng dụng</label>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Tiêu đề thông báo</label>
+            <input type="text" id="modal-notice-title" value="${notice.title}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-bold text-red-600">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Nội dung chỉ đạo / yêu cầu khẩn</label>
+            <textarea id="modal-notice-content" rows="3" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2">${notice.content}</textarea>
+          </div>
+          <button onclick="app5s.saveNoticeSettings()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl">Cập Nhật Thông Báo</button>
+        </div>
+      </div>
+    `);
+  }
+
+  saveNoticeSettings() {
+    this.data.hospital.notice.enabled = document.getElementById('modal-notice-enabled').checked;
+    this.data.hospital.notice.title = document.getElementById('modal-notice-title').value.trim();
+    this.data.hospital.notice.content = document.getElementById('modal-notice-content').value.trim();
+    this.data.hospital.notice.updatedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast('Đã phát thông báo khẩn cấp toàn viện!');
+  }
+
+  openLoginModal() {
+    const user = this.getCurrentUser();
+    this.showModal(`
+      <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Tài Khoản & Bảo Mật</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">
+              ${user ? (user.name || 'Đ').split(' ').pop().charAt(0) : '?'}
+            </div>
+            <div>
+              <div class="font-bold text-slate-900 dark:text-white">${user ? user.name : 'Vũ Bá Đạt'}</div>
+              <div class="text-[10px] text-slate-500">${user ? (user.title || user.role_title || 'Cán bộ 5S') : 'Cán bộ 5S'} • Mã: ${user ? user.code : 'BV-345'}</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="app5s.openChangePasswordModal()" class="py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold rounded-xl text-center">
+              Đổi Mật Khẩu
+            </button>
+            <button onclick="app5s.logout()" class="py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-xl text-center">
+              Đăng Xuất
+            </button>
+          </div>
+        </div>
+      </div>
+    `);
+  }
+
+  openChangePasswordModal() {
+    this.showModal(`
+      <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Đổi Mật Khẩu Đăng Nhập</h3>
+          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+        </div>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold mb-1">Mật khẩu hiện tại</label>
+            <input type="password" id="modal-pass-current" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Mật khẩu mới</label>
+            <input type="password" id="modal-pass-new" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Xác nhận mật khẩu mới</label>
+            <input type="password" id="modal-pass-confirm" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-mono">
+          </div>
+          <button onclick="app5s.saveNewPassword()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl">Đổi Mật Khẩu</button>
+        </div>
+      </div>
+    `);
+  }
+
+  saveNewPassword() {
+    const current = document.getElementById('modal-pass-current').value;
+    const newPass = document.getElementById('modal-pass-new').value;
+    const confirm = document.getElementById('modal-pass-confirm').value;
+
+    const user = this.getCurrentUser();
+    if (user && user.password && user.password !== current) {
+      alert('Mật khẩu hiện tại không đúng!');
+      return;
+    }
+    if (!newPass || newPass.length < 3) {
+      alert('Mật khẩu mới phải có ít nhất 3 ký tự!');
+      return;
+    }
+    if (newPass !== confirm) {
+      alert('Xác nhận mật khẩu mới không khớp!');
+      return;
+    }
+
+    if (user) {
+      user.password = newPass;
+      this.saveData();
+      this.closeModal();
+      this.showToast('Đã đổi mật khẩu thành công!');
+    }
+  }
+
+  logout() {
+    if (!confirm('Anh có chắc muốn đăng xuất không?')) return;
+    this.closeModal();
+    this.showToast('Đã đăng xuất tài khoản!');
+  }
+
+  exportBackupJSON() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.data, null, 2));
+    const dlAnchorElem = document.createElement('a');
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", `5S_VPI_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+    dlAnchorElem.click();
+    this.showToast('Đã xuất file dữ liệu sao lưu thành công!');
+  }
+
+  showToast(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-xl border border-slate-700 backdrop-blur-md flex items-center space-x-2 animate-bounce';
+    toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i><span>${msg}</span>`;
+    document.body.appendChild(toast);
+    if (window.lucide) window.lucide.createIcons();
+    setTimeout(() => {
+      toast.remove();
+    }, 2800);
+  }
+
+  showModal(htmlContent) {
+    const modalContainer = document.getElementById('modal-container');
+    if (!modalContainer) return;
+    modalContainer.innerHTML = `
+      <div class="fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-xs">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+          ${htmlContent}
+        </div>
+      </div>
+    `;
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  closeModal() {
+    const modalContainer = document.getElementById('modal-container');
+    if (modalContainer) modalContainer.innerHTML = '';
   }
 }
 
-function copySettingsTunnelUrl() {
-  const box = document.getElementById("settings-tunnel-url-box");
-  if (!box || !box.textContent.startsWith("http")) {
-    alert("Chưa có URL ngoại viện hợp lệ để sao chép!");
-    return;
+let app5s;
+function start5SApp() {
+  if (!app5s) {
+    app5s = new App5S();
+    window.app5s = app5s;
   }
-  navigator.clipboard.writeText(box.textContent).then(() => {
-    alert("📋 Đã sao chép liên kết ngoại viện:\n" + box.textContent);
-  }).catch(() => {
-    prompt("Sao chép thủ công liên kết ngoại viện:", box.textContent);
-  });
 }
 
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', start5SApp);
+} else {
+  start5SApp();
+}
