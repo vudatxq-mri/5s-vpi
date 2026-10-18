@@ -1,122 +1,129 @@
 {
   "hospital": {
-    "name": "Bệnh viện Vĩnh Phúc VPI",
-    "legalName": "Bệnh viện Vĩnh Phúc VPI",
-    "department": "Hội đồng Quản lý Chất lượng & Ban Chỉ đạo 5S Toàn Viện",
-    "slogan": "Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng",
-    "address": "Lạc Ý, Định Trung, TP. Vĩnh Yên, Tỉnh Vĩnh Phúc",
+    "name": "Bá»‡nh viá»‡n VÄ©nh PhÃºc VPI",
+    "legalName": "Bá»‡nh viá»‡n VÄ©nh PhÃºc VPI",
+    "department": "Há»™i Ä‘á»“ng Quáº£n lÃ½ Cháº¥t lÆ°á»£ng &amp; Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n",
+    "slogan": "SÃ&nbsp;ng lá»c - Sáº¯p xáº¿p - Sáº¡ch sáº½ - SÄƒn sÃ³c - Sáºµn sÃ&nbsp;ng",
+    "address": "Láº¡c Ã, Äá»‹nh Trung, TP. VÄ©nh YÃªn, Tá»‰nh VÄ©nh PhÃºc",
     "hotline": "0211.386.115",
-    "director": "ThS. BSCKII. Phạm Quỳnh Hưng",
-    "directorTitle": "Trưởng ban Chỉ đạo 5S Bệnh viện",
-    "officer": "KTV. Vũ Bá Đạt",
+    "director": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+    "directorTitle": "TrÆ°á»Ÿng ban Chá»‰ Ä‘áº¡o 5S Bá»‡nh viá»‡n",
+    "officer": "KTV. VÅ© BÃ¡ Äáº¡t",
     "officerId": "BV-345",
-    "officerTitle": "Cán bộ Giám sát 5S Toàn Viện & KTV Trưởng CĐHA",
-    "supervisionCycle": "Tháng 10/2026 (Kiểm tra hằng ngày)",
+    "officerTitle": "CÃ¡n bá»™ GiÃ¡m sÃ¡t 5S ToÃ&nbsp;n Viá»‡n &amp; KTV TrÆ°á»Ÿng CÄHA",
+    "supervisionCycle": "ThÃ¡ng 10/2026 (Kiá»ƒm tra háº±ng ngÃ&nbsp;y)",
     "complianceRate": 100,
-    "averageScore": 98.5
+    "averageScore": 98.5,
+    "notice": {
+      "enabled": true,
+      "type": "danger",
+      "title": "THÃ”NG BÃO KHáº¨N: KIá»‚M TRA Äá»˜T XUáº¤T 5S TOÃ€N VIá»†N",
+      "content": "Ban GiÃ¡m Ä‘á»‘c &amp; ÄoÃ&nbsp;n phÃºc tra Sá»Ÿ Y táº¿ kiá»ƒm tra thá»±c hÃ&nbsp;nh 5S táº¡i táº¥t cáº£ cÃ¡c buá»“ng bá»‡nh, buá»“ng thá»§ thuáº­t lÃºc 09h00 sÃ¡ng nay. YÃªu cáº§u cÃ¡c TrÆ°á»Ÿng khoa, Äiá»u dÆ°á»¡ng trÆ°á»Ÿng rÃ&nbsp; soÃ¡t sÃ&nbsp;ng lá»c, sáº¯p xáº¿p trang thiáº¿t bá»‹ vÃ&nbsp; khá»­ khuáº©n buá»“ng phÃ²ng sáº¡ch sáº½ ngay Ä‘áº§u giá».",
+      "updatedAt": "2026-10-16 07:30"
+    }
   },
   "departments": [
     {
       "id": 8,
       "code": "KCDHA",
-      "name": "Khoa Chẩn đoán Hình ảnh",
-      "head_nurse": "KTV. Nguyễn Đức Tuấn",
-      "doctor_in_charge": "BSCKI. Phạm Quang Nam",
+      "name": "Khoa Cháº©n Ä‘oÃ¡n HÃ¬nh áº£nh",
+      "head_nurse": "KTV. Nguyá»…n Äá»©c Tuáº¥n",
+      "doctor_in_charge": "BSCKI. Pháº¡m Quang Nam",
       "phone": "0211.386.130",
       "color": "#6366f1",
       "icon": "fa-x-ray",
-      "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu",
+      "description": "Chá»¥p X-quang, Cáº¯t lá»›p vi tÃ­nh (CT), MRI, SiÃªu Ã¢m mÃ&nbsp;u",
       "order": 1,
       "category": "paraclinical"
     },
     {
       "id": 1,
       "code": "KCC",
-      "name": "Khoa Cấp cứu",
-      "head_nurse": "ĐD. Trần Thị Lan Hương",
-      "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng",
+      "name": "Khoa Cáº¥p cá»©u",
+      "head_nurse": "ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+      "doctor_in_charge": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
       "phone": "0211.386.115",
       "color": "#ef4444",
       "icon": "fa-ambulance",
-      "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng",
+      "description": "Tiáº¿p nháº­n cáº¥p cá»©u 24/7, xá»­ lÃ½ kháº©n cáº¥p bá»‡nh nhÃ¢n náº·ng",
       "order": 2,
       "category": "clinical"
     },
     {
       "id": 11,
       "code": "ICU",
-      "name": "Khoa Hồi sức tích cực & Chống độc",
-      "head_nurse": "ĐD. Nguyễn Thị Thanh Nga",
-      "doctor_in_charge": "ThS.BS. Đinh Công Trí",
+      "name": "Khoa Há»“i sá»©c tÃ­ch cá»±c &amp; Chá»‘ng Ä‘á»™c",
+      "head_nurse": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
+      "doctor_in_charge": "ThS.BS. Äinh CÃ´ng TrÃ­",
       "phone": "0211.386.116",
       "color": "#dc2626",
       "icon": "fa-heart-pulse",
-      "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục",
+      "description": "Äiá»u trá»‹ chuyÃªn sÃ¢u bá»‡nh nhÃ¢n há»“i sá»©c, thá»Ÿ mÃ¡y, lá»c mÃ¡u liÃªn tá»¥c",
       "order": 3,
       "category": "clinical"
     },
     {
       "id": 12,
       "code": "PTGM",
-      "name": "Khoa Phẫu thuật - Gây mê hồi sức",
-      "head_nurse": "ĐD. Nguyễn Văn Thắng",
-      "doctor_in_charge": "BSCKII. Lê Tuấn Anh",
+      "name": "Khoa Pháº«u thuáº­t - GÃ¢y mÃª há»“i sá»©c",
+      "head_nurse": "ÄD. Nguyá»…n VÄƒn Tháº¯ng",
+      "doctor_in_charge": "BSCKII. LÃª Tuáº¥n Anh",
       "phone": "0211.386.117",
       "color": "#0284c7",
       "icon": "fa-syringe",
-      "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản",
+      "description": "Khu pháº«u thuáº­t vÃ´ khuáº©n, gÃ¢y mÃª há»“i tá»‰nh, pháº«u thuáº­t ngoáº¡i sáº£n",
       "order": 4,
       "category": "clinical"
     },
     {
       "id": 2,
       "code": "KKB",
-      "name": "Khoa Khám bệnh",
-      "head_nurse": "ĐD. Hoàng Bích Thủy",
-      "doctor_in_charge": "BSCKI. Vũ Đình Khiêm",
+      "name": "Khoa KhÃ¡m bá»‡nh",
+      "head_nurse": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
+      "doctor_in_charge": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
       "phone": "0211.386.101",
       "color": "#0ea5e9",
       "icon": "fa-stethoscope",
-      "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân",
+      "description": "KhÃ¡m bá»‡nh ngoáº¡i trÃº, tÆ° váº¥n vÃ&nbsp; phÃ¢n luá»“ng bá»‡nh nhÃ¢n",
       "order": 5,
       "category": "clinical"
     },
     {
       "id": 4,
       "code": "KNG",
-      "name": "Khoa Ngoại Tổng hợp",
-      "head_nurse": "ĐD. Bùi Văn Hùng",
-      "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn",
+      "name": "Khoa Ngoáº¡i Tá»•ng há»£p",
+      "head_nurse": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
+      "doctor_in_charge": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
       "phone": "0211.386.120",
       "color": "#10b981",
       "icon": "fa-user-doctor",
-      "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương",
+      "description": "Pháº«u thuáº­t Ä‘iá»u trá»‹ cÃ¡c bá»‡nh lÃ½ tiÃªu hÃ³a, gan máº­t, cháº¥n thÆ°Æ¡ng",
       "order": 6,
       "category": "clinical"
     },
     {
       "id": 5,
       "code": "KNT",
-      "name": "Khoa Nội Tổng hợp",
-      "head_nurse": "ĐD. Trần Phương Dung",
-      "doctor_in_charge": "BSCKI. Mai Thị Hảo",
+      "name": "Khoa Ná»™i Tá»•ng há»£p",
+      "head_nurse": "ÄD. Tráº§n PhÆ°Æ¡ng Dung",
+      "doctor_in_charge": "BSCKI. Mai Thá»‹ Háº£o",
       "phone": "0211.386.122",
       "color": "#06b6d4",
       "icon": "fa-notes-medical",
-      "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa",
+      "description": "KhÃ¡m vÃ&nbsp; Ä‘iá»u trá»‹ ná»™i trÃº tim máº¡ch, hÃ´ háº¥p, ná»™i tiáº¿t, tiÃªu hÃ³a",
       "order": 7,
       "category": "clinical"
     },
     {
       "id": 6,
       "code": "KSN",
-      "name": "Khoa Phụ Sản",
-      "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng",
-      "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng",
+      "name": "Khoa Phá»¥ Sáº£n",
+      "head_nurse": "Há»™ sinh. LÃª Thá»‹ ThÃºy Háº±ng",
+      "doctor_in_charge": "BSCKII. Nguyá»…n Thá»‹ Há»“ng",
       "phone": "0211.386.125",
       "color": "#ec4899",
       "icon": "fa-baby",
-      "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa",
+      "description": "ChÄƒm sÃ³c thai phá»¥, Ä‘á»¡ Ä‘áº» thÆ°á»ng, má»• láº¥y thai vÃ&nbsp; Ä‘iá»u trá»‹ phá»¥ khoa",
       "order": 8,
       "category": "clinical"
     },
@@ -124,155 +131,155 @@
       "id": 7,
       "code": "KNHI",
       "name": "Khoa Nhi",
-      "head_nurse": "ĐD. Đỗ Thị Hiền",
-      "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc",
+      "head_nurse": "ÄD. Äá»— Thá»‹ Hiá»n",
+      "doctor_in_charge": "ThS.BS. Äáº·ng Há»“ng PhÃºc",
       "phone": "0211.386.128",
       "color": "#eab308",
       "icon": "fa-children",
-      "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng",
+      "description": "KhÃ¡m vÃ&nbsp; Ä‘iá»u trá»‹ toÃ&nbsp;n diá»‡n bá»‡nh lÃ½ sÆ¡ sinh, tráº» nhá» vÃ&nbsp; dinh dÆ°á»¡ng",
       "order": 9,
       "category": "clinical"
     },
     {
       "id": 3,
       "code": "YHCTPHCN",
-      "name": "Khoa YHCT - Phục hồi chức năng",
-      "head_nurse": "ĐD. Phạm Thị Lý",
-      "doctor_in_charge": "BSCKI. Trần Văn Thái",
+      "name": "Khoa YHCT - Phá»¥c há»“i chá»©c nÄƒng",
+      "head_nurse": "ÄD. Pháº¡m Thá»‹ LÃ½",
+      "doctor_in_charge": "BSCKI. Tráº§n VÄƒn ThÃ¡i",
       "phone": "0211.386.118",
       "color": "#f59e0b",
       "icon": "fa-spa",
-      "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu",
+      "description": "ChÃ¢m cá»©u, xoa bÃ³p báº¥m huyá»‡t, phá»¥c há»“i chá»©c nÄƒng vÃ&nbsp; váº­t lÃ½ trá»‹ liá»‡u",
       "order": 10,
       "category": "clinical"
     },
     {
       "id": 13,
       "code": "LCK",
-      "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)",
-      "head_nurse": "ĐD. Vũ Thị Loan",
-      "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường",
+      "name": "Khoa LiÃªn ChuyÃªn Khoa (Máº¯t - TMH - RHM)",
+      "head_nurse": "ÄD. VÅ© Thá»‹ Loan",
+      "doctor_in_charge": "BSCKI. Äá»— Máº¡nh CÆ°á»ng",
       "phone": "0211.386.129",
       "color": "#8b5cf6",
       "icon": "fa-eye",
-      "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình",
+      "description": "KhÃ¡m chá»¯a bá»‡nh RÄƒng HÃ&nbsp;m Máº·t, Tai MÅ©i Há»ng, Máº¯t vÃ&nbsp; pháº«u thuáº­t táº¡o hÃ¬nh",
       "order": 11,
       "category": "clinical"
     },
     {
       "id": 14,
       "code": "TDCN",
-      "name": "Khoa Thăm dò chức năng & Nội soi",
-      "head_nurse": "KTV. Lê Thùy Linh",
-      "doctor_in_charge": "BS. Lê Quang Huy",
+      "name": "Khoa ThÄƒm dÃ² chá»©c nÄƒng &amp; Ná»™i soi",
+      "head_nurse": "KTV. LÃª ThÃ¹y Linh",
+      "doctor_in_charge": "BS. LÃª Quang Huy",
       "phone": "0211.386.131",
       "color": "#14b8a6",
       "icon": "fa-wave-square",
-      "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp",
+      "description": "Ná»™i soi tiÃªu hÃ³a, Ä‘iá»‡n tim, Ä‘iá»‡n nÃ£o Ä‘á»“, Ä‘o chá»©c nÄƒng hÃ´ háº¥p",
       "order": 12,
       "category": "paraclinical"
     },
     {
       "id": 9,
       "code": "KXN",
-      "name": "Khoa Xét nghiệm",
-      "head_nurse": "KTV. Đỗ Thị Thu Hường",
-      "doctor_in_charge": "BSCKI. Vũ Đức Hải",
+      "name": "Khoa XÃ©t nghiá»‡m",
+      "head_nurse": "KTV. Äá»— Thá»‹ Thu HÆ°á»ng",
+      "doctor_in_charge": "BSCKI. VÅ© Äá»©c Háº£i",
       "phone": "0211.386.132",
       "color": "#8b5cf6",
       "icon": "fa-vial-virus",
-      "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học",
+      "description": "Huyáº¿t há»c, Sinh hÃ³a, Miá»…n dá»‹ch, Vi sinh Ä‘áº¡t chuáº©n an toÃ&nbsp;n sinh há»c",
       "order": 13,
       "category": "paraclinical"
     },
     {
       "id": 15,
       "code": "KD",
-      "name": "Khoa Dược",
-      "head_nurse": "DS. Nguyễn Bích Ngọc",
-      "doctor_in_charge": "DS CKI. Hoàng Thị Lan",
+      "name": "Khoa DÆ°á»£c",
+      "head_nurse": "DS. Nguyá»…n BÃ­ch Ngá»c",
+      "doctor_in_charge": "DS CKI. HoÃ&nbsp;ng Thá»‹ Lan",
       "phone": "0211.386.133",
       "color": "#10b981",
       "icon": "fa-pills",
-      "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế",
+      "description": "Quáº£n lÃ½ kho thuá»‘c, cáº¥p phÃ¡t dÆ°á»£c pháº©m, hÃ³a cháº¥t vÃ&nbsp; váº­t tÆ° y táº¿",
       "order": 14,
       "category": "paraclinical"
     },
     {
       "id": 10,
       "code": "KKSNK",
-      "name": "Khoa Kiểm soát Nhiễm khuẩn",
-      "head_nurse": "ĐD. Trịnh Thị Thu Trang",
-      "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa",
+      "name": "Khoa Kiá»ƒm soÃ¡t Nhiá»…m khuáº©n",
+      "head_nurse": "ÄD. Trá»‹nh Thá»‹ Thu Trang",
+      "doctor_in_charge": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
       "phone": "0211.386.135",
       "color": "#14b8a6",
       "icon": "fa-shield-virus",
-      "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện",
+      "description": "Tiá»‡t khuáº©n dá»¥ng cá»¥ y táº¿, giáº·t lÃ&nbsp; Ä‘á»“ váº£i, giÃ¡m sÃ¡t vá»‡ sinh 5S bá»‡nh viá»‡n",
       "order": 15,
       "category": "paraclinical"
     },
     {
       "id": 16,
       "code": "QLCL",
-      "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S",
-      "head_nurse": "ĐD. Nguyễn Thu Trang",
-      "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng",
+      "name": "PhÃ²ng Quáº£n lÃ½ cháº¥t lÆ°á»£ng &amp; Ban Chá»‰ Ä‘áº¡o 5S",
+      "head_nurse": "ÄD. Nguyá»…n Thu Trang",
+      "doctor_in_charge": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
       "phone": "0211.386.100",
       "color": "#6366f1",
       "icon": "fa-award",
-      "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV",
+      "description": "ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S, Ä‘Ã¡nh giÃ¡ Bá»™ 83 TiÃªu chÃ­ cháº¥t lÆ°á»£ng BV",
       "order": 16,
       "category": "functional"
     },
     {
       "id": 17,
       "code": "KHTH",
-      "name": "Phòng Kế hoạch tổng hợp & CNTT",
-      "head_nurse": "ĐD. Hoàng Hải Yến",
-      "doctor_in_charge": "BSCKI. Trần Đức Thắng",
+      "name": "PhÃ²ng Káº¿ hoáº¡ch tá»•ng há»£p &amp; CNTT",
+      "head_nurse": "ÄD. HoÃ&nbsp;ng Háº£i Yáº¿n",
+      "doctor_in_charge": "BSCKI. Tráº§n Äá»©c Tháº¯ng",
       "phone": "0211.386.102",
       "color": "#3b82f6",
       "icon": "fa-clipboard-list",
-      "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS",
+      "description": "Káº¿ hoáº¡ch chuyÃªn mÃ´n, chá»‰ Ä‘áº¡o tuyáº¿n, quáº£n trá»‹ há»‡ thá»‘ng HIS/PACS",
       "order": 17,
       "category": "functional"
     },
     {
       "id": 18,
       "code": "PDD",
-      "name": "Phòng Điều dưỡng",
-      "head_nurse": "ThS. ĐD. Trần Thị Lan Hương",
-      "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương",
+      "name": "PhÃ²ng Äiá»u dÆ°á»¡ng",
+      "head_nurse": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+      "doctor_in_charge": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
       "phone": "0211.386.103",
       "color": "#06b6d4",
       "icon": "fa-user-nurse",
-      "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S",
+      "description": "Quáº£n lÃ½ chÄƒm sÃ³c ngÆ°á»i bá»‡nh, kiá»ƒm tra quy trÃ¬nh ká»¹ thuáº­t Ä‘iá»u dÆ°á»¡ng vÃ&nbsp; 5S",
       "order": 18,
       "category": "functional"
     },
     {
       "id": 19,
       "code": "HCQT",
-      "name": "Phòng Tổ chức cán bộ & Hành chính quản trị",
-      "head_nurse": "CN. Đặng Thị Loan",
-      "doctor_in_charge": "ThS. Nguyễn Văn Hùng",
+      "name": "PhÃ²ng Tá»• chá»©c cÃ¡n bá»™ &amp; HÃ&nbsp;nh chÃ­nh quáº£n trá»‹",
+      "head_nurse": "CN. Äáº·ng Thá»‹ Loan",
+      "doctor_in_charge": "ThS. Nguyá»…n VÄƒn HÃ¹ng",
       "phone": "0211.386.105",
       "color": "#64748b",
       "icon": "fa-building",
-      "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan",
+      "description": "VÄƒn thÆ°, tiáº¿p dÃ¢n, quáº£n trá»‹ cÆ¡ sá»Ÿ váº­t cháº¥t, báº£o vá»‡ vÃ&nbsp; khuÃ´n viÃªn cáº£nh quan",
       "order": 19,
       "category": "functional"
     },
     {
       "id": 20,
       "code": "TCKT",
-      "name": "Phòng Tài chính - Kế toán",
-      "head_nurse": "KTV. Lê Thu Thảo",
-      "doctor_in_charge": "ThS. Vũ Thị Mai",
+      "name": "PhÃ²ng TÃ&nbsp;i chÃ­nh - Káº¿ toÃ¡n",
+      "head_nurse": "KTV. LÃª Thu Tháº£o",
+      "doctor_in_charge": "ThS. VÅ© Thá»‹ Mai",
       "phone": "0211.386.106",
       "color": "#f59e0b",
       "icon": "fa-file-invoice-dollar",
-      "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị",
+      "description": "Quáº£n lÃ½ thu chi viá»‡n phÃ­, thanh toÃ¡n BHYT, quáº£n trá»‹ tÃ&nbsp;i sáº£n vÃ&nbsp; trang thiáº¿t bá»‹",
       "order": 20,
       "category": "functional"
     }
@@ -282,11 +289,11 @@
       "id": 34,
       "department_id": 8,
       "code": "XQ-01",
-      "name": "Phòng Chụp X-quang Kỹ thuật số DR",
-      "room_type": "Phòng máy",
-      "floor": "Tầng 1 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Trần Văn Chung",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR",
+      "room_type": "PhÃ²ng mÃ¡y",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Tráº§n VÄƒn Chung",
+      "target_score": 95,
       "status": "active",
       "order": 1
     },
@@ -294,11 +301,11 @@
       "id": 32,
       "department_id": 8,
       "code": "CT-01",
-      "name": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)",
-      "room_type": "Phòng máy",
-      "floor": "Tầng 1 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Nguyễn Đức Tuấn",
-      "target_score": 98.0,
+      "name": "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner)",
+      "room_type": "PhÃ²ng mÃ¡y",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Nguyá»…n Äá»©c Tuáº¥n",
+      "target_score": 98,
       "status": "active",
       "order": 2
     },
@@ -306,11 +313,11 @@
       "id": 33,
       "department_id": 8,
       "code": "MRI-01",
-      "name": "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)",
-      "room_type": "Phòng máy",
-      "floor": "Tầng 1 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Lê Công Bằng",
-      "target_score": 98.0,
+      "name": "PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)",
+      "room_type": "PhÃ²ng mÃ¡y",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. LÃª CÃ´ng Báº±ng",
+      "target_score": 98,
       "status": "active",
       "order": 3
     },
@@ -318,11 +325,11 @@
       "id": 35,
       "department_id": 8,
       "code": "SA-01",
-      "name": "Phòng Siêu âm Màu 4D & Doppler tim mạch (P.104)",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 1 - Nhà Kỹ thuật",
-      "person_in_charge": "BS. Phạm Quang Nam",
-      "target_score": 95.0,
+      "name": "PhÃ²ng SiÃªu Ã¢m MÃ&nbsp;u 4D &amp; Doppler tim máº¡ch (P.104)",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "BS. Pháº¡m Quang Nam",
+      "target_score": 95,
       "status": "active",
       "order": 4
     },
@@ -330,11 +337,11 @@
       "id": 50,
       "department_id": 8,
       "code": "PACS-01",
-      "name": "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS",
-      "room_type": "Phòng chuyên môn",
-      "floor": "Tầng 1 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Vũ Bá Đạt",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS",
+      "room_type": "PhÃ²ng chuyÃªn mÃ´n",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. VÅ© BÃ¡ Äáº¡t",
+      "target_score": 95,
       "status": "active",
       "order": 5
     },
@@ -342,11 +349,11 @@
       "id": 51,
       "department_id": 8,
       "code": "KHO-CDHA",
-      "name": "Kho Vật tư tiêu hao & Lưu trữ hồ sơ phim CĐHA",
-      "room_type": "Kho lưu trữ",
-      "floor": "Tầng 1 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Trần Văn Tuấn",
-      "target_score": 90.0,
+      "name": "Kho Váº­t tÆ° tiÃªu hao &amp; LÆ°u trá»¯ há»“ sÆ¡ phim CÄHA",
+      "room_type": "Kho lÆ°u trá»¯",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Tráº§n VÄƒn Tuáº¥n",
+      "target_score": 90,
       "status": "active",
       "order": 6
     },
@@ -354,11 +361,11 @@
       "id": 1,
       "department_id": 1,
       "code": "KCC-P01",
-      "name": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu",
-      "room_type": "Phòng tiếp đón",
-      "floor": "Tầng 1 - Nhà A",
-      "person_in_charge": "ĐD. Lê Văn Minh",
-      "target_score": 92.0,
+      "name": "PhÃ²ng Tiáº¿p nháº­n &amp; PhÃ¢n loáº¡i bá»‡nh cáº¥p cá»©u",
+      "room_type": "PhÃ²ng tiáº¿p Ä‘Ã³n",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; A",
+      "person_in_charge": "ÄD. LÃª VÄƒn Minh",
+      "target_score": 92,
       "status": "active",
       "order": 1
     },
@@ -366,11 +373,11 @@
       "id": 2,
       "department_id": 1,
       "code": "KCC-P02",
-      "name": "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 1 - Nhà A",
-      "person_in_charge": "ĐD. Trần Thị Lan Hương",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; A",
+      "person_in_charge": "ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+      "target_score": 95,
       "status": "active",
       "order": 2
     },
@@ -378,11 +385,11 @@
       "id": 3,
       "department_id": 1,
       "code": "KCC-P03",
-      "name": "Phòng Lưu bệnh Cấp cứu (Phòng 101)",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 1 - Nhà A",
-      "person_in_charge": "ĐD. Phạm Thị Mai",
-      "target_score": 90.0,
+      "name": "PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; A",
+      "person_in_charge": "ÄD. Pháº¡m Thá»‹ Mai",
+      "target_score": 90,
       "status": "active",
       "order": 3
     },
@@ -390,11 +397,11 @@
       "id": 4,
       "department_id": 1,
       "code": "KCC-P04",
-      "name": "Phòng Tiểu phẫu - Băng bó vết thương",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 1 - Nhà A",
-      "person_in_charge": "ĐD. Hoàng Hải Yến",
-      "target_score": 92.0,
+      "name": "PhÃ²ng Tiá»ƒu pháº«u - BÄƒng bÃ³ váº¿t thÆ°Æ¡ng",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; A",
+      "person_in_charge": "ÄD. HoÃ&nbsp;ng Háº£i Yáº¿n",
+      "target_score": 92,
       "status": "active",
       "order": 4
     },
@@ -402,11 +409,11 @@
       "id": 5,
       "department_id": 1,
       "code": "KCC-P05",
-      "name": "Kho Thuốc & Dịch truyền Cấp cứu",
-      "room_type": "Kho dược",
-      "floor": "Tầng 1 - Nhà A",
-      "person_in_charge": "DS. Nguyễn Bích Ngọc",
-      "target_score": 95.0,
+      "name": "Kho Thuá»‘c &amp; Dá»‹ch truyá»n Cáº¥p cá»©u",
+      "room_type": "Kho dÆ°á»£c",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; A",
+      "person_in_charge": "DS. Nguyá»…n BÃ­ch Ngá»c",
+      "target_score": 95,
       "status": "active",
       "order": 5
     },
@@ -414,11 +421,11 @@
       "id": 6,
       "department_id": 1,
       "code": "KCC-P06",
-      "name": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải",
-      "room_type": "Khu vệ sinh",
-      "floor": "Tầng 1 - Nhà A",
-      "person_in_charge": "Hộ lý. Vũ Thị Hoa",
-      "target_score": 90.0,
+      "name": "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i",
+      "room_type": "Khu vá»‡ sinh",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; A",
+      "person_in_charge": "Há»™ lÃ½. VÅ© Thá»‹ Hoa",
+      "target_score": 90,
       "status": "active",
       "order": 6
     },
@@ -426,11 +433,11 @@
       "id": 46,
       "department_id": 11,
       "code": "ICU-01",
-      "name": "Buồng Bệnh nhân nặng Hồi sức 1",
-      "room_type": "Phòng điều trị tích cực",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "BSCKI. Trần Văn Thái",
-      "target_score": 98.0,
+      "name": "Buá»“ng Bá»‡nh nhÃ¢n náº·ng Há»“i sá»©c 1",
+      "room_type": "PhÃ²ng Ä‘iá»u trá»‹ tÃ­ch cá»±c",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "BSCKI. Tráº§n VÄƒn ThÃ¡i",
+      "target_score": 98,
       "status": "active",
       "order": 1
     },
@@ -438,11 +445,11 @@
       "id": 47,
       "department_id": 11,
       "code": "ICU-02",
-      "name": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục",
-      "room_type": "Phòng hồi sức",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "ĐD. Nguyễn Thị Mai",
-      "target_score": 98.0,
+      "name": "Buá»“ng Bá»‡nh nhÃ¢n Thá»Ÿ mÃ¡y &amp; Lá»c mÃ¡u liÃªn tá»¥c",
+      "room_type": "PhÃ²ng há»“i sá»©c",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Nguyá»…n Thá»‹ Mai",
+      "target_score": 98,
       "status": "active",
       "order": 2
     },
@@ -450,11 +457,11 @@
       "id": 48,
       "department_id": 11,
       "code": "ICU-03",
-      "name": "Phòng Thao tác & Thủ thuật ICU",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "ThS.BS. Đinh Công Trí",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "ThS.BS. Äinh CÃ´ng TrÃ­",
+      "target_score": 95,
       "status": "active",
       "order": 3
     },
@@ -462,11 +469,11 @@
       "id": 49,
       "department_id": 11,
       "code": "ICU-04",
-      "name": "Phòng Trực cấp cứu & Giao ban ICU",
-      "room_type": "Phòng giao ban",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "ĐD. Nguyễn Thị Thanh Nga",
-      "target_score": 92.0,
+      "name": "PhÃ²ng Trá»±c cáº¥p cá»©u &amp; Giao ban ICU",
+      "room_type": "PhÃ²ng giao ban",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
+      "target_score": 92,
       "status": "active",
       "order": 4
     },
@@ -474,11 +481,11 @@
       "id": 52,
       "department_id": 11,
       "code": "ICU-05",
-      "name": "Buồng Cách ly áp lực âm ICU",
-      "room_type": "Phòng cách ly",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "ĐD. Phan Anh Tuấn",
-      "target_score": 95.0,
+      "name": "Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU",
+      "room_type": "PhÃ²ng cÃ¡ch ly",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Phan Anh Tuáº¥n",
+      "target_score": 95,
       "status": "active",
       "order": 5
     },
@@ -486,11 +493,11 @@
       "id": 53,
       "department_id": 12,
       "code": "PTGM-01",
-      "name": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát",
-      "room_type": "Phòng phẫu thuật",
-      "floor": "Tầng 3 - Nhà Kỹ thuật",
-      "person_in_charge": "BSCKII. Lê Tuấn Anh",
-      "target_score": 99.0,
+      "name": "PhÃ²ng Má»• sá»‘ 1 - Pháº«u thuáº­t Ngoáº¡i tá»•ng quÃ¡t",
+      "room_type": "PhÃ²ng pháº«u thuáº­t",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "BSCKII. LÃª Tuáº¥n Anh",
+      "target_score": 99,
       "status": "active",
       "order": 1
     },
@@ -498,11 +505,11 @@
       "id": 54,
       "department_id": 12,
       "code": "PTGM-02",
-      "name": "Phòng Mổ số 2 - Phẫu thuật Sản khoa & Mổ lấy thai",
-      "room_type": "Phòng phẫu thuật",
-      "floor": "Tầng 3 - Nhà Kỹ thuật",
-      "person_in_charge": "BSCKII. Nguyễn Thị Hồng",
-      "target_score": 99.0,
+      "name": "PhÃ²ng Má»• sá»‘ 2 - Pháº«u thuáº­t Sáº£n khoa &amp; Má»• láº¥y thai",
+      "room_type": "PhÃ²ng pháº«u thuáº­t",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "BSCKII. Nguyá»…n Thá»‹ Há»“ng",
+      "target_score": 99,
       "status": "active",
       "order": 2
     },
@@ -510,11 +517,11 @@
       "id": 55,
       "department_id": 12,
       "code": "PTGM-03",
-      "name": "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật",
-      "room_type": "Phòng hồi tỉnh",
-      "floor": "Tầng 3 - Nhà Kỹ thuật",
-      "person_in_charge": "ĐD. Nguyễn Văn Thắng",
-      "target_score": 96.0,
+      "name": "PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t",
+      "room_type": "PhÃ²ng há»“i tá»‰nh",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "ÄD. Nguyá»…n VÄƒn Tháº¯ng",
+      "target_score": 96,
       "status": "active",
       "order": 3
     },
@@ -522,11 +529,11 @@
       "id": 56,
       "department_id": 12,
       "code": "PTGM-04",
-      "name": "Khu Rửa tay phẫu thuật viên & Thay đồ vô khuẩn",
-      "room_type": "Khu kỹ thuật",
-      "floor": "Tầng 3 - Nhà Kỹ thuật",
-      "person_in_charge": "ĐD. Bùi Văn Hùng",
-      "target_score": 95.0,
+      "name": "Khu Rá»­a tay pháº«u thuáº­t viÃªn &amp; Thay Ä‘á»“ vÃ´ khuáº©n",
+      "room_type": "Khu ká»¹ thuáº­t",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
+      "target_score": 95,
       "status": "active",
       "order": 4
     },
@@ -534,11 +541,11 @@
       "id": 57,
       "department_id": 12,
       "code": "PTGM-05",
-      "name": "Kho Vật tư phòng mổ & Đồ vải tiệt trùng",
-      "room_type": "Kho vô trùng",
-      "floor": "Tầng 3 - Nhà Kỹ thuật",
-      "person_in_charge": "ĐD. Trần Kim Oanh",
-      "target_score": 95.0,
+      "name": "Kho Váº­t tÆ° phÃ²ng má»• &amp; Äá»“ váº£i tiá»‡t trÃ¹ng",
+      "room_type": "Kho vÃ´ trÃ¹ng",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "ÄD. Tráº§n Kim Oanh",
+      "target_score": 95,
       "status": "active",
       "order": 5
     },
@@ -546,11 +553,11 @@
       "id": 7,
       "department_id": 2,
       "code": "KKB-P01",
-      "name": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động",
-      "room_type": "Sảnh chờ",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "ĐD. Nguyễn Thu Trang",
-      "target_score": 92.0,
+      "name": "Sáº£nh Tiáº¿p Ä‘Ã³n, HÆ°á»›ng dáº«n &amp; Láº¥y sá»‘ tá»± Ä‘á»™ng",
+      "room_type": "Sáº£nh chá»",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Nguyá»…n Thu Trang",
+      "target_score": 92,
       "status": "active",
       "order": 1
     },
@@ -558,11 +565,11 @@
       "id": 8,
       "department_id": 2,
       "code": "KKB-P02",
-      "name": "Phòng Khám Nội tổng quát (P.101)",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "BSCKI. Vũ Đình Khiêm",
-      "target_score": 92.0,
+      "name": "PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+      "target_score": 92,
       "status": "active",
       "order": 2
     },
@@ -570,11 +577,11 @@
       "id": 9,
       "department_id": 2,
       "code": "KKB-P03",
-      "name": "Phòng Khám Ngoại - Chấn thương (P.102)",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "BS. Đỗ Mạnh Cường",
-      "target_score": 92.0,
+      "name": "PhÃ²ng KhÃ¡m Ngoáº¡i - Cháº¥n thÆ°Æ¡ng (P.102)",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "BS. Äá»— Máº¡nh CÆ°á»ng",
+      "target_score": 92,
       "status": "active",
       "order": 3
     },
@@ -582,11 +589,11 @@
       "id": 10,
       "department_id": 2,
       "code": "KKB-P04",
-      "name": "Phòng Khám Nhi & Tiêm chủng (P.103)",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "BS. Trần Thảo Vy",
-      "target_score": 92.0,
+      "name": "PhÃ²ng KhÃ¡m Nhi &amp; TiÃªm chá»§ng (P.103)",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "BS. Tráº§n Tháº£o Vy",
+      "target_score": 92,
       "status": "active",
       "order": 4
     },
@@ -594,11 +601,11 @@
       "id": 11,
       "department_id": 2,
       "code": "KKB-P05",
-      "name": "Phòng Lấy mẫu máu & Bệnh phẩm tập trung",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "KTV. Lê Thùy Linh",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "KTV. LÃª ThÃ¹y Linh",
+      "target_score": 95,
       "status": "active",
       "order": 5
     },
@@ -606,11 +613,11 @@
       "id": 58,
       "department_id": 2,
       "code": "KKB-P06",
-      "name": "Quầy Thu viện phí & Giám định BHYT",
-      "room_type": "Quầy giao dịch",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "ĐD. Hoàng Bích Thủy",
-      "target_score": 90.0,
+      "name": "Quáº§y Thu viá»‡n phÃ­ &amp; GiÃ¡m Ä‘á»‹nh BHYT",
+      "room_type": "Quáº§y giao dá»‹ch",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
+      "target_score": 90,
       "status": "active",
       "order": 6
     },
@@ -618,11 +625,11 @@
       "id": 16,
       "department_id": 4,
       "code": "KNG-P01",
-      "name": "Buồng Hậu phẫu Ngoại 201",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 2 - Nhà C",
-      "person_in_charge": "ĐD. Trần Kim Oanh",
-      "target_score": 92.0,
+      "name": "Buá»“ng Háº­u pháº«u Ngoáº¡i 201",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. Tráº§n Kim Oanh",
+      "target_score": 92,
       "status": "active",
       "order": 1
     },
@@ -630,11 +637,11 @@
       "id": 17,
       "department_id": 4,
       "code": "KNG-P02",
-      "name": "Buồng Bệnh Tiền phẫu 202",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 2 - Nhà C",
-      "person_in_charge": "ĐD. Nguyễn Văn Thắng",
-      "target_score": 90.0,
+      "name": "Buá»“ng Bá»‡nh Tiá»n pháº«u 202",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. Nguyá»…n VÄƒn Tháº¯ng",
+      "target_score": 90,
       "status": "active",
       "order": 2
     },
@@ -642,11 +649,11 @@
       "id": 18,
       "department_id": 4,
       "code": "KNG-P03",
-      "name": "Phòng Thay băng - Rửa vết thương & Cắt chỉ",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 2 - Nhà C",
-      "person_in_charge": "ĐD. Bùi Văn Hùng",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
+      "target_score": 95,
       "status": "active",
       "order": 3
     },
@@ -654,11 +661,11 @@
       "id": 19,
       "department_id": 4,
       "code": "KNG-P04",
-      "name": "Phòng Trực Bác sĩ & Giao ban khoa Ngoại",
-      "room_type": "Phòng giao ban",
-      "floor": "Tầng 2 - Nhà C",
-      "person_in_charge": "BSCKII. Nguyễn Văn Toàn",
-      "target_score": 90.0,
+      "name": "PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i",
+      "room_type": "PhÃ²ng giao ban",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; C",
+      "person_in_charge": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+      "target_score": 90,
       "status": "active",
       "order": 4
     },
@@ -666,11 +673,11 @@
       "id": 20,
       "department_id": 5,
       "code": "KNT-P01",
-      "name": "Buồng Bệnh Nội Tim Mạch (P.301)",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 3 - Nhà C",
-      "person_in_charge": "ĐD. Dương Thị Hằng",
-      "target_score": 92.0,
+      "name": "Buá»“ng Bá»‡nh Ná»™i Tim Máº¡ch (P.301)",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. DÆ°Æ¡ng Thá»‹ Háº±ng",
+      "target_score": 92,
       "status": "active",
       "order": 1
     },
@@ -678,11 +685,11 @@
       "id": 21,
       "department_id": 5,
       "code": "KNT-P02",
-      "name": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 3 - Nhà C",
-      "person_in_charge": "ĐD. Ngô Thị Yến",
-      "target_score": 90.0,
+      "name": "Buá»“ng Bá»‡nh Ná»™i Tiáº¿t - Tiá»ƒu Ä‘Æ°á»ng (P.302)",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. NgÃ´ Thá»‹ Yáº¿n",
+      "target_score": 90,
       "status": "active",
       "order": 2
     },
@@ -690,11 +697,11 @@
       "id": 22,
       "department_id": 5,
       "code": "KNT-P03",
-      "name": "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng",
-      "room_type": "Phòng trực",
-      "floor": "Tầng 3 - Nhà C",
-      "person_in_charge": "ĐD. Trần Phương Dung",
-      "target_score": 95.0,
+      "name": "PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng",
+      "room_type": "PhÃ²ng trá»±c",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. Tráº§n PhÆ°Æ¡ng Dung",
+      "target_score": 95,
       "status": "active",
       "order": 3
     },
@@ -702,11 +709,11 @@
       "id": 23,
       "department_id": 5,
       "code": "KNT-P04",
-      "name": "Khu Vệ sinh buồng bệnh nhân Tầng 3",
-      "room_type": "Khu vệ sinh",
-      "floor": "Tầng 3 - Nhà C",
-      "person_in_charge": "Hộ lý. Phạm Thị Chắt",
-      "target_score": 90.0,
+      "name": "Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3",
+      "room_type": "Khu vá»‡ sinh",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; C",
+      "person_in_charge": "Há»™ lÃ½. Pháº¡m Thá»‹ Cháº¯t",
+      "target_score": 90,
       "status": "active",
       "order": 4
     },
@@ -714,11 +721,11 @@
       "id": 24,
       "department_id": 6,
       "code": "KSN-P01",
-      "name": "Phòng Chờ đẻ & Theo dõi tim thai",
-      "room_type": "Phòng chuyên khoa",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "HS. Vũ Thị Loan",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Chá» Ä‘áº» &amp; Theo dÃµi tim thai",
+      "room_type": "PhÃ²ng chuyÃªn khoa",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "HS. VÅ© Thá»‹ Loan",
+      "target_score": 95,
       "status": "active",
       "order": 1
     },
@@ -726,11 +733,11 @@
       "id": 25,
       "department_id": 6,
       "code": "KSN-P02",
-      "name": "Phòng Đẻ thường số 1 (Vô khuẩn)",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "HS. Lê Thị Thúy Hằng",
-      "target_score": 98.0,
+      "name": "PhÃ²ng Äáº» thÆ°á»ng sá»‘ 1 (VÃ´ khuáº©n)",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "HS. LÃª Thá»‹ ThÃºy Háº±ng",
+      "target_score": 98,
       "status": "active",
       "order": 2
     },
@@ -738,11 +745,11 @@
       "id": 26,
       "department_id": 6,
       "code": "KSN-P03",
-      "name": "Buồng Chăm sóc Mẹ và Bé sau sinh (P.205)",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "ĐD. Trần Hồng Nhung",
-      "target_score": 92.0,
+      "name": "Buá»“ng ChÄƒm sÃ³c Máº¹ vÃ&nbsp; BÃ© sau sinh (P.205)",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Tráº§n Há»“ng Nhung",
+      "target_score": 92,
       "status": "active",
       "order": 3
     },
@@ -750,11 +757,11 @@
       "id": 27,
       "department_id": 6,
       "code": "KSN-P04",
-      "name": "Phòng Tắm Bé & Tiêm chủng sơ sinh",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "HS. Nguyễn Thị Thêu",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Táº¯m BÃ© &amp; TiÃªm chá»§ng sÆ¡ sinh",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "HS. Nguyá»…n Thá»‹ ThÃªu",
+      "target_score": 95,
       "status": "active",
       "order": 4
     },
@@ -762,11 +769,11 @@
       "id": 28,
       "department_id": 7,
       "code": "KNHI-P01",
-      "name": "Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)",
-      "room_type": "Phòng đặc biệt",
-      "floor": "Tầng 3 - Nhà B",
-      "person_in_charge": "ĐD. Đỗ Thị Hiền",
-      "target_score": 98.0,
+      "name": "ÄÆ¡n nguyÃªn SÆ¡ sinh (Lá»“ng áº¥p &amp; Chiáº¿u Ä‘Ã¨n)",
+      "room_type": "PhÃ²ng Ä‘áº·c biá»‡t",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Äá»— Thá»‹ Hiá»n",
+      "target_score": 98,
       "status": "active",
       "order": 1
     },
@@ -774,11 +781,11 @@
       "id": 29,
       "department_id": 7,
       "code": "KNHI-P02",
-      "name": "Buồng Bệnh Nhi Hô hấp (P.301)",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 3 - Nhà B",
-      "person_in_charge": "ĐD. Nguyễn Thị Thủy",
-      "target_score": 92.0,
+      "name": "Buá»“ng Bá»‡nh Nhi HÃ´ háº¥p (P.301)",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Nguyá»…n Thá»‹ Thá»§y",
+      "target_score": 92,
       "status": "active",
       "order": 2
     },
@@ -786,11 +793,11 @@
       "id": 30,
       "department_id": 7,
       "code": "KNHI-P03",
-      "name": "Buồng Bệnh Nhi Tiêu hóa (P.302)",
-      "room_type": "Phòng bệnh",
-      "floor": "Tầng 3 - Nhà B",
-      "person_in_charge": "ĐD. Mai Thị Trang",
-      "target_score": 90.0,
+      "name": "Buá»“ng Bá»‡nh Nhi TiÃªu hÃ³a (P.302)",
+      "room_type": "PhÃ²ng bá»‡nh",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Mai Thá»‹ Trang",
+      "target_score": 90,
       "status": "active",
       "order": 3
     },
@@ -798,11 +805,11 @@
       "id": 31,
       "department_id": 7,
       "code": "KNHI-P04",
-      "name": "Khu Vui chơi giải trí & Vận động bệnh nhi",
-      "room_type": "Khu công cộng",
-      "floor": "Tầng 3 - Nhà B",
-      "person_in_charge": "ĐD. Trần Thu Hà",
-      "target_score": 90.0,
+      "name": "Khu Vui chÆ¡i giáº£i trÃ­ &amp; Váº­n Ä‘á»™ng bá»‡nh nhi",
+      "room_type": "Khu cÃ´ng cá»™ng",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; B",
+      "person_in_charge": "ÄD. Tráº§n Thu HÃ&nbsp;",
+      "target_score": 90,
       "status": "active",
       "order": 4
     },
@@ -810,11 +817,11 @@
       "id": 59,
       "department_id": 3,
       "code": "YHCT-01",
-      "name": "Phòng Khám & Bắt mạch YHCT",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 4 - Nhà C",
-      "person_in_charge": "BSCKI. Trần Văn Thái",
-      "target_score": 92.0,
+      "name": "PhÃ²ng KhÃ¡m &amp; Báº¯t máº¡ch YHCT",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; C",
+      "person_in_charge": "BSCKI. Tráº§n VÄƒn ThÃ¡i",
+      "target_score": 92,
       "status": "active",
       "order": 1
     },
@@ -822,11 +829,11 @@
       "id": 60,
       "department_id": 3,
       "code": "YHCT-02",
-      "name": "Phòng Châm cứu & Xoa bóp bấm huyệt",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 4 - Nhà C",
-      "person_in_charge": "ĐD. Phạm Thị Lý",
-      "target_score": 95.0,
+      "name": "PhÃ²ng ChÃ¢m cá»©u &amp; Xoa bÃ³p báº¥m huyá»‡t",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; C",
+      "person_in_charge": "ÄD. Pháº¡m Thá»‹ LÃ½",
+      "target_score": 95,
       "status": "active",
       "order": 2
     },
@@ -834,11 +841,11 @@
       "id": 61,
       "department_id": 3,
       "code": "YHCT-03",
-      "name": "Phòng Vật lý trị liệu & Vận động phục hồi",
-      "room_type": "Phòng tập",
-      "floor": "Tầng 4 - Nhà C",
-      "person_in_charge": "KTV. Lê Văn Tuấn",
-      "target_score": 92.0,
+      "name": "PhÃ²ng Váº­t lÃ½ trá»‹ liá»‡u &amp; Váº­n Ä‘á»™ng phá»¥c há»“i",
+      "room_type": "PhÃ²ng táº­p",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; C",
+      "person_in_charge": "KTV. LÃª VÄƒn Tuáº¥n",
+      "target_score": 92,
       "status": "active",
       "order": 3
     },
@@ -846,11 +853,11 @@
       "id": 62,
       "department_id": 3,
       "code": "YHCT-04",
-      "name": "Phòng Sắc thuốc & Bảo quản dược liệu YHCT",
-      "room_type": "Khu chế biến",
-      "floor": "Tầng 4 - Nhà C",
-      "person_in_charge": "DS. Hoàng Thị Mai",
-      "target_score": 90.0,
+      "name": "PhÃ²ng Sáº¯c thuá»‘c &amp; Báº£o quáº£n dÆ°á»£c liá»‡u YHCT",
+      "room_type": "Khu cháº¿ biáº¿n",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; C",
+      "person_in_charge": "DS. HoÃ&nbsp;ng Thá»‹ Mai",
+      "target_score": 90,
       "status": "active",
       "order": 4
     },
@@ -858,11 +865,11 @@
       "id": 63,
       "department_id": 13,
       "code": "LCK-01",
-      "name": "Phòng Khám & Điều trị Răng Hàm Mặt",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "BSCKI. Đỗ Mạnh Cường",
-      "target_score": 95.0,
+      "name": "PhÃ²ng KhÃ¡m &amp; Äiá»u trá»‹ RÄƒng HÃ&nbsp;m Máº·t",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "BSCKI. Äá»— Máº¡nh CÆ°á»ng",
+      "target_score": 95,
       "status": "active",
       "order": 1
     },
@@ -870,11 +877,11 @@
       "id": 64,
       "department_id": 13,
       "code": "LCK-02",
-      "name": "Phòng Khám & Nội soi Tai Mũi Họng",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "BS. Nguyễn Văn Hùng",
-      "target_score": 95.0,
+      "name": "PhÃ²ng KhÃ¡m &amp; Ná»™i soi Tai MÅ©i Há»ng",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "BS. Nguyá»…n VÄƒn HÃ¹ng",
+      "target_score": 95,
       "status": "active",
       "order": 2
     },
@@ -882,11 +889,11 @@
       "id": 65,
       "department_id": 13,
       "code": "LCK-03",
-      "name": "Phòng Khám Mắt & Đo thị lực khúc xạ",
-      "room_type": "Phòng khám",
-      "floor": "Tầng 2 - Nhà B",
-      "person_in_charge": "BS. Vũ Thị Loan",
-      "target_score": 92.0,
+      "name": "PhÃ²ng KhÃ¡m Máº¯t &amp; Äo thá»‹ lá»±c khÃºc xáº¡",
+      "room_type": "PhÃ²ng khÃ¡m",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; B",
+      "person_in_charge": "BS. VÅ© Thá»‹ Loan",
+      "target_score": 92,
       "status": "active",
       "order": 3
     },
@@ -894,11 +901,11 @@
       "id": 66,
       "department_id": 14,
       "code": "TDCN-01",
-      "name": "Phòng Nội soi Tiêu hóa dạ dày - đại tràng",
-      "room_type": "Phòng thủ thuật",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "BS. Lê Quang Huy",
-      "target_score": 98.0,
+      "name": "PhÃ²ng Ná»™i soi TiÃªu hÃ³a dáº¡ dÃ&nbsp;y - Ä‘áº¡i trÃ&nbsp;ng",
+      "room_type": "PhÃ²ng thá»§ thuáº­t",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "BS. LÃª Quang Huy",
+      "target_score": 98,
       "status": "active",
       "order": 1
     },
@@ -906,11 +913,11 @@
       "id": 67,
       "department_id": 14,
       "code": "TDCN-02",
-      "name": "Phòng Điện tim & Điện não đồ vi tính",
-      "room_type": "Phòng máy",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Lê Thùy Linh",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Äiá»‡n tim &amp; Äiá»‡n nÃ£o Ä‘á»“ vi tÃ­nh",
+      "room_type": "PhÃ²ng mÃ¡y",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. LÃª ThÃ¹y Linh",
+      "target_score": 95,
       "status": "active",
       "order": 2
     },
@@ -918,11 +925,11 @@
       "id": 68,
       "department_id": 14,
       "code": "TDCN-03",
-      "name": "Phòng Đo chức năng hô hấp & Lưu huyết não",
-      "room_type": "Phòng máy",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Trần Thu Hà",
-      "target_score": 92.0,
+      "name": "PhÃ²ng Äo chá»©c nÄƒng hÃ´ háº¥p &amp; LÆ°u huyáº¿t nÃ£o",
+      "room_type": "PhÃ²ng mÃ¡y",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Tráº§n Thu HÃ&nbsp;",
+      "target_score": 92,
       "status": "active",
       "order": 3
     },
@@ -930,11 +937,11 @@
       "id": 36,
       "department_id": 9,
       "code": "KXN-P01",
-      "name": "Phòng Xét nghiệm Huyết học & Truyền máu",
-      "room_type": "Phòng xét nghiệm",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Đỗ Thị Thu Hường",
-      "target_score": 98.0,
+      "name": "PhÃ²ng XÃ©t nghiá»‡m Huyáº¿t há»c &amp; Truyá»n mÃ¡u",
+      "room_type": "PhÃ²ng xÃ©t nghiá»‡m",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Äá»— Thá»‹ Thu HÆ°á»ng",
+      "target_score": 98,
       "status": "active",
       "order": 1
     },
@@ -942,11 +949,11 @@
       "id": 37,
       "department_id": 9,
       "code": "KXN-P02",
-      "name": "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động",
-      "room_type": "Phòng xét nghiệm",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Nguyễn Đình Khải",
-      "target_score": 98.0,
+      "name": "PhÃ²ng XÃ©t nghiá»‡m Sinh hÃ³a - Miá»…n dá»‹ch tá»± Ä‘á»™ng",
+      "room_type": "PhÃ²ng xÃ©t nghiá»‡m",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Nguyá»…n ÄÃ¬nh Kháº£i",
+      "target_score": 98,
       "status": "active",
       "order": 2
     },
@@ -954,11 +961,11 @@
       "id": 38,
       "department_id": 9,
       "code": "KXN-P03",
-      "name": "Phòng Vi sinh - Ký sinh trùng & Nuôi cấy",
-      "room_type": "Phòng xét nghiệm",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Phạm Thị Hạnh",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Vi sinh - KÃ½ sinh trÃ¹ng &amp; NuÃ´i cáº¥y",
+      "room_type": "PhÃ²ng xÃ©t nghiá»‡m",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. Pháº¡m Thá»‹ Háº¡nh",
+      "target_score": 95,
       "status": "active",
       "order": 3
     },
@@ -966,11 +973,11 @@
       "id": 39,
       "department_id": 9,
       "code": "KXN-P04",
-      "name": "Kho Hóa chất xét nghiệm & Lưu mẫu bệnh phẩm",
-      "room_type": "Kho lưu trữ",
-      "floor": "Tầng 2 - Nhà Kỹ thuật",
-      "person_in_charge": "KTV. Lê Thu Thảo",
-      "target_score": 95.0,
+      "name": "Kho HÃ³a cháº¥t xÃ©t nghiá»‡m &amp; LÆ°u máº«u bá»‡nh pháº©m",
+      "room_type": "Kho lÆ°u trá»¯",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Ká»¹ thuáº­t",
+      "person_in_charge": "KTV. LÃª Thu Tháº£o",
+      "target_score": 95,
       "status": "active",
       "order": 4
     },
@@ -978,11 +985,11 @@
       "id": 69,
       "department_id": 15,
       "code": "KD-01",
-      "name": "Kho Thuốc chẵn Nội trú & Dịch truyền",
-      "room_type": "Kho thuốc",
-      "floor": "Tầng 1 - Nhà Kho Dược",
-      "person_in_charge": "DS CKI. Hoàng Thị Lan",
-      "target_score": 98.0,
+      "name": "Kho Thuá»‘c cháºµn Ná»™i trÃº &amp; Dá»‹ch truyá»n",
+      "room_type": "Kho thuá»‘c",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Kho DÆ°á»£c",
+      "person_in_charge": "DS CKI. HoÃ&nbsp;ng Thá»‹ Lan",
+      "target_score": 98,
       "status": "active",
       "order": 1
     },
@@ -990,11 +997,11 @@
       "id": 70,
       "department_id": 15,
       "code": "KD-02",
-      "name": "Kho Thuốc Cấp phát Ngoại trú BHYT",
-      "room_type": "Kho cấp phát",
-      "floor": "Tầng 1 - Nhà B",
-      "person_in_charge": "DS. Nguyễn Bích Ngọc",
-      "target_score": 95.0,
+      "name": "Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT",
+      "room_type": "Kho cáº¥p phÃ¡t",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; B",
+      "person_in_charge": "DS. Nguyá»…n BÃ­ch Ngá»c",
+      "target_score": 95,
       "status": "active",
       "order": 2
     },
@@ -1002,11 +1009,11 @@
       "id": 71,
       "department_id": 15,
       "code": "KD-03",
-      "name": "Kho Hóa chất sát khuẩn & Vật tư y tế tiêu hao",
-      "room_type": "Kho vật tư",
-      "floor": "Tầng 1 - Nhà Kho Dược",
-      "person_in_charge": "DS. Trần Văn Nam",
-      "target_score": 95.0,
+      "name": "Kho HÃ³a cháº¥t sÃ¡t khuáº©n &amp; Váº­t tÆ° y táº¿ tiÃªu hao",
+      "room_type": "Kho váº­t tÆ°",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Kho DÆ°á»£c",
+      "person_in_charge": "DS. Tráº§n VÄƒn Nam",
+      "target_score": 95,
       "status": "active",
       "order": 3
     },
@@ -1014,11 +1021,11 @@
       "id": 72,
       "department_id": 15,
       "code": "KD-04",
-      "name": "Phòng Pha chế & Bảo quản lạnh Vắc xin/Thuốc đặc biệt",
-      "room_type": "Phòng chuyên môn",
-      "floor": "Tầng 1 - Nhà Kho Dược",
-      "person_in_charge": "DS. Lê Thị Mai",
-      "target_score": 98.0,
+      "name": "PhÃ²ng Pha cháº¿ &amp; Báº£o quáº£n láº¡nh Váº¯c xin/Thuá»‘c Ä‘áº·c biá»‡t",
+      "room_type": "PhÃ²ng chuyÃªn mÃ´n",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Kho DÆ°á»£c",
+      "person_in_charge": "DS. LÃª Thá»‹ Mai",
+      "target_score": 98,
       "status": "active",
       "order": 4
     },
@@ -1026,11 +1033,11 @@
       "id": 40,
       "department_id": 10,
       "code": "KKSNK-P01",
-      "name": "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn",
-      "room_type": "Khu kỹ thuật",
-      "floor": "Tầng 1 - Nhà Giặt hấp",
-      "person_in_charge": "ĐD. Trịnh Thị Thu Trang",
-      "target_score": 95.0,
+      "name": "Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n",
+      "room_type": "Khu ká»¹ thuáº­t",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Giáº·t háº¥p",
+      "person_in_charge": "ÄD. Trá»‹nh Thá»‹ Thu Trang",
+      "target_score": 95,
       "status": "active",
       "order": 1
     },
@@ -1038,11 +1045,11 @@
       "id": 41,
       "department_id": 10,
       "code": "KKSNK-P02",
-      "name": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao",
-      "room_type": "Khu tiệt trùng",
-      "floor": "Tầng 1 - Nhà Giặt hấp",
-      "person_in_charge": "KTV. Nguyễn Văn Đạt",
-      "target_score": 98.0,
+      "name": "Khu ÄÃ³ng gÃ³i &amp; Ná»“i háº¥p Tiá»‡t trÃ¹ng nhiá»‡t Ä‘á»™ cao",
+      "room_type": "Khu tiá»‡t trÃ¹ng",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Giáº·t háº¥p",
+      "person_in_charge": "KTV. Nguyá»…n VÄƒn Äáº¡t",
+      "target_score": 98,
       "status": "active",
       "order": 2
     },
@@ -1050,11 +1057,11 @@
       "id": 42,
       "department_id": 10,
       "code": "KKSNK-P03",
-      "name": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm",
-      "room_type": "Kho vô trùng",
-      "floor": "Tầng 1 - Nhà Giặt hấp",
-      "person_in_charge": "ĐD. Lê Thị Nga",
-      "target_score": 99.0,
+      "name": "Kho Dá»¥ng cá»¥ Pháº«u thuáº­t VÃ´ khuáº©n thÃ&nbsp;nh pháº©m",
+      "room_type": "Kho vÃ´ trÃ¹ng",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Giáº·t háº¥p",
+      "person_in_charge": "ÄD. LÃª Thá»‹ Nga",
+      "target_score": 99,
       "status": "active",
       "order": 3
     },
@@ -1062,11 +1069,11 @@
       "id": 43,
       "department_id": 10,
       "code": "KKSNK-P04",
-      "name": "Khu Giặt là & Khử khuẩn đồ vải bệnh viện",
-      "room_type": "Khu giặt là",
-      "floor": "Tầng 1 - Nhà Giặt hấp",
-      "person_in_charge": "CN. Đặng Thị Loan",
-      "target_score": 92.0,
+      "name": "Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n",
+      "room_type": "Khu giáº·t lÃ&nbsp;",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Giáº·t háº¥p",
+      "person_in_charge": "CN. Äáº·ng Thá»‹ Loan",
+      "target_score": 92,
       "status": "active",
       "order": 4
     },
@@ -1074,11 +1081,11 @@
       "id": 73,
       "department_id": 10,
       "code": "KKSNK-P05",
-      "name": "Khu Phân loại & Lưu trữ tạm thời rác thải y tế",
-      "room_type": "Khu rác thải",
-      "floor": "Khuôn viên phía sau Nhà Giặt",
-      "person_in_charge": "Hộ lý. Vũ Thị Hoa",
-      "target_score": 95.0,
+      "name": "Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿",
+      "room_type": "Khu rÃ¡c tháº£i",
+      "floor": "KhuÃ´n viÃªn phÃ­a sau NhÃ&nbsp; Giáº·t",
+      "person_in_charge": "Há»™ lÃ½. VÅ© Thá»‹ Hoa",
+      "target_score": 95,
       "status": "active",
       "order": 5
     },
@@ -1086,11 +1093,11 @@
       "id": 74,
       "department_id": 16,
       "code": "QLCL-01",
-      "name": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện",
-      "room_type": "Văn phòng",
-      "floor": "Tầng 4 - Nhà Điều hành",
-      "person_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng",
-      "target_score": 98.0,
+      "name": "VÄƒn phÃ²ng ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n",
+      "room_type": "VÄƒn phÃ²ng",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+      "target_score": 98,
       "status": "active",
       "order": 1
     },
@@ -1098,11 +1105,11 @@
       "id": 75,
       "department_id": 16,
       "code": "QLCL-02",
-      "name": "Phòng Lưu trữ Hồ sơ 83 Tiêu chí & Minh chứng 5S",
-      "room_type": "Phòng hồ sơ",
-      "floor": "Tầng 4 - Nhà Điều hành",
-      "person_in_charge": "ĐD. Nguyễn Thu Trang",
-      "target_score": 95.0,
+      "name": "PhÃ²ng LÆ°u trá»¯ Há»“ sÆ¡ 83 TiÃªu chÃ­ &amp; Minh chá»©ng 5S",
+      "room_type": "PhÃ²ng há»“ sÆ¡",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "ÄD. Nguyá»…n Thu Trang",
+      "target_score": 95,
       "status": "active",
       "order": 2
     },
@@ -1110,11 +1117,11 @@
       "id": 76,
       "department_id": 17,
       "code": "KHTH-01",
-      "name": "Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện",
-      "room_type": "Phòng giao ban",
-      "floor": "Tầng 4 - Nhà Điều hành",
-      "person_in_charge": "BSCKI. Trần Đức Thắng",
-      "target_score": 95.0,
+      "name": "VÄƒn phÃ²ng Káº¿ hoáº¡ch tá»•ng há»£p &amp; PhÃ²ng Giao ban Viá»‡n",
+      "room_type": "PhÃ²ng giao ban",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "BSCKI. Tráº§n Äá»©c Tháº¯ng",
+      "target_score": 95,
       "status": "active",
       "order": 1
     },
@@ -1122,11 +1129,11 @@
       "id": 77,
       "department_id": 17,
       "code": "KHTH-02",
-      "name": "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS",
-      "room_type": "Phòng server",
-      "floor": "Tầng 4 - Nhà Điều hành",
-      "person_in_charge": "KS. Nguyễn Hoàng Nam",
-      "target_score": 98.0,
+      "name": "PhÃ²ng MÃ¡y chá»§ Trung tÃ¢m &amp; Quáº£n trá»‹ máº¡ng HIS/PACS",
+      "room_type": "PhÃ²ng server",
+      "floor": "Táº§ng 4 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "KS. Nguyá»…n HoÃ&nbsp;ng Nam",
+      "target_score": 98,
       "status": "active",
       "order": 2
     },
@@ -1134,11 +1141,11 @@
       "id": 78,
       "department_id": 18,
       "code": "PDD-01",
-      "name": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S",
-      "room_type": "Văn phòng",
-      "floor": "Tầng 3 - Nhà Điều hành",
-      "person_in_charge": "ThS. ĐD. Trần Thị Lan Hương",
-      "target_score": 95.0,
+      "name": "VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S",
+      "room_type": "VÄƒn phÃ²ng",
+      "floor": "Táº§ng 3 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+      "target_score": 95,
       "status": "active",
       "order": 1
     },
@@ -1146,11 +1153,11 @@
       "id": 79,
       "department_id": 19,
       "code": "HCQT-01",
-      "name": "Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn",
-      "room_type": "Văn thư",
-      "floor": "Tầng 2 - Nhà Điều hành",
-      "person_in_charge": "ThS. Nguyễn Văn Hùng",
-      "target_score": 92.0,
+      "name": "Bá»™ pháº­n VÄƒn thÆ° - LÆ°u trá»¯ &amp; Tiáº¿p nháº­n cÃ´ng vÄƒn",
+      "room_type": "VÄƒn thÆ°",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "ThS. Nguyá»…n VÄƒn HÃ¹ng",
+      "target_score": 92,
       "status": "active",
       "order": 1
     },
@@ -1158,11 +1165,11 @@
       "id": 80,
       "department_id": 19,
       "code": "HCQT-02",
-      "name": "Kho Vật tư văn phòng phẩm & Thiết bị hành chính",
-      "room_type": "Kho hành chính",
-      "floor": "Tầng 1 - Nhà Điều hành",
-      "person_in_charge": "CN. Đặng Thị Loan",
-      "target_score": 90.0,
+      "name": "Kho Váº­t tÆ° vÄƒn phÃ²ng pháº©m &amp; Thiáº¿t bá»‹ hÃ&nbsp;nh chÃ­nh",
+      "room_type": "Kho hÃ&nbsp;nh chÃ­nh",
+      "floor": "Táº§ng 1 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "CN. Äáº·ng Thá»‹ Loan",
+      "target_score": 90,
       "status": "active",
       "order": 2
     },
@@ -1170,11 +1177,11 @@
       "id": 81,
       "department_id": 20,
       "code": "TCKT-01",
-      "name": "Phòng Kế toán tổng hợp & Quản trị tài sản viện",
-      "room_type": "Văn phòng",
-      "floor": "Tầng 2 - Nhà Điều hành",
-      "person_in_charge": "ThS. Vũ Thị Mai",
-      "target_score": 95.0,
+      "name": "PhÃ²ng Káº¿ toÃ¡n tá»•ng há»£p &amp; Quáº£n trá»‹ tÃ&nbsp;i sáº£n viá»‡n",
+      "room_type": "VÄƒn phÃ²ng",
+      "floor": "Táº§ng 2 - NhÃ&nbsp; Äiá»u hÃ&nbsp;nh",
+      "person_in_charge": "ThS. VÅ© Thá»‹ Mai",
+      "target_score": 95,
       "status": "active",
       "order": 1
     }
@@ -1184,441 +1191,441 @@
       "id": 1,
       "code": "BV-345",
       "staff_code": "BV-345",
-      "name": "KTV. Vũ Bá Đạt",
-      "full_name": "KTV. Vũ Bá Đạt",
+      "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+      "full_name": "KTV. VÅ© BÃ¡ Äáº¡t",
       "username": "bv345",
       "password": "123",
       "department_id": 8,
       "role": "admin",
       "role_level": "admin",
-      "title": "Kỹ thuật viên Trưởng",
-      "role_title": "Kỹ thuật viên Trưởng",
-      "position": "Kỹ thuật viên Trưởng CĐHA & Giám sát 5S Toàn Viện",
+      "title": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng",
+      "role_title": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng",
+      "position": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng CÄHA &amp; GiÃ¡m sÃ¡t 5S ToÃ&nbsp;n Viá»‡n",
       "assigned_rooms": [
-        "Phòng Chụp X-quang Kỹ thuật số DR",
-        "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)",
-        "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)",
-        "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS"
+        "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR",
+        "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner)",
+        "PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)",
+        "PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS"
       ],
-      "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR, Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)",
+      "assigned_room": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR, PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner), PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI), PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS",
       "allow_external": true
     },
     {
       "id": 2,
       "code": "BV-101",
       "staff_code": "BV-101",
-      "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
-      "full_name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+      "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+      "full_name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
       "username": "bv101",
       "password": "123",
       "department_id": 16,
       "role": "admin",
       "role_level": "admin",
-      "title": "ThS. BSCKII - Trưởng Ban 5S",
-      "role_title": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc",
-      "position": "Trưởng Ban Chỉ Đạo 5S Bệnh Viện & Bác sĩ Cấp Cứu",
+      "title": "ThS. BSCKII - TrÆ°á»Ÿng Ban 5S",
+      "role_title": "TrÆ°á»Ÿng Ban Chá»‰ Äáº¡o 5S / Ban GiÃ¡m Äá»‘c",
+      "position": "TrÆ°á»Ÿng Ban Chá»‰ Äáº¡o 5S Bá»‡nh Viá»‡n &amp; BÃ¡c sÄ© Cáº¥p Cá»©u",
       "assigned_rooms": [
-        "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện",
-        "Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện"
+        "VÄƒn phÃ²ng ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n",
+        "ToÃ&nbsp;n bá»™ Khoa CÄHA &amp; Há»™i Ä‘á»“ng 5S ToÃ&nbsp;n Viá»‡n"
       ],
-      "assigned_room": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện, Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện",
+      "assigned_room": "VÄƒn phÃ²ng ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n, ToÃ&nbsp;n bá»™ Khoa CÄHA &amp; Há»™i Ä‘á»“ng 5S ToÃ&nbsp;n Viá»‡n",
       "allow_external": true
     },
     {
       "id": 3,
       "code": "BV-102",
       "staff_code": "BV-102",
-      "name": "BSCKII. Nguyễn Văn Toàn",
-      "full_name": "BSCKII. Nguyễn Văn Toàn",
+      "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+      "full_name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
       "username": "bv102",
       "password": "123",
       "department_id": 4,
       "role": "manager",
       "role_level": "manager",
-      "title": "BSCKII - Trưởng Khoa",
-      "role_title": "BSCKII - Trưởng Khoa",
-      "position": "Bác sĩ Trưởng Khoa Ngoại Tổng Hợp",
+      "title": "BSCKII - TrÆ°á»Ÿng Khoa",
+      "role_title": "BSCKII - TrÆ°á»Ÿng Khoa",
+      "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Ngoáº¡i Tá»•ng Há»£p",
       "assigned_rooms": [
-        "Buồng Hậu phẫu Ngoại 201",
-        "Phòng Thay băng - Rửa vết thương & Cắt chỉ"
+        "Buá»“ng Háº­u pháº«u Ngoáº¡i 201",
+        "PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰"
       ],
-      "assigned_room": "Buồng Hậu phẫu Ngoại 201, Phòng Thay băng - Rửa vết thương & Cắt chỉ",
+      "assigned_room": "Buá»“ng Háº­u pháº«u Ngoáº¡i 201, PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰",
       "allow_external": true
     },
     {
       "id": 4,
       "code": "BV-103",
       "staff_code": "BV-103",
-      "name": "ĐD. Vũ Quang Trưởng",
-      "full_name": "ĐD. Vũ Quang Trưởng",
+      "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+      "full_name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
       "username": "bv103",
       "password": "123",
       "department_id": 1,
       "role": "manager",
       "role_level": "manager",
-      "title": "Điều dưỡng Trưởng Khoa",
-      "role_title": "Điều dưỡng Trưởng Khoa",
-      "position": "Điều dưỡng Trưởng Khoa Cấp Cứu",
+      "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Cáº¥p Cá»©u",
       "assigned_rooms": [
-        "Phòng Tiếp nhận & Phân loại bệnh cấp cứu",
-        "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương"
+        "PhÃ²ng Tiáº¿p nháº­n &amp; PhÃ¢n loáº¡i bá»‡nh cáº¥p cá»©u",
+        "PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng"
       ],
-      "assigned_room": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu, Phòng Hồi sức Cấp cứu ban đầu & Chấn thương",
+      "assigned_room": "PhÃ²ng Tiáº¿p nháº­n &amp; PhÃ¢n loáº¡i bá»‡nh cáº¥p cá»©u, PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng",
       "allow_external": true
     },
     {
       "id": 5,
       "code": "BV-104",
       "staff_code": "BV-104",
-      "name": "ĐD. Lê Văn Minh",
-      "full_name": "ĐD. Lê Văn Minh",
+      "name": "ÄD. LÃª VÄƒn Minh",
+      "full_name": "ÄD. LÃª VÄƒn Minh",
       "username": "bv104",
       "password": "123",
       "department_id": 1,
       "role": "staff",
       "role_level": "staff",
-      "title": "Điều dưỡng viên",
-      "role_title": "Điều dưỡng viên",
-      "position": "Điều dưỡng viên Cấp cứu",
+      "title": "Äiá»u dÆ°á»¡ng viÃªn",
+      "role_title": "Äiá»u dÆ°á»¡ng viÃªn",
+      "position": "Äiá»u dÆ°á»¡ng viÃªn Cáº¥p cá»©u",
       "assigned_rooms": [
-        "Phòng Tiểu phẫu - Băng bó vết thương",
-        "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải"
+        "PhÃ²ng Tiá»ƒu pháº«u - BÄƒng bÃ³ váº¿t thÆ°Æ¡ng",
+        "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i"
       ],
-      "assigned_room": "Phòng Tiểu phẫu - Băng bó vết thương, Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải",
+      "assigned_room": "PhÃ²ng Tiá»ƒu pháº«u - BÄƒng bÃ³ váº¿t thÆ°Æ¡ng, Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i",
       "allow_external": true
     },
     {
       "id": 6,
       "code": "BV-105",
       "staff_code": "BV-105",
-      "name": "ĐD. Phạm Thị Mai",
-      "full_name": "ĐD. Phạm Thị Mai",
+      "name": "ÄD. Pháº¡m Thá»‹ Mai",
+      "full_name": "ÄD. Pháº¡m Thá»‹ Mai",
       "username": "bv105",
       "password": "123",
       "department_id": 1,
       "role": "staff",
       "role_level": "staff",
-      "title": "Điều dưỡng viên",
-      "role_title": "Điều dưỡng viên",
-      "position": "Điều dưỡng viên Cấp cứu",
+      "title": "Äiá»u dÆ°á»¡ng viÃªn",
+      "role_title": "Äiá»u dÆ°á»¡ng viÃªn",
+      "position": "Äiá»u dÆ°á»¡ng viÃªn Cáº¥p cá»©u",
       "assigned_rooms": [
-        "Phòng Lưu bệnh Cấp cứu (Phòng 101)"
+        "PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)"
       ],
-      "assigned_room": "Phòng Lưu bệnh Cấp cứu (Phòng 101)",
+      "assigned_room": "PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)",
       "allow_external": true
     },
     {
       "id": 7,
       "code": "BV-106",
       "staff_code": "BV-106",
-      "name": "Hộ lý. Vũ Thị Hoa",
-      "full_name": "Hộ lý. Vũ Thị Hoa",
+      "name": "Há»™ lÃ½. VÅ© Thá»‹ Hoa",
+      "full_name": "Há»™ lÃ½. VÅ© Thá»‹ Hoa",
       "username": "bv106",
       "password": "123",
       "department_id": 1,
       "role": "staff",
       "role_level": "staff",
-      "title": "Hộ lý / Nhân viên vệ sinh",
-      "role_title": "Hộ lý / Nhân viên vệ sinh",
-      "position": "Hộ lý buồng bệnh & Khử khuẩn",
+      "title": "Há»™ lÃ½ / NhÃ¢n viÃªn vá»‡ sinh",
+      "role_title": "Há»™ lÃ½ / NhÃ¢n viÃªn vá»‡ sinh",
+      "position": "Há»™ lÃ½ buá»“ng bá»‡nh &amp; Khá»­ khuáº©n",
       "assigned_rooms": [
-        "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải",
-        "Khu Phân loại & Lưu trữ tạm thời rác thải y tế"
+        "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i",
+        "Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿"
       ],
-      "assigned_room": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải, Khu Phân loại & Lưu trữ tạm thời rác thải y tế",
+      "assigned_room": "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i, Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿",
       "allow_external": true
     },
     {
       "id": 8,
       "code": "BV-107",
       "staff_code": "BV-107",
-      "name": "BSCKI. Vũ Đình Khiêm",
-      "full_name": "BSCKI. Vũ Đình Khiêm",
+      "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+      "full_name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
       "username": "bv107",
       "password": "123",
       "department_id": 2,
       "role": "manager",
       "role_level": "manager",
-      "title": "BSCKI - Trưởng Khoa",
-      "role_title": "BSCKI - Trưởng Khoa",
-      "position": "Bác sĩ Trưởng Khoa Khám bệnh",
+      "title": "BSCKI - TrÆ°á»Ÿng Khoa",
+      "role_title": "BSCKI - TrÆ°á»Ÿng Khoa",
+      "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa KhÃ¡m bá»‡nh",
       "assigned_rooms": [
-        "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động",
-        "Phòng Khám Nội tổng quát (P.101)"
+        "Sáº£nh Tiáº¿p Ä‘Ã³n, HÆ°á»›ng dáº«n &amp; Láº¥y sá»‘ tá»± Ä‘á»™ng",
+        "PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)"
       ],
-      "assigned_room": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động, Phòng Khám Nội tổng quát (P.101)",
+      "assigned_room": "Sáº£nh Tiáº¿p Ä‘Ã³n, HÆ°á»›ng dáº«n &amp; Láº¥y sá»‘ tá»± Ä‘á»™ng, PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)",
       "allow_external": true
     },
     {
       "id": 9,
       "code": "BV-108",
       "staff_code": "BV-108",
-      "name": "ĐD. Hoàng Bích Thủy",
-      "full_name": "ĐD. Hoàng Bích Thủy",
+      "name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
+      "full_name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
       "username": "bv108",
       "password": "123",
       "department_id": 2,
       "role": "manager",
       "role_level": "manager",
-      "title": "Điều dưỡng Trưởng Khoa",
-      "role_title": "Điều dưỡng Trưởng Khoa",
-      "position": "Điều dưỡng Trưởng Khoa Khám bệnh",
+      "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa KhÃ¡m bá»‡nh",
       "assigned_rooms": [
-        "Phòng Khám Ngoại - Chấn thương (P.102)",
-        "Phòng Lấy mẫu máu & Bệnh phẩm tập trung"
+        "PhÃ²ng KhÃ¡m Ngoáº¡i - Cháº¥n thÆ°Æ¡ng (P.102)",
+        "PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung"
       ],
-      "assigned_room": "Phòng Khám Ngoại - Chấn thương (P.102), Phòng Lấy mẫu máu & Bệnh phẩm tập trung",
+      "assigned_room": "PhÃ²ng KhÃ¡m Ngoáº¡i - Cháº¥n thÆ°Æ¡ng (P.102), PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung",
       "allow_external": true
     },
     {
       "id": 10,
       "code": "BV-109",
       "staff_code": "BV-109",
-      "name": "ThS.BS. Đinh Công Trí",
-      "full_name": "ThS.BS. Đinh Công Trí",
+      "name": "ThS.BS. Äinh CÃ´ng TrÃ­",
+      "full_name": "ThS.BS. Äinh CÃ´ng TrÃ­",
       "username": "bv109",
       "password": "123",
       "department_id": 11,
       "role": "manager",
       "role_level": "manager",
-      "title": "ThS. Bác sĩ - Trưởng Khoa",
-      "role_title": "ThS. Bác sĩ - Trưởng Khoa",
-      "position": "Bác sĩ Trưởng Khoa Hồi sức tích cực & Chống độc (ICU)",
+      "title": "ThS. BÃ¡c sÄ© - TrÆ°á»Ÿng Khoa",
+      "role_title": "ThS. BÃ¡c sÄ© - TrÆ°á»Ÿng Khoa",
+      "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Há»“i sá»©c tÃ­ch cá»±c &amp; Chá»‘ng Ä‘á»™c (ICU)",
       "assigned_rooms": [
-        "Buồng Bệnh nhân nặng Hồi sức 1",
-        "Phòng Thao tác & Thủ thuật ICU"
+        "Buá»“ng Bá»‡nh nhÃ¢n náº·ng Há»“i sá»©c 1",
+        "PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU"
       ],
-      "assigned_room": "Buồng Bệnh nhân nặng Hồi sức 1, Phòng Thao tác & Thủ thuật ICU",
+      "assigned_room": "Buá»“ng Bá»‡nh nhÃ¢n náº·ng Há»“i sá»©c 1, PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU",
       "allow_external": true
     },
     {
       "id": 11,
       "code": "BV-110",
       "staff_code": "BV-110",
-      "name": "ĐD. Nguyễn Thị Thanh Nga",
-      "full_name": "ĐD. Nguyễn Thị Thanh Nga",
+      "name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
+      "full_name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
       "username": "bv110",
       "password": "123",
       "department_id": 11,
       "role": "manager",
       "role_level": "manager",
-      "title": "Điều dưỡng Trưởng Khoa",
-      "role_title": "Điều dưỡng Trưởng Khoa",
-      "position": "Điều dưỡng Trưởng Khoa Hồi sức tích cực ICU",
+      "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Há»“i sá»©c tÃ­ch cá»±c ICU",
       "assigned_rooms": [
-        "Buồng Bệnh nhân Thở máy & Lọc máu liên tục",
-        "Phòng Trực cấp cứu & Giao ban ICU",
-        "Buồng Cách ly áp lực âm ICU"
+        "Buá»“ng Bá»‡nh nhÃ¢n Thá»Ÿ mÃ¡y &amp; Lá»c mÃ¡u liÃªn tá»¥c",
+        "PhÃ²ng Trá»±c cáº¥p cá»©u &amp; Giao ban ICU",
+        "Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU"
       ],
-      "assigned_room": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục, Phòng Trực cấp cứu & Giao ban ICU",
+      "assigned_room": "Buá»“ng Bá»‡nh nhÃ¢n Thá»Ÿ mÃ¡y &amp; Lá»c mÃ¡u liÃªn tá»¥c, PhÃ²ng Trá»±c cáº¥p cá»©u &amp; Giao ban ICU, Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU",
       "allow_external": true
     },
     {
       "id": 12,
       "code": "BV-111",
       "staff_code": "BV-111",
-      "name": "BSCKII. Lê Tuấn Anh",
-      "full_name": "BSCKII. Lê Tuấn Anh",
+      "name": "BSCKII. LÃª Tuáº¥n Anh",
+      "full_name": "BSCKII. LÃª Tuáº¥n Anh",
       "username": "bv111",
       "password": "123",
       "department_id": 12,
       "role": "manager",
       "role_level": "manager",
-      "title": "BSCKII - Trưởng Khoa",
-      "role_title": "BSCKII - Trưởng Khoa",
-      "position": "Bác sĩ Trưởng Khoa Phẫu thuật - Gây mê hồi sức",
+      "title": "BSCKII - TrÆ°á»Ÿng Khoa",
+      "role_title": "BSCKII - TrÆ°á»Ÿng Khoa",
+      "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Pháº«u thuáº­t - GÃ¢y mÃª há»“i sá»©c",
       "assigned_rooms": [
-        "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát",
-        "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật"
+        "PhÃ²ng Má»• sá»‘ 1 - Pháº«u thuáº­t Ngoáº¡i tá»•ng quÃ¡t",
+        "PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t"
       ],
-      "assigned_room": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát, Phòng Hồi tỉnh & Theo dõi sau phẫu thuật",
+      "assigned_room": "PhÃ²ng Má»• sá»‘ 1 - Pháº«u thuáº­t Ngoáº¡i tá»•ng quÃ¡t, PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t",
       "allow_external": true
     },
     {
       "id": 13,
       "code": "BV-112",
       "staff_code": "BV-112",
-      "name": "ĐD. Bùi Văn Hùng",
-      "full_name": "ĐD. Bùi Văn Hùng",
+      "name": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
+      "full_name": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
       "username": "bv112",
       "password": "123",
       "department_id": 4,
       "role": "manager",
       "role_level": "manager",
-      "title": "Điều dưỡng Trưởng Khoa",
-      "role_title": "Điều dưỡng Trưởng Khoa",
-      "position": "Điều dưỡng Trưởng Khoa Ngoại",
+      "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Ngoáº¡i",
       "assigned_rooms": [
-        "Buồng Bệnh Tiền phẫu 202",
-        "Phòng Trực Bác sĩ & Giao ban khoa Ngoại"
+        "Buá»“ng Bá»‡nh Tiá»n pháº«u 202",
+        "PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i"
       ],
-      "assigned_room": "Buồng Bệnh Tiền phẫu 202, Phòng Trực Bác sĩ & Giao ban khoa Ngoại",
+      "assigned_room": "Buá»“ng Bá»‡nh Tiá»n pháº«u 202, PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i",
       "allow_external": true
     },
     {
       "id": 14,
       "code": "BV-113",
       "staff_code": "BV-113",
-      "name": "BSCKI. Mai Thị Hảo",
-      "full_name": "BSCKI. Mai Thị Hảo",
+      "name": "BSCKI. Mai Thá»‹ Háº£o",
+      "full_name": "BSCKI. Mai Thá»‹ Háº£o",
       "username": "bv113",
       "password": "123",
       "department_id": 5,
       "role": "manager",
       "role_level": "manager",
-      "title": "BSCKI - Trưởng Khoa",
-      "role_title": "BSCKI - Trưởng Khoa",
-      "position": "Bác sĩ Trưởng Khoa Nội Tổng hợp",
+      "title": "BSCKI - TrÆ°á»Ÿng Khoa",
+      "role_title": "BSCKI - TrÆ°á»Ÿng Khoa",
+      "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Ná»™i Tá»•ng há»£p",
       "assigned_rooms": [
-        "Buồng Bệnh Nội Tim Mạch (P.301)",
-        "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng"
+        "Buá»“ng Bá»‡nh Ná»™i Tim Máº¡ch (P.301)",
+        "PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng"
       ],
-      "assigned_room": "Buồng Bệnh Nội Tim Mạch (P.301), Phòng Tiêm, Phát thuốc & Trực Điều dưỡng",
+      "assigned_room": "Buá»“ng Bá»‡nh Ná»™i Tim Máº¡ch (P.301), PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng",
       "allow_external": true
     },
     {
       "id": 15,
       "code": "BV-114",
       "staff_code": "BV-114",
-      "name": "ĐD. Trần Phương Dung",
-      "full_name": "ĐD. Trần Phương Dung",
+      "name": "ÄD. Tráº§n PhÆ°Æ¡ng Dung",
+      "full_name": "ÄD. Tráº§n PhÆ°Æ¡ng Dung",
       "username": "bv114",
       "password": "123",
       "department_id": 5,
       "role": "manager",
       "role_level": "manager",
-      "title": "Điều dưỡng Trưởng Khoa",
-      "role_title": "Điều dưỡng Trưởng Khoa",
-      "position": "Điều dưỡng Trưởng Khoa Nội",
+      "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Ná»™i",
       "assigned_rooms": [
-        "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)",
-        "Khu Vệ sinh buồng bệnh nhân Tầng 3"
+        "Buá»“ng Bá»‡nh Ná»™i Tiáº¿t - Tiá»ƒu Ä‘Æ°á»ng (P.302)",
+        "Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3"
       ],
-      "assigned_room": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302), Khu Vệ sinh buồng bệnh nhân Tầng 3",
+      "assigned_room": "Buá»“ng Bá»‡nh Ná»™i Tiáº¿t - Tiá»ƒu Ä‘Æ°á»ng (P.302), Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3",
       "allow_external": true
     },
     {
       "id": 16,
       "code": "BV-115",
       "staff_code": "BV-115",
-      "name": "KTV. Trần Văn Chung",
-      "full_name": "KTV. Trần Văn Chung",
+      "name": "KTV. Tráº§n VÄƒn Chung",
+      "full_name": "KTV. Tráº§n VÄƒn Chung",
       "username": "bv115",
       "password": "123",
       "department_id": 8,
       "role": "staff",
       "role_level": "staff",
-      "title": "Kỹ thuật viên CĐHA",
-      "role_title": "Kỹ thuật viên CĐHA",
-      "position": "Kỹ thuật viên Chụp X-Quang Kỹ thuật số",
+      "title": "Ká»¹ thuáº­t viÃªn CÄHA",
+      "role_title": "Ká»¹ thuáº­t viÃªn CÄHA",
+      "position": "Ká»¹ thuáº­t viÃªn Chá»¥p X-Quang Ká»¹ thuáº­t sá»‘",
       "assigned_rooms": [
-        "Phòng Chụp X-quang Kỹ thuật số DR"
+        "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR"
       ],
-      "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR",
+      "assigned_room": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR",
       "allow_external": true
     },
     {
       "id": 17,
       "code": "BV-116",
       "staff_code": "BV-116",
-      "name": "KTV. Lê Công Bằng",
-      "full_name": "KTV. Lê Công Bằng",
+      "name": "KTV. LÃª CÃ´ng Báº±ng",
+      "full_name": "KTV. LÃª CÃ´ng Báº±ng",
       "username": "bv116",
       "password": "123",
       "department_id": 8,
       "role": "staff",
       "role_level": "staff",
-      "title": "Kỹ thuật viên CĐHA",
-      "role_title": "Kỹ thuật viên CĐHA",
-      "position": "Kỹ thuật viên Vận hành Máy MRI & CT",
+      "title": "Ká»¹ thuáº­t viÃªn CÄHA",
+      "role_title": "Ká»¹ thuáº­t viÃªn CÄHA",
+      "position": "Ká»¹ thuáº­t viÃªn Váº­n hÃ&nbsp;nh MÃ¡y MRI &amp; CT",
       "assigned_rooms": [
-        "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)",
-        "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)"
+        "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner)",
+        "PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)"
       ],
-      "assigned_room": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)",
+      "assigned_room": "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner), PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)",
       "allow_external": true
     },
     {
       "id": 18,
       "code": "BV-117",
       "staff_code": "BV-117",
-      "name": "DS. Nguyễn Bích Ngọc",
-      "full_name": "DS. Nguyễn Bích Ngọc",
+      "name": "DS. Nguyá»…n BÃ­ch Ngá»c",
+      "full_name": "DS. Nguyá»…n BÃ­ch Ngá»c",
       "username": "bv117",
       "password": "123",
       "department_id": 15,
       "role": "staff",
       "role_level": "staff",
-      "title": "Dược sĩ / Quản lý kho dược",
-      "role_title": "Dược sĩ / Quản lý kho dược",
-      "position": "Dược sĩ Quản lý kho thuốc cấp phát",
+      "title": "DÆ°á»£c sÄ© / Quáº£n lÃ½ kho dÆ°á»£c",
+      "role_title": "DÆ°á»£c sÄ© / Quáº£n lÃ½ kho dÆ°á»£c",
+      "position": "DÆ°á»£c sÄ© Quáº£n lÃ½ kho thuá»‘c cáº¥p phÃ¡t",
       "assigned_rooms": [
-        "Kho Thuốc chẵn Nội trú & Dịch truyền",
-        "Kho Thuốc Cấp phát Ngoại trú BHYT"
+        "Kho Thuá»‘c cháºµn Ná»™i trÃº &amp; Dá»‹ch truyá»n",
+        "Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT"
       ],
-      "assigned_room": "Kho Thuốc chẵn Nội trú & Dịch truyền, Kho Thuốc Cấp phát Ngoại trú BHYT",
+      "assigned_room": "Kho Thuá»‘c cháºµn Ná»™i trÃº &amp; Dá»‹ch truyá»n, Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT",
       "allow_external": true
     },
     {
       "id": 19,
       "code": "BV-118",
       "staff_code": "BV-118",
-      "name": "BSCKI. Hoàng Trọng Nghĩa",
-      "full_name": "BSCKI. Hoàng Trọng Nghĩa",
+      "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
+      "full_name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
       "username": "bv118",
       "password": "123",
       "department_id": 10,
       "role": "manager",
       "role_level": "manager",
-      "title": "BSCKI - Trưởng Khoa",
-      "role_title": "BSCKI - Trưởng Khoa",
-      "position": "Bác sĩ Trưởng Khoa Kiểm soát Nhiễm khuẩn",
+      "title": "BSCKI - TrÆ°á»Ÿng Khoa",
+      "role_title": "BSCKI - TrÆ°á»Ÿng Khoa",
+      "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Kiá»ƒm soÃ¡t Nhiá»…m khuáº©n",
       "assigned_rooms": [
-        "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm",
-        "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn"
+        "Kho Dá»¥ng cá»¥ Pháº«u thuáº­t VÃ´ khuáº©n thÃ&nbsp;nh pháº©m",
+        "Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n"
       ],
-      "assigned_room": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm, Khu Tiếp nhận & Rửa dụng cụ y tế bẩn",
+      "assigned_room": "Kho Dá»¥ng cá»¥ Pháº«u thuáº­t VÃ´ khuáº©n thÃ&nbsp;nh pháº©m, Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n",
       "allow_external": true
     },
     {
       "id": 20,
       "code": "BV-119",
       "staff_code": "BV-119",
-      "name": "ĐD. Trịnh Thị Thu Trang",
-      "full_name": "ĐD. Trịnh Thị Thu Trang",
+      "name": "ÄD. Trá»‹nh Thá»‹ Thu Trang",
+      "full_name": "ÄD. Trá»‹nh Thá»‹ Thu Trang",
       "username": "bv119",
       "password": "123",
       "department_id": 10,
       "role": "manager",
       "role_level": "manager",
-      "title": "Điều dưỡng Trưởng Khoa",
-      "role_title": "Điều dưỡng Trưởng Khoa",
-      "position": "Điều dưỡng Trưởng Khoa Kiểm soát Nhiễm khuẩn",
+      "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
+      "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Kiá»ƒm soÃ¡t Nhiá»…m khuáº©n",
       "assigned_rooms": [
-        "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao",
-        "Khu Giặt là & Khử khuẩn đồ vải bệnh viện"
+        "Khu ÄÃ³ng gÃ³i &amp; Ná»“i háº¥p Tiá»‡t trÃ¹ng nhiá»‡t Ä‘á»™ cao",
+        "Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n"
       ],
-      "assigned_room": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao, Khu Giặt là & Khử khuẩn đồ vải bệnh viện",
+      "assigned_room": "Khu ÄÃ³ng gÃ³i &amp; Ná»“i háº¥p Tiá»‡t trÃ¹ng nhiá»‡t Ä‘á»™ cao, Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n",
       "allow_external": true
     },
     {
       "id": 21,
       "code": "BV-120",
       "staff_code": "BV-120",
-      "name": "ThS. ĐD. Trần Thị Lan Hương",
-      "full_name": "ThS. ĐD. Trần Thị Lan Hương",
+      "name": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+      "full_name": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
       "username": "bv120",
       "password": "123",
       "department_id": 18,
       "role": "manager",
       "role_level": "manager",
-      "title": "Trưởng Phòng Chức Năng",
-      "role_title": "Trưởng Phòng Chức Năng",
-      "position": "Trưởng Phòng Điều dưỡng Bệnh viện VPI",
+      "title": "TrÆ°á»Ÿng PhÃ²ng Chá»©c NÄƒng",
+      "role_title": "TrÆ°á»Ÿng PhÃ²ng Chá»©c NÄƒng",
+      "position": "TrÆ°á»Ÿng PhÃ²ng Äiá»u dÆ°á»¡ng Bá»‡nh viá»‡n VPI",
       "assigned_rooms": [
-        "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S"
+        "VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S"
       ],
-      "assigned_room": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S",
+      "assigned_room": "VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S",
       "allow_external": true
     }
   ],
@@ -1630,12 +1637,12 @@
       "room_id": 34,
       "audit_date": "2026-10-17",
       "audit_time": "08:15",
-      "shift": "Ca sáng (07:00 - 11:30)",
-      "sender_name": "KTV. Nguyễn Đức Tuấn",
+      "shift": "Ca sÃ¡ng (07:00 - 11:30)",
+      "sender_name": "KTV. Nguyá»…n Äá»©c Tuáº¥n",
       "sender_code": "BV-201",
-      "sender_role": "Kỹ thuật viên Trưởng CĐHA",
+      "sender_role": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng CÄHA",
       "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNjRlM2IiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QaMOybmcgQ2jhu6VwIEPhuq90IEzhu5twIFZpIFTDrW5oIDEyOCBEw6N5IENUPC90ZXh0PgogIDx0ZXh0IHg9IjMwMCIgeT0iMjIyIiBmaWxsPSIjOTRhM2I4IiBmb250LXNpemU9IjEzIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+S2hvYSBDaOG6qW4gxJFvw6FuIEjDrG5oIOG6o25oPC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7EkMODIFPDgE5HIEzhu4xDICZhbXA7IEtI4busIEtIVeG6qE48L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIzMDUiIGZpbGw9IiM2NDc0OGIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpw6FtIFPDoXQgNVMgQuG7h25oIFZp4buHbiBWUEkg4oCiIDIwMjY8L3RleHQ+Cjwvc3ZnPg==",
-      "notes": "Đã tổng vệ sinh máy CT 128 dãy, sàn phòng máy lau khử khuẩn, khay phim và vật tư y tế xếp gọn theo tiêu chuẩn 5S.",
+      "notes": "ÄÃ£ tá»•ng vá»‡ sinh mÃ¡y CT 128 dÃ£y, sÃ&nbsp;n phÃ²ng mÃ¡y lau khá»­ khuáº©n, khay phim vÃ&nbsp; váº­t tÆ° y táº¿ xáº¿p gá»n theo tiÃªu chuáº©n 5S.",
       "score_seiri": 20,
       "score_seiton": 20,
       "score_seiso": 20,
@@ -1643,15 +1650,15 @@
       "score_shitsuke": 19,
       "total_score": 98,
       "status": "approved",
-      "evaluator_name": "KTV. Vũ Bá Đạt",
+      "evaluator_name": "KTV. VÅ© BÃ¡ Äáº¡t",
       "evaluator_code": "BV-345",
-      "evaluator_role": "Cán bộ Giám sát 5S Toàn Viện & KTV Trưởng",
+      "evaluator_role": "CÃ¡n bá»™ GiÃ¡m sÃ¡t 5S ToÃ&nbsp;n Viá»‡n &amp; KTV TrÆ°á»Ÿng",
       "evaluation_date": "2026-10-17",
       "evaluation_time": "08:45",
       "evaluation_result": "pass",
       "issue_detected": "",
       "remedy_deadline": "",
-      "evaluation_notes": "Xuất sắc! Phòng máy CT rất sạch sẽ, không có bụi bẩn, dây cáp bó gọn gàng, tủ vật tư dán nhãn chuẩn 5S y tế.",
+      "evaluation_notes": "Xuáº¥t sáº¯c! PhÃ²ng mÃ¡y CT ráº¥t sáº¡ch sáº½, khÃ´ng cÃ³ bá»¥i báº©n, dÃ¢y cÃ¡p bÃ³ gá»n gÃ&nbsp;ng, tá»§ váº­t tÆ° dÃ¡n nhÃ£n chuáº©n 5S y táº¿.",
       "is_seed_demo": true,
       "created_at": "2026-10-17T08:15:00Z"
     },
@@ -1662,12 +1669,12 @@
       "room_id": 2,
       "audit_date": "2026-10-17",
       "audit_time": "08:30",
-      "shift": "Ca sáng (07:00 - 11:30)",
-      "sender_name": "ĐD. Lê Thị Hương",
+      "shift": "Ca sÃ¡ng (07:00 - 11:30)",
+      "sender_name": "ÄD. LÃª Thá»‹ HÆ°Æ¡ng",
       "sender_code": "BV-103",
-      "sender_role": "Điều dưỡng Trưởng Khoa Cấp Cứu",
+      "sender_role": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Cáº¥p Cá»©u",
       "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFlMWI0YiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0YzA1MTkiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIEjhu5NpIFPhu6ljIEPhuqVwIEPhu6l1IEJhbiDEkOG6p3U8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIEPhuqVwIGPhu6l1PC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5D4bqmTiBCw5MgR+G7jE4gRMOCWSBNw4FZIFRI4buePC90ZXh0PgogIDx0ZXh0IHg9IjMwMCIgeT0iMzA1IiBmaWxsPSIjNjQ3NDhiIiBmb250LXNpemU9IjEwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HacOhbSBTw6F0IDVTIELhu4duaCBWaeG7h24gVlBJIOKAoiAyMDI2PC90ZXh0Pgo8L3N2Zz4=",
-      "notes": "Đã lau bàn giao ban và thay drap giường cấp cứu.",
+      "notes": "ÄÃ£ lau bÃ&nbsp;n giao ban vÃ&nbsp; thay drap giÆ°á»ng cáº¥p cá»©u.",
       "score_seiri": 15,
       "score_seiton": 12,
       "score_seiso": 15,
@@ -1675,15 +1682,15 @@
       "score_shitsuke": 12,
       "total_score": 68,
       "status": "rejected",
-      "evaluator_name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+      "evaluator_name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
       "evaluator_code": "BV-101",
-      "evaluator_role": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc",
+      "evaluator_role": "TrÆ°á»Ÿng Ban Chá»‰ Äáº¡o 5S / Ban GiÃ¡m Äá»‘c",
       "evaluation_date": "2026-10-17",
       "evaluation_time": "09:05",
       "evaluation_result": "fail",
-      "issue_detected": "Dây nguồn máy thở và cáp monitor để vướng lối đi cấp cứu; xe tiêm còn bông cồn dơ chưa bỏ vào túi rác y tế màu vàng.",
-      "remedy_deadline": "Trước 11h30 hôm nay",
-      "evaluation_notes": "Yêu cầu Điều dưỡng trưởng phân công điều dưỡng trực cuộn gọn dây máy và kiểm tra lại toàn bộ xe tiêm ngay.",
+      "issue_detected": "DÃ¢y nguá»“n mÃ¡y thá»Ÿ vÃ&nbsp; cÃ¡p monitor Ä‘á»ƒ vÆ°á»›ng lá»‘i Ä‘i cáº¥p cá»©u; xe tiÃªm cÃ²n bÃ´ng cá»“n dÆ¡ chÆ°a bá» vÃ&nbsp;o tÃºi rÃ¡c y táº¿ mÃ&nbsp;u vÃ&nbsp;ng.",
+      "remedy_deadline": "TrÆ°á»›c 11h30 hÃ´m nay",
+      "evaluation_notes": "YÃªu cáº§u Äiá»u dÆ°á»¡ng trÆ°á»Ÿng phÃ¢n cÃ´ng Ä‘iá»u dÆ°á»¡ng trá»±c cuá»™n gá»n dÃ¢y mÃ¡y vÃ&nbsp; kiá»ƒm tra láº¡i toÃ&nbsp;n bá»™ xe tiÃªm ngay.",
       "is_seed_demo": true,
       "created_at": "2026-10-17T08:30:00Z"
     },
@@ -1694,12 +1701,12 @@
       "room_id": 6,
       "audit_date": "2026-10-17",
       "audit_time": "08:40",
-      "shift": "Ca sáng (07:00 - 11:30)",
-      "sender_name": "ĐD. Lê Văn Minh",
+      "shift": "Ca sÃ¡ng (07:00 - 11:30)",
+      "sender_name": "ÄD. LÃª VÄƒn Minh",
       "sender_code": "BV-104",
-      "sender_role": "Điều dưỡng Khoa Khám bệnh",
+      "sender_role": "Äiá»u dÆ°á»¡ng Khoa KhÃ¡m bá»‡nh",
       "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxZTNhOGEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Cw6BuIEtow6FtIELhu4duaCBO4buZaSAxMDE8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIEtow6FtIGLhu4duaDwvdGV4dD4KICA8cmVjdCB4PSIxODAiIHk9IjI0NSIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIzMCIgcng9IjE1IiBmaWxsPSIjMDU5NjY5Ii8+CiAgPHRleHQgeD0iMzAwIiB5PSIyNjUiIGZpbGw9IiNmZmZmZmYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SOG7kiBTxqAgQuG7hk5IIMOBTiBY4bq+UCBUSOG7qCBU4buwPC90ZXh0PgogIDx0ZXh0IHg9IjMwMCIgeT0iMzA1IiBmaWxsPSIjNjQ3NDhiIiBmb250LXNpemU9IjEwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HacOhbSBTw6F0IDVTIELhu4duaCBWaeG7h24gVlBJIOKAoiAyMDI2PC90ZXh0Pgo8L3N2Zz4=",
-      "notes": "Bàn khám bệnh và hồ sơ bệnh án xếp theo thứ tự số thứ tự tiếp đón, sát khuẩn tay nhanh bổ sung đầy đủ.",
+      "notes": "BÃ&nbsp;n khÃ¡m bá»‡nh vÃ&nbsp; há»“ sÆ¡ bá»‡nh Ã¡n xáº¿p theo thá»© tá»± sá»‘ thá»© tá»± tiáº¿p Ä‘Ã³n, sÃ¡t khuáº©n tay nhanh bá»• sung Ä‘áº§y Ä‘á»§.",
       "score_seiri": 19,
       "score_seiton": 19,
       "score_seiso": 19,
@@ -1707,15 +1714,15 @@
       "score_shitsuke": 18,
       "total_score": 94,
       "status": "approved",
-      "evaluator_name": "KTV. Vũ Bá Đạt",
+      "evaluator_name": "KTV. VÅ© BÃ¡ Äáº¡t",
       "evaluator_code": "BV-345",
-      "evaluator_role": "Cán bộ Giám sát 5S Toàn Viện",
+      "evaluator_role": "CÃ¡n bá»™ GiÃ¡m sÃ¡t 5S ToÃ&nbsp;n Viá»‡n",
       "evaluation_date": "2026-10-17",
       "evaluation_time": "09:10",
       "evaluation_result": "pass",
       "issue_detected": "",
       "remedy_deadline": "",
-      "evaluation_notes": "Bàn khám bệnh rất quy củ, sạch sẽ, đón tiếp bệnh nhân nhanh chóng.",
+      "evaluation_notes": "BÃ&nbsp;n khÃ¡m bá»‡nh ráº¥t quy cá»§, sáº¡ch sáº½, Ä‘Ã³n tiáº¿p bá»‡nh nhÃ¢n nhanh chÃ³ng.",
       "is_seed_demo": true,
       "created_at": "2026-10-17T08:40:00Z"
     },
@@ -1726,12 +1733,12 @@
       "room_id": 11,
       "audit_date": "2026-10-17",
       "audit_time": "08:50",
-      "shift": "Ca sáng (07:00 - 11:30)",
-      "sender_name": "ĐD. Nguyễn Thị Thảo",
+      "shift": "Ca sÃ¡ng (07:00 - 11:30)",
+      "sender_name": "ÄD. Nguyá»…n Thá»‹ Tháº£o",
       "sender_code": "BV-107",
-      "sender_role": "Điều dưỡng Hồi Sức Tích Cực",
+      "sender_role": "Äiá»u dÆ°á»¡ng Há»“i Sá»©c TÃ­ch Cá»±c",
       "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwZjc2NmUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIELhu4duaCBO4bq3bmcgSOG7k2kgU+G7qWMgMDE8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIEjhu5NpIHPhu6ljIHTDrWNoIGPhu7FjPC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LSEFZIFRIVeG7kEMgxJDDgyBT4bquUCBY4bq+UDwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjMwNSIgZmlsbD0iIzY0NzQ4YiIgZm9udC1zaXplPSIxMCIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R2nDoW0gU8OhdCA1UyBC4buHbmggVmnhu4duIFZQSSDigKIgMjAyNjwvdGV4dD4KPC9zdmc+",
-      "notes": "Đã sắp xếp khay thuốc cấp cứu, lau mặt bàn máy theo dõi monitor, thay ga trải giường buồng bệnh số 1.",
+      "notes": "ÄÃ£ sáº¯p xáº¿p khay thuá»‘c cáº¥p cá»©u, lau máº·t bÃ&nbsp;n mÃ¡y theo dÃµi monitor, thay ga tráº£i giÆ°á»ng buá»“ng bá»‡nh sá»‘ 1.",
       "score_seiri": 19,
       "score_seiton": 18,
       "score_seiso": 19,
@@ -1758,12 +1765,12 @@
       "room_id": 16,
       "audit_date": "2026-10-17",
       "audit_time": "08:55",
-      "shift": "Ca sáng (07:00 - 11:30)",
-      "sender_name": "ĐD. Đỗ Thị Loan",
+      "shift": "Ca sÃ¡ng (07:00 - 11:30)",
+      "sender_name": "ÄD. Äá»— Thá»‹ Loan",
       "sender_code": "BV-108",
-      "sender_role": "Điều dưỡng Ngoại Tổng Hợp",
+      "sender_role": "Äiá»u dÆ°á»¡ng Ngoáº¡i Tá»•ng Há»£p",
       "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxMTVlNTkiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIEjhuq11IFBo4bqrdSBOZ2/huqFpIDIwMTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjIyMiIgZmlsbD0iIzk0YTNiOCIgZm9udC1zaXplPSIxMyIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPktob2EgTmdv4bqhaSBU4buVbmcgaOG7o3A8L3RleHQ+CiAgPHJlY3QgeD0iMTgwIiB5PSIyNDUiIHdpZHRoPSIyNDAiIGhlaWdodD0iMzAiIHJ4PSIxNSIgZmlsbD0iIzA1OTY2OSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjY1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjExIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlbDlCBUUsOZTkcgQlXhu5JORyBC4buGTkg8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIzMDUiIGZpbGw9IiM2NDc0OGIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpw6FtIFPDoXQgNVMgQuG7h25oIFZp4buHbiBWUEkg4oCiIDIwMjY8L3RleHQ+Cjwvc3ZnPg==",
-      "notes": "Buồng hậu phẫu đã lau khử khuẩn Cloramin B, thùng rác phân loại đúng, xe thay băng gọn gàng.",
+      "notes": "Buá»“ng háº­u pháº«u Ä‘Ã£ lau khá»­ khuáº©n Cloramin B, thÃ¹ng rÃ¡c phÃ¢n loáº¡i Ä‘Ãºng, xe thay bÄƒng gá»n gÃ&nbsp;ng.",
       "score_seiri": 18,
       "score_seiton": 18,
       "score_seiso": 18,
@@ -1790,12 +1797,12 @@
       "room_id": 20,
       "audit_date": "2026-10-17",
       "audit_time": "08:10",
-      "shift": "Ca sáng (07:00 - 11:30)",
-      "sender_name": "ĐD. Hoàng Thị Mai",
+      "shift": "Ca sÃ¡ng (07:00 - 11:30)",
+      "sender_name": "ÄD. HoÃ&nbsp;ng Thá»‹ Mai",
       "sender_code": "BV-106",
-      "sender_role": "Hộ sinh Trưởng",
+      "sender_role": "Há»™ sinh TrÆ°á»Ÿng",
       "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFmMjkzNyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4MzE4NDMiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIMSQ4buhIMSQ4bq7IFPhuqNuIEtob2EgMDE8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIFBo4bulIHPhuqNuPC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5E4bukTkcgQ+G7pCDEkMODIFRJ4buGVCBUUsOZTkc8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIzMDUiIGZpbGw9IiM2NDc0OGIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpw6FtIFPDoXQgNVMgQuG7h25oIFZp4buHbiBWUEkg4oCiIDIwMjY8L3RleHQ+Cjwvc3ZnPg==",
-      "notes": "Bàn sinh và dụng cụ đỡ đẻ đã hấp tiệt trùng, tủ thuốc cấp cứu sản khoa đã niêm phong hạn dùng.",
+      "notes": "BÃ&nbsp;n sinh vÃ&nbsp; dá»¥ng cá»¥ Ä‘á»¡ Ä‘áº» Ä‘Ã£ háº¥p tiá»‡t trÃ¹ng, tá»§ thuá»‘c cáº¥p cá»©u sáº£n khoa Ä‘Ã£ niÃªm phong háº¡n dÃ¹ng.",
       "score_seiri": 20,
       "score_seiton": 19,
       "score_seiso": 19,
@@ -1803,17 +1810,1966 @@
       "score_shitsuke": 19,
       "total_score": 96,
       "status": "approved",
-      "evaluator_name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+      "evaluator_name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
       "evaluator_code": "BV-101",
-      "evaluator_role": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc",
+      "evaluator_role": "TrÆ°á»Ÿng Ban Chá»‰ Äáº¡o 5S / Ban GiÃ¡m Äá»‘c",
       "evaluation_date": "2026-10-17",
       "evaluation_time": "09:00",
       "evaluation_result": "pass",
       "issue_detected": "",
       "remedy_deadline": "",
-      "evaluation_notes": "Đạt chuẩn 5S phòng sinh. Rất sạch sẽ và tuân thủ kiểm soát nhiễm khuẩn.",
+      "evaluation_notes": "Äáº¡t chuáº©n 5S phÃ²ng sinh. Ráº¥t sáº¡ch sáº½ vÃ&nbsp; tuÃ¢n thá»§ kiá»ƒm soÃ¡t nhiá»…m khuáº©n.",
       "is_seed_demo": true,
       "created_at": "2026-10-17T08:10:00Z"
+    }
+  ],
+  "schedules": {
+    "current_week": 42,
+    "year": 2026,
+    "google_sheet_url": "https://docs.google.com/spreadsheets/d/1tHg7-i__1yRdBbamuYCAKXYy7KdZflOtoin8Ay6jjBc/edit?gid=1227014826#gid=1227014826",
+    "google_sheet_status": "restricted",
+    "shifts": [
+      {
+        "id": "morning",
+        "name": "Ca sÃ¡ng",
+        "time_range": "07:00 - 11:30",
+        "end_time": "11:30"
+      },
+      {
+        "id": "afternoon",
+        "name": "Ca chiá»u",
+        "time_range": "13:30 - 17:00",
+        "end_time": "17:00"
+      },
+      {
+        "id": "night",
+        "name": "Ca trá»±c Ä‘Ãªm",
+        "time_range": "17:00 - 07:00",
+        "end_time": "07:00"
+      },
+      {
+        "id": "all_day",
+        "name": "Trá»±c 24/24",
+        "time_range": "07:00 - 07:00",
+        "end_time": "07:00"
+      }
+    ],
+    "rooms_schedule": [
+      {
+        "room_id": 34,
+        "department_id": 8,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-115",
+            "name": "KTV. Tráº§n VÄƒn Chung",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "submitted",
+          "photo": "",
+          "submitted_at": "11:20",
+          "submitted_by": "KTV. VÅ© BÃ¡ Äáº¡t",
+          "notes": "ÄÃ£ thá»±c hiá»‡n sÃ&nbsp;ng lá»c, lau khá»­ khuáº©n bá» máº·t vÃ&nbsp; sáº¯p xáº¿p trang thiáº¿t bá»‹ y táº¿ sau ca trá»±c."
+        }
+      },
+      {
+        "room_id": 32,
+        "department_id": 8,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-115",
+            "name": "KTV. Tráº§n VÄƒn Chung",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-116",
+            "name": "KTV. LÃª CÃ´ng Báº±ng",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "submitted",
+          "photo": "",
+          "submitted_at": "11:20",
+          "submitted_by": "KTV. VÅ© BÃ¡ Äáº¡t",
+          "notes": "ÄÃ£ thá»±c hiá»‡n sÃ&nbsp;ng lá»c, lau khá»­ khuáº©n bá» máº·t vÃ&nbsp; sáº¯p xáº¿p trang thiáº¿t bá»‹ y táº¿ sau ca trá»±c."
+        }
+      },
+      {
+        "room_id": 33,
+        "department_id": 8,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 35,
+        "department_id": 8,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 50,
+        "department_id": 8,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-115",
+            "name": "KTV. Tráº§n VÄƒn Chung",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 51,
+        "department_id": 8,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 1,
+        "department_id": 1,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-103",
+            "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 2,
+        "department_id": 1,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-103",
+            "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-104",
+            "name": "ÄD. LÃª VÄƒn Minh",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-105",
+            "name": "ÄD. Pháº¡m Thá»‹ Mai",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "submitted",
+          "photo": "",
+          "submitted_at": "11:20",
+          "submitted_by": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+          "notes": "ÄÃ£ thá»±c hiá»‡n sÃ&nbsp;ng lá»c, lau khá»­ khuáº©n bá» máº·t vÃ&nbsp; sáº¯p xáº¿p trang thiáº¿t bá»‹ y táº¿ sau ca trá»±c."
+        }
+      },
+      {
+        "room_id": 3,
+        "department_id": 1,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-103",
+            "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-104",
+            "name": "ÄD. LÃª VÄƒn Minh",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-105",
+            "name": "ÄD. Pháº¡m Thá»‹ Mai",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 4,
+        "department_id": 1,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-103",
+            "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-104",
+            "name": "ÄD. LÃª VÄƒn Minh",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 5,
+        "department_id": 1,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-103",
+            "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-104",
+            "name": "ÄD. LÃª VÄƒn Minh",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-105",
+            "name": "ÄD. Pháº¡m Thá»‹ Mai",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 6,
+        "department_id": 1,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-103",
+            "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-104",
+            "name": "ÄD. LÃª VÄƒn Minh",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-105",
+            "name": "ÄD. Pháº¡m Thá»‹ Mai",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "submitted",
+          "photo": "",
+          "submitted_at": "11:20",
+          "submitted_by": "ÄD. VÅ© Quang TrÆ°á»Ÿng",
+          "notes": "ÄÃ£ thá»±c hiá»‡n sÃ&nbsp;ng lá»c, lau khá»­ khuáº©n bá» máº·t vÃ&nbsp; sáº¯p xáº¿p trang thiáº¿t bá»‹ y táº¿ sau ca trá»±c."
+        }
+      },
+      {
+        "room_id": 46,
+        "department_id": 11,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-109",
+            "name": "ThS.BS. Äinh CÃ´ng TrÃ­",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-110",
+            "name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 47,
+        "department_id": 11,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-109",
+            "name": "ThS.BS. Äinh CÃ´ng TrÃ­",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 48,
+        "department_id": 11,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-109",
+            "name": "ThS.BS. Äinh CÃ´ng TrÃ­",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-110",
+            "name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 49,
+        "department_id": 11,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-109",
+            "name": "ThS.BS. Äinh CÃ´ng TrÃ­",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 52,
+        "department_id": 11,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-109",
+            "name": "ThS.BS. Äinh CÃ´ng TrÃ­",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-110",
+            "name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 53,
+        "department_id": 12,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-111",
+            "name": "BSCKII. LÃª Tuáº¥n Anh",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 54,
+        "department_id": 12,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-111",
+            "name": "BSCKII. LÃª Tuáº¥n Anh",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 55,
+        "department_id": 12,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-111",
+            "name": "BSCKII. LÃª Tuáº¥n Anh",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 56,
+        "department_id": 12,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-111",
+            "name": "BSCKII. LÃª Tuáº¥n Anh",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 57,
+        "department_id": 12,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-111",
+            "name": "BSCKII. LÃª Tuáº¥n Anh",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 7,
+        "department_id": 2,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-107",
+            "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 8,
+        "department_id": 2,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-107",
+            "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-108",
+            "name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 9,
+        "department_id": 2,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-107",
+            "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 10,
+        "department_id": 2,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-107",
+            "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-108",
+            "name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 11,
+        "department_id": 2,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-107",
+            "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 58,
+        "department_id": 2,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-107",
+            "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-108",
+            "name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 16,
+        "department_id": 4,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-102",
+            "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-112",
+            "name": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 17,
+        "department_id": 4,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-102",
+            "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 18,
+        "department_id": 4,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-102",
+            "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-112",
+            "name": "ÄD. BÃ¹i VÄƒn HÃ¹ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 19,
+        "department_id": 4,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-102",
+            "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 20,
+        "department_id": 5,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-113",
+            "name": "BSCKI. Mai Thá»‹ Háº£o",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-114",
+            "name": "ÄD. Tráº§n PhÆ°Æ¡ng Dung",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "submitted",
+          "photo": "",
+          "submitted_at": "11:20",
+          "submitted_by": "BSCKI. Mai Thá»‹ Háº£o",
+          "notes": "ÄÃ£ thá»±c hiá»‡n sÃ&nbsp;ng lá»c, lau khá»­ khuáº©n bá» máº·t vÃ&nbsp; sáº¯p xáº¿p trang thiáº¿t bá»‹ y táº¿ sau ca trá»±c."
+        }
+      },
+      {
+        "room_id": 21,
+        "department_id": 5,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-113",
+            "name": "BSCKI. Mai Thá»‹ Háº£o",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 22,
+        "department_id": 5,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-113",
+            "name": "BSCKI. Mai Thá»‹ Háº£o",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-114",
+            "name": "ÄD. Tráº§n PhÆ°Æ¡ng Dung",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 23,
+        "department_id": 5,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-113",
+            "name": "BSCKI. Mai Thá»‹ Háº£o",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 24,
+        "department_id": 6,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 25,
+        "department_id": 6,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 26,
+        "department_id": 6,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 27,
+        "department_id": 6,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 28,
+        "department_id": 7,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 29,
+        "department_id": 7,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 30,
+        "department_id": 7,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 31,
+        "department_id": 7,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 59,
+        "department_id": 3,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-102",
+            "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 60,
+        "department_id": 3,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 61,
+        "department_id": 3,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 62,
+        "department_id": 3,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          },
+          {
+            "code": "BV-102",
+            "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n",
+            "role": "Há»— trá»£ chuyÃªn mÃ´n"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 63,
+        "department_id": 13,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 64,
+        "department_id": 13,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 65,
+        "department_id": 13,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 66,
+        "department_id": 14,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 67,
+        "department_id": 14,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 68,
+        "department_id": 14,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 36,
+        "department_id": 9,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 37,
+        "department_id": 9,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 38,
+        "department_id": 9,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 39,
+        "department_id": 9,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 69,
+        "department_id": 15,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-117",
+            "name": "DS. Nguyá»…n BÃ­ch Ngá»c",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 70,
+        "department_id": 15,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-117",
+            "name": "DS. Nguyá»…n BÃ­ch Ngá»c",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 71,
+        "department_id": 15,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-117",
+            "name": "DS. Nguyá»…n BÃ­ch Ngá»c",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 72,
+        "department_id": 15,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-117",
+            "name": "DS. Nguyá»…n BÃ­ch Ngá»c",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 40,
+        "department_id": 10,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-118",
+            "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-119",
+            "name": "ÄD. Trá»‹nh Thá»‹ Thu Trang",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "overdue",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 41,
+        "department_id": 10,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-118",
+            "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 42,
+        "department_id": 10,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-118",
+            "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-119",
+            "name": "ÄD. Trá»‹nh Thá»‹ Thu Trang",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 43,
+        "department_id": 10,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-118",
+            "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 73,
+        "department_id": 10,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": true,
+        "staff_assigned": [
+          {
+            "code": "BV-118",
+            "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 74,
+        "department_id": 16,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 75,
+        "department_id": 16,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 76,
+        "department_id": 17,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 77,
+        "department_id": 17,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 78,
+        "department_id": 18,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-120",
+            "name": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 79,
+        "department_id": 19,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 80,
+        "department_id": 19,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          },
+          {
+            "code": "BV-101",
+            "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+            "role": "Äiá»u dÆ°á»¡ng ca"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      },
+      {
+        "room_id": 81,
+        "department_id": 20,
+        "shift_id": "morning",
+        "day_of_week": "Sun",
+        "date": "2026-10-18",
+        "is_working": false,
+        "staff_assigned": [
+          {
+            "code": "BV-345",
+            "name": "KTV. VÅ© BÃ¡ Äáº¡t",
+            "role": "Phá»¥ trÃ¡ch chÃ­nh"
+          }
+        ],
+        "post_shift_5s": {
+          "status": "pending",
+          "photo": "",
+          "submitted_at": "",
+          "submitted_by": "",
+          "notes": ""
+        }
+      }
+    ]
+  },
+  "criteria": [
+    {
+      "id": 1,
+      "name": "S1 - SÃ&nbsp;ng lá»c (Seiri)",
+      "max": 20,
+      "desc": "PhÃ¢n loáº¡i rÃ¡c tháº£i, thuá»‘c, váº­t tÆ° y táº¿, loáº¡i bá» váº­t dá»¥ng thá»«a thÃ£i khá»i buá»“ng phÃ²ng"
+    },
+    {
+      "id": 2,
+      "name": "S2 - Sáº¯p xáº¿p (Seiton)",
+      "max": 20,
+      "desc": "Váº¡ch káº» Ä‘á»‹nh vá»‹ trang thiáº¿t bá»‹ y táº¿, tem nhÃ£n rÃµ rÃ&nbsp;ng, há»“ sÆ¡ bá»‡nh Ã¡n ngÄƒn náº¯p"
+    },
+    {
+      "id": 3,
+      "name": "S3 - Sáº¡ch sáº½ (Seiso)",
+      "max": 20,
+      "desc": "Khá»­ khuáº©n bá» máº·t tiáº¿p xÃºc, sÃ&nbsp;n buá»“ng bá»‡nh, trang thiáº¿t bá»‹ mÃ¡y mÃ³c sÃ¡ng bÃ³ng"
+    },
+    {
+      "id": 4,
+      "name": "S4 - SÄƒn sÃ³c (Seiketsu)",
+      "max": 20,
+      "desc": "Chuáº©n hÃ³a quy trÃ¬nh vá»‡ sinh, duy trÃ¬ lá»‹ch trá»±c vá»‡ sinh háº±ng ngÃ&nbsp;y vÃ&nbsp; kiá»ƒm tra chÃ©o"
+    },
+    {
+      "id": 5,
+      "name": "S5 - Sáºµn sÃ&nbsp;ng (Shitsuke)",
+      "max": 20,
+      "desc": "VÄƒn hÃ³a tá»± giÃ¡c, tinh tháº§n 5S y táº¿, trang phá»¥c báº£o há»™ vÃ&nbsp; biá»ƒn tÃªn Ä‘Ãºng quy Ä‘á»‹nh"
+    }
+  ],
+  "auth": {
+    "isLoggedIn": true,
+    "currentUserId": "BV-345",
+    "locationMode": "internal"
+  },
+  "securityLogs": [
+    {
+      "time": "2026-10-16 07:15:20",
+      "ip": "192.168.1.105",
+      "user": "KTV. VÅ© BÃ¡ Äáº¡t",
+      "action": "ÄÄƒng nháº­p há»‡ thá»‘ng (Ná»™i viá»‡n Wi-Fi)",
+      "status": "success"
+    },
+    {
+      "time": "2026-10-16 07:22:11",
+      "ip": "113.160.224.45",
+      "user": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng",
+      "action": "Truy cáº­p ngoáº¡i viá»‡n an toÃ&nbsp;n qua Cloudflare HTTPS",
+      "status": "success"
+    },
+    {
+      "time": "2026-10-16 07:30:00",
+      "ip": "192.168.1.105",
+      "user": "Ban Chá»‰ Ä‘áº¡o 5S",
+      "action": "PhÃ¡t Báº£ng tin ThÃ´ng bÃ¡o kháº©n cáº¥p toÃ&nbsp;n viá»‡n",
+      "status": "success"
     }
   ]
 }

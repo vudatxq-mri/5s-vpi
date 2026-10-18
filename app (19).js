@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v6_evaluation';
+const STORAGE_KEY = 'vpi_5s_data_v7_schedule';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -235,6 +235,1895 @@ const DEFAULT_SEED_DATA = {
     "created_at": "2026-10-17T08:10:00Z"
   }
 ],
+  schedules: {
+  "current_week": 42,
+  "year": 2026,
+  "google_sheet_url": "https://docs.google.com/spreadsheets/d/1tHg7-i__1yRdBbamuYCAKXYy7KdZflOtoin8Ay6jjBc/edit?gid=1227014826#gid=1227014826",
+  "google_sheet_status": "restricted",
+  "shifts": [
+    {
+      "id": "morning",
+      "name": "Ca sáng",
+      "time_range": "07:00 - 11:30",
+      "end_time": "11:30"
+    },
+    {
+      "id": "afternoon",
+      "name": "Ca chiều",
+      "time_range": "13:30 - 17:00",
+      "end_time": "17:00"
+    },
+    {
+      "id": "night",
+      "name": "Ca trực đêm",
+      "time_range": "17:00 - 07:00",
+      "end_time": "07:00"
+    },
+    {
+      "id": "all_day",
+      "name": "Trực 24/24",
+      "time_range": "07:00 - 07:00",
+      "end_time": "07:00"
+    }
+  ],
+  "rooms_schedule": [
+    {
+      "room_id": 34,
+      "department_id": 8,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-115",
+          "name": "KTV. Trần Văn Chung",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "submitted",
+        "photo": "",
+        "submitted_at": "11:20",
+        "submitted_by": "KTV. Vũ Bá Đạt",
+        "notes": "Đã thực hiện sàng lọc, lau khử khuẩn bề mặt và sắp xếp trang thiết bị y tế sau ca trực."
+      }
+    },
+    {
+      "room_id": 32,
+      "department_id": 8,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-115",
+          "name": "KTV. Trần Văn Chung",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-116",
+          "name": "KTV. Lê Công Bằng",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "submitted",
+        "photo": "",
+        "submitted_at": "11:20",
+        "submitted_by": "KTV. Vũ Bá Đạt",
+        "notes": "Đã thực hiện sàng lọc, lau khử khuẩn bề mặt và sắp xếp trang thiết bị y tế sau ca trực."
+      }
+    },
+    {
+      "room_id": 33,
+      "department_id": 8,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 35,
+      "department_id": 8,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 50,
+      "department_id": 8,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-115",
+          "name": "KTV. Trần Văn Chung",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 51,
+      "department_id": 8,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 1,
+      "department_id": 1,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-103",
+          "name": "ĐD. Vũ Quang Trưởng",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 2,
+      "department_id": 1,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-103",
+          "name": "ĐD. Vũ Quang Trưởng",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-104",
+          "name": "ĐD. Lê Văn Minh",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-105",
+          "name": "ĐD. Phạm Thị Mai",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "submitted",
+        "photo": "",
+        "submitted_at": "11:20",
+        "submitted_by": "ĐD. Vũ Quang Trưởng",
+        "notes": "Đã thực hiện sàng lọc, lau khử khuẩn bề mặt và sắp xếp trang thiết bị y tế sau ca trực."
+      }
+    },
+    {
+      "room_id": 3,
+      "department_id": 1,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-103",
+          "name": "ĐD. Vũ Quang Trưởng",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-104",
+          "name": "ĐD. Lê Văn Minh",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-105",
+          "name": "ĐD. Phạm Thị Mai",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 4,
+      "department_id": 1,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-103",
+          "name": "ĐD. Vũ Quang Trưởng",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-104",
+          "name": "ĐD. Lê Văn Minh",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 5,
+      "department_id": 1,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-103",
+          "name": "ĐD. Vũ Quang Trưởng",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-104",
+          "name": "ĐD. Lê Văn Minh",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-105",
+          "name": "ĐD. Phạm Thị Mai",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 6,
+      "department_id": 1,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-103",
+          "name": "ĐD. Vũ Quang Trưởng",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-104",
+          "name": "ĐD. Lê Văn Minh",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-105",
+          "name": "ĐD. Phạm Thị Mai",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "submitted",
+        "photo": "",
+        "submitted_at": "11:20",
+        "submitted_by": "ĐD. Vũ Quang Trưởng",
+        "notes": "Đã thực hiện sàng lọc, lau khử khuẩn bề mặt và sắp xếp trang thiết bị y tế sau ca trực."
+      }
+    },
+    {
+      "room_id": 46,
+      "department_id": 11,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-109",
+          "name": "ThS.BS. Đinh Công Trí",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-110",
+          "name": "ĐD. Nguyễn Thị Thanh Nga",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 47,
+      "department_id": 11,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-109",
+          "name": "ThS.BS. Đinh Công Trí",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 48,
+      "department_id": 11,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-109",
+          "name": "ThS.BS. Đinh Công Trí",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-110",
+          "name": "ĐD. Nguyễn Thị Thanh Nga",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 49,
+      "department_id": 11,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-109",
+          "name": "ThS.BS. Đinh Công Trí",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 52,
+      "department_id": 11,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-109",
+          "name": "ThS.BS. Đinh Công Trí",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-110",
+          "name": "ĐD. Nguyễn Thị Thanh Nga",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 53,
+      "department_id": 12,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-111",
+          "name": "BSCKII. Lê Tuấn Anh",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 54,
+      "department_id": 12,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-111",
+          "name": "BSCKII. Lê Tuấn Anh",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 55,
+      "department_id": 12,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-111",
+          "name": "BSCKII. Lê Tuấn Anh",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 56,
+      "department_id": 12,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-111",
+          "name": "BSCKII. Lê Tuấn Anh",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 57,
+      "department_id": 12,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-111",
+          "name": "BSCKII. Lê Tuấn Anh",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 7,
+      "department_id": 2,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-107",
+          "name": "BSCKI. Vũ Đình Khiêm",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 8,
+      "department_id": 2,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-107",
+          "name": "BSCKI. Vũ Đình Khiêm",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-108",
+          "name": "ĐD. Hoàng Bích Thủy",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 9,
+      "department_id": 2,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-107",
+          "name": "BSCKI. Vũ Đình Khiêm",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 10,
+      "department_id": 2,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-107",
+          "name": "BSCKI. Vũ Đình Khiêm",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-108",
+          "name": "ĐD. Hoàng Bích Thủy",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 11,
+      "department_id": 2,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-107",
+          "name": "BSCKI. Vũ Đình Khiêm",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 58,
+      "department_id": 2,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-107",
+          "name": "BSCKI. Vũ Đình Khiêm",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-108",
+          "name": "ĐD. Hoàng Bích Thủy",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 16,
+      "department_id": 4,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-102",
+          "name": "BSCKII. Nguyễn Văn Toàn",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-112",
+          "name": "ĐD. Bùi Văn Hùng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 17,
+      "department_id": 4,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-102",
+          "name": "BSCKII. Nguyễn Văn Toàn",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 18,
+      "department_id": 4,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-102",
+          "name": "BSCKII. Nguyễn Văn Toàn",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-112",
+          "name": "ĐD. Bùi Văn Hùng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 19,
+      "department_id": 4,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-102",
+          "name": "BSCKII. Nguyễn Văn Toàn",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 20,
+      "department_id": 5,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-113",
+          "name": "BSCKI. Mai Thị Hảo",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-114",
+          "name": "ĐD. Trần Phương Dung",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "submitted",
+        "photo": "",
+        "submitted_at": "11:20",
+        "submitted_by": "BSCKI. Mai Thị Hảo",
+        "notes": "Đã thực hiện sàng lọc, lau khử khuẩn bề mặt và sắp xếp trang thiết bị y tế sau ca trực."
+      }
+    },
+    {
+      "room_id": 21,
+      "department_id": 5,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-113",
+          "name": "BSCKI. Mai Thị Hảo",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 22,
+      "department_id": 5,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-113",
+          "name": "BSCKI. Mai Thị Hảo",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-114",
+          "name": "ĐD. Trần Phương Dung",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 23,
+      "department_id": 5,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-113",
+          "name": "BSCKI. Mai Thị Hảo",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 24,
+      "department_id": 6,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 25,
+      "department_id": 6,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 26,
+      "department_id": 6,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 27,
+      "department_id": 6,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 28,
+      "department_id": 7,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 29,
+      "department_id": 7,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 30,
+      "department_id": 7,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 31,
+      "department_id": 7,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 59,
+      "department_id": 3,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-102",
+          "name": "BSCKII. Nguyễn Văn Toàn",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 60,
+      "department_id": 3,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 61,
+      "department_id": 3,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 62,
+      "department_id": 3,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        },
+        {
+          "code": "BV-102",
+          "name": "BSCKII. Nguyễn Văn Toàn",
+          "role": "Hỗ trợ chuyên môn"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 63,
+      "department_id": 13,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 64,
+      "department_id": 13,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 65,
+      "department_id": 13,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 66,
+      "department_id": 14,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 67,
+      "department_id": 14,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 68,
+      "department_id": 14,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 36,
+      "department_id": 9,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 37,
+      "department_id": 9,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 38,
+      "department_id": 9,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 39,
+      "department_id": 9,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 69,
+      "department_id": 15,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-117",
+          "name": "DS. Nguyễn Bích Ngọc",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 70,
+      "department_id": 15,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-117",
+          "name": "DS. Nguyễn Bích Ngọc",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 71,
+      "department_id": 15,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-117",
+          "name": "DS. Nguyễn Bích Ngọc",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 72,
+      "department_id": 15,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-117",
+          "name": "DS. Nguyễn Bích Ngọc",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 40,
+      "department_id": 10,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-118",
+          "name": "BSCKI. Hoàng Trọng Nghĩa",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-119",
+          "name": "ĐD. Trịnh Thị Thu Trang",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "overdue",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 41,
+      "department_id": 10,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-118",
+          "name": "BSCKI. Hoàng Trọng Nghĩa",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 42,
+      "department_id": 10,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-118",
+          "name": "BSCKI. Hoàng Trọng Nghĩa",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-119",
+          "name": "ĐD. Trịnh Thị Thu Trang",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 43,
+      "department_id": 10,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-118",
+          "name": "BSCKI. Hoàng Trọng Nghĩa",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 73,
+      "department_id": 10,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": true,
+      "staff_assigned": [
+        {
+          "code": "BV-118",
+          "name": "BSCKI. Hoàng Trọng Nghĩa",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 74,
+      "department_id": 16,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 75,
+      "department_id": 16,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 76,
+      "department_id": 17,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 77,
+      "department_id": 17,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 78,
+      "department_id": 18,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-120",
+          "name": "ThS. ĐD. Trần Thị Lan Hương",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 79,
+      "department_id": 19,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 80,
+      "department_id": 19,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        },
+        {
+          "code": "BV-101",
+          "name": "ThS. BSCKII. Phạm Quỳnh Hưng",
+          "role": "Điều dưỡng ca"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    },
+    {
+      "room_id": 81,
+      "department_id": 20,
+      "shift_id": "morning",
+      "day_of_week": "Sun",
+      "date": "2026-10-18",
+      "is_working": false,
+      "staff_assigned": [
+        {
+          "code": "BV-345",
+          "name": "KTV. Vũ Bá Đạt",
+          "role": "Phụ trách chính"
+        }
+      ],
+      "post_shift_5s": {
+        "status": "pending",
+        "photo": "",
+        "submitted_at": "",
+        "submitted_by": "",
+        "notes": ""
+      }
+    }
+  ]
+},
   criteria: [
     { id: 1, name: 'S1 - Sàng lọc (Seiri)', max: 20, desc: 'Phân loại rác thải, thuốc, vật tư y tế, loại bỏ vật dụng thừa thãi khỏi buồng phòng' },
     { id: 2, name: 'S2 - Sắp xếp (Seiton)', max: 20, desc: 'Vạch kẻ định vị trang thiết bị y tế, tem nhãn rõ ràng, hồ sơ bệnh án ngăn nắp' },
@@ -292,13 +2181,31 @@ class App5S {
       correctiveAction: ''
     };
 
+    // State cho Lọc Trạng Thái Duyệt 5S & Tiến Độ Ngày (V6)
+    this.auditFilterStatus = 'all'; // 'all', 'pending', 'approved', 'rejected'
+    this.filterDeptDailyStatus = 'all'; // 'all', 'completed', 'uncompleted'
+    this.currentEvaluationResult = 'pass';
+    this.currentEvaluationAuditId = null;
+
+    // State cho Lịch Làm Việc & Trạng Thái Buồng Phòng (V7)
+    this.scheduleState = {
+      selectedWeek: 42,
+      selectedDay: 'Sun',
+      selectedDate: '2026-10-18',
+      selectedShift: 'all',
+      selectedDept: 'all',
+      selectedStatusFilter: 'all',
+      searchQuery: '',
+      editingRoomId: null
+    };
+
     this.init();
   }
 
   loadData() {
     try {
       // Dọn dẹp triệt để các key phiên bản cũ để đảm bảo máy tính và điện thoại luôn đồng nhất 100%
-      ['vpi_5s_data_v1', 'vpi_5s_data_v2', 'vpi_5s_data_v3_rbac', 'vpi_5s_data_v4_enhanced', 'vpi_5s_data_v5_grouped'].forEach(k => {
+      ['vpi_5s_data_v1', 'vpi_5s_data_v2', 'vpi_5s_data_v3_rbac', 'vpi_5s_data_v4_enhanced', 'vpi_5s_data_v5_grouped', 'vpi_5s_data_v5_final', 'vpi_5s_data_v6_evaluation'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
@@ -433,6 +2340,27 @@ class App5S {
     if (!this.data.auth) {
       this.data.auth = { isLoggedIn: true, currentUserId: 'BV-345', locationMode: 'internal' };
     }
+
+    // Chuẩn hóa CSDL Lịch làm việc & Buồng phòng (V7)
+    if (!this.data.schedules || !Array.isArray(this.data.schedules.rooms_schedule) || this.data.schedules.rooms_schedule.length === 0) {
+      if (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.schedules) {
+        this.data.schedules = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.schedules));
+      } else {
+        this.data.schedules = {
+          current_week: 42,
+          year: 2026,
+          google_sheet_url: 'https://docs.google.com/spreadsheets/d/1tHg7-i__1yRdBbamuYCAKXYy7KdZflOtoin8Ay6jjBc/edit?gid=1227014826#gid=1227014826',
+          google_sheet_status: 'restricted',
+          shifts: [
+            { id: 'morning', name: 'Ca sáng', time_range: '07:00 - 11:30', end_time: '11:30' },
+            { id: 'afternoon', name: 'Ca chiều', time_range: '13:30 - 17:00', end_time: '17:00' },
+            { id: 'night', name: 'Ca trực đêm', time_range: '17:00 - 07:00', end_time: '07:00' },
+            { id: 'all_day', name: 'Trực 24/24', time_range: '07:00 - 07:00', end_time: '07:00' }
+          ],
+          rooms_schedule: []
+        };
+      }
+    }
   }
 
   saveData() {
@@ -446,7 +2374,7 @@ class App5S {
   resetToVpiStandard() {
     if (!confirm('Khôi phục toàn bộ danh mục 20 Khoa/Phòng và 75 Khu vực làm việc chuẩn Bệnh viện Vĩnh Phúc VPI?')) return;
     // Xóa sạch toàn bộ cache phiên bản cũ trên thiết bị này
-    ['vpi_5s_data_v1', 'vpi_5s_data_v2', 'vpi_5s_data_v3_rbac', 'vpi_5s_data_v4_enhanced', 'vpi_5s_data_v5_grouped', 'vpi_5s_data_v5_final', STORAGE_KEY].forEach(k => {
+    ['vpi_5s_data_v1', 'vpi_5s_data_v2', 'vpi_5s_data_v3_rbac', 'vpi_5s_data_v4_enhanced', 'vpi_5s_data_v5_grouped', 'vpi_5s_data_v5_final', 'vpi_5s_data_v6_evaluation', STORAGE_KEY].forEach(k => {
       try { localStorage.removeItem(k); } catch (e) {}
     });
     this.data = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
@@ -705,6 +2633,9 @@ class App5S {
       case 'overview':
         tabContent = this.renderOverviewTab();
         break;
+      case 'schedule':
+        tabContent = this.renderScheduleTab();
+        break;
       case 'audit':
         tabContent = this.renderAuditTab();
         break;
@@ -748,11 +2679,11 @@ class App5S {
 
     const tabs = [
       { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
+      { id: 'schedule', name: 'Lịch trực', icon: 'calendar-clock' },
       { id: 'audit', name: 'Chấm 5S', icon: 'camera' },
       { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
-      { id: 'history', name: 'Lịch sử', icon: 'clipboard-list' },
-      { id: 'settings', name: 'Cài đặt', icon: 'settings' }
+      { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' }
     ];
 
     return `
@@ -789,11 +2720,11 @@ class App5S {
 
     const tabs = [
       { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
+      { id: 'schedule', name: 'Lịch trực', icon: 'calendar-clock' },
       { id: 'audit', name: 'Chấm 5S', icon: 'camera' },
       { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
-      { id: 'history', name: 'Lịch sử', icon: 'clipboard-list' },
-      { id: 'settings', name: 'Cài đặt', icon: 'settings' }
+      { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' }
     ];
 
     navContainer.innerHTML = `
@@ -1239,6 +3170,939 @@ class App5S {
 
 
   // =========================================================================
+  // TÍNH NĂNG V7: LỊCH LÀM VIỆC TUẦN, PHÂN CÔNG ĐA NHÂN SỰ & TRẠNG THÁI BUỒNG PHÒNG 5S
+  // =========================================================================
+  getScheduleStatistics() {
+    const schedules = this.data.schedules || { rooms_schedule: [] };
+    const roomSchedules = schedules.rooms_schedule || [];
+    const totalRooms = (this.data.rooms || []).length || 75;
+
+    const working = roomSchedules.filter(rs => rs.is_working);
+    const idle = roomSchedules.filter(rs => !rs.is_working);
+
+    const workingCount = working.length;
+    const idleCount = totalRooms - workingCount;
+    const workingRate = Math.round((workingCount / totalRooms) * 100);
+
+    const completed5s = working.filter(rs => rs.post_shift_5s && (rs.post_shift_5s.status === 'submitted' || rs.post_shift_5s.status === 'approved'));
+    const overdue5s = working.filter(rs => rs.post_shift_5s && rs.post_shift_5s.status === 'overdue');
+    const pending5s = working.filter(rs => !rs.post_shift_5s || rs.post_shift_5s.status === 'pending');
+
+    const totalNeeding5s = workingCount;
+    const completedCount = completed5s.length;
+    const complianceRate = totalNeeding5s > 0 ? Math.round((completedCount / totalNeeding5s) * 100) : 100;
+
+    return {
+      totalRooms,
+      workingCount,
+      workingRooms: workingCount,
+      idleCount,
+      idleRooms: idleCount,
+      workingRate,
+      completedCount,
+      submittedRooms: completedCount,
+      overdueCount: overdue5s.length,
+      pendingCount: pending5s.length,
+      complianceRate,
+      overdueRooms: overdue5s
+    };
+  }
+
+  getRoomSchedule(roomId) {
+    if (!this.data.schedules) this.data.schedules = { rooms_schedule: [] };
+    if (!this.data.schedules.rooms_schedule) this.data.schedules.rooms_schedule = [];
+
+    let rs = this.data.schedules.rooms_schedule.find(s => s.room_id == roomId);
+    if (!rs) {
+      const room = (this.data.rooms || []).find(r => r.id == roomId) || { id: roomId, department_id: 1 };
+      rs = {
+        room_id: roomId,
+        department_id: room.department_id,
+        shift_id: 'morning',
+        day_of_week: (this.scheduleState && this.scheduleState.selectedDay) || 'Sun',
+        date: this.getTodayDateString(),
+        is_working: true,
+        staff_assigned: [],
+        post_shift_5s: { status: 'pending', photo: '', submitted_at: '', submitted_by: '', notes: '' }
+      };
+      this.data.schedules.rooms_schedule.push(rs);
+    }
+    return rs;
+  }
+
+  toggleRoomWorkingStatus(roomId) {
+    const rs = this.getRoomSchedule(roomId);
+    rs.is_working = !rs.is_working;
+    this.saveData();
+    this.render();
+    const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng' };
+    this.showToast(rs.is_working 
+      ? `🟢 Đã kích hoạt: ${room.name} ĐANG LÀM VIỆC` 
+      : `⚪ Đã chuyển: ${room.name} sang trạng thái KHÔNG LÀM VIỆC`
+    );
+  }
+
+  setScheduleWeek(week) {
+    this.scheduleState.selectedWeek = parseInt(week);
+    this.render();
+  }
+
+  setScheduleDay(day) {
+    this.scheduleState.selectedDay = day;
+    this.render();
+  }
+
+  setScheduleShift(shiftId) {
+    this.scheduleState.selectedShift = shiftId;
+    this.render();
+  }
+
+  setScheduleStatusFilter(status) {
+    this.scheduleState.selectedStatusFilter = status;
+    this.render();
+  }
+
+  setScheduleDeptFilter(deptId) {
+    this.scheduleState.selectedDept = deptId;
+    this.render();
+  }
+
+  onScheduleSearch(query) {
+    this.scheduleState.searchQuery = (query || '').trim().toLowerCase();
+    this.render();
+  }
+
+  // MODAL QUẢN LÝ NHÂN SỰ VÀ TRẠNG THÁI BUỒNG PHÒNG
+  openManageRoomStaffModal(roomId) {
+    const room = (this.data.rooms || []).find(r => r.id == roomId);
+    if (!room) return;
+    const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa' };
+    const rs = this.getRoomSchedule(roomId);
+    const assignedStaff = rs.staff_assigned || [];
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 flex items-center justify-center">
+              <i data-lucide="users" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">${room.name}</h3>
+              <p class="text-[10px] text-slate-500 font-mono">${dept.name} • Mã: ${room.code || 'P-00'}</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- CÔNG TẮC BẬT / TẮT TRẠNG THÁI LÀM VIỆC CỦA PHÒNG -->
+        <div class="bg-slate-50 dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+          <div class="space-y-0.5">
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Trạng thái hoạt động buồng phòng:</span>
+            <div class="text-[10px] text-slate-500 font-medium">Bật nếu phòng đang mở cửa phục vụ bệnh nhân trong ca này</div>
+          </div>
+          <button onclick="app5s.toggleRoomWorkingStatus(${roomId}); app5s.openManageRoomStaffModal(${roomId});" class="px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 ${
+            rs.is_working 
+              ? 'bg-emerald-600 text-white shadow-xs hover:bg-emerald-700' 
+              : 'bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-400'
+          }">
+            <i data-lucide="${rs.is_working ? 'check-circle' : 'circle'}" class="w-3.5 h-3.5"></i>
+            <span>${rs.is_working ? 'ĐANG LÀM VIỆC' : 'KHÔNG LÀM VIỆC'}</span>
+          </button>
+        </div>
+
+        <!-- DANH SÁCH NHÂN SỰ ĐƯỢC PHÂN CÔNG TẠI VỊ TRÍ NÀY -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
+            <span>Danh sách nhân sự phụ trách ca (${assignedStaff.length} người):</span>
+            <span class="text-[10px] text-slate-400">Có thể thêm / bớt nhiều người</span>
+          </div>
+
+          ${assignedStaff.length === 0 ? `
+            <div class="p-4 text-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-xs text-slate-400">
+              Chưa có nhân sự nào được phân công tại buồng phòng này. Vui lòng thêm nhân sự bên dưới.
+            </div>
+          ` : `
+            <div class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar">
+              ${assignedStaff.map((s, idx) => `
+                <div class="bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs shadow-2xs">
+                  <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center text-[10px]">
+                      ${idx + 1}
+                    </div>
+                    <div>
+                      <div class="font-black text-slate-800 dark:text-slate-100">${s.name}</div>
+                      <div class="text-[10px] text-indigo-600 font-medium">${s.role || 'Nhân sự ca trực'} • <span class="font-mono text-slate-400">${s.code || ''}</span></div>
+                    </div>
+                  </div>
+                  <button onclick="app5s.removeStaffFromRoom(${roomId}, ${idx})" title="Bớt nhân sự khỏi vị trí này" class="px-2 py-1 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-300 rounded-lg text-[10px] font-bold border border-red-200 dark:border-red-800 transition flex items-center space-x-0.5">
+                    <i data-lucide="user-minus" class="w-3 h-3"></i>
+                    <span>Bớt người</span>
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          `}
+        </div>
+
+        <!-- KHỐI THÊM NHÂN SỰ VÀO VỊ TRÍ LÀM VIỆC -->
+        <div class="bg-indigo-50/60 dark:bg-indigo-950/30 p-3.5 rounded-2xl border border-indigo-200/80 dark:border-indigo-900/60 space-y-2.5">
+          <div class="flex items-center space-x-1.5 text-xs font-bold text-indigo-900 dark:text-indigo-200">
+            <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i>
+            <span>Thêm nhân sự phụ trách vào buồng phòng:</span>
+          </div>
+
+          <div class="space-y-2">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Chọn từ danh bạ nhân sự bệnh viện:</label>
+              <select id="add-staff-select" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
+                <option value="">-- Chọn cán bộ/nhân viên viện VPI --</option>
+                ${(this.data.staff || []).map(st => `
+                  <option value="${st.code}">${st.name} (${st.title || st.role_title || 'Nhân viên'}) - ${st.code}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Hoặc nhập họ tên khác:</label>
+                <input type="text" id="add-staff-custom-name" placeholder="Ví dụ: BS. Nguyễn Văn A..." class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Vai trò trong ca trực:</label>
+                <select id="add-staff-role" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
+                  <option value="Phụ trách chính">Phụ trách chính</option>
+                  <option value="Bác sĩ trực">Bác sĩ trực</option>
+                  <option value="Điều dưỡng ca">Điều dưỡng ca</option>
+                  <option value="Kỹ thuật viên máy">Kỹ thuật viên máy</option>
+                  <option value="Hỗ trợ chuyên môn">Hỗ trợ chuyên môn</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" onclick="app5s.addStaffToRoom(${roomId})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-xs">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>THÊM NHÂN SỰ VÀO VỊ TRÍ NÀY</span>
+            </button>
+          </div>
+        </div>
+
+        <button onclick="app5s.closeModal(); app5s.render();" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold py-2.5 rounded-2xl text-xs transition">
+          Đóng cửa sổ
+        </button>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  addStaffToRoom(roomId) {
+    const selectEl = document.getElementById('add-staff-select');
+    const customNameEl = document.getElementById('add-staff-custom-name');
+    const roleEl = document.getElementById('add-staff-role');
+
+    const selectedCode = selectEl ? selectEl.value : '';
+    const customName = customNameEl ? customNameEl.value.trim() : '';
+    const role = roleEl ? roleEl.value : 'Phụ trách chính';
+
+    let staffName = customName;
+    let staffCode = selectedCode || 'BV-NV';
+
+    if (!staffName && selectedCode) {
+      const s = (this.data.staff || []).find(st => st.code === selectedCode);
+      if (s) staffName = s.name;
+    }
+
+    if (!staffName) {
+      alert('Vui lòng chọn hoặc nhập tên nhân sự cần thêm vào ca trực!');
+      return;
+    }
+
+    const rs = this.getRoomSchedule(roomId);
+    if (!rs.staff_assigned) rs.staff_assigned = [];
+    rs.staff_assigned.push({
+      code: staffCode,
+      name: staffName,
+      role: role
+    });
+
+    this.saveData();
+    this.openManageRoomStaffModal(roomId);
+    this.showToast(`Đã thêm ${staffName} (${role}) vào vị trí làm việc!`);
+  }
+
+  removeStaffFromRoom(roomId, index) {
+    const rs = this.getRoomSchedule(roomId);
+    if (!rs.staff_assigned || !rs.staff_assigned[index]) return;
+    const removed = rs.staff_assigned.splice(index, 1);
+    this.saveData();
+    this.openManageRoomStaffModal(roomId);
+    this.showToast(`Đã bớt ${removed[0].name} khỏi vị trí làm việc!`);
+  }
+
+  // MODAL NỘP ẢNH 5S KHI HẾT GIỜ LÀM VIỆC
+  openEndShift5SModal(roomId) {
+    const room = (this.data.rooms || []).find(r => r.id == roomId);
+    if (!room) return;
+    const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa' };
+    const rs = this.getRoomSchedule(roomId);
+    const assignedStaff = rs.staff_assigned || [];
+    const staffNames = assignedStaff.map(s => s.name).join(', ') || 'Cán bộ ca trực';
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 flex items-center justify-center">
+              <i data-lucide="camera" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">CHỤP ẢNH 5S HẾT CA LÀM VIỆC</h3>
+              <p class="text-[10px] text-amber-700 font-bold">Bàn giao buồng phòng sau ca trực</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="bg-amber-50/80 dark:bg-amber-950/40 p-3 rounded-2xl border border-amber-200 dark:border-amber-800 text-xs space-y-1">
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-medium">Buồng phòng:</span>
+            <strong class="text-slate-800 dark:text-slate-100">${room.name}</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-medium">Khoa / Bộ phận:</span>
+            <span>${dept.name}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-medium">Nhân sự bàn giao:</span>
+            <span class="font-bold text-amber-800 dark:text-amber-300 text-right">${staffNames}</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-slate-800 dark:text-slate-200">
+            📸 Hình ảnh chụp minh chứng buồng phòng sau khi đã 5S sạch sẽ *
+          </label>
+          <div id="shift-photo-preview" class="relative border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-2xl p-4 text-center bg-amber-50/30 dark:bg-amber-950/20 hover:bg-amber-50 transition cursor-pointer">
+            ${this.newAuditState.afterPhoto ? `
+              <img src="${this.newAuditState.afterPhoto}" class="w-full h-44 object-cover rounded-xl shadow-xs">
+              <button onclick="app5s.removeAfterPhoto(event)" class="absolute top-6 right-6 bg-red-600 text-white rounded-full p-1.5 shadow-md">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            ` : `
+              <input type="file" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+              <div class="space-y-1.5 py-4">
+                <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center mx-auto">
+                  <i data-lucide="camera" class="w-6 h-6"></i>
+                </div>
+                <div class="text-xs font-bold text-amber-800 dark:text-amber-300">Bấm để Chụp ảnh hoặc Tải ảnh bàn giao lên</div>
+                <div class="text-[10px] text-slate-400">Yêu cầu chụp rõ mặt bàn máy, sàn phòng và vị trí sắp xếp vật tư</div>
+              </div>
+            `}
+          </div>
+
+          <!-- Nút chọn ảnh mẫu minh chứng -->
+          <div class="pt-1 space-y-1">
+            <div class="text-[10px] text-slate-500 font-semibold">Chọn nhanh ảnh mẫu minh chứng:</div>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="app5s.fillDemoAuditPhoto('ct')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 CT 128 Dãy</button>
+              <button type="button" onclick="app5s.fillDemoAuditPhoto('emergency')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Cấp cứu</button>
+              <button type="button" onclick="app5s.fillDemoAuditPhoto('clinic')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Khám bệnh</button>
+              <button type="button" onclick="app5s.fillDemoAuditPhoto('icu')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Hồi sức ICU</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Ghi chú tình trạng buồng phòng bàn giao:</label>
+          <textarea id="shift-5s-notes" rows="2" placeholder="Ví dụ: Đã lau khử khuẩn máy móc, khay thuốc cấp cứu đã niêm phong, sàn nhà sạch sẽ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100">Đã vệ sinh sạch sẽ, khử khuẩn bề mặt và sắp xếp ngăn nắp buồng phòng trước khi kết thúc ca trực.</textarea>
+        </div>
+
+        <button onclick="app5s.submitEndShift5S(${roomId})" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
+          <i data-lucide="check-check" class="w-4 h-4"></i>
+          <span>HOÀN TẤT & NỘP ẢNH 5S BÀN GIAO CA</span>
+        </button>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  submitEndShift5S(roomId, optionalPhoto = null, optionalNotes = null) {
+    const rs = this.getRoomSchedule(roomId);
+    const photoInput = optionalPhoto || this.newAuditState.afterPhoto;
+    const notesInput = document.getElementById('shift-5s-notes');
+    const notes = optionalNotes || (notesInput ? notesInput.value.trim() : 'Đã dọn dẹp vệ sinh và khử khuẩn buồng phòng sau ca trực.');
+
+    if (!photoInput) {
+      this.showToast('⚠️ Vui lòng chụp ảnh hoặc chọn ảnh minh chứng 5S trước khi gửi bàn giao ca!');
+      return;
+    }
+
+    const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng', department_id: rs.department_id };
+    const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa' };
+    const user = this.getCurrentUser() || { name: 'Nhân viên trực', code: 'BV-345', title: 'Cán bộ 5S' };
+
+    const assignedNames = (rs.staff_assigned || []).map(s => s.name).join(', ') || user.name;
+    const currentTime = new Date().toTimeString().slice(0, 5);
+
+    // Tạo bản ghi Audit mới
+    const newAudit = {
+      id: Date.now(),
+      audit_code: '5S-CA-' + this.getTodayDateString().replace(/-/g, '') + '-' + Math.floor(100 + Math.random() * 900),
+      department_id: room.department_id,
+      room_id: roomId,
+      audit_date: this.getTodayDateString(),
+      audit_time: currentTime,
+      shift: rs.shift_id === 'morning' ? 'Ca sáng (07:00 - 11:30)' : (rs.shift_id === 'afternoon' ? 'Ca chiều (13:30 - 17:00)' : 'Ca trực đêm'),
+      inspector_name: user.name,
+      inspector_role: user.title || user.role_title || 'Cán bộ 5S',
+      sender_name: assignedNames,
+      sender_role: 'Nhân sự ca trực',
+      sender_code: user.code,
+      score_seiri: 20, score_seiton: 20, score_seiso: 20, score_seiketsu: 19, score_shitsuke: 19,
+      total_score: 98,
+      rating: 'Xuất sắc',
+      notes: notes,
+      after_photo: photoInput,
+      status: 'pending', // Chờ cán bộ giám sát kiểm tra và phê duyệt
+      evaluator_name: '', evaluator_code: '', evaluator_role: '', evaluation_date: '', evaluation_time: '',
+      evaluation_result: null, issue_detected: '', remedy_deadline: '', evaluation_notes: '',
+      created_at: new Date().toISOString()
+    };
+
+    if (!this.data.audits) this.data.audits = [];
+    this.data.audits.unshift(newAudit);
+
+    // Cập nhật trạng thái 5S ca trực của phòng
+    rs.post_shift_5s = {
+      status: 'submitted',
+      photo: photoInput,
+      submitted_at: currentTime,
+      submitted_by: assignedNames,
+      audit_id: newAudit.id,
+      notes: notes
+    };
+
+    this.newAuditState.afterPhoto = null;
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`✅ Đã nộp ảnh 5S bàn giao ca cho ${room.name}!`);
+  }
+
+  // MODAL ĐỒNG BỘ GOOGLE TRANG TÍNH VÀ EXCEL
+  openGoogleSheetSyncModal() {
+    const sheetUrl = this.data.schedules.google_sheet_url || 'https://docs.google.com/spreadsheets/d/1tHg7-i__1yRdBbamuYCAKXYy7KdZflOtoin8Ay6jjBc/edit?gid=1227014826#gid=1227014826';
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center">
+              <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">ĐỒNG BỘ LỊCH TOÀN VIỆN</h3>
+              <p class="text-[10px] text-slate-500 font-mono">Google Sheets & Excel (.xlsx)</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- HƯỚNG DẪN BẬT QUYỀN TRUY CẬP GOOGLE SHEET -->
+        <div class="bg-amber-50/80 dark:bg-amber-950/40 p-3.5 rounded-2xl border border-amber-200 dark:border-amber-900/60 text-xs space-y-2">
+          <div class="flex items-center space-x-1.5 font-bold text-amber-900 dark:text-amber-200">
+            <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0"></i>
+            <span>Hướng dẫn mở quyền xem Google Trang Tính:</span>
+          </div>
+          <p class="text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed">
+            Để hệ thống tự động đọc được dữ liệu trực tiếp từ Google Sheet, file cần được bật quyền chia sẻ:
+          </p>
+          <ol class="list-decimal pl-4 text-[10.5px] text-amber-900 dark:text-amber-200 space-y-1">
+            <li>Mở file <strong>2026-Lịch làm việc tuần VPI toàn viện</strong> trên Google Sheets.</li>
+            <li>Bấm nút <strong>Chia sẻ (Share)</strong> ở góc trên bên phải.</li>
+            <li>Tại mục <em>Quyền truy cập chung</em>, chọn <strong>"Bất kỳ ai có đường liên kết" (Anyone with the link)</strong>.</li>
+            <li>Phân vai trò <strong>"Người xem" (Viewer)</strong> rồi bấm <strong>Xong</strong>.</li>
+          </ol>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Đường dẫn Google Sheets hiện tại:</label>
+          <input type="text" id="sync-sheet-url-input" value="${sheetUrl}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-2 text-xs font-mono text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="app5s.saveGoogleSheetUrl()" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-xs">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Đồng bộ từ Sheet</span>
+          </button>
+
+          <button onclick="app5s.exportScheduleToExcel()" class="py-2.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-xs">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Xuất Excel (.csv)</span>
+          </button>
+        </div>
+
+        <!-- TẢI LÊN FILE EXCEL / CSV TRỰC TIẾP TỪ MÁY TÍNH -->
+        <div class="border-t border-slate-200 dark:border-slate-700 pt-3 space-y-2">
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">Hoặc tải file Excel / CSV lịch làm việc từ máy tính:</label>
+          <label class="flex items-center justify-center space-x-2 border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 p-4 rounded-2xl cursor-pointer bg-slate-50 dark:bg-slate-900/40 transition">
+            <i data-lucide="upload-cloud" class="w-5 h-5 text-emerald-600"></i>
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Chọn file .xlsx hoặc .csv để nhập</span>
+            <input type="file" accept=".xlsx,.csv,.xls" onchange="app5s.importScheduleFromFile(event)" class="hidden">
+          </label>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  saveGoogleSheetUrl() {
+    const input = document.getElementById('sync-sheet-url-input');
+    if (!input) return;
+    const url = input.value.trim();
+    if (!url) {
+      alert('Vui lòng nhập đường link Google Sheets!');
+      return;
+    }
+    this.data.schedules.google_sheet_url = url;
+    this.saveData();
+    this.closeModal();
+    this.showToast('✅ Đã lưu đường dẫn Google Sheets! Hệ thống đang kết nối dữ liệu lịch tuần VPI.');
+    this.render();
+  }
+
+  exportScheduleToExcel() {
+    const depts = this.data.departments || [];
+    const rooms = this.data.rooms || [];
+    const schedules = this.data.schedules || {};
+    const roomSchedules = schedules.rooms_schedule || [];
+
+    let csv = '\uFEFFSTT,Mã Khoa,Tên Khoa/Phòng,Mã Phòng,Tên Buồng Phòng,Tầng,Trạng Thái Hoạt Động,Nhân Sự Trực Ca,Tình Trạng 5S Hết Ca,Giờ Nộp 5S\n';
+
+    rooms.forEach((r, idx) => {
+      const d = depts.find(dept => dept.id == r.department_id) || { code: '', name: '' };
+      const rs = this.getRoomSchedule(r.id);
+      const isWorkingStr = rs.is_working ? 'Đang làm việc' : 'Không làm việc';
+      const staffNames = (rs.staff_assigned || []).map(s => `${s.name} (${s.role})`).join('; ') || 'Chưa phân công';
+      const s5Status = rs.post_shift_5s ? (rs.post_shift_5s.status === 'submitted' ? 'Đã nộp 5S' : (rs.post_shift_5s.status === 'overdue' ? 'Quá hạn chưa nộp' : 'Chờ nộp')) : 'Chưa nộp';
+      const s5Time = rs.post_shift_5s ? (rs.post_shift_5s.submitted_at || '') : '';
+
+      csv += `"${idx + 1}","${d.code}","${d.name}","${r.code || ''}","${r.name}","${r.floor || ''}","${isWorkingStr}","${staffNames}","${s5Status}","${s5Time}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Lich_Lam_Viec_5S_VPI_${this.getTodayDateString()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    this.showToast('📥 Đã xuất báo cáo lịch làm việc & trạng thái buồng phòng ra file CSV!');
+  }
+
+  importScheduleFromFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    this.closeModal();
+    this.showToast(`✅ Đã nhập lịch thành công từ tệp ${file.name}!`);
+    this.render();
+  }
+
+  broadcastEndShift5SReminder() {
+    const stats = this.getScheduleStatistics();
+    const overdue = stats.overdueRooms || [];
+    const rooms = this.data.rooms || [];
+    const today = this.getTodayDateString();
+    const currentTime = new Date().toTimeString().slice(0, 5);
+
+    const overdueRoomNames = overdue.slice(0, 4).map(rs => {
+      const r = rooms.find(room => room.id == rs.room_id);
+      return r ? r.name : 'Buồng phòng';
+    }).join(', ') + (overdue.length > 4 ? ` và ${overdue.length - 4} phòng khác` : '');
+
+    this.data.hospital.notice = {
+      enabled: true,
+      type: 'danger',
+      title: 'NHẮC NHỞ KHẨN: CHỤP ẢNH 5S BÀN GIAO CA LÀM VIỆC',
+      content: `Hiện tại có ${overdue.length} buồng phòng đã kết thúc ca trực nhưng chưa chụp gửi ảnh 5S bàn giao (${overdueRoomNames}). Ban Chỉ Đạo 5S yêu cầu các Bác sĩ, Điều dưỡng và KTV trực ca khẩn trương vệ sinh và nộp ảnh 5S ngay.`,
+      updatedAt: `${today} ${currentTime}`
+    };
+
+    this.saveData();
+    this.render();
+    this.showToast('📢 Đã phát thông báo khẩn đôn đốc nộp ảnh 5S hết ca toàn viện!');
+  }
+
+  // =========================================================================
+  // GIAO DIỆN CHÍNH TAB LỊCH LÀM VIỆC & TRẠNG THÁI BUỒNG PHÒNG (TAB SCHEDULE)
+  // =========================================================================
+  renderScheduleTab() {
+    const hosp = this.data.hospital;
+    const depts = this.getSortedDepartments();
+    const rooms = this.data.rooms || [];
+    const stats = this.getScheduleStatistics();
+
+    const days = [
+      { id: 'Mon', name: 'Thứ 2' },
+      { id: 'Tue', name: 'Thứ 3' },
+      { id: 'Wed', name: 'Thứ 4' },
+      { id: 'Thu', name: 'Thứ 5' },
+      { id: 'Fri', name: 'Thứ 6' },
+      { id: 'Sat', name: 'Thứ 7' },
+      { id: 'Sun', name: 'Chủ nhật (Hôm nay)' }
+    ];
+
+    const shifts = [
+      { id: 'all', name: 'Tất cả ca' },
+      { id: 'morning', name: 'Ca sáng (07:00 - 11:30)' },
+      { id: 'afternoon', name: 'Ca chiều (13:30 - 17:00)' },
+      { id: 'night', name: 'Ca đêm (17:00 - 07:00)' }
+    ];
+
+    // Lọc danh sách phòng theo bộ lọc
+    const q = (this.scheduleState.searchQuery || '').toLowerCase();
+    const selectedDept = this.scheduleState.selectedDept;
+    const statusFilter = this.scheduleState.selectedStatusFilter;
+
+    let filteredRooms = rooms;
+
+    if (selectedDept && selectedDept !== 'all') {
+      filteredRooms = filteredRooms.filter(r => String(r.department_id) === String(selectedDept));
+    }
+
+    if (q) {
+      filteredRooms = filteredRooms.filter(r => {
+        const rs = this.getRoomSchedule(r.id);
+        const staffNames = (rs.staff_assigned || []).map(s => s.name).join(' ').toLowerCase();
+        const text = `${r.name} ${r.code || ''} ${staffNames}`.toLowerCase();
+        return text.includes(q);
+      });
+    }
+
+    if (statusFilter === 'working') {
+      filteredRooms = filteredRooms.filter(r => this.getRoomSchedule(r.id).is_working);
+    } else if (statusFilter === 'idle') {
+      filteredRooms = filteredRooms.filter(r => !this.getRoomSchedule(r.id).is_working);
+    } else if (statusFilter === 'pending_5s') {
+      filteredRooms = filteredRooms.filter(r => {
+        const rs = this.getRoomSchedule(r.id);
+        return rs.is_working && (!rs.post_shift_5s || rs.post_shift_5s.status === 'overdue' || rs.post_shift_5s.status === 'pending');
+      });
+    } else if (statusFilter === 'completed_5s') {
+      filteredRooms = filteredRooms.filter(r => {
+        const rs = this.getRoomSchedule(r.id);
+        return rs.is_working && rs.post_shift_5s && (rs.post_shift_5s.status === 'submitted' || rs.post_shift_5s.status === 'approved');
+      });
+    }
+
+    return `
+      <div class="p-4 space-y-4">
+        <!-- HEADER LỊCH LÀM VIỆC & CÁC NÚT ĐỒNG BỘ -->
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-indigo-600">LỊCH LÀM VIỆC & PHÂN CÔNG CA TRỰC</span>
+            <h2 class="text-base font-black text-slate-900 dark:text-white">Lịch Làm Việc Toàn Viện VPI</h2>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <button onclick="app5s.openGoogleSheetSyncModal()" title="Đồng bộ Google Sheets & Excel" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+              <span>Google Sheet</span>
+            </button>
+            <button onclick="app5s.exportScheduleToExcel()" title="Xuất file Excel" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold p-1.5 rounded-xl border border-slate-200 dark:border-slate-600 transition">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- BỘ CHỌN TUẦN LÀM VIỆC & THANH NGÀY TRONG TUẦN -->
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-3.5 border border-slate-200/90 dark:border-slate-700 shadow-sm space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-indigo-600"></i>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Tuần 42 (12/10 - 18/10/2026)</span>
+            </div>
+            <span class="text-[10px] bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold px-2 py-0.5 rounded-full border border-indigo-200">
+              Năm 2026
+            </span>
+          </div>
+
+          <!-- Thanh cuộn ngày trong tuần -->
+          <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
+            ${days.map(d => `
+              <button onclick="app5s.setScheduleDay('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition ${
+                this.scheduleState.selectedDay === d.id
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+              }">
+                ${d.name}
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Thanh chọn Ca làm việc -->
+          <div class="flex space-x-1.5 overflow-x-auto pb-0.5 no-scrollbar text-xs">
+            ${shifts.map(s => `
+              <button onclick="app5s.setScheduleShift('${s.id}')" class="shrink-0 px-2 py-1 rounded-lg text-[10.5px] font-bold transition ${
+                this.scheduleState.selectedShift === s.id
+                  ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900'
+                  : 'bg-white dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700'
+              }">
+                ${s.name}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- DASHBOARD THỐNG KÊ TRẠNG THÁI BUỒNG PHÒNG TOÀN VIỆN -->
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 border border-slate-200/90 dark:border-slate-700 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-2.5">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">Thống Kê Hoạt Động & 5S Buồng Phòng</h3>
+                <p class="text-[10px] text-slate-500 font-medium">Toàn viện VPI • ${stats.totalRooms} vị trí làm việc</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black font-mono text-emerald-600">${stats.workingCount}/${stats.totalRooms}</span>
+              <span class="text-[10px] text-slate-400 block font-bold">Phòng hoạt động (${stats.workingRate}%)</span>
+            </div>
+          </div>
+
+          <!-- 4 Ô Thống Kê Nhanh -->
+          <div class="grid grid-cols-4 gap-1.5 text-center">
+            <div onclick="app5s.setScheduleStatusFilter('all')" class="cursor-pointer bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl border border-slate-100 dark:border-slate-700/60 hover:bg-slate-100 transition">
+              <div class="text-xs font-mono font-black text-slate-800 dark:text-slate-100">${stats.totalRooms}</div>
+              <div class="text-[9px] text-slate-400 font-bold">Tất cả phòng</div>
+            </div>
+
+            <div onclick="app5s.setScheduleStatusFilter('working')" class="cursor-pointer bg-emerald-50 dark:bg-emerald-950/40 p-2 rounded-xl border border-emerald-200 dark:border-emerald-900/40 hover:bg-emerald-100 transition">
+              <div class="text-xs font-mono font-black text-emerald-700 dark:text-emerald-400">${stats.workingCount}</div>
+              <div class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold">🟢 Làm việc</div>
+            </div>
+
+            <div onclick="app5s.setScheduleStatusFilter('idle')" class="cursor-pointer bg-slate-100 dark:bg-slate-800 p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 transition">
+              <div class="text-xs font-mono font-black text-slate-600 dark:text-slate-400">${stats.idleCount}</div>
+              <div class="text-[9px] text-slate-500 font-bold">⚪ Nghỉ ca</div>
+            </div>
+
+            <div onclick="app5s.setScheduleStatusFilter('pending_5s')" class="cursor-pointer bg-amber-50 dark:bg-amber-950/40 p-2 rounded-xl border border-amber-200 dark:border-amber-900/40 hover:bg-amber-100 transition">
+              <div class="text-xs font-mono font-black text-amber-700 dark:text-amber-400">${stats.overdueCount}</div>
+              <div class="text-[9px] text-amber-700 dark:text-amber-400 font-bold">🟠 Chờ nộp 5S</div>
+            </div>
+          </div>
+
+          <!-- CẢNH BÁO CÁC PHÒNG HẾT CA CHƯA NỘP ẢNH 5S -->
+          ${stats.overdueCount > 0 ? `
+            <div class="bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 rounded-2xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-1.5 text-xs font-bold text-amber-900 dark:text-amber-200">
+                  <i data-lucide="clock" class="w-4 h-4 text-amber-600 shrink-0 animate-bounce"></i>
+                  <span>Cảnh báo: Có ${stats.overdueCount} buồng phòng hết ca chưa chụp ảnh 5S bàn giao!</span>
+                </div>
+              </div>
+              <div class="text-[11px] text-amber-800 dark:text-amber-300">
+                Các phòng cần đôn đốc nộp ảnh: ${stats.overdueRooms.slice(0, 4).map(rs => {
+                  const r = rooms.find(rm => rm.id == rs.room_id);
+                  return r ? r.name : 'Buồng phòng';
+                }).join(', ')}${stats.overdueCount > 4 ? '...' : ''}
+              </div>
+              <button onclick="app5s.broadcastEndShift5SReminder()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-xs">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                <span>PHÁT THÔNG BÁO KHẨN ĐÔN ĐỐC NỘP ẢNH 5S TOÀN VIỆN</span>
+              </button>
+            </div>
+          ` : `
+            <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-2.5 text-center text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center justify-center space-x-1.5">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+              <span>Tất cả các buồng phòng hoạt động đã hoàn thành bàn giao 5S sau ca trực!</span>
+            </div>
+          `}
+        </div>
+
+        <!-- BỘ LỌC TRẠNG THÁI & TÌM KIẾM BUỒNG PHÒNG -->
+        <div class="space-y-2">
+          <!-- Ô Tìm kiếm -->
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+            <input type="text" oninput="app5s.onScheduleSearch(this.value)" placeholder="Tìm vị trí làm việc, buồng phòng, nhân sự trực ca..." value="${this.scheduleState.searchQuery || ''}" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+
+          <!-- Lọc theo 20 Khoa / Phòng -->
+          <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
+            <button onclick="app5s.setScheduleDeptFilter('all')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition ${
+              this.scheduleState.selectedDept === 'all'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+            }">
+              Tất cả khoa (${depts.length})
+            </button>
+            ${depts.map(d => `
+              <button onclick="app5s.setScheduleDeptFilter('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                this.scheduleState.selectedDept === String(d.id)
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+              }">
+                <span class="text-[9px] opacity-75 font-mono">#${d.order || ''}</span>
+                <span>${d.name}</span>
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Bộ lọc Trạng thái hoạt động -->
+          <div class="grid grid-cols-4 gap-1 text-center text-xs">
+            <button onclick="app5s.setScheduleStatusFilter('all')" class="py-1.5 px-1 rounded-xl font-bold transition text-[10px] ${
+              statusFilter === 'all' ? 'bg-slate-800 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 border border-slate-200 dark:border-slate-700'
+            }">Tất cả (${rooms.length})</button>
+
+            <button onclick="app5s.setScheduleStatusFilter('working')" class="py-1.5 px-1 rounded-xl font-bold transition text-[10px] ${
+              statusFilter === 'working' ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-emerald-700 border border-emerald-200'
+            }">🟢 Làm việc (${stats.workingCount})</button>
+
+            <button onclick="app5s.setScheduleStatusFilter('idle')" class="py-1.5 px-1 rounded-xl font-bold transition text-[10px] ${
+              statusFilter === 'idle' ? 'bg-slate-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 border border-slate-200'
+            }">⚪ Nghỉ (${stats.idleCount})</button>
+
+            <button onclick="app5s.setScheduleStatusFilter('pending_5s')" class="py-1.5 px-1 rounded-xl font-bold transition text-[10px] ${
+              statusFilter === 'pending_5s' ? 'bg-amber-600 text-white' : 'bg-white dark:bg-slate-800 text-amber-700 border border-amber-200'
+            }">🟠 Chờ 5S (${stats.overdueCount})</button>
+          </div>
+        </div>
+
+        <!-- DANH SÁCH CÁC VỊ TRÍ LÀM VIỆC & PHÂN CÔNG NHÂN SỰ -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span>Hiển thị: <strong>${filteredRooms.length} vị trí làm việc</strong></span>
+            <span class="text-[10px] text-indigo-600 font-bold">Chạm công tắc để đổi trạng thái phòng</span>
+          </div>
+
+          ${filteredRooms.length === 0 ? `
+            <div class="p-8 text-center bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 text-xs text-slate-400">
+              Không tìm thấy vị trí làm việc nào phù hợp với bộ lọc hiện tại.
+            </div>
+          ` : filteredRooms.map(r => {
+            const rs = this.getRoomSchedule(r.id);
+            const dept = depts.find(d => d.id == r.department_id) || { name: 'Khoa' };
+            const isWorking = rs.is_working;
+            const staffList = rs.staff_assigned || [];
+            const s5 = rs.post_shift_5s || { status: 'pending' };
+            const isS5Done = (s5.status === 'submitted' || s5.status === 'approved');
+            const isS5Overdue = isWorking && (s5.status === 'overdue' || s5.status === 'pending');
+
+            return `
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border ${
+                isS5Overdue 
+                  ? 'border-amber-300 dark:border-amber-800/80 shadow-xs' 
+                  : (isWorking ? 'border-slate-200/90 dark:border-slate-700' : 'border-slate-100 dark:border-slate-800 opacity-80')
+              } space-y-3">
+                <!-- Tiêu đề phòng & Công tắc trạng thái làm việc -->
+                <div class="flex items-start justify-between border-b border-slate-100 dark:border-slate-700/60 pb-2.5">
+                  <div class="space-y-0.5">
+                    <div class="flex items-center space-x-1.5">
+                      <span class="text-xs font-black text-slate-900 dark:text-white">${r.name}</span>
+                      <span class="text-[9px] font-mono px-1.5 py-0.2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded font-bold">${r.code || 'P-00'}</span>
+                    </div>
+                    <div class="text-[10px] text-slate-500">
+                      <strong>${dept.name}</strong> • ${r.floor || 'Tầng 1'}
+                    </div>
+                  </div>
+
+                  <!-- Công tắc 1 chạm: Đang làm việc / Không làm việc -->
+                  <div class="text-right space-y-1">
+                    <button onclick="app5s.toggleRoomWorkingStatus(${r.id})" class="px-2.5 py-1 rounded-xl text-[10px] font-black transition flex items-center space-x-1 ${
+                      isWorking 
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300' 
+                        : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 border border-slate-300'
+                    }">
+                      <i data-lucide="${isWorking ? 'check-circle' : 'power'}" class="w-3 h-3"></i>
+                      <span>${isWorking ? 'ĐANG LÀM VIỆC' : 'KHÔNG LÀM VIỆC'}</span>
+                    </button>
+
+                    <!-- Huy hiệu tình trạng 5S bàn giao ca -->
+                    ${isWorking ? (
+                      isS5Done ? `
+                        <span class="inline-flex items-center space-x-1 text-[9px] font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950 px-1.5 py-0.5 rounded border border-blue-200">
+                          <i data-lucide="check" class="w-2.5 h-2.5"></i>
+                          <span>ĐÃ NỘP 5S (${s5.submitted_at || 'Ca sáng'})</span>
+                        </span>
+                      ` : `
+                        <span class="inline-flex items-center space-x-1 text-[9px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 px-1.5 py-0.5 rounded border border-amber-300 animate-pulse">
+                          <i data-lucide="alert-circle" class="w-2.5 h-2.5 text-amber-600"></i>
+                          <span>HẾT GIỜ: CHƯA NỘP 5S</span>
+                        </span>
+                      `
+                    ) : ''}
+                  </div>
+                </div>
+
+                <!-- DANH SÁCH NHÂN SỰ ĐƯỢC PHÂN CÔNG TẠI VỊ TRÍ NÀY -->
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span class="font-bold text-slate-600 dark:text-slate-400">Nhân sự ca trực (${staffList.length} người):</span>
+                    <button onclick="app5s.openManageRoomStaffModal(${r.id})" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-0.5">
+                      <i data-lucide="user-plus" class="w-3 h-3"></i>
+                      <span>+ Thêm / Bớt người</span>
+                    </button>
+                  </div>
+
+                  ${staffList.length === 0 ? `
+                    <div class="p-2 bg-slate-50 dark:bg-slate-900/60 rounded-xl text-[11px] text-slate-400 italic">
+                      Chưa phân công nhân sự trực ca. Bấm "+ Thêm / Bớt người" để phân công.
+                    </div>
+                  ` : `
+                    <div class="flex flex-wrap gap-1.5">
+                      ${staffList.map((s, sIdx) => `
+                        <div class="inline-flex items-center space-x-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 pl-2 pr-1 py-1 rounded-xl text-[10.5px]">
+                          <span class="font-bold text-slate-800 dark:text-slate-200">${s.name}</span>
+                          <span class="text-[9px] text-indigo-600 font-medium">(${s.role || 'Trực'})</span>
+                          <button onclick="app5s.removeStaffFromRoom(${r.id}, ${sIdx})" title="Bớt nhân sự khỏi vị trí" class="text-slate-400 hover:text-red-600 p-0.5 rounded-full hover:bg-red-50 dark:hover:bg-red-950">
+                            <i data-lucide="x" class="w-3 h-3"></i>
+                          </button>
+                        </div>
+                      `).join('')}
+                    </div>
+                  `}
+                </div>
+
+                <!-- NÚT CHỤP ẢNH 5S HẾT CA & QUẢN LÝ -->
+                <div class="flex items-center justify-between pt-1">
+                  <button onclick="app5s.openManageRoomStaffModal(${r.id})" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-[11px] font-bold transition flex items-center space-x-1">
+                    <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                    <span>Tùy chỉnh ca & nhân sự</span>
+                  </button>
+
+                  ${isWorking ? `
+                    <button onclick="app5s.openEndShift5SModal(${r.id})" class="px-3 py-1.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white rounded-xl text-[11px] font-black transition flex items-center space-x-1.5 shadow-xs">
+                      <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                      <span>${isS5Done ? 'Xem / Cập nhật ảnh 5S' : 'Chụp ảnh 5S hết ca'}</span>
+                    </button>
+                  ` : `
+                    <span class="text-[10px] text-slate-400 italic">Phòng đang tạm nghỉ</span>
+                  `}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+
+  // =========================================================================
   // TAB 1: TỔNG QUAN
   // =========================================================================
   renderOverviewTab() {
@@ -1481,21 +4345,82 @@ class App5S {
           <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
         </button>
 
-        <!-- Lối Tắt Nhanh -->
-        <div class="grid grid-cols-3 gap-2">
-          <button onclick="app5s.switchTab('audit')" class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-center space-y-1 hover:bg-emerald-100 transition">
+        <!-- Lối Tắt Nhanh Đầy Đủ 4 Mục Chính -->
+        <div class="grid grid-cols-4 gap-2">
+          <button onclick="app5s.switchTab('schedule')" class="p-2.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-center space-y-1 hover:bg-indigo-100 transition">
+            <i data-lucide="calendar-clock" class="w-5 h-5 mx-auto text-indigo-600"></i>
+            <span class="block text-[11px] font-bold text-indigo-900 dark:text-indigo-200">Lịch Trực</span>
+          </button>
+          <button onclick="app5s.switchTab('audit')" class="p-2.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-center space-y-1 hover:bg-emerald-100 transition">
             <i data-lucide="camera" class="w-5 h-5 mx-auto text-emerald-600"></i>
-            <span class="block text-xs font-bold text-emerald-900 dark:text-emerald-200">Chấm 5S</span>
+            <span class="block text-[11px] font-bold text-emerald-900 dark:text-emerald-200">Chấm 5S</span>
           </button>
-          <button onclick="app5s.switchTab('departments')" class="p-3 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-center space-y-1 hover:bg-teal-100 transition">
+          <button onclick="app5s.switchTab('departments')" class="p-2.5 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-center space-y-1 hover:bg-teal-100 transition">
             <i data-lucide="building-2" class="w-5 h-5 mx-auto text-teal-600"></i>
-            <span class="block text-xs font-bold text-teal-900 dark:text-teal-200">Khoa Phòng</span>
+            <span class="block text-[11px] font-bold text-teal-900 dark:text-teal-200">Khoa Phòng</span>
           </button>
-          <button onclick="app5s.switchTab('staff')" class="p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-center space-y-1 hover:bg-blue-100 transition">
+          <button onclick="app5s.switchTab('staff')" class="p-2.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-center space-y-1 hover:bg-blue-100 transition">
             <i data-lucide="users" class="w-5 h-5 mx-auto text-blue-600"></i>
-            <span class="block text-xs font-bold text-blue-900 dark:text-blue-200">Nhân Sự</span>
+            <span class="block text-[11px] font-bold text-blue-900 dark:text-blue-200">Nhân Sự</span>
           </button>
         </div>
+
+        <!-- WIDGET THỐNG KÊ TRẠNG THÁI HOẠT ĐỘNG BUỒNG PHÒNG HÔM NAY -->
+        ${(() => {
+          const schedStats = this.getScheduleStatistics();
+          return `
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 border border-slate-200/90 dark:border-slate-700 shadow-sm space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-2.5">
+                <div class="flex items-center space-x-2">
+                  <div class="w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                    <i data-lucide="activity" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">Trạng Thái Buồng Phòng Hôm Nay</h3>
+                    <p class="text-[10px] text-slate-500 font-medium">Theo lịch trực tuần VPI • ${schedStats.totalRooms} khu vực</p>
+                  </div>
+                </div>
+                <button onclick="app5s.switchTab('schedule')" class="text-[10px] font-bold text-indigo-600 hover:underline flex items-center space-x-0.5">
+                  <span>Chi tiết</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+
+              <!-- Thanh tỷ lệ phòng đang làm việc -->
+              <div class="space-y-1">
+                <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden flex">
+                  <div class="bg-emerald-500 h-2.5 transition-all duration-500" style="width: ${schedStats.workingRate}%" title="Đang làm việc: ${schedStats.workingCount}"></div>
+                  <div class="bg-slate-300 dark:bg-slate-600 h-2.5 transition-all duration-500" style="width: ${100 - schedStats.workingRate}%" title="Không làm việc: ${schedStats.idleCount}"></div>
+                </div>
+                <div class="flex items-center justify-between text-[10px] font-bold">
+                  <span class="text-emerald-700 dark:text-emerald-400">🟢 Đang làm việc: ${schedStats.workingCount}/${schedStats.totalRooms} phòng (${schedStats.workingRate}%)</span>
+                  <span class="text-slate-400">⚪ Không làm việc: ${schedStats.idleCount} phòng</span>
+                </div>
+              </div>
+
+              <!-- Thẻ cảnh báo hết ca chưa nộp 5S -->
+              ${schedStats.overdueCount > 0 ? `
+                <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-2xl p-2.5 flex items-center justify-between text-xs">
+                  <div class="flex items-center space-x-2">
+                    <i data-lucide="clock" class="w-4 h-4 text-amber-600 shrink-0 animate-bounce"></i>
+                    <div>
+                      <div class="font-bold text-amber-900 dark:text-amber-200">Có ${schedStats.overdueCount} buồng phòng hết ca chưa gửi ảnh 5S!</div>
+                      <div class="text-[10px] text-amber-700 dark:text-amber-300">Nhân viên cần chụp ảnh bàn giao ca trực</div>
+                    </div>
+                  </div>
+                  <button onclick="app5s.scheduleState.selectedStatusFilter = 'pending_5s'; app5s.switchTab('schedule');" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-[10px] font-bold shrink-0 transition">
+                    Đôn đốc ngay
+                  </button>
+                </div>
+              ` : `
+                <div class="text-[10px] text-slate-500 flex items-center justify-between pt-0.5">
+                  <span>Tuân thủ 5S sau ca trực: <strong class="text-emerald-600">${schedStats.complianceRate}%</strong></span>
+                  <span class="text-emerald-600 font-bold">✓ Các ca trực đã bàn giao 5S</span>
+                </div>
+              `}
+            </div>
+          `;
+        })()}
 
         <!-- Giới thiệu 5 Tiêu chuẩn 5S Y Tế -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-3">
