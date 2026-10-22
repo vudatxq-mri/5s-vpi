@@ -1208,7 +1208,9 @@
         "PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS"
       ],
       "assigned_room": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR, PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner), PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI), PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": true,
+      "is_supervisor": true
     },
     {
       "id": 2,
@@ -1229,7 +1231,9 @@
         "ToÃ&nbsp;n bá»™ Khoa CÄHA &amp; Há»™i Ä‘á»“ng 5S ToÃ&nbsp;n Viá»‡n"
       ],
       "assigned_room": "VÄƒn phÃ²ng ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n, ToÃ&nbsp;n bá»™ Khoa CÄHA &amp; Há»™i Ä‘á»“ng 5S ToÃ&nbsp;n Viá»‡n",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": true,
+      "is_supervisor": true
     },
     {
       "id": 3,
@@ -1240,7 +1244,7 @@
       "username": "bv102",
       "password": "123",
       "department_id": 4,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "BSCKII - TrÆ°á»Ÿng Khoa",
       "role_title": "BSCKII - TrÆ°á»Ÿng Khoa",
@@ -1250,7 +1254,9 @@
         "PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰"
       ],
       "assigned_room": "Buá»“ng Háº­u pháº«u Ngoáº¡i 201, PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 4,
@@ -1261,7 +1267,7 @@
       "username": "bv103",
       "password": "123",
       "department_id": 1,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
       "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
@@ -1271,7 +1277,9 @@
         "PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng"
       ],
       "assigned_room": "PhÃ²ng Tiáº¿p nháº­n &amp; PhÃ¢n loáº¡i bá»‡nh cáº¥p cá»©u, PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 5,
@@ -1292,7 +1300,9 @@
         "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i"
       ],
       "assigned_room": "PhÃ²ng Tiá»ƒu pháº«u - BÄƒng bÃ³ váº¿t thÆ°Æ¡ng, Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 6,
@@ -1312,7 +1322,9 @@
         "PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)"
       ],
       "assigned_room": "PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 7,
@@ -1333,7 +1345,9 @@
         "Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿"
       ],
       "assigned_room": "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i, Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 8,
@@ -1344,7 +1358,7 @@
       "username": "bv107",
       "password": "123",
       "department_id": 2,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "BSCKI - TrÆ°á»Ÿng Khoa",
       "role_title": "BSCKI - TrÆ°á»Ÿng Khoa",
@@ -1354,7 +1368,9 @@
         "PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)"
       ],
       "assigned_room": "Sáº£nh Tiáº¿p Ä‘Ã³n, HÆ°á»›ng dáº«n &amp; Láº¥y sá»‘ tá»± Ä‘á»™ng, PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 9,
@@ -1365,7 +1381,7 @@
       "username": "bv108",
       "password": "123",
       "department_id": 2,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
       "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
@@ -1375,7 +1391,9 @@
         "PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung"
       ],
       "assigned_room": "PhÃ²ng KhÃ¡m Ngoáº¡i - Cháº¥n thÆ°Æ¡ng (P.102), PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 10,
@@ -1386,7 +1404,7 @@
       "username": "bv109",
       "password": "123",
       "department_id": 11,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "ThS. BÃ¡c sÄ© - TrÆ°á»Ÿng Khoa",
       "role_title": "ThS. BÃ¡c sÄ© - TrÆ°á»Ÿng Khoa",
@@ -1396,7 +1414,9 @@
         "PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU"
       ],
       "assigned_room": "Buá»“ng Bá»‡nh nhÃ¢n náº·ng Há»“i sá»©c 1, PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 11,
@@ -1407,7 +1427,7 @@
       "username": "bv110",
       "password": "123",
       "department_id": 11,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
       "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
@@ -1418,7 +1438,9 @@
         "Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU"
       ],
       "assigned_room": "Buá»“ng Bá»‡nh nhÃ¢n Thá»Ÿ mÃ¡y &amp; Lá»c mÃ¡u liÃªn tá»¥c, PhÃ²ng Trá»±c cáº¥p cá»©u &amp; Giao ban ICU, Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 12,
@@ -1429,7 +1451,7 @@
       "username": "bv111",
       "password": "123",
       "department_id": 12,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "BSCKII - TrÆ°á»Ÿng Khoa",
       "role_title": "BSCKII - TrÆ°á»Ÿng Khoa",
@@ -1439,7 +1461,9 @@
         "PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t"
       ],
       "assigned_room": "PhÃ²ng Má»• sá»‘ 1 - Pháº«u thuáº­t Ngoáº¡i tá»•ng quÃ¡t, PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 13,
@@ -1450,7 +1474,7 @@
       "username": "bv112",
       "password": "123",
       "department_id": 4,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
       "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
@@ -1460,7 +1484,9 @@
         "PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i"
       ],
       "assigned_room": "Buá»“ng Bá»‡nh Tiá»n pháº«u 202, PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 14,
@@ -1471,7 +1497,7 @@
       "username": "bv113",
       "password": "123",
       "department_id": 5,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "BSCKI - TrÆ°á»Ÿng Khoa",
       "role_title": "BSCKI - TrÆ°á»Ÿng Khoa",
@@ -1481,7 +1507,9 @@
         "PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng"
       ],
       "assigned_room": "Buá»“ng Bá»‡nh Ná»™i Tim Máº¡ch (P.301), PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 15,
@@ -1492,7 +1520,7 @@
       "username": "bv114",
       "password": "123",
       "department_id": 5,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
       "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
@@ -1502,7 +1530,9 @@
         "Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3"
       ],
       "assigned_room": "Buá»“ng Bá»‡nh Ná»™i Tiáº¿t - Tiá»ƒu Ä‘Æ°á»ng (P.302), Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 16,
@@ -1522,7 +1552,9 @@
         "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR"
       ],
       "assigned_room": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 17,
@@ -1543,7 +1575,9 @@
         "PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)"
       ],
       "assigned_room": "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner), PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 18,
@@ -1564,7 +1598,9 @@
         "Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT"
       ],
       "assigned_room": "Kho Thuá»‘c cháºµn Ná»™i trÃº &amp; Dá»‹ch truyá»n, Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 19,
@@ -1575,7 +1611,7 @@
       "username": "bv118",
       "password": "123",
       "department_id": 10,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "BSCKI - TrÆ°á»Ÿng Khoa",
       "role_title": "BSCKI - TrÆ°á»Ÿng Khoa",
@@ -1585,7 +1621,9 @@
         "Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n"
       ],
       "assigned_room": "Kho Dá»¥ng cá»¥ Pháº«u thuáº­t VÃ´ khuáº©n thÃ&nbsp;nh pháº©m, Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 20,
@@ -1596,7 +1634,7 @@
       "username": "bv119",
       "password": "123",
       "department_id": 10,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
       "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa",
@@ -1606,7 +1644,9 @@
         "Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n"
       ],
       "assigned_room": "Khu ÄÃ³ng gÃ³i &amp; Ná»“i háº¥p Tiá»‡t trÃ¹ng nhiá»‡t Ä‘á»™ cao, Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
     },
     {
       "id": 21,
@@ -1617,7 +1657,7 @@
       "username": "bv120",
       "password": "123",
       "department_id": 18,
-      "role": "manager",
+      "role": "staff",
       "role_level": "manager",
       "title": "TrÆ°á»Ÿng PhÃ²ng Chá»©c NÄƒng",
       "role_title": "TrÆ°á»Ÿng PhÃ²ng Chá»©c NÄƒng",
@@ -1626,7 +1666,369 @@
         "VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S"
       ],
       "assigned_room": "VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S",
-      "allow_external": true
+      "allow_external": true,
+      "can_review": false,
+      "is_supervisor": false
+    },
+    {
+      "id": 101,
+      "code": "BV-201",
+      "name": "BSCKI. Pháº¡m Quang Nam",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 8,
+      "departments": [
+        8
+      ],
+      "can_review": false,
+      "phone": "0211.386.130",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 102,
+      "code": "BV-202",
+      "name": "KTV. Nguyá»…n Äá»©c Tuáº¥n",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 8,
+      "departments": [
+        8
+      ],
+      "can_review": false,
+      "phone": "0211.386.130",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 103,
+      "code": "BV-203",
+      "name": "ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 1,
+      "departments": [
+        1
+      ],
+      "can_review": false,
+      "phone": "0211.386.115",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 104,
+      "code": "BV-204",
+      "name": "ÄD. Nguyá»…n VÄƒn Tháº¯ng",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 12,
+      "departments": [
+        12
+      ],
+      "can_review": false,
+      "phone": "0211.386.117",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 105,
+      "code": "BV-205",
+      "name": "BSCKII. Nguyá»…n Thá»‹ Há»“ng",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 6,
+      "departments": [
+        6
+      ],
+      "can_review": false,
+      "phone": "0211.386.125",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 106,
+      "code": "BV-206",
+      "name": "Há»™ sinh. LÃª Thá»‹ ThÃºy Háº±ng",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 6,
+      "departments": [
+        6
+      ],
+      "can_review": false,
+      "phone": "0211.386.125",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 107,
+      "code": "BV-207",
+      "name": "ThS.BS. Äáº·ng Há»“ng PhÃºc",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 7,
+      "departments": [
+        7
+      ],
+      "can_review": false,
+      "phone": "0211.386.128",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 108,
+      "code": "BV-208",
+      "name": "ÄD. Äá»— Thá»‹ Hiá»n",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 7,
+      "departments": [
+        7
+      ],
+      "can_review": false,
+      "phone": "0211.386.128",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 109,
+      "code": "BV-209",
+      "name": "BSCKI. Tráº§n VÄƒn ThÃ¡i",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 3,
+      "departments": [
+        3
+      ],
+      "can_review": false,
+      "phone": "0211.386.118",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 110,
+      "code": "BV-210",
+      "name": "ÄD. Pháº¡m Thá»‹ LÃ½",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 3,
+      "departments": [
+        3
+      ],
+      "can_review": false,
+      "phone": "0211.386.118",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 111,
+      "code": "BV-211",
+      "name": "BSCKI. Äá»— Máº¡nh CÆ°á»ng",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 13,
+      "departments": [
+        13
+      ],
+      "can_review": false,
+      "phone": "0211.386.129",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 112,
+      "code": "BV-212",
+      "name": "ÄD. VÅ© Thá»‹ Loan",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 13,
+      "departments": [
+        13
+      ],
+      "can_review": false,
+      "phone": "0211.386.129",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 113,
+      "code": "BV-213",
+      "name": "BS. LÃª Quang Huy",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 14,
+      "departments": [
+        14
+      ],
+      "can_review": false,
+      "phone": "0211.386.131",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 114,
+      "code": "BV-214",
+      "name": "KTV. LÃª ThÃ¹y Linh",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 14,
+      "departments": [
+        14
+      ],
+      "can_review": false,
+      "phone": "0211.386.131",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 115,
+      "code": "BV-215",
+      "name": "BSCKI. VÅ© Äá»©c Háº£i",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 9,
+      "departments": [
+        9
+      ],
+      "can_review": false,
+      "phone": "0211.386.132",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 116,
+      "code": "BV-216",
+      "name": "KTV. Äá»— Thá»‹ Thu HÆ°á»ng",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 9,
+      "departments": [
+        9
+      ],
+      "can_review": false,
+      "phone": "0211.386.132",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 117,
+      "code": "BV-217",
+      "name": "DS CKI. HoÃ&nbsp;ng Thá»‹ Lan",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 15,
+      "departments": [
+        15
+      ],
+      "can_review": false,
+      "phone": "0211.386.133",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 118,
+      "code": "BV-218",
+      "name": "ÄD. Nguyá»…n Thu Trang",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 16,
+      "departments": [
+        16
+      ],
+      "can_review": false,
+      "phone": "0211.386.100",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 119,
+      "code": "BV-219",
+      "name": "BSCKI. Tráº§n Äá»©c Tháº¯ng",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 17,
+      "departments": [
+        17
+      ],
+      "can_review": false,
+      "phone": "0211.386.102",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 120,
+      "code": "BV-220",
+      "name": "ÄD. HoÃ&nbsp;ng Háº£i Yáº¿n",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 17,
+      "departments": [
+        17
+      ],
+      "can_review": false,
+      "phone": "0211.386.102",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 121,
+      "code": "BV-221",
+      "name": "ThS. Nguyá»…n VÄƒn HÃ¹ng",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 19,
+      "departments": [
+        19
+      ],
+      "can_review": false,
+      "phone": "0211.386.105",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 122,
+      "code": "BV-222",
+      "name": "CN. Äáº·ng Thá»‹ Loan",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 19,
+      "departments": [
+        19
+      ],
+      "can_review": false,
+      "phone": "0211.386.105",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 123,
+      "code": "BV-223",
+      "name": "ThS. VÅ© Thá»‹ Mai",
+      "title": "Trưởng Khoa",
+      "role_title": "Trưởng Khoa",
+      "department_id": 20,
+      "departments": [
+        20
+      ],
+      "can_review": false,
+      "phone": "0211.386.106",
+      "is_supervisor": false,
+      "role": "staff"
+    },
+    {
+      "id": 124,
+      "code": "BV-224",
+      "name": "KTV. LÃª Thu Tháº£o",
+      "title": "ĐD/KTV Trưởng",
+      "role_title": "ĐD/KTV Trưởng Khoa",
+      "department_id": 20,
+      "departments": [
+        20
+      ],
+      "can_review": false,
+      "phone": "0211.386.106",
+      "is_supervisor": false,
+      "role": "staff"
     }
   ],
   "audits": [

@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v8_evaluation';
+const STORAGE_KEY = 'vpi_5s_data_v9_permissions';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -40,201 +40,7 @@ const DEFAULT_SEED_DATA = {
   },
   departments: [{"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu", "order": 1, "category": "paraclinical"}, {"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "order": 2, "category": "clinical"}, {"id": 11, "code": "ICU", "name": "Khoa Hồi sức tích cực & Chống độc", "head_nurse": "ĐD. Nguyễn Thị Thanh Nga", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.116", "color": "#dc2626", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục", "order": 3, "category": "clinical"}, {"id": 12, "code": "PTGM", "name": "Khoa Phẫu thuật - Gây mê hồi sức", "head_nurse": "ĐD. Nguyễn Văn Thắng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.117", "color": "#0284c7", "icon": "fa-syringe", "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản", "order": 4, "category": "clinical"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân", "order": 5, "category": "clinical"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương", "order": 6, "category": "clinical"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa", "order": 7, "category": "clinical"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa", "order": 8, "category": "clinical"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng", "order": 9, "category": "clinical"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT - Phục hồi chức năng", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "BSCKI. Trần Văn Thái", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-spa", "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu", "order": 10, "category": "clinical"}, {"id": 13, "code": "LCK", "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)", "head_nurse": "ĐD. Vũ Thị Loan", "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường", "phone": "0211.386.129", "color": "#8b5cf6", "icon": "fa-eye", "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình", "order": 11, "category": "clinical"}, {"id": 14, "code": "TDCN", "name": "Khoa Thăm dò chức năng & Nội soi", "head_nurse": "KTV. Lê Thùy Linh", "doctor_in_charge": "BS. Lê Quang Huy", "phone": "0211.386.131", "color": "#14b8a6", "icon": "fa-wave-square", "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp", "order": 12, "category": "paraclinical"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học", "order": 13, "category": "paraclinical"}, {"id": 15, "code": "KD", "name": "Khoa Dược", "head_nurse": "DS. Nguyễn Bích Ngọc", "doctor_in_charge": "DS CKI. Hoàng Thị Lan", "phone": "0211.386.133", "color": "#10b981", "icon": "fa-pills", "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế", "order": 14, "category": "paraclinical"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện", "order": 15, "category": "paraclinical"}, {"id": 16, "code": "QLCL", "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "head_nurse": "ĐD. Nguyễn Thu Trang", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.100", "color": "#6366f1", "icon": "fa-award", "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV", "order": 16, "category": "functional"}, {"id": 17, "code": "KHTH", "name": "Phòng Kế hoạch tổng hợp & CNTT", "head_nurse": "ĐD. Hoàng Hải Yến", "doctor_in_charge": "BSCKI. Trần Đức Thắng", "phone": "0211.386.102", "color": "#3b82f6", "icon": "fa-clipboard-list", "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS", "order": 17, "category": "functional"}, {"id": 18, "code": "PDD", "name": "Phòng Điều dưỡng", "head_nurse": "ThS. ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "phone": "0211.386.103", "color": "#06b6d4", "icon": "fa-user-nurse", "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S", "order": 18, "category": "functional"}, {"id": 19, "code": "HCQT", "name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "head_nurse": "CN. Đặng Thị Loan", "doctor_in_charge": "ThS. Nguyễn Văn Hùng", "phone": "0211.386.105", "color": "#64748b", "icon": "fa-building", "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan", "order": 19, "category": "functional"}, {"id": 20, "code": "TCKT", "name": "Phòng Tài chính - Kế toán", "head_nurse": "KTV. Lê Thu Thảo", "doctor_in_charge": "ThS. Vũ Thị Mai", "phone": "0211.386.106", "color": "#f59e0b", "icon": "fa-file-invoice-dollar", "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị", "order": 20, "category": "functional"}],
   rooms: [{"id": 34, "department_id": 8, "code": "XQ-01", "name": "Phòng Chụp X-quang Kỹ thuật số DR", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Chung", "target_score": 95.0, "status": "active", "order": 1}, {"id": 32, "department_id": 8, "code": "CT-01", "name": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đức Tuấn", "target_score": 98.0, "status": "active", "order": 2}, {"id": 33, "department_id": 8, "code": "MRI-01", "name": "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Công Bằng", "target_score": 98.0, "status": "active", "order": 3}, {"id": 35, "department_id": 8, "code": "SA-01", "name": "Phòng Siêu âm Màu 4D & Doppler tim mạch (P.104)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "BS. Phạm Quang Nam", "target_score": 95.0, "status": "active", "order": 4}, {"id": 50, "department_id": 8, "code": "PACS-01", "name": "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Vũ Bá Đạt", "target_score": 95.0, "status": "active", "order": 5}, {"id": 51, "department_id": 8, "code": "KHO-CDHA", "name": "Kho Vật tư tiêu hao & Lưu trữ hồ sơ phim CĐHA", "room_type": "Kho lưu trữ", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Tuấn", "target_score": 90.0, "status": "active", "order": 6}, {"id": 1, "department_id": 1, "code": "KCC-P01", "name": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "room_type": "Phòng tiếp đón", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Lê Văn Minh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 2, "department_id": 1, "code": "KCC-P02", "name": "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 2}, {"id": 3, "department_id": 1, "code": "KCC-P03", "name": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "room_type": "Phòng bệnh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Phạm Thị Mai", "target_score": 90.0, "status": "active", "order": 3}, {"id": 4, "department_id": 1, "code": "KCC-P04", "name": "Phòng Tiểu phẫu - Băng bó vết thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Hoàng Hải Yến", "target_score": 92.0, "status": "active", "order": 4}, {"id": 5, "department_id": 1, "code": "KCC-P05", "name": "Kho Thuốc & Dịch truyền Cấp cứu", "room_type": "Kho dược", "floor": "Tầng 1 - Nhà A", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 5}, {"id": 6, "department_id": 1, "code": "KCC-P06", "name": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "room_type": "Khu vệ sinh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 90.0, "status": "active", "order": 6}, {"id": 46, "department_id": 11, "code": "ICU-01", "name": "Buồng Bệnh nhân nặng Hồi sức 1", "room_type": "Phòng điều trị tích cực", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 98.0, "status": "active", "order": 1}, {"id": 47, "department_id": 11, "code": "ICU-02", "name": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "room_type": "Phòng hồi sức", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Mai", "target_score": 98.0, "status": "active", "order": 2}, {"id": 48, "department_id": 11, "code": "ICU-03", "name": "Phòng Thao tác & Thủ thuật ICU", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ThS.BS. Đinh Công Trí", "target_score": 95.0, "status": "active", "order": 3}, {"id": 49, "department_id": 11, "code": "ICU-04", "name": "Phòng Trực cấp cứu & Giao ban ICU", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thanh Nga", "target_score": 92.0, "status": "active", "order": 4}, {"id": 52, "department_id": 11, "code": "ICU-05", "name": "Buồng Cách ly áp lực âm ICU", "room_type": "Phòng cách ly", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Phan Anh Tuấn", "target_score": 95.0, "status": "active", "order": 5}, {"id": 53, "department_id": 12, "code": "PTGM-01", "name": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Lê Tuấn Anh", "target_score": 99.0, "status": "active", "order": 1}, {"id": 54, "department_id": 12, "code": "PTGM-02", "name": "Phòng Mổ số 2 - Phẫu thuật Sản khoa & Mổ lấy thai", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Nguyễn Thị Hồng", "target_score": 99.0, "status": "active", "order": 2}, {"id": 55, "department_id": 12, "code": "PTGM-03", "name": "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "room_type": "Phòng hồi tỉnh", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 96.0, "status": "active", "order": 3}, {"id": 56, "department_id": 12, "code": "PTGM-04", "name": "Khu Rửa tay phẫu thuật viên & Thay đồ vô khuẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 4}, {"id": 57, "department_id": 12, "code": "PTGM-05", "name": "Kho Vật tư phòng mổ & Đồ vải tiệt trùng", "room_type": "Kho vô trùng", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 7, "department_id": 2, "code": "KKB-P01", "name": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "room_type": "Sảnh chờ", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 92.0, "status": "active", "order": 1}, {"id": 8, "department_id": 2, "code": "KKB-P02", "name": "Phòng Khám Nội tổng quát (P.101)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BSCKI. Vũ Đình Khiêm", "target_score": 92.0, "status": "active", "order": 2}, {"id": 9, "department_id": 2, "code": "KKB-P03", "name": "Phòng Khám Ngoại - Chấn thương (P.102)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Đỗ Mạnh Cường", "target_score": 92.0, "status": "active", "order": 3}, {"id": 10, "department_id": 2, "code": "KKB-P04", "name": "Phòng Khám Nhi & Tiêm chủng (P.103)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Trần Thảo Vy", "target_score": 92.0, "status": "active", "order": 4}, {"id": 11, "department_id": 2, "code": "KKB-P05", "name": "Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà B", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 58, "department_id": 2, "code": "KKB-P06", "name": "Quầy Thu viện phí & Giám định BHYT", "room_type": "Quầy giao dịch", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Hoàng Bích Thủy", "target_score": 90.0, "status": "active", "order": 6}, {"id": 16, "department_id": 4, "code": "KNG-P01", "name": "Buồng Hậu phẫu Ngoại 201", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 17, "department_id": 4, "code": "KNG-P02", "name": "Buồng Bệnh Tiền phẫu 202", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 90.0, "status": "active", "order": 2}, {"id": 18, "department_id": 4, "code": "KNG-P03", "name": "Phòng Thay băng - Rửa vết thương & Cắt chỉ", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 3}, {"id": 19, "department_id": 4, "code": "KNG-P04", "name": "Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà C", "person_in_charge": "BSCKII. Nguyễn Văn Toàn", "target_score": 90.0, "status": "active", "order": 4}, {"id": 20, "department_id": 5, "code": "KNT-P01", "name": "Buồng Bệnh Nội Tim Mạch (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Dương Thị Hằng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 21, "department_id": 5, "code": "KNT-P02", "name": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Ngô Thị Yến", "target_score": 90.0, "status": "active", "order": 2}, {"id": 22, "department_id": 5, "code": "KNT-P03", "name": "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "room_type": "Phòng trực", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Trần Phương Dung", "target_score": 95.0, "status": "active", "order": 3}, {"id": 23, "department_id": 5, "code": "KNT-P04", "name": "Khu Vệ sinh buồng bệnh nhân Tầng 3", "room_type": "Khu vệ sinh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "Hộ lý. Phạm Thị Chắt", "target_score": 90.0, "status": "active", "order": 4}, {"id": 24, "department_id": 6, "code": "KSN-P01", "name": "Phòng Chờ đẻ & Theo dõi tim thai", "room_type": "Phòng chuyên khoa", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Vũ Thị Loan", "target_score": 95.0, "status": "active", "order": 1}, {"id": 25, "department_id": 6, "code": "KSN-P02", "name": "Phòng Đẻ thường số 1 (Vô khuẩn)", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Lê Thị Thúy Hằng", "target_score": 98.0, "status": "active", "order": 2}, {"id": 26, "department_id": 6, "code": "KSN-P03", "name": "Buồng Chăm sóc Mẹ và Bé sau sinh (P.205)", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Trần Hồng Nhung", "target_score": 92.0, "status": "active", "order": 3}, {"id": 27, "department_id": 6, "code": "KSN-P04", "name": "Phòng Tắm Bé & Tiêm chủng sơ sinh", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Nguyễn Thị Thêu", "target_score": 95.0, "status": "active", "order": 4}, {"id": 28, "department_id": 7, "code": "KNHI-P01", "name": "Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "room_type": "Phòng đặc biệt", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Đỗ Thị Hiền", "target_score": 98.0, "status": "active", "order": 1}, {"id": 29, "department_id": 7, "code": "KNHI-P02", "name": "Buồng Bệnh Nhi Hô hấp (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thủy", "target_score": 92.0, "status": "active", "order": 2}, {"id": 30, "department_id": 7, "code": "KNHI-P03", "name": "Buồng Bệnh Nhi Tiêu hóa (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Mai Thị Trang", "target_score": 90.0, "status": "active", "order": 3}, {"id": 31, "department_id": 7, "code": "KNHI-P04", "name": "Khu Vui chơi giải trí & Vận động bệnh nhi", "room_type": "Khu công cộng", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Trần Thu Hà", "target_score": 90.0, "status": "active", "order": 4}, {"id": 59, "department_id": 3, "code": "YHCT-01", "name": "Phòng Khám & Bắt mạch YHCT", "room_type": "Phòng khám", "floor": "Tầng 4 - Nhà C", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 92.0, "status": "active", "order": 1}, {"id": 60, "department_id": 3, "code": "YHCT-02", "name": "Phòng Châm cứu & Xoa bóp bấm huyệt", "room_type": "Phòng thủ thuật", "floor": "Tầng 4 - Nhà C", "person_in_charge": "ĐD. Phạm Thị Lý", "target_score": 95.0, "status": "active", "order": 2}, {"id": 61, "department_id": 3, "code": "YHCT-03", "name": "Phòng Vật lý trị liệu & Vận động phục hồi", "room_type": "Phòng tập", "floor": "Tầng 4 - Nhà C", "person_in_charge": "KTV. Lê Văn Tuấn", "target_score": 92.0, "status": "active", "order": 3}, {"id": 62, "department_id": 3, "code": "YHCT-04", "name": "Phòng Sắc thuốc & Bảo quản dược liệu YHCT", "room_type": "Khu chế biến", "floor": "Tầng 4 - Nhà C", "person_in_charge": "DS. Hoàng Thị Mai", "target_score": 90.0, "status": "active", "order": 4}, {"id": 63, "department_id": 13, "code": "LCK-01", "name": "Phòng Khám & Điều trị Răng Hàm Mặt", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Đỗ Mạnh Cường", "target_score": 95.0, "status": "active", "order": 1}, {"id": 64, "department_id": 13, "code": "LCK-02", "name": "Phòng Khám & Nội soi Tai Mũi Họng", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Nguyễn Văn Hùng", "target_score": 95.0, "status": "active", "order": 2}, {"id": 65, "department_id": 13, "code": "LCK-03", "name": "Phòng Khám Mắt & Đo thị lực khúc xạ", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Vũ Thị Loan", "target_score": 92.0, "status": "active", "order": 3}, {"id": 66, "department_id": 14, "code": "TDCN-01", "name": "Phòng Nội soi Tiêu hóa dạ dày - đại tràng", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "BS. Lê Quang Huy", "target_score": 98.0, "status": "active", "order": 1}, {"id": 67, "department_id": 14, "code": "TDCN-02", "name": "Phòng Điện tim & Điện não đồ vi tính", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 2}, {"id": 68, "department_id": 14, "code": "TDCN-03", "name": "Phòng Đo chức năng hô hấp & Lưu huyết não", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Thu Hà", "target_score": 92.0, "status": "active", "order": 3}, {"id": 36, "department_id": 9, "code": "KXN-P01", "name": "Phòng Xét nghiệm Huyết học & Truyền máu", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Đỗ Thị Thu Hường", "target_score": 98.0, "status": "active", "order": 1}, {"id": 37, "department_id": 9, "code": "KXN-P02", "name": "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đình Khải", "target_score": 98.0, "status": "active", "order": 2}, {"id": 38, "department_id": 9, "code": "KXN-P03", "name": "Phòng Vi sinh - Ký sinh trùng & Nuôi cấy", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Phạm Thị Hạnh", "target_score": 95.0, "status": "active", "order": 3}, {"id": 39, "department_id": 9, "code": "KXN-P04", "name": "Kho Hóa chất xét nghiệm & Lưu mẫu bệnh phẩm", "room_type": "Kho lưu trữ", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thu Thảo", "target_score": 95.0, "status": "active", "order": 4}, {"id": 69, "department_id": 15, "code": "KD-01", "name": "Kho Thuốc chẵn Nội trú & Dịch truyền", "room_type": "Kho thuốc", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS CKI. Hoàng Thị Lan", "target_score": 98.0, "status": "active", "order": 1}, {"id": 70, "department_id": 15, "code": "KD-02", "name": "Kho Thuốc Cấp phát Ngoại trú BHYT", "room_type": "Kho cấp phát", "floor": "Tầng 1 - Nhà B", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 2}, {"id": 71, "department_id": 15, "code": "KD-03", "name": "Kho Hóa chất sát khuẩn & Vật tư y tế tiêu hao", "room_type": "Kho vật tư", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Trần Văn Nam", "target_score": 95.0, "status": "active", "order": 3}, {"id": 72, "department_id": 15, "code": "KD-04", "name": "Phòng Pha chế & Bảo quản lạnh Vắc xin/Thuốc đặc biệt", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Lê Thị Mai", "target_score": 98.0, "status": "active", "order": 4}, {"id": 40, "department_id": 10, "code": "KKSNK-P01", "name": "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Trịnh Thị Thu Trang", "target_score": 95.0, "status": "active", "order": 1}, {"id": 41, "department_id": 10, "code": "KKSNK-P02", "name": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "room_type": "Khu tiệt trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "KTV. Nguyễn Văn Đạt", "target_score": 98.0, "status": "active", "order": 2}, {"id": 42, "department_id": 10, "code": "KKSNK-P03", "name": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "room_type": "Kho vô trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Lê Thị Nga", "target_score": 99.0, "status": "active", "order": 3}, {"id": 43, "department_id": 10, "code": "KKSNK-P04", "name": "Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "room_type": "Khu giặt là", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 92.0, "status": "active", "order": 4}, {"id": 73, "department_id": 10, "code": "KKSNK-P05", "name": "Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "room_type": "Khu rác thải", "floor": "Khuôn viên phía sau Nhà Giặt", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 95.0, "status": "active", "order": 5}, {"id": 74, "department_id": 16, "code": "QLCL-01", "name": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "room_type": "Văn phòng", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "target_score": 98.0, "status": "active", "order": 1}, {"id": 75, "department_id": 16, "code": "QLCL-02", "name": "Phòng Lưu trữ Hồ sơ 83 Tiêu chí & Minh chứng 5S", "room_type": "Phòng hồ sơ", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 95.0, "status": "active", "order": 2}, {"id": 76, "department_id": 17, "code": "KHTH-01", "name": "Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện", "room_type": "Phòng giao ban", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "BSCKI. Trần Đức Thắng", "target_score": 95.0, "status": "active", "order": 1}, {"id": 77, "department_id": 17, "code": "KHTH-02", "name": "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS", "room_type": "Phòng server", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "KS. Nguyễn Hoàng Nam", "target_score": 98.0, "status": "active", "order": 2}, {"id": 78, "department_id": 18, "code": "PDD-01", "name": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "room_type": "Văn phòng", "floor": "Tầng 3 - Nhà Điều hành", "person_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 1}, {"id": 79, "department_id": 19, "code": "HCQT-01", "name": "Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn", "room_type": "Văn thư", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Nguyễn Văn Hùng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 80, "department_id": 19, "code": "HCQT-02", "name": "Kho Vật tư văn phòng phẩm & Thiết bị hành chính", "room_type": "Kho hành chính", "floor": "Tầng 1 - Nhà Điều hành", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 90.0, "status": "active", "order": 2}, {"id": 81, "department_id": 20, "code": "TCKT-01", "name": "Phòng Kế toán tổng hợp & Quản trị tài sản viện", "room_type": "Văn phòng", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Vũ Thị Mai", "target_score": 95.0, "status": "active", "order": 1}],
-  staff: [{"id": 1, "code": "BV-345", "staff_code": "BV-345", "name": "KTV. Vũ Bá Đạt", "full_name": "KTV. Vũ Bá Đạt", "username": "bv345", "password": "123", "department_id": 8, "role": "admin", "role_level": "admin", "title": "Kỹ thuật viên Trưởng", "role_title": "Kỹ thuật viên Trưởng", "position": "Kỹ thuật viên Trưởng CĐHA & Giám sát 5S Toàn Viện", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR", "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS"], "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR, Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "allow_external": true}, {"id": 2, "code": "BV-101", "staff_code": "BV-101", "name": "ThS. BSCKII. Phạm Quỳnh Hưng", "full_name": "ThS. BSCKII. Phạm Quỳnh Hưng", "username": "bv101", "password": "123", "department_id": 16, "role": "admin", "role_level": "admin", "title": "ThS. BSCKII - Trưởng Ban 5S", "role_title": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc", "position": "Trưởng Ban Chỉ Đạo 5S Bệnh Viện & Bác sĩ Cấp Cứu", "assigned_rooms": ["Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện"], "assigned_room": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện, Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện", "allow_external": true}, {"id": 3, "code": "BV-102", "staff_code": "BV-102", "name": "BSCKII. Nguyễn Văn Toàn", "full_name": "BSCKII. Nguyễn Văn Toàn", "username": "bv102", "password": "123", "department_id": 4, "role": "manager", "role_level": "manager", "title": "BSCKII - Trưởng Khoa", "role_title": "BSCKII - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Ngoại Tổng Hợp", "assigned_rooms": ["Buồng Hậu phẫu Ngoại 201", "Phòng Thay băng - Rửa vết thương & Cắt chỉ"], "assigned_room": "Buồng Hậu phẫu Ngoại 201, Phòng Thay băng - Rửa vết thương & Cắt chỉ", "allow_external": true}, {"id": 4, "code": "BV-103", "staff_code": "BV-103", "name": "ĐD. Vũ Quang Trưởng", "full_name": "ĐD. Vũ Quang Trưởng", "username": "bv103", "password": "123", "department_id": 1, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Cấp Cứu", "assigned_rooms": ["Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương"], "assigned_room": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu, Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "allow_external": true}, {"id": 5, "code": "BV-104", "staff_code": "BV-104", "name": "ĐD. Lê Văn Minh", "full_name": "ĐD. Lê Văn Minh", "username": "bv104", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng viên", "role_title": "Điều dưỡng viên", "position": "Điều dưỡng viên Cấp cứu", "assigned_rooms": ["Phòng Tiểu phẫu - Băng bó vết thương", "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải"], "assigned_room": "Phòng Tiểu phẫu - Băng bó vết thương, Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "allow_external": true}, {"id": 6, "code": "BV-105", "staff_code": "BV-105", "name": "ĐD. Phạm Thị Mai", "full_name": "ĐD. Phạm Thị Mai", "username": "bv105", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng viên", "role_title": "Điều dưỡng viên", "position": "Điều dưỡng viên Cấp cứu", "assigned_rooms": ["Phòng Lưu bệnh Cấp cứu (Phòng 101)"], "assigned_room": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "allow_external": true}, {"id": 7, "code": "BV-106", "staff_code": "BV-106", "name": "Hộ lý. Vũ Thị Hoa", "full_name": "Hộ lý. Vũ Thị Hoa", "username": "bv106", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Hộ lý / Nhân viên vệ sinh", "role_title": "Hộ lý / Nhân viên vệ sinh", "position": "Hộ lý buồng bệnh & Khử khuẩn", "assigned_rooms": ["Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "Khu Phân loại & Lưu trữ tạm thời rác thải y tế"], "assigned_room": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải, Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "allow_external": true}, {"id": 8, "code": "BV-107", "staff_code": "BV-107", "name": "BSCKI. Vũ Đình Khiêm", "full_name": "BSCKI. Vũ Đình Khiêm", "username": "bv107", "password": "123", "department_id": 2, "role": "manager", "role_level": "manager", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Khám bệnh", "assigned_rooms": ["Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "Phòng Khám Nội tổng quát (P.101)"], "assigned_room": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động, Phòng Khám Nội tổng quát (P.101)", "allow_external": true}, {"id": 9, "code": "BV-108", "staff_code": "BV-108", "name": "ĐD. Hoàng Bích Thủy", "full_name": "ĐD. Hoàng Bích Thủy", "username": "bv108", "password": "123", "department_id": 2, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Khám bệnh", "assigned_rooms": ["Phòng Khám Ngoại - Chấn thương (P.102)", "Phòng Lấy mẫu máu & Bệnh phẩm tập trung"], "assigned_room": "Phòng Khám Ngoại - Chấn thương (P.102), Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "allow_external": true}, {"id": 10, "code": "BV-109", "staff_code": "BV-109", "name": "ThS.BS. Đinh Công Trí", "full_name": "ThS.BS. Đinh Công Trí", "username": "bv109", "password": "123", "department_id": 11, "role": "manager", "role_level": "manager", "title": "ThS. Bác sĩ - Trưởng Khoa", "role_title": "ThS. Bác sĩ - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Hồi sức tích cực & Chống độc (ICU)", "assigned_rooms": ["Buồng Bệnh nhân nặng Hồi sức 1", "Phòng Thao tác & Thủ thuật ICU"], "assigned_room": "Buồng Bệnh nhân nặng Hồi sức 1, Phòng Thao tác & Thủ thuật ICU", "allow_external": true}, {"id": 11, "code": "BV-110", "staff_code": "BV-110", "name": "ĐD. Nguyễn Thị Thanh Nga", "full_name": "ĐD. Nguyễn Thị Thanh Nga", "username": "bv110", "password": "123", "department_id": 11, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Hồi sức tích cực ICU", "assigned_rooms": ["Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "Phòng Trực cấp cứu & Giao ban ICU", "Buồng Cách ly áp lực âm ICU"], "assigned_room": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục, Phòng Trực cấp cứu & Giao ban ICU", "allow_external": true}, {"id": 12, "code": "BV-111", "staff_code": "BV-111", "name": "BSCKII. Lê Tuấn Anh", "full_name": "BSCKII. Lê Tuấn Anh", "username": "bv111", "password": "123", "department_id": 12, "role": "manager", "role_level": "manager", "title": "BSCKII - Trưởng Khoa", "role_title": "BSCKII - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Phẫu thuật - Gây mê hồi sức", "assigned_rooms": ["Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật"], "assigned_room": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát, Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "allow_external": true}, {"id": 13, "code": "BV-112", "staff_code": "BV-112", "name": "ĐD. Bùi Văn Hùng", "full_name": "ĐD. Bùi Văn Hùng", "username": "bv112", "password": "123", "department_id": 4, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Ngoại", "assigned_rooms": ["Buồng Bệnh Tiền phẫu 202", "Phòng Trực Bác sĩ & Giao ban khoa Ngoại"], "assigned_room": "Buồng Bệnh Tiền phẫu 202, Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "allow_external": true}, {"id": 14, "code": "BV-113", "staff_code": "BV-113", "name": "BSCKI. Mai Thị Hảo", "full_name": "BSCKI. Mai Thị Hảo", "username": "bv113", "password": "123", "department_id": 5, "role": "manager", "role_level": "manager", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Nội Tổng hợp", "assigned_rooms": ["Buồng Bệnh Nội Tim Mạch (P.301)", "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng"], "assigned_room": "Buồng Bệnh Nội Tim Mạch (P.301), Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "allow_external": true}, {"id": 15, "code": "BV-114", "staff_code": "BV-114", "name": "ĐD. Trần Phương Dung", "full_name": "ĐD. Trần Phương Dung", "username": "bv114", "password": "123", "department_id": 5, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Nội", "assigned_rooms": ["Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "Khu Vệ sinh buồng bệnh nhân Tầng 3"], "assigned_room": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302), Khu Vệ sinh buồng bệnh nhân Tầng 3", "allow_external": true}, {"id": 16, "code": "BV-115", "staff_code": "BV-115", "name": "KTV. Trần Văn Chung", "full_name": "KTV. Trần Văn Chung", "username": "bv115", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "position": "Kỹ thuật viên Chụp X-Quang Kỹ thuật số", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR"], "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR", "allow_external": true}, {"id": 17, "code": "BV-116", "staff_code": "BV-116", "name": "KTV. Lê Công Bằng", "full_name": "KTV. Lê Công Bằng", "username": "bv116", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "position": "Kỹ thuật viên Vận hành Máy MRI & CT", "assigned_rooms": ["Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)"], "assigned_room": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "allow_external": true}, {"id": 18, "code": "BV-117", "staff_code": "BV-117", "name": "DS. Nguyễn Bích Ngọc", "full_name": "DS. Nguyễn Bích Ngọc", "username": "bv117", "password": "123", "department_id": 15, "role": "staff", "role_level": "staff", "title": "Dược sĩ / Quản lý kho dược", "role_title": "Dược sĩ / Quản lý kho dược", "position": "Dược sĩ Quản lý kho thuốc cấp phát", "assigned_rooms": ["Kho Thuốc chẵn Nội trú & Dịch truyền", "Kho Thuốc Cấp phát Ngoại trú BHYT"], "assigned_room": "Kho Thuốc chẵn Nội trú & Dịch truyền, Kho Thuốc Cấp phát Ngoại trú BHYT", "allow_external": true}, {"id": 19, "code": "BV-118", "staff_code": "BV-118", "name": "BSCKI. Hoàng Trọng Nghĩa", "full_name": "BSCKI. Hoàng Trọng Nghĩa", "username": "bv118", "password": "123", "department_id": 10, "role": "manager", "role_level": "manager", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Kiểm soát Nhiễm khuẩn", "assigned_rooms": ["Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn"], "assigned_room": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm, Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "allow_external": true}, {"id": 20, "code": "BV-119", "staff_code": "BV-119", "name": "ĐD. Trịnh Thị Thu Trang", "full_name": "ĐD. Trịnh Thị Thu Trang", "username": "bv119", "password": "123", "department_id": 10, "role": "manager", "role_level": "manager", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Kiểm soát Nhiễm khuẩn", "assigned_rooms": ["Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "Khu Giặt là & Khử khuẩn đồ vải bệnh viện"], "assigned_room": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao, Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "allow_external": true}, {"id": 21, "code": "BV-120", "staff_code": "BV-120", "name": "ThS. ĐD. Trần Thị Lan Hương", "full_name": "ThS. ĐD. Trần Thị Lan Hương", "username": "bv120", "password": "123", "department_id": 18, "role": "manager", "role_level": "manager", "title": "Trưởng Phòng Chức Năng", "role_title": "Trưởng Phòng Chức Năng", "position": "Trưởng Phòng Điều dưỡng Bệnh viện VPI", "assigned_rooms": ["Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S"], "assigned_room": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "allow_external": true}],
-  audits: [
-  {
-    "id": 1729145600001,
-    "audit_code": "5S-20261017-001",
-    "department_id": 8,
-    "room_id": 34,
-    "audit_date": "2026-10-17",
-    "audit_time": "08:15",
-    "shift": "Ca sáng (07:00 - 11:30)",
-    "sender_name": "KTV. Nguyễn Đức Tuấn",
-    "sender_code": "BV-201",
-    "sender_role": "Kỹ thuật viên Trưởng CĐHA",
-    "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNjRlM2IiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QaMOybmcgQ2jhu6VwIEPhuq90IEzhu5twIFZpIFTDrW5oIDEyOCBEw6N5IENUPC90ZXh0PgogIDx0ZXh0IHg9IjMwMCIgeT0iMjIyIiBmaWxsPSIjOTRhM2I4IiBmb250LXNpemU9IjEzIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+S2hvYSBDaOG6qW4gxJFvw6FuIEjDrG5oIOG6o25oPC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7EkMODIFPDgE5HIEzhu4xDICZhbXA7IEtI4busIEtIVeG6qE48L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIzMDUiIGZpbGw9IiM2NDc0OGIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpw6FtIFPDoXQgNVMgQuG7h25oIFZp4buHbiBWUEkg4oCiIDIwMjY8L3RleHQ+Cjwvc3ZnPg==",
-    "notes": "Đã tổng vệ sinh máy CT 128 dãy, sàn phòng máy lau khử khuẩn, khay phim và vật tư y tế xếp gọn theo tiêu chuẩn 5S.",
-    "score_seiri": 20,
-    "score_seiton": 20,
-    "score_seiso": 20,
-    "score_seiketsu": 19,
-    "score_shitsuke": 19,
-    "total_score": 98,
-    "status": "approved",
-    "evaluator_name": "KTV. Vũ Bá Đạt",
-    "evaluator_code": "BV-345",
-    "evaluator_role": "Cán bộ Giám sát 5S Toàn Viện & KTV Trưởng",
-    "evaluation_date": "2026-10-17",
-    "evaluation_time": "08:45",
-    "evaluation_result": "pass",
-    "issue_detected": "",
-    "remedy_deadline": "",
-    "evaluation_notes": "Xuất sắc! Phòng máy CT rất sạch sẽ, không có bụi bẩn, dây cáp bó gọn gàng, tủ vật tư dán nhãn chuẩn 5S y tế.",
-    "is_seed_demo": true,
-    "created_at": "2026-10-17T08:15:00Z"
-  },
-  {
-    "id": 1729145600002,
-    "audit_code": "5S-20261017-002",
-    "department_id": 1,
-    "room_id": 2,
-    "audit_date": "2026-10-17",
-    "audit_time": "08:30",
-    "shift": "Ca sáng (07:00 - 11:30)",
-    "sender_name": "ĐD. Lê Thị Hương",
-    "sender_code": "BV-103",
-    "sender_role": "Điều dưỡng Trưởng Khoa Cấp Cứu",
-    "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFlMWI0YiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0YzA1MTkiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIEjhu5NpIFPhu6ljIEPhuqVwIEPhu6l1IEJhbiDEkOG6p3U8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIEPhuqVwIGPhu6l1PC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5D4bqmTiBCw5MgR+G7jE4gRMOCWSBNw4FZIFRI4buePC90ZXh0PgogIDx0ZXh0IHg9IjMwMCIgeT0iMzA1IiBmaWxsPSIjNjQ3NDhiIiBmb250LXNpemU9IjEwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HacOhbSBTw6F0IDVTIELhu4duaCBWaeG7h24gVlBJIOKAoiAyMDI2PC90ZXh0Pgo8L3N2Zz4=",
-    "notes": "Đã lau bàn giao ban và thay drap giường cấp cứu.",
-    "score_seiri": 15,
-    "score_seiton": 12,
-    "score_seiso": 15,
-    "score_seiketsu": 14,
-    "score_shitsuke": 12,
-    "total_score": 68,
-    "status": "rejected",
-    "evaluator_name": "ThS. BSCKII. Phạm Quỳnh Hưng",
-    "evaluator_code": "BV-101",
-    "evaluator_role": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc",
-    "evaluation_date": "2026-10-17",
-    "evaluation_time": "09:05",
-    "evaluation_result": "fail",
-    "issue_detected": "Dây nguồn máy thở và cáp monitor để vướng lối đi cấp cứu; xe tiêm còn bông cồn dơ chưa bỏ vào túi rác y tế màu vàng.",
-    "remedy_deadline": "Trước 11h30 hôm nay",
-    "evaluation_notes": "Yêu cầu Điều dưỡng trưởng phân công điều dưỡng trực cuộn gọn dây máy và kiểm tra lại toàn bộ xe tiêm ngay.",
-    "is_seed_demo": true,
-    "created_at": "2026-10-17T08:30:00Z"
-  },
-  {
-    "id": 1729145600003,
-    "audit_code": "5S-20261017-003",
-    "department_id": 2,
-    "room_id": 6,
-    "audit_date": "2026-10-17",
-    "audit_time": "08:40",
-    "shift": "Ca sáng (07:00 - 11:30)",
-    "sender_name": "ĐD. Lê Văn Minh",
-    "sender_code": "BV-104",
-    "sender_role": "Điều dưỡng Khoa Khám bệnh",
-    "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxZTNhOGEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Cw6BuIEtow6FtIELhu4duaCBO4buZaSAxMDE8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIEtow6FtIGLhu4duaDwvdGV4dD4KICA8cmVjdCB4PSIxODAiIHk9IjI0NSIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIzMCIgcng9IjE1IiBmaWxsPSIjMDU5NjY5Ii8+CiAgPHRleHQgeD0iMzAwIiB5PSIyNjUiIGZpbGw9IiNmZmZmZmYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SOG7kiBTxqAgQuG7hk5IIMOBTiBY4bq+UCBUSOG7qCBU4buwPC90ZXh0PgogIDx0ZXh0IHg9IjMwMCIgeT0iMzA1IiBmaWxsPSIjNjQ3NDhiIiBmb250LXNpemU9IjEwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HacOhbSBTw6F0IDVTIELhu4duaCBWaeG7h24gVlBJIOKAoiAyMDI2PC90ZXh0Pgo8L3N2Zz4=",
-    "notes": "Bàn khám bệnh và hồ sơ bệnh án xếp theo thứ tự số thứ tự tiếp đón, sát khuẩn tay nhanh bổ sung đầy đủ.",
-    "score_seiri": 19,
-    "score_seiton": 19,
-    "score_seiso": 19,
-    "score_seiketsu": 19,
-    "score_shitsuke": 18,
-    "total_score": 94,
-    "status": "approved",
-    "evaluator_name": "KTV. Vũ Bá Đạt",
-    "evaluator_code": "BV-345",
-    "evaluator_role": "Cán bộ Giám sát 5S Toàn Viện",
-    "evaluation_date": "2026-10-17",
-    "evaluation_time": "09:10",
-    "evaluation_result": "pass",
-    "issue_detected": "",
-    "remedy_deadline": "",
-    "evaluation_notes": "Bàn khám bệnh rất quy củ, sạch sẽ, đón tiếp bệnh nhân nhanh chóng.",
-    "is_seed_demo": true,
-    "created_at": "2026-10-17T08:40:00Z"
-  },
-  {
-    "id": 1729145600004,
-    "audit_code": "5S-20261017-004",
-    "department_id": 3,
-    "room_id": 11,
-    "audit_date": "2026-10-17",
-    "audit_time": "08:50",
-    "shift": "Ca sáng (07:00 - 11:30)",
-    "sender_name": "ĐD. Nguyễn Thị Thảo",
-    "sender_code": "BV-107",
-    "sender_role": "Điều dưỡng Hồi Sức Tích Cực",
-    "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwZjc2NmUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIELhu4duaCBO4bq3bmcgSOG7k2kgU+G7qWMgMDE8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIEjhu5NpIHPhu6ljIHTDrWNoIGPhu7FjPC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LSEFZIFRIVeG7kEMgxJDDgyBT4bquUCBY4bq+UDwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjMwNSIgZmlsbD0iIzY0NzQ4YiIgZm9udC1zaXplPSIxMCIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R2nDoW0gU8OhdCA1UyBC4buHbmggVmnhu4duIFZQSSDigKIgMjAyNjwvdGV4dD4KPC9zdmc+",
-    "notes": "Đã sắp xếp khay thuốc cấp cứu, lau mặt bàn máy theo dõi monitor, thay ga trải giường buồng bệnh số 1.",
-    "score_seiri": 19,
-    "score_seiton": 18,
-    "score_seiso": 19,
-    "score_seiketsu": 19,
-    "score_shitsuke": 18,
-    "total_score": 93,
-    "status": "pending",
-    "evaluator_name": "",
-    "evaluator_code": "",
-    "evaluator_role": "",
-    "evaluation_date": "",
-    "evaluation_time": "",
-    "evaluation_result": null,
-    "issue_detected": "",
-    "remedy_deadline": "",
-    "evaluation_notes": "",
-    "is_seed_demo": true,
-    "created_at": "2026-10-17T08:50:00Z"
-  },
-  {
-    "id": 1729145600005,
-    "audit_code": "5S-20261017-005",
-    "department_id": 4,
-    "room_id": 16,
-    "audit_date": "2026-10-17",
-    "audit_time": "08:55",
-    "shift": "Ca sáng (07:00 - 11:30)",
-    "sender_name": "ĐD. Đỗ Thị Loan",
-    "sender_code": "BV-108",
-    "sender_role": "Điều dưỡng Ngoại Tổng Hợp",
-    "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxMTVlNTkiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIEjhuq11IFBo4bqrdSBOZ2/huqFpIDIwMTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjIyMiIgZmlsbD0iIzk0YTNiOCIgZm9udC1zaXplPSIxMyIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPktob2EgTmdv4bqhaSBU4buVbmcgaOG7o3A8L3RleHQ+CiAgPHJlY3QgeD0iMTgwIiB5PSIyNDUiIHdpZHRoPSIyNDAiIGhlaWdodD0iMzAiIHJ4PSIxNSIgZmlsbD0iIzA1OTY2OSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjY1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjExIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlbDlCBUUsOZTkcgQlXhu5JORyBC4buGTkg8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIzMDUiIGZpbGw9IiM2NDc0OGIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpw6FtIFPDoXQgNVMgQuG7h25oIFZp4buHbiBWUEkg4oCiIDIwMjY8L3RleHQ+Cjwvc3ZnPg==",
-    "notes": "Buồng hậu phẫu đã lau khử khuẩn Cloramin B, thùng rác phân loại đúng, xe thay băng gọn gàng.",
-    "score_seiri": 18,
-    "score_seiton": 18,
-    "score_seiso": 18,
-    "score_seiketsu": 18,
-    "score_shitsuke": 18,
-    "total_score": 90,
-    "status": "pending",
-    "evaluator_name": "",
-    "evaluator_code": "",
-    "evaluator_role": "",
-    "evaluation_date": "",
-    "evaluation_time": "",
-    "evaluation_result": null,
-    "issue_detected": "",
-    "remedy_deadline": "",
-    "evaluation_notes": "",
-    "is_seed_demo": true,
-    "created_at": "2026-10-17T08:55:00Z"
-  },
-  {
-    "id": 1729145600006,
-    "audit_code": "5S-20261017-006",
-    "department_id": 5,
-    "room_id": 20,
-    "audit_date": "2026-10-17",
-    "audit_time": "08:10",
-    "shift": "Ca sáng (07:00 - 11:30)",
-    "sender_name": "ĐD. Hoàng Thị Mai",
-    "sender_code": "BV-106",
-    "sender_role": "Hộ sinh Trưởng",
-    "after_photo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgNjAwIDM0MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFmMjkzNyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4MzE4NDMiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzQwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2OCIgaGVpZ2h0PSIzMDgiIHJ4PSIxOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzhiZGY4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjYgNiIgb3BhY2l0eT0iMC4zNSIvPgogIDxjaXJjbGUgY3g9IjMwMCIgY3k9Ijk1IiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xMiIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMTA1IiBmaWxsPSIjZmZmZmZmIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+PpTwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE2MCIgZmlsbD0iIzM0ZDM5OSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+QuG7hk5IIFZJ4buGTiBWxKhOSCBQSMOaQyBWUEkg4oCiIOG6ok5IIE1JTkggQ0jhu6hORyA1UzwvdGV4dD4KICA8dGV4dCB4PSIzMDAiIHk9IjE5NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIyMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CdeG7k25nIMSQ4buhIMSQ4bq7IFPhuqNuIEtob2EgMDE8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIyMjIiIGZpbGw9IiM5NGEzYjgiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LaG9hIFBo4bulIHPhuqNuPC90ZXh0PgogIDxyZWN0IHg9IjE4MCIgeT0iMjQ1IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiMwNTk2NjkiLz4KICA8dGV4dCB4PSIzMDAiIHk9IjI2NSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5E4bukTkcgQ+G7pCDEkMODIFRJ4buGVCBUUsOZTkc8L3RleHQ+CiAgPHRleHQgeD0iMzAwIiB5PSIzMDUiIGZpbGw9IiM2NDc0OGIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdpw6FtIFPDoXQgNVMgQuG7h25oIFZp4buHbiBWUEkg4oCiIDIwMjY8L3RleHQ+Cjwvc3ZnPg==",
-    "notes": "Bàn sinh và dụng cụ đỡ đẻ đã hấp tiệt trùng, tủ thuốc cấp cứu sản khoa đã niêm phong hạn dùng.",
-    "score_seiri": 20,
-    "score_seiton": 19,
-    "score_seiso": 19,
-    "score_seiketsu": 19,
-    "score_shitsuke": 19,
-    "total_score": 96,
-    "status": "approved",
-    "evaluator_name": "ThS. BSCKII. Phạm Quỳnh Hưng",
-    "evaluator_code": "BV-101",
-    "evaluator_role": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc",
-    "evaluation_date": "2026-10-17",
-    "evaluation_time": "09:00",
-    "evaluation_result": "pass",
-    "issue_detected": "",
-    "remedy_deadline": "",
-    "evaluation_notes": "Đạt chuẩn 5S phòng sinh. Rất sạch sẽ và tuân thủ kiểm soát nhiễm khuẩn.",
-    "is_seed_demo": true,
-    "created_at": "2026-10-17T08:10:00Z"
-  }
-],
+  staff: [{"id": 1, "code": "BV-345", "staff_code": "BV-345", "name": "KTV. VÅ© BÃ¡ Äáº¡t", "full_name": "KTV. VÅ© BÃ¡ Äáº¡t", "username": "bv345", "password": "123", "department_id": 8, "role": "admin", "role_level": "admin", "title": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng", "role_title": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng", "position": "Ká»¹ thuáº­t viÃªn TrÆ°á»Ÿng CÄHA &amp; GiÃ¡m sÃ¡t 5S ToÃ&nbsp;n Viá»‡n", "assigned_rooms": ["PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR", "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner)", "PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)", "PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS"], "assigned_room": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR, PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner), PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI), PhÃ²ng Äá»c &amp; Há»™i cháº©n káº¿t quáº£ CÄHA - PACS", "allow_external": true, "can_review": true, "is_supervisor": true}, {"id": 2, "code": "BV-101", "staff_code": "BV-101", "name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng", "full_name": "ThS. BSCKII. Pháº¡m Quá»³nh HÆ°ng", "username": "bv101", "password": "123", "department_id": 16, "role": "admin", "role_level": "admin", "title": "ThS. BSCKII - TrÆ°á»Ÿng Ban 5S", "role_title": "TrÆ°á»Ÿng Ban Chá»‰ Äáº¡o 5S / Ban GiÃ¡m Äá»‘c", "position": "TrÆ°á»Ÿng Ban Chá»‰ Äáº¡o 5S Bá»‡nh Viá»‡n &amp; BÃ¡c sÄ© Cáº¥p Cá»©u", "assigned_rooms": ["VÄƒn phÃ²ng ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n", "ToÃ&nbsp;n bá»™ Khoa CÄHA &amp; Há»™i Ä‘á»“ng 5S ToÃ&nbsp;n Viá»‡n"], "assigned_room": "VÄƒn phÃ²ng ThÆ°á»ng trá»±c Ban Chá»‰ Ä‘áº¡o 5S ToÃ&nbsp;n Viá»‡n, ToÃ&nbsp;n bá»™ Khoa CÄHA &amp; Há»™i Ä‘á»“ng 5S ToÃ&nbsp;n Viá»‡n", "allow_external": true, "can_review": true, "is_supervisor": true}, {"id": 3, "code": "BV-102", "staff_code": "BV-102", "name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n", "full_name": "BSCKII. Nguyá»…n VÄƒn ToÃ&nbsp;n", "username": "bv102", "password": "123", "department_id": 4, "role": "staff", "role_level": "manager", "title": "BSCKII - TrÆ°á»Ÿng Khoa", "role_title": "BSCKII - TrÆ°á»Ÿng Khoa", "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Ngoáº¡i Tá»•ng Há»£p", "assigned_rooms": ["Buá»“ng Háº­u pháº«u Ngoáº¡i 201", "PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰"], "assigned_room": "Buá»“ng Háº­u pháº«u Ngoáº¡i 201, PhÃ²ng Thay bÄƒng - Rá»­a váº¿t thÆ°Æ¡ng &amp; Cáº¯t chá»‰", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 4, "code": "BV-103", "staff_code": "BV-103", "name": "ÄD. VÅ© Quang TrÆ°á»Ÿng", "full_name": "ÄD. VÅ© Quang TrÆ°á»Ÿng", "username": "bv103", "password": "123", "department_id": 1, "role": "staff", "role_level": "manager", "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Cáº¥p Cá»©u", "assigned_rooms": ["PhÃ²ng Tiáº¿p nháº­n &amp; PhÃ¢n loáº¡i bá»‡nh cáº¥p cá»©u", "PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng"], "assigned_room": "PhÃ²ng Tiáº¿p nháº­n &amp; PhÃ¢n loáº¡i bá»‡nh cáº¥p cá»©u, PhÃ²ng Há»“i sá»©c Cáº¥p cá»©u ban Ä‘áº§u &amp; Cháº¥n thÆ°Æ¡ng", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 5, "code": "BV-104", "staff_code": "BV-104", "name": "ÄD. LÃª VÄƒn Minh", "full_name": "ÄD. LÃª VÄƒn Minh", "username": "bv104", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Äiá»u dÆ°á»¡ng viÃªn", "role_title": "Äiá»u dÆ°á»¡ng viÃªn", "position": "Äiá»u dÆ°á»¡ng viÃªn Cáº¥p cá»©u", "assigned_rooms": ["PhÃ²ng Tiá»ƒu pháº«u - BÄƒng bÃ³ váº¿t thÆ°Æ¡ng", "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i"], "assigned_room": "PhÃ²ng Tiá»ƒu pháº«u - BÄƒng bÃ³ váº¿t thÆ°Æ¡ng, Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 6, "code": "BV-105", "staff_code": "BV-105", "name": "ÄD. Pháº¡m Thá»‹ Mai", "full_name": "ÄD. Pháº¡m Thá»‹ Mai", "username": "bv105", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Äiá»u dÆ°á»¡ng viÃªn", "role_title": "Äiá»u dÆ°á»¡ng viÃªn", "position": "Äiá»u dÆ°á»¡ng viÃªn Cáº¥p cá»©u", "assigned_rooms": ["PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)"], "assigned_room": "PhÃ²ng LÆ°u bá»‡nh Cáº¥p cá»©u (PhÃ²ng 101)", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 7, "code": "BV-106", "staff_code": "BV-106", "name": "Há»™ lÃ½. VÅ© Thá»‹ Hoa", "full_name": "Há»™ lÃ½. VÅ© Thá»‹ Hoa", "username": "bv106", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Há»™ lÃ½ / NhÃ¢n viÃªn vá»‡ sinh", "role_title": "Há»™ lÃ½ / NhÃ¢n viÃªn vá»‡ sinh", "position": "Há»™ lÃ½ buá»“ng bá»‡nh &amp; Khá»­ khuáº©n", "assigned_rooms": ["Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i", "Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿"], "assigned_room": "Khu Vá»‡ sinh Cáº¥p cá»©u &amp; Khá»­ khuáº©n rÃ¡c tháº£i, Khu PhÃ¢n loáº¡i &amp; LÆ°u trá»¯ táº¡m thá»i rÃ¡c tháº£i y táº¿", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 8, "code": "BV-107", "staff_code": "BV-107", "name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm", "full_name": "BSCKI. VÅ© ÄÃ¬nh KhiÃªm", "username": "bv107", "password": "123", "department_id": 2, "role": "staff", "role_level": "manager", "title": "BSCKI - TrÆ°á»Ÿng Khoa", "role_title": "BSCKI - TrÆ°á»Ÿng Khoa", "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa KhÃ¡m bá»‡nh", "assigned_rooms": ["Sáº£nh Tiáº¿p Ä‘Ã³n, HÆ°á»›ng dáº«n &amp; Láº¥y sá»‘ tá»± Ä‘á»™ng", "PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)"], "assigned_room": "Sáº£nh Tiáº¿p Ä‘Ã³n, HÆ°á»›ng dáº«n &amp; Láº¥y sá»‘ tá»± Ä‘á»™ng, PhÃ²ng KhÃ¡m Ná»™i tá»•ng quÃ¡t (P.101)", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 9, "code": "BV-108", "staff_code": "BV-108", "name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y", "full_name": "ÄD. HoÃ&nbsp;ng BÃ­ch Thá»§y", "username": "bv108", "password": "123", "department_id": 2, "role": "staff", "role_level": "manager", "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa KhÃ¡m bá»‡nh", "assigned_rooms": ["PhÃ²ng KhÃ¡m Ngoáº¡i - Cháº¥n thÆ°Æ¡ng (P.102)", "PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung"], "assigned_room": "PhÃ²ng KhÃ¡m Ngoáº¡i - Cháº¥n thÆ°Æ¡ng (P.102), PhÃ²ng Láº¥y máº«u mÃ¡u &amp; Bá»‡nh pháº©m táº­p trung", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 10, "code": "BV-109", "staff_code": "BV-109", "name": "ThS.BS. Äinh CÃ´ng TrÃ­", "full_name": "ThS.BS. Äinh CÃ´ng TrÃ­", "username": "bv109", "password": "123", "department_id": 11, "role": "staff", "role_level": "manager", "title": "ThS. BÃ¡c sÄ© - TrÆ°á»Ÿng Khoa", "role_title": "ThS. BÃ¡c sÄ© - TrÆ°á»Ÿng Khoa", "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Há»“i sá»©c tÃ­ch cá»±c &amp; Chá»‘ng Ä‘á»™c (ICU)", "assigned_rooms": ["Buá»“ng Bá»‡nh nhÃ¢n náº·ng Há»“i sá»©c 1", "PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU"], "assigned_room": "Buá»“ng Bá»‡nh nhÃ¢n náº·ng Há»“i sá»©c 1, PhÃ²ng Thao tÃ¡c &amp; Thá»§ thuáº­t ICU", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 11, "code": "BV-110", "staff_code": "BV-110", "name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga", "full_name": "ÄD. Nguyá»…n Thá»‹ Thanh Nga", "username": "bv110", "password": "123", "department_id": 11, "role": "staff", "role_level": "manager", "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Há»“i sá»©c tÃ­ch cá»±c ICU", "assigned_rooms": ["Buá»“ng Bá»‡nh nhÃ¢n Thá»Ÿ mÃ¡y &amp; Lá»c mÃ¡u liÃªn tá»¥c", "PhÃ²ng Trá»±c cáº¥p cá»©u &amp; Giao ban ICU", "Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU"], "assigned_room": "Buá»“ng Bá»‡nh nhÃ¢n Thá»Ÿ mÃ¡y &amp; Lá»c mÃ¡u liÃªn tá»¥c, PhÃ²ng Trá»±c cáº¥p cá»©u &amp; Giao ban ICU, Buá»“ng CÃ¡ch ly Ã¡p lá»±c Ã¢m ICU", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 12, "code": "BV-111", "staff_code": "BV-111", "name": "BSCKII. LÃª Tuáº¥n Anh", "full_name": "BSCKII. LÃª Tuáº¥n Anh", "username": "bv111", "password": "123", "department_id": 12, "role": "staff", "role_level": "manager", "title": "BSCKII - TrÆ°á»Ÿng Khoa", "role_title": "BSCKII - TrÆ°á»Ÿng Khoa", "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Pháº«u thuáº­t - GÃ¢y mÃª há»“i sá»©c", "assigned_rooms": ["PhÃ²ng Má»• sá»‘ 1 - Pháº«u thuáº­t Ngoáº¡i tá»•ng quÃ¡t", "PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t"], "assigned_room": "PhÃ²ng Má»• sá»‘ 1 - Pháº«u thuáº­t Ngoáº¡i tá»•ng quÃ¡t, PhÃ²ng Há»“i tá»‰nh &amp; Theo dÃµi sau pháº«u thuáº­t", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 13, "code": "BV-112", "staff_code": "BV-112", "name": "ÄD. BÃ¹i VÄƒn HÃ¹ng", "full_name": "ÄD. BÃ¹i VÄƒn HÃ¹ng", "username": "bv112", "password": "123", "department_id": 4, "role": "staff", "role_level": "manager", "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Ngoáº¡i", "assigned_rooms": ["Buá»“ng Bá»‡nh Tiá»n pháº«u 202", "PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i"], "assigned_room": "Buá»“ng Bá»‡nh Tiá»n pháº«u 202, PhÃ²ng Trá»±c BÃ¡c sÄ© &amp; Giao ban khoa Ngoáº¡i", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 14, "code": "BV-113", "staff_code": "BV-113", "name": "BSCKI. Mai Thá»‹ Háº£o", "full_name": "BSCKI. Mai Thá»‹ Háº£o", "username": "bv113", "password": "123", "department_id": 5, "role": "staff", "role_level": "manager", "title": "BSCKI - TrÆ°á»Ÿng Khoa", "role_title": "BSCKI - TrÆ°á»Ÿng Khoa", "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Ná»™i Tá»•ng há»£p", "assigned_rooms": ["Buá»“ng Bá»‡nh Ná»™i Tim Máº¡ch (P.301)", "PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng"], "assigned_room": "Buá»“ng Bá»‡nh Ná»™i Tim Máº¡ch (P.301), PhÃ²ng TiÃªm, PhÃ¡t thuá»‘c &amp; Trá»±c Äiá»u dÆ°á»¡ng", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 15, "code": "BV-114", "staff_code": "BV-114", "name": "ÄD. Tráº§n PhÆ°Æ¡ng Dung", "full_name": "ÄD. Tráº§n PhÆ°Æ¡ng Dung", "username": "bv114", "password": "123", "department_id": 5, "role": "staff", "role_level": "manager", "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Ná»™i", "assigned_rooms": ["Buá»“ng Bá»‡nh Ná»™i Tiáº¿t - Tiá»ƒu Ä‘Æ°á»ng (P.302)", "Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3"], "assigned_room": "Buá»“ng Bá»‡nh Ná»™i Tiáº¿t - Tiá»ƒu Ä‘Æ°á»ng (P.302), Khu Vá»‡ sinh buá»“ng bá»‡nh nhÃ¢n Táº§ng 3", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 16, "code": "BV-115", "staff_code": "BV-115", "name": "KTV. Tráº§n VÄƒn Chung", "full_name": "KTV. Tráº§n VÄƒn Chung", "username": "bv115", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Ká»¹ thuáº­t viÃªn CÄHA", "role_title": "Ká»¹ thuáº­t viÃªn CÄHA", "position": "Ká»¹ thuáº­t viÃªn Chá»¥p X-Quang Ká»¹ thuáº­t sá»‘", "assigned_rooms": ["PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR"], "assigned_room": "PhÃ²ng Chá»¥p X-quang Ká»¹ thuáº­t sá»‘ DR", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 17, "code": "BV-116", "staff_code": "BV-116", "name": "KTV. LÃª CÃ´ng Báº±ng", "full_name": "KTV. LÃª CÃ´ng Báº±ng", "username": "bv116", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Ká»¹ thuáº­t viÃªn CÄHA", "role_title": "Ká»¹ thuáº­t viÃªn CÄHA", "position": "Ká»¹ thuáº­t viÃªn Váº­n hÃ&nbsp;nh MÃ¡y MRI &amp; CT", "assigned_rooms": ["PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner)", "PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)"], "assigned_room": "PhÃ²ng Chá»¥p Cáº¯t lá»›p vi tÃ­nh 128 dÃ£y (CT-Scanner), PhÃ²ng Chá»¥p Cá»™ng hÆ°á»Ÿng tá»« 1.5 Tesla (MRI)", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 18, "code": "BV-117", "staff_code": "BV-117", "name": "DS. Nguyá»…n BÃ­ch Ngá»c", "full_name": "DS. Nguyá»…n BÃ­ch Ngá»c", "username": "bv117", "password": "123", "department_id": 15, "role": "staff", "role_level": "staff", "title": "DÆ°á»£c sÄ© / Quáº£n lÃ½ kho dÆ°á»£c", "role_title": "DÆ°á»£c sÄ© / Quáº£n lÃ½ kho dÆ°á»£c", "position": "DÆ°á»£c sÄ© Quáº£n lÃ½ kho thuá»‘c cáº¥p phÃ¡t", "assigned_rooms": ["Kho Thuá»‘c cháºµn Ná»™i trÃº &amp; Dá»‹ch truyá»n", "Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT"], "assigned_room": "Kho Thuá»‘c cháºµn Ná»™i trÃº &amp; Dá»‹ch truyá»n, Kho Thuá»‘c Cáº¥p phÃ¡t Ngoáº¡i trÃº BHYT", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 19, "code": "BV-118", "staff_code": "BV-118", "name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a", "full_name": "BSCKI. HoÃ&nbsp;ng Trá»ng NghÄ©a", "username": "bv118", "password": "123", "department_id": 10, "role": "staff", "role_level": "manager", "title": "BSCKI - TrÆ°á»Ÿng Khoa", "role_title": "BSCKI - TrÆ°á»Ÿng Khoa", "position": "BÃ¡c sÄ© TrÆ°á»Ÿng Khoa Kiá»ƒm soÃ¡t Nhiá»…m khuáº©n", "assigned_rooms": ["Kho Dá»¥ng cá»¥ Pháº«u thuáº­t VÃ´ khuáº©n thÃ&nbsp;nh pháº©m", "Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n"], "assigned_room": "Kho Dá»¥ng cá»¥ Pháº«u thuáº­t VÃ´ khuáº©n thÃ&nbsp;nh pháº©m, Khu Tiáº¿p nháº­n &amp; Rá»­a dá»¥ng cá»¥ y táº¿ báº©n", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 20, "code": "BV-119", "staff_code": "BV-119", "name": "ÄD. Trá»‹nh Thá»‹ Thu Trang", "full_name": "ÄD. Trá»‹nh Thá»‹ Thu Trang", "username": "bv119", "password": "123", "department_id": 10, "role": "staff", "role_level": "manager", "title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "role_title": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa", "position": "Äiá»u dÆ°á»¡ng TrÆ°á»Ÿng Khoa Kiá»ƒm soÃ¡t Nhiá»…m khuáº©n", "assigned_rooms": ["Khu ÄÃ³ng gÃ³i &amp; Ná»“i háº¥p Tiá»‡t trÃ¹ng nhiá»‡t Ä‘á»™ cao", "Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n"], "assigned_room": "Khu ÄÃ³ng gÃ³i &amp; Ná»“i háº¥p Tiá»‡t trÃ¹ng nhiá»‡t Ä‘á»™ cao, Khu Giáº·t lÃ&nbsp; &amp; Khá»­ khuáº©n Ä‘á»“ váº£i bá»‡nh viá»‡n", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 21, "code": "BV-120", "staff_code": "BV-120", "name": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng", "full_name": "ThS. ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng", "username": "bv120", "password": "123", "department_id": 18, "role": "staff", "role_level": "manager", "title": "TrÆ°á»Ÿng PhÃ²ng Chá»©c NÄƒng", "role_title": "TrÆ°á»Ÿng PhÃ²ng Chá»©c NÄƒng", "position": "TrÆ°á»Ÿng PhÃ²ng Äiá»u dÆ°á»¡ng Bá»‡nh viá»‡n VPI", "assigned_rooms": ["VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S"], "assigned_room": "VÄƒn phÃ²ng Äiá»u dÆ°á»¡ng trÆ°á»Ÿng bá»‡nh viá»‡n &amp; ÄÃ&nbsp;o táº¡o 5S", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 101, "code": "BV-201", "name": "BSCKI. Pháº¡m Quang Nam", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 8, "departments": [8], "can_review": false, "phone": "0211.386.130", "is_supervisor": false, "role": "staff"}, {"id": 102, "code": "BV-202", "name": "KTV. Nguyá»…n Äá»©c Tuáº¥n", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 8, "departments": [8], "can_review": false, "phone": "0211.386.130", "is_supervisor": false, "role": "staff"}, {"id": 103, "code": "BV-203", "name": "ÄD. Tráº§n Thá»‹ Lan HÆ°Æ¡ng", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 1, "departments": [1], "can_review": false, "phone": "0211.386.115", "is_supervisor": false, "role": "staff"}, {"id": 104, "code": "BV-204", "name": "ÄD. Nguyá»…n VÄƒn Tháº¯ng", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 12, "departments": [12], "can_review": false, "phone": "0211.386.117", "is_supervisor": false, "role": "staff"}, {"id": 105, "code": "BV-205", "name": "BSCKII. Nguyá»…n Thá»‹ Há»“ng", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 6, "departments": [6], "can_review": false, "phone": "0211.386.125", "is_supervisor": false, "role": "staff"}, {"id": 106, "code": "BV-206", "name": "Há»™ sinh. LÃª Thá»‹ ThÃºy Háº±ng", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 6, "departments": [6], "can_review": false, "phone": "0211.386.125", "is_supervisor": false, "role": "staff"}, {"id": 107, "code": "BV-207", "name": "ThS.BS. Äáº·ng Há»“ng PhÃºc", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 7, "departments": [7], "can_review": false, "phone": "0211.386.128", "is_supervisor": false, "role": "staff"}, {"id": 108, "code": "BV-208", "name": "ÄD. Äá»— Thá»‹ Hiá»n", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 7, "departments": [7], "can_review": false, "phone": "0211.386.128", "is_supervisor": false, "role": "staff"}, {"id": 109, "code": "BV-209", "name": "BSCKI. Tráº§n VÄƒn ThÃ¡i", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 3, "departments": [3], "can_review": false, "phone": "0211.386.118", "is_supervisor": false, "role": "staff"}, {"id": 110, "code": "BV-210", "name": "ÄD. Pháº¡m Thá»‹ LÃ½", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 3, "departments": [3], "can_review": false, "phone": "0211.386.118", "is_supervisor": false, "role": "staff"}, {"id": 111, "code": "BV-211", "name": "BSCKI. Äá»— Máº¡nh CÆ°á»ng", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 13, "departments": [13], "can_review": false, "phone": "0211.386.129", "is_supervisor": false, "role": "staff"}, {"id": 112, "code": "BV-212", "name": "ÄD. VÅ© Thá»‹ Loan", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 13, "departments": [13], "can_review": false, "phone": "0211.386.129", "is_supervisor": false, "role": "staff"}, {"id": 113, "code": "BV-213", "name": "BS. LÃª Quang Huy", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 14, "departments": [14], "can_review": false, "phone": "0211.386.131", "is_supervisor": false, "role": "staff"}, {"id": 114, "code": "BV-214", "name": "KTV. LÃª ThÃ¹y Linh", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 14, "departments": [14], "can_review": false, "phone": "0211.386.131", "is_supervisor": false, "role": "staff"}, {"id": 115, "code": "BV-215", "name": "BSCKI. VÅ© Äá»©c Háº£i", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 9, "departments": [9], "can_review": false, "phone": "0211.386.132", "is_supervisor": false, "role": "staff"}, {"id": 116, "code": "BV-216", "name": "KTV. Äá»— Thá»‹ Thu HÆ°á»ng", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 9, "departments": [9], "can_review": false, "phone": "0211.386.132", "is_supervisor": false, "role": "staff"}, {"id": 117, "code": "BV-217", "name": "DS CKI. HoÃ&nbsp;ng Thá»‹ Lan", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 15, "departments": [15], "can_review": false, "phone": "0211.386.133", "is_supervisor": false, "role": "staff"}, {"id": 118, "code": "BV-218", "name": "ÄD. Nguyá»…n Thu Trang", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 16, "departments": [16], "can_review": false, "phone": "0211.386.100", "is_supervisor": false, "role": "staff"}, {"id": 119, "code": "BV-219", "name": "BSCKI. Tráº§n Äá»©c Tháº¯ng", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 17, "departments": [17], "can_review": false, "phone": "0211.386.102", "is_supervisor": false, "role": "staff"}, {"id": 120, "code": "BV-220", "name": "ÄD. HoÃ&nbsp;ng Háº£i Yáº¿n", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 17, "departments": [17], "can_review": false, "phone": "0211.386.102", "is_supervisor": false, "role": "staff"}, {"id": 121, "code": "BV-221", "name": "ThS. Nguyá»…n VÄƒn HÃ¹ng", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 19, "departments": [19], "can_review": false, "phone": "0211.386.105", "is_supervisor": false, "role": "staff"}, {"id": 122, "code": "BV-222", "name": "CN. Äáº·ng Thá»‹ Loan", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 19, "departments": [19], "can_review": false, "phone": "0211.386.105", "is_supervisor": false, "role": "staff"}, {"id": 123, "code": "BV-223", "name": "ThS. VÅ© Thá»‹ Mai", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "department_id": 20, "departments": [20], "can_review": false, "phone": "0211.386.106", "is_supervisor": false, "role": "staff"}, {"id": 124, "code": "BV-224", "name": "KTV. LÃª Thu Tháº£o", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "department_id": 20, "departments": [20], "can_review": false, "phone": "0211.386.106", "is_supervisor": false, "role": "staff"}],
   schedules: {
   "current_week": 42,
   "year": 2026,
@@ -2916,7 +2722,13 @@ class App5S {
     };
     if (photoMap[type]) {
       this.newAuditState.afterPhoto = photoMap[type];
-      this.render();
+      this.currentShiftPhoto = photoMap[type];
+      const previewEl = document.getElementById('shift-photo-preview');
+      if (previewEl) {
+        this.updateShiftPhotoPreviewUI(photoMap[type]);
+      } else {
+        this.render();
+      }
       this.showToast('Đã chọn ảnh minh chứng mẫu thành công!');
     }
   }
@@ -3384,6 +3196,9 @@ class App5S {
     const rs = this.getRoomSchedule(roomId);
     const assignedStaff = rs.staff_assigned || [];
 
+    // V9 QUY TẮC 2: Chỉ lấy nhân sự thuộc danh bạ của khoa phòng này
+    const deptStaff = this.getStaffForDepartment(room.department_id);
+
     const modalHtml = `
       <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
         <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
@@ -3393,7 +3208,7 @@ class App5S {
             </div>
             <div>
               <h3 class="text-sm font-black text-slate-900 dark:text-white">${room.name}</h3>
-              <p class="text-[10px] text-slate-500 font-mono">${dept.name} • Mã: ${room.code || 'P-00'}</p>
+              <p class="text-[10px] text-indigo-600 font-bold font-mono">${dept.name} • Mã: ${room.code || 'P-00'}</p>
             </div>
           </div>
           <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
@@ -3451,28 +3266,36 @@ class App5S {
           `}
         </div>
 
-        <!-- KHỐI THÊM NHÂN SỰ VÀO VỊ TRÍ LÀM VIỆC -->
+        <!-- KHỐI THÊM NHÂN SỰ VÀO VỊ TRÍ LÀM VIỆC (V9: THEO DANH BẠ KHOA PHÒNG) -->
         <div class="bg-indigo-50/60 dark:bg-indigo-950/30 p-3.5 rounded-2xl border border-indigo-200/80 dark:border-indigo-900/60 space-y-2.5">
-          <div class="flex items-center space-x-1.5 text-xs font-bold text-indigo-900 dark:text-indigo-200">
-            <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i>
-            <span>Thêm nhân sự phụ trách vào buồng phòng:</span>
+          <div class="flex items-center justify-between text-xs font-bold text-indigo-900 dark:text-indigo-200">
+            <div class="flex items-center space-x-1.5">
+              <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i>
+              <span>Thêm nhân sự phụ trách vào buồng phòng:</span>
+            </div>
+            <span class="text-[10px] font-mono text-indigo-700 bg-indigo-100 dark:bg-indigo-900/60 px-1.5 py-0.5 rounded font-bold">Danh bạ ${dept.name}</span>
           </div>
 
           <div class="space-y-2">
             <div>
-              <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Chọn từ danh bạ nhân sự bệnh viện:</label>
-              <select id="add-staff-select" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
-                <option value="">-- Chọn cán bộ/nhân viên viện VPI --</option>
-                ${(this.data.staff || []).map(st => `
-                  <option value="${st.code}">${st.name} (${st.title || st.role_title || 'Nhân viên'}) - ${st.code}</option>
+              <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                Chọn từ danh bạ nhân sự <strong>${dept.name}</strong> (${deptStaff.length} người):
+              </label>
+              <select id="add-staff-select" class="w-full bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100 font-medium">
+                <option value="">-- Chọn cán bộ/nhân viên thuộc ${dept.name} --</option>
+                ${deptStaff.map(st => `
+                  <option value="${st.code || st.name}">${st.name} (${st.title || st.role_title || 'Nhân viên'}) ${st.code ? '• ' + st.code : ''}</option>
                 `).join('')}
               </select>
+              <div class="text-[10px] text-slate-500 mt-1">
+                🔒 <em>Nguyên tắc: Chỉ phân công nhân sự thuộc danh bạ của ${dept.name}.</em>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Hoặc nhập họ tên khác:</label>
-                <input type="text" id="add-staff-custom-name" placeholder="Ví dụ: BS. Nguyễn Văn A..." class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
+                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Bổ sung nhân sự mới vào khoa:</label>
+                <input type="text" id="add-staff-custom-name" placeholder="Họ tên cán bộ/nhân viên mới..." class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
               </div>
 
               <div>
@@ -3482,12 +3305,14 @@ class App5S {
                   <option value="Bác sĩ trực">Bác sĩ trực</option>
                   <option value="Điều dưỡng ca">Điều dưỡng ca</option>
                   <option value="Kỹ thuật viên máy">Kỹ thuật viên máy</option>
-                  <option value="Hỗ trợ chuyên môn">Hỗ trợ chuyên môn</option>
+                  <option value="Dược sĩ phụ trách">Dược sĩ phụ trách</option>
+                  <option value="Hộ sinh ca trực">Hộ sinh ca trực</option>
+                  <option value="Hộ lý / Vệ sinh">Hộ lý / Vệ sinh</option>
                 </select>
               </div>
             </div>
 
-            <button type="button" onclick="app5s.addStaffToRoom(${roomId})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-xs">
+            <button onclick="app5s.addStaffToRoom(${roomId})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-xs">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i>
               <span>THÊM NHÂN SỰ VÀO VỊ TRÍ NÀY</span>
             </button>
@@ -3504,25 +3329,55 @@ class App5S {
   }
 
   addStaffToRoom(roomId) {
+    const room = (this.data.rooms || []).find(r => r.id == roomId);
+    if (!room) return;
+    const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa' };
     const selectEl = document.getElementById('add-staff-select');
     const customNameEl = document.getElementById('add-staff-custom-name');
     const roleEl = document.getElementById('add-staff-role');
 
-    const selectedCode = selectEl ? selectEl.value : '';
+    const selectedVal = selectEl ? selectEl.value : '';
     const customName = customNameEl ? customNameEl.value.trim() : '';
     const role = roleEl ? roleEl.value : 'Phụ trách chính';
 
     let staffName = customName;
-    let staffCode = selectedCode || 'BV-NV';
+    let staffCode = selectedVal || 'BV-NV';
 
-    if (!staffName && selectedCode) {
-      const s = (this.data.staff || []).find(st => st.code === selectedCode);
-      if (s) staffName = s.name;
+    if (!staffName && selectedVal) {
+      const s = (this.data.staff || []).find(st => st.code === selectedVal || st.name === selectedVal);
+      if (s) {
+        staffName = s.name;
+        staffCode = s.code;
+      } else {
+        staffName = selectedVal;
+      }
     }
 
     if (!staffName) {
-      alert('Vui lòng chọn hoặc nhập tên nhân sự cần thêm vào ca trực!');
+      alert(`Vui lòng chọn nhân sự từ danh bạ ${dept.name} hoặc nhập họ tên mới để bổ sung vào khoa!`);
       return;
+    }
+
+    // Nếu nhập tên mới: tự động bổ sung vào danh bạ nhân sự của khoa phòng này
+    if (customName) {
+      const existingInDept = (this.data.staff || []).find(st => st.name.toLowerCase() === customName.toLowerCase() && (st.department_id == room.department_id || (Array.isArray(st.departments) && st.departments.includes(room.department_id))));
+      if (!existingInDept) {
+        staffCode = 'BV-' + Math.floor(200 + Math.random() * 790);
+        this.data.staff.push({
+          id: Date.now(),
+          code: staffCode,
+          name: customName,
+          title: role,
+          role_title: role,
+          department_id: room.department_id,
+          departments: [room.department_id],
+          can_review: false,
+          is_supervisor: false,
+          role: 'staff'
+        });
+      } else {
+        staffCode = existingInDept.code || staffCode;
+      }
     }
 
     const rs = this.getRoomSchedule(roomId);
@@ -3535,9 +3390,8 @@ class App5S {
 
     this.saveData();
     this.openManageRoomStaffModal(roomId);
-    this.showToast(`Đã thêm ${staffName} (${role}) vào vị trí làm việc!`);
+    this.showToast(`✅ Đã phân công ${staffName} (${role}) vào ${room.name}!`);
   }
-
   removeStaffFromRoom(roomId, index) {
     const rs = this.getRoomSchedule(roomId);
     if (!rs.staff_assigned || !rs.staff_assigned[index]) return;
@@ -3548,6 +3402,9 @@ class App5S {
   }
 
   // MODAL NỘP ẢNH 5S KHI HẾT GIỜ LÀM VIỆC
+  // =========================================================================
+  // V9 TÍNH NĂNG 1: CHỤP ẢNH CAMERA & TẢI ẢNH BÀN GIAO 5S HIỂN THỊ TỨC THÌ
+  // =========================================================================
   openEndShift5SModal(roomId) {
     const room = (this.data.rooms || []).find(r => r.id == roomId);
     if (!room) return;
@@ -3556,8 +3413,16 @@ class App5S {
     const assignedStaff = rs.staff_assigned || [];
     const staffNames = assignedStaff.map(s => s.name).join(', ') || 'Cán bộ ca trực';
 
+    this.currentShiftRoomId = roomId;
+    this.currentShiftPhoto = (rs.post_shift_5s && rs.post_shift_5s.photo) || this.newAuditState.afterPhoto || '';
+
     const modalHtml = `
       <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <!-- Input File ẩn cho Camera trực tiếp -->
+        <input type="file" id="shift-camera-input" accept="image/*" capture="environment" onchange="app5s.handleShiftPhotoSelected(event)" class="hidden">
+        <!-- Input File ẩn cho Chọn ảnh từ thư viện máy -->
+        <input type="file" id="shift-file-input" accept="image/*" onchange="app5s.handleShiftPhotoSelected(event)" class="hidden">
+
         <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
           <div class="flex items-center space-x-2">
             <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 flex items-center justify-center">
@@ -3580,7 +3445,7 @@ class App5S {
           </div>
           <div class="flex justify-between">
             <span class="text-slate-500 font-medium">Khoa / Bộ phận:</span>
-            <span>${dept.name}</span>
+            <span class="font-bold text-slate-700 dark:text-slate-200">${dept.name}</span>
           </div>
           <div class="flex justify-between">
             <span class="text-slate-500 font-medium">Nhân sự bàn giao:</span>
@@ -3589,30 +3454,21 @@ class App5S {
         </div>
 
         <div class="space-y-2">
-          <label class="block text-xs font-bold text-slate-800 dark:text-slate-200">
-            📸 Hình ảnh chụp minh chứng buồng phòng sau khi đã 5S sạch sẽ *
-          </label>
-          <div id="shift-photo-preview" class="relative border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-2xl p-4 text-center bg-amber-50/30 dark:bg-amber-950/20 hover:bg-amber-50 transition cursor-pointer">
-            ${this.newAuditState.afterPhoto ? `
-              <img src="${this.newAuditState.afterPhoto}" class="w-full h-44 object-cover rounded-xl shadow-xs">
-              <button onclick="app5s.removeAfterPhoto(event)" class="absolute top-6 right-6 bg-red-600 text-white rounded-full p-1.5 shadow-md">
-                <i data-lucide="x" class="w-4 h-4"></i>
-              </button>
-            ` : `
-              <input type="file" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
-              <div class="space-y-1.5 py-4">
-                <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center mx-auto">
-                  <i data-lucide="camera" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs font-bold text-amber-800 dark:text-amber-300">Bấm để Chụp ảnh hoặc Tải ảnh bàn giao lên</div>
-                <div class="text-[10px] text-slate-400">Yêu cầu chụp rõ mặt bàn máy, sàn phòng và vị trí sắp xếp vật tư</div>
-              </div>
-            `}
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-slate-800 dark:text-slate-200">
+              📸 Hình ảnh minh chứng buồng phòng sau khi đã 5S sạch sẽ *
+            </label>
+            ${this.currentShiftPhoto ? '<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">Đã có ảnh</span>' : ''}
           </div>
 
-          <!-- Nút chọn ảnh mẫu minh chứng -->
+          <!-- KHUNG HIỂN THỊ VÀ TẢI ẢNH 5S -->
+          <div id="shift-photo-preview">
+            ${this.renderShiftPhotoPreviewHtml(this.currentShiftPhoto)}
+          </div>
+
+          <!-- Nút chọn ảnh mẫu minh chứng nhanh -->
           <div class="pt-1 space-y-1">
-            <div class="text-[10px] text-slate-500 font-semibold">Chọn nhanh ảnh mẫu minh chứng:</div>
+            <div class="text-[10px] text-slate-500 font-semibold">Chọn nhanh ảnh mẫu minh chứng VPI:</div>
             <div class="flex flex-wrap gap-1.5">
               <button type="button" onclick="app5s.fillDemoAuditPhoto('ct')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 CT 128 Dãy</button>
               <button type="button" onclick="app5s.fillDemoAuditPhoto('emergency')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Cấp cứu</button>
@@ -3624,7 +3480,7 @@ class App5S {
 
         <div>
           <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Ghi chú tình trạng buồng phòng bàn giao:</label>
-          <textarea id="shift-5s-notes" rows="2" placeholder="Ví dụ: Đã lau khử khuẩn máy móc, khay thuốc cấp cứu đã niêm phong, sàn nhà sạch sẽ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100">Đã vệ sinh sạch sẽ, khử khuẩn bề mặt và sắp xếp ngăn nắp buồng phòng trước khi kết thúc ca trực.</textarea>
+          <textarea id="shift-5s-notes" rows="2" placeholder="Ví dụ: Đã lau khử khuẩn bề mặt máy móc, khay thuốc niêm phong, sàn nhà sạch sẽ khô ráo..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">${(rs.post_shift_5s && rs.post_shift_5s.notes) || 'Đã vệ sinh sạch sẽ, khử khuẩn bề mặt và sắp xếp ngăn nắp buồng phòng trước khi kết thúc ca.'}</textarea>
         </div>
 
         <button onclick="app5s.submitEndShift5S(${roomId})" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
@@ -3637,9 +3493,123 @@ class App5S {
     this.showModal(modalHtml);
   }
 
+  renderShiftPhotoPreviewHtml(photoUrl) {
+    if (photoUrl) {
+      return `
+        <div class="relative group rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-sm bg-slate-900">
+          <img src="${photoUrl}" class="w-full h-48 sm:h-56 object-cover cursor-pointer" onclick="app5s.viewLargePhoto('${photoUrl}', 'Ảnh 5S vừa chụp')">
+          <div class="absolute top-2 right-2 flex items-center space-x-1.5">
+            <button type="button" onclick="app5s.triggerCameraCapture()" title="Chụp lại bằng camera" class="px-2 py-1 bg-white/95 hover:bg-white text-slate-800 rounded-xl shadow text-xs font-bold flex items-center space-x-1">
+              <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span class="text-[10px]">Chụp lại</span>
+            </button>
+            <button type="button" onclick="app5s.triggerFileUpload()" title="Chọn ảnh khác từ máy" class="px-2 py-1 bg-white/95 hover:bg-white text-slate-800 rounded-xl shadow text-xs font-bold flex items-center space-x-1">
+              <i data-lucide="folder-open" class="w-3.5 h-3.5 text-indigo-600"></i>
+              <span class="text-[10px]">Tải lại</span>
+            </button>
+            <button type="button" onclick="app5s.clearShiftPhoto()" title="Xóa ảnh" class="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow text-xs">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div class="absolute bottom-2 left-2 bg-emerald-600/95 text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5 shadow backdrop-blur-xs">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+            <span>Đã hiển thị ảnh minh chứng 5S thành công</span>
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-2xl p-4 text-center bg-amber-50/30 dark:bg-amber-950/20 space-y-3">
+          <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center mx-auto shadow-2xs">
+            <i data-lucide="camera" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-amber-900 dark:text-amber-200">Bấm để Chụp ảnh hoặc Tải ảnh bàn giao lên</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Yêu cầu chụp rõ mặt bàn máy, sàn phòng và vị trí sắp xếp vật tư 5S</div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button type="button" onclick="app5s.triggerCameraCapture()" class="w-full py-2.5 px-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition">
+              <i data-lucide="camera" class="w-4 h-4"></i>
+              <span>📸 Chụp ảnh Camera</span>
+            </button>
+            <button type="button" onclick="app5s.triggerFileUpload()" class="w-full py-2.5 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-2xs transition">
+              <i data-lucide="image" class="w-4 h-4 text-slate-500"></i>
+              <span>📁 Tải ảnh từ máy</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  triggerCameraCapture() {
+    const camInput = document.getElementById('shift-camera-input');
+    if (camInput) camInput.click();
+    else {
+      const fileInput = document.getElementById('shift-file-input');
+      if (fileInput) fileInput.click();
+    }
+  }
+
+  triggerFileUpload() {
+    const fileInput = document.getElementById('shift-file-input');
+    if (fileInput) fileInput.click();
+  }
+
+  updateShiftPhotoPreviewUI(photoUrl) {
+    this.currentShiftPhoto = photoUrl;
+    this.newAuditState.afterPhoto = photoUrl;
+    const previewEl = document.getElementById('shift-photo-preview');
+    if (previewEl) {
+      previewEl.innerHTML = this.renderShiftPhotoPreviewHtml(photoUrl);
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  clearShiftPhoto() {
+    this.updateShiftPhotoPreviewUI('');
+    this.showToast('Đã xóa ảnh minh chứng');
+  }
+
+  handleShiftPhotoSelected(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const img = new Image();
+      img.onload = () => {
+        // Nén ảnh qua Canvas để tối ưu dung lượng và tốc độ
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1280;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+        this.updateShiftPhotoPreviewUI(compressedDataUrl);
+        this.showToast('✅ Đã nạp và hiển thị ảnh minh chứng 5S thành công!');
+      };
+      img.src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   submitEndShift5S(roomId, optionalPhoto = null, optionalNotes = null) {
     const rs = this.getRoomSchedule(roomId);
-    const photoInput = optionalPhoto || this.newAuditState.afterPhoto;
+    const photoInput = optionalPhoto || this.currentShiftPhoto || this.newAuditState.afterPhoto;
     const notesInput = document.getElementById('shift-5s-notes');
     const notes = optionalNotes || (notesInput ? notesInput.value.trim() : 'Đã dọn dẹp vệ sinh và khử khuẩn buồng phòng sau ca trực.');
 
@@ -3693,6 +3663,7 @@ class App5S {
       notes: notes
     };
 
+    this.currentShiftPhoto = null;
     this.newAuditState.afterPhoto = null;
     this.saveData();
     this.closeModal();
@@ -3700,7 +3671,8 @@ class App5S {
     this.showToast(`✅ Đã nộp ảnh 5S bàn giao ca cho ${room.name}!`);
   }
 
-  // MODAL ĐỒNG BỘ GOOGLE TRANG TÍNH VÀ EXCEL
+
+    // MODAL ĐỒNG BỘ GOOGLE TRANG TÍNH VÀ EXCEL
   openGoogleSheetSyncModal() {
     const sheetUrl = this.data.schedules.google_sheet_url || 'https://docs.google.com/spreadsheets/d/1tHg7-i__1yRdBbamuYCAKXYy7KdZflOtoin8Ay6jjBc/edit?gid=1227014826#gid=1227014826';
 
@@ -3943,6 +3915,11 @@ class App5S {
             <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm duyệt ảnh 5S toàn viện" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
               <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
               <span>Duyệt Ảnh 5S (${stats.pendingReviewCount})</span>
+            </button>
+            <!-- NÚT CHUYỂN ĐỔI TÀI KHOẢN (GIÁM SÁT VS CÁ NHÂN KHOA) -->
+            <button onclick="app5s.openSwitchAccountModal()" title="Chuyển đổi tài khoản (Giám sát / Cá nhân khoa)" class="bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-2 py-1.5 rounded-xl border border-indigo-200 dark:border-indigo-800 transition flex items-center space-x-1">
+              <i data-lucide="shield" class="w-3.5 h-3.5 text-indigo-600"></i>
+              <span>${this.isUserManagerOrSupervisor() ? '🛡️ Giám sát' : '🔒 ' + (this.getCurrentUser()?.name?.split('. ')?.pop() || 'Cá nhân')}</span>
             </button>
             <!-- NÚT BÁO CÁO TỔNG KẾT NGÀY -->
             <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết 5S ngày" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-2 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
@@ -4228,33 +4205,50 @@ class App5S {
                   `}
                 </div>
 
-                <!-- HIỂN THỊ ẢNH CHỤP 5S BÀN GIAO CA (NẾU ĐÃ NỘP) -->
-                ${s5.photo ? `
-                  <div class="bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
-                    <div class="flex items-center justify-between text-xs">
-                      <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1">
-                        <i data-lucide="camera" class="w-3.5 h-3.5 text-indigo-600"></i>
-                        <span>Ảnh 5S bàn giao ca (${s5.submitted_at || 'Cuối ca'}):</span>
-                      </span>
-                      ${s5.status === 'approved' ? '<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">🟢 Đã duyệt Đạt chuẩn</span>' :
-                        (s5.status === 'rejected' ? '<span class="text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded-full border border-red-300">🔴 Cần chấn chỉnh</span>' :
-                        '<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-300 animate-pulse">🟡 Chờ kiểm duyệt</span>')}
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-2 items-center">
-                      <div class="col-span-1 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 h-20 bg-slate-100 dark:bg-slate-900">
-                        <img src="${s5.photo}" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition" onclick="app5s.viewLargePhoto('${s5.photo}', '${r.name}')">
+                <!-- HIỂN THỊ ẢNH CHỤP 5S BÀN GIAO CA (V9: PHÂN QUYỀN NỘI BỘ KHOA VS TOÀN VIỆN) -->
+                ${s5.photo ? (() => {
+                  const canViewPhoto = this.canUserViewRoomPhotos(r.id);
+                  if (canViewPhoto) {
+                    return `
+                      <div class="bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                          <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1">
+                            <i data-lucide="camera" class="w-3.5 h-3.5 text-indigo-600"></i>
+                            <span>Ảnh 5S bàn giao ca (${s5.submitted_at || 'Cuối ca'}):</span>
+                          </span>
+                          ${s5.status === 'approved' ? '<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">🟢 Đã duyệt Đạt chuẩn</span>' :
+                            (s5.status === 'rejected' ? '<span class="text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded-full border border-red-300">🔴 Cần chấn chỉnh</span>' :
+                            '<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-300 animate-pulse">🟡 Chờ kiểm duyệt</span>')}
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-2 items-center">
+                          <div class="col-span-1 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 h-20 bg-slate-100 dark:bg-slate-900">
+                            <img src="${s5.photo}" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition" onclick="app5s.viewLargePhoto('${s5.photo}', '${r.name}', ${r.department_id})">
+                          </div>
+                          <div class="col-span-2 text-xs space-y-1">
+                            <div class="text-[11px] text-slate-600 dark:text-slate-300 italic line-clamp-2">"${s5.notes || 'Đã làm sạch sẽ, sắp xếp ngăn nắp.'}"</div>
+                            <div class="text-[10px] text-slate-400">Nộp bởi: <strong>${s5.submitted_by || 'Nhân sự ca trực'}</strong></div>
+                            ${s5.evaluated_by ? `
+                              <div class="text-[10px] text-indigo-600 font-bold">Người duyệt: ${s5.evaluated_by} (${s5.score || 98}đ)</div>
+                            ` : ''}
+                          </div>
+                        </div>
                       </div>
-                      <div class="col-span-2 text-xs space-y-1">
-                        <div class="text-[11px] text-slate-600 dark:text-slate-300 italic line-clamp-2">"${s5.notes || 'Đã làm sạch sẽ, sắp xếp ngăn nắp.'}"</div>
-                        <div class="text-[10px] text-slate-400">Nộp bởi: <strong>${s5.submitted_by || 'Nhân sự ca trực'}</strong></div>
-                        ${s5.evaluated_by ? `
-                          <div class="text-[10px] text-indigo-600 font-bold">Người duyệt: ${s5.evaluated_by} (${s5.score || 98}đ)</div>
-                        ` : ''}
+                    `;
+                  } else {
+                    return `
+                      <div class="bg-slate-50/80 dark:bg-slate-900/60 p-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 flex items-center space-x-2.5 text-xs">
+                        <div class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 flex items-center justify-center shrink-0">
+                          <i data-lucide="lock" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                          <div class="font-bold text-slate-700 dark:text-slate-200 text-[11px]">Ảnh 5S nội bộ ${dept.name}</div>
+                          <div class="text-[10px] text-slate-400 leading-tight">Chỉ tài khoản thuộc ${dept.name} hoặc Ban Giám sát toàn viện được xem</div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ` : ''}
+                    `;
+                  }
+                })() : ''}
 
                 <!-- NÚT CHỤP ẢNH 5S HẾT CA & QUYỀN KIỂM DUYỆT -->
                 <div class="flex flex-wrap items-center justify-between gap-1.5 pt-1">
@@ -4855,9 +4849,15 @@ class App5S {
   }
 
   removeAfterPhoto(e) {
-    e.stopPropagation();
+    if (e && e.stopPropagation) e.stopPropagation();
     this.newAuditState.afterPhoto = '';
-    this.render();
+    this.currentShiftPhoto = '';
+    const previewEl = document.getElementById('shift-photo-preview');
+    if (previewEl) {
+      this.updateShiftPhotoPreviewUI('');
+    } else {
+      this.render();
+    }
   }
 
   saveNewAudit() {
@@ -7142,6 +7142,164 @@ class App5S {
   // =========================================================================
   // V8 TÍNH NĂNG 2: PHÂN QUYỀN KIỂM DUYỆT & ĐÁNH GIÁ ẢNH 5S HẾT CA
   // =========================================================================
+  
+  // =========================================================================
+  // V9 TÍNH NĂNG 3: PHÂN QUYỀN XEM ẢNH NỘI BỘ KHOA VS TOÀN VIỆN
+  // =========================================================================
+  isUserManagerOrSupervisor() {
+    const user = this.getCurrentUser();
+    if (!user) return true;
+    if (user.role === 'admin' || user.role_level === 'admin') return true;
+    if (user.role === 'manager' || user.role_level === 'manager') return true;
+    if (user.can_review === true || user.is_supervisor === true) return true;
+    const title = (user.title || user.role_title || user.position || '').toLowerCase();
+    return title.includes('giám sát') || title.includes('trưởng ban 5s') || title.includes('chỉ đạo') || title.includes('kiểm duyệt') || title.includes('ban giám đốc') || title.includes('lãnh đạo');
+  }
+
+  getUserDepartmentId() {
+    const user = this.getCurrentUser();
+    if (!user) return null;
+    return user.department_id || (Array.isArray(user.departments) ? user.departments[0] : null);
+  }
+
+  canUserViewDeptPhotos(deptId) {
+    if (this.isUserManagerOrSupervisor()) return true;
+    const user = this.getCurrentUser();
+    if (!user) return true;
+    const userDeptId = this.getUserDepartmentId();
+    if (!userDeptId) return true;
+    if (String(userDeptId) === String(deptId)) return true;
+    if (Array.isArray(user.departments) && user.departments.some(d => String(d) === String(deptId))) return true;
+    return false;
+  }
+
+  canUserViewRoomPhotos(roomId) {
+    const room = (this.data.rooms || []).find(r => r.id == roomId);
+    if (!room) return false;
+    return this.canUserViewDeptPhotos(room.department_id);
+  }
+
+  // =========================================================================
+  // V9 TÍNH NĂNG 2: LẤY DANH BẠ NHÂN SỰ CHUẨN THEO TỪNG KHOA PHÒNG
+  // =========================================================================
+  getStaffForDepartment(deptId) {
+    const dept = (this.data.departments || []).find(d => d.id == deptId);
+    let list = (this.data.staff || []).filter(st => {
+      if (String(st.department_id) === String(deptId)) return true;
+      if (Array.isArray(st.departments) && st.departments.some(d => String(d) === String(deptId))) return true;
+      return false;
+    });
+
+    // Bổ sung Trưởng khoa & ĐD/KTV Trưởng nếu chưa có trong danh sách
+    if (dept) {
+      const names = new Set(list.map(s => s.name));
+      if (dept.doctor_in_charge && dept.doctor_in_charge !== 'Chưa cập nhật' && !names.has(dept.doctor_in_charge)) {
+        list.unshift({
+          code: 'BV-TK' + dept.id,
+          name: dept.doctor_in_charge,
+          title: 'Trưởng Khoa',
+          department_id: dept.id
+        });
+        names.add(dept.doctor_in_charge);
+      }
+      if (dept.head_nurse && dept.head_nurse !== 'Chưa cập nhật' && !names.has(dept.head_nurse)) {
+        list.push({
+          code: 'BV-DD' + dept.id,
+          name: dept.head_nurse,
+          title: 'ĐD/KTV Trưởng Khoa',
+          department_id: dept.id
+        });
+        names.add(dept.head_nurse);
+      }
+    }
+    return list;
+  }
+
+  // MODAL CHUYỂN ĐỔI NHANH TÀI KHOẢN ĐỂ KIỂM THỬ PHÂN QUYỀN
+  openSwitchAccountModal() {
+    const currentUser = this.getCurrentUser();
+    const currentCode = currentUser ? currentUser.code : 'BV-345';
+    const isSup = this.isUserManagerOrSupervisor();
+    const currentDept = (this.data.departments || []).find(d => d.id == this.getUserDepartmentId());
+
+    const accounts = [
+      { code: 'BV-345', name: 'KTV. Vũ Bá Đạt', role: 'Cán bộ Giám sát 5S Toàn Viện & KTV Trưởng CĐHA', dept: 'Khoa CĐHA & Toàn viện', type: 'supervisor' },
+      { code: 'BV-101', name: 'ThS. BSCKII. Phạm Quỳnh Hưng', role: 'Trưởng ban Chỉ đạo 5S / Ban Giám Đốc', dept: 'Ban Giám Đốc & Toàn viện', type: 'supervisor' },
+      { code: 'BV-115', name: 'KTV. Trần Văn Chung', role: 'Kỹ thuật viên CĐHA (Tài khoản cá nhân)', dept: 'Khoa Chẩn đoán Hình ảnh', type: 'staff', deptId: 8 },
+      { code: 'BV-104', name: 'ĐD. Lê Văn Minh', role: 'Điều dưỡng viên Cấp cứu (Tài khoản cá nhân)', dept: 'Khoa Cấp cứu', type: 'staff', deptId: 1 },
+      { code: 'BV-102', name: 'BSCKII. Nguyễn Văn Toàn', role: 'Trưởng Khoa Ngoại (Tài khoản cá nhân)', dept: 'Khoa Ngoại Tổng hợp', type: 'staff', deptId: 4 },
+      { code: 'BV-117', name: 'DS. Nguyễn Bích Ngọc', role: 'Dược sĩ Kho Dược (Tài khoản cá nhân)', dept: 'Khoa Dược', type: 'staff', deptId: 15 }
+    ];
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+              <i data-lucide="shield" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">KIỂM THỬ PHÂN QUYỀN TÀI KHOẢN</h3>
+              <p class="text-[10px] text-slate-500 font-bold">Chuyển đổi vai trò Giám sát vs Cá nhân khoa</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="p-3 rounded-2xl ${isSup ? 'bg-indigo-50 border border-indigo-200 text-indigo-900' : 'bg-amber-50 border border-amber-200 text-amber-900'} text-xs space-y-1">
+          <div class="font-bold flex items-center space-x-1.5">
+            <i data-lucide="${isSup ? 'shield-check' : 'user'}" class="w-4 h-4"></i>
+            <span>Tài khoản hiện tại: ${currentUser ? currentUser.name : 'Vũ Bá Đạt'} (${currentCode})</span>
+          </div>
+          <div class="text-[11px] leading-relaxed">
+            Quyền hạn: <strong>${isSup ? '🛡️ Ban Giám Sát / Quản Lý: Được xem và duyệt ảnh 5S toàn bộ 20 khoa phòng.' : `🔒 Tài khoản nội bộ ${currentDept ? currentDept.name : 'Khoa'}: Chỉ xem ảnh 5S của khoa mình.`}</strong>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-xs font-bold text-slate-700">Chọn tài khoản muốn chuyển đổi:</div>
+          <div class="space-y-1.5">
+            ${accounts.map(acc => {
+              const isActive = acc.code === currentCode;
+              return `
+                <div onclick="app5s.switchUserAccount('${acc.code}')" class="p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between ${
+                  isActive ? 'bg-emerald-50 border-emerald-300 dark:bg-emerald-950/40 font-bold' : 'bg-white hover:bg-slate-50 border-slate-200'
+                }">
+                  <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-xl ${acc.type === 'supervisor' ? 'bg-indigo-600 text-white' : 'bg-emerald-600 text-white'} flex items-center justify-center text-xs font-bold shrink-0">
+                      ${acc.type === 'supervisor' ? '🛡️' : '👨‍⚕️'}
+                    </div>
+                    <div>
+                      <div class="text-xs text-slate-900 font-bold">${acc.name} <span class="font-mono text-[10px] text-slate-400">(${acc.code})</span></div>
+                      <div class="text-[10px] text-slate-500">${acc.role}</div>
+                      <div class="text-[9px] ${acc.type === 'supervisor' ? 'text-indigo-600 font-bold' : 'text-emerald-600 font-bold'}">${acc.dept}</div>
+                    </div>
+                  </div>
+                  <div>
+                    ${isActive ? '<span class="px-2 py-0.5 rounded-full text-[9px] bg-emerald-600 text-white font-bold">Đang dùng</span>' : '<span class="px-2 py-0.5 rounded-full text-[9px] bg-slate-100 text-slate-600 font-bold">Chọn</span>'}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+    this.showModal(modalHtml);
+  }
+
+  switchUserAccount(userCode) {
+    if (!this.data.auth) this.data.auth = { isLoggedIn: true, locationMode: 'internal' };
+    this.data.auth.currentUserId = userCode;
+    this.saveData();
+    this.closeModal();
+    this.render();
+    const u = this.getCurrentUser();
+    this.showToast(`Đã chuyển sang tài khoản: ${u ? u.name : userCode}`);
+  }
+
   canUserReviewAudits() {
     const user = this.getCurrentUser();
     if (!user) return true;
@@ -7152,7 +7310,11 @@ class App5S {
     return title.includes('giám sát') || title.includes('trưởng') || title.includes('chỉ đạo') || title.includes('kiểm duyệt') || title.includes('lãnh đạo');
   }
 
-  viewLargePhoto(photoUrl, title = 'Ảnh minh chứng 5S') {
+  viewLargePhoto(photoUrl, title = 'Ảnh minh chứng 5S', deptId = null) {
+    if (deptId && !this.canUserViewDeptPhotos(deptId)) {
+      this.showToast('🔒 Quyền riêng tư: Bạn không thuộc khoa phòng này. Chỉ cán bộ thuộc khoa hoặc Ban Giám sát toàn viện mới được xem ảnh minh chứng!');
+      return;
+    }
     const modalHtml = `
       <div class="p-4 space-y-3 max-h-[90vh]">
         <div class="flex items-center justify-between border-b pb-2">
@@ -7396,7 +7558,16 @@ class App5S {
     const rooms = this.data.rooms || [];
     const depts = this.data.departments || [];
 
-    const submittedRooms = roomSchedules.filter(rs => rs.post_shift_5s && rs.post_shift_5s.photo);
+    const isSupervisor = this.isUserManagerOrSupervisor();
+    const user = this.getCurrentUser();
+    const userDeptId = this.getUserDepartmentId();
+    const userDept = (this.data.departments || []).find(d => d.id == userDeptId) || { name: 'Khoa phòng' };
+
+    let submittedRooms = roomSchedules.filter(rs => rs.post_shift_5s && rs.post_shift_5s.photo);
+    if (!isSupervisor && userDeptId) {
+      const deptRoomIds = rooms.filter(rm => rm.department_id == userDeptId).map(rm => rm.id);
+      submittedRooms = submittedRooms.filter(rs => deptRoomIds.includes(rs.room_id));
+    }
     const pending = submittedRooms.filter(rs => rs.post_shift_5s.status === 'submitted' || rs.post_shift_5s.status === 'pending');
     const approved = submittedRooms.filter(rs => rs.post_shift_5s.status === 'approved');
     const rejected = submittedRooms.filter(rs => rs.post_shift_5s.status === 'rejected');
@@ -7409,8 +7580,8 @@ class App5S {
               <i data-lucide="shield-check" class="w-5 h-5"></i>
             </div>
             <div>
-              <h3 class="text-sm font-black text-slate-900 dark:text-white">TRUNG TÂM KIỂM DUYỆT ẢNH 5S TOÀN VIỆN</h3>
-              <p class="text-[10px] text-indigo-600 font-bold">${submittedRooms.length} vị trí buồng phòng đã nộp ảnh</p>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">${isSupervisor ? 'TRUNG TÂM KIỂM DUYỆT ẢNH 5S TOÀN VIỆN' : 'ẢNH 5S BÀN GIAO CA - ' + (userDept.name || '').toUpperCase()}</h3>
+              <p class="text-[10px] text-indigo-600 font-bold">${isSupervisor ? 'Quyền Giám Sát: Xem & Duyệt cả 20 khoa phòng (' + submittedRooms.length + ' phòng)' : 'Tài khoản nội bộ khoa: Chỉ xem ảnh 5S của ' + userDept.name + ' (' + submittedRooms.length + ' phòng)'}</p>
             </div>
           </div>
           <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
