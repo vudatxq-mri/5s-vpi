@@ -4993,65 +4993,33 @@ class App5S {
       return `
         <!-- NHÓM KHOA: ${d.name} -->
         <div data-dept-card="${d.id}" class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/90 dark:border-slate-700 shadow-sm overflow-hidden transition hover:border-emerald-300">
-          <!-- Header của Nhóm Khoa -->
-          <div class="p-3.5 bg-gradient-to-r ${
+          <!-- Header của Nhóm Khoa: Bố cục cân đối 2 bên, không còn khoảng trống -->
+          <div class="p-3 sm:p-3.5 bg-gradient-to-r ${
             isParaclinical ? 'from-indigo-50/70 via-white to-white dark:from-indigo-950/30' : 
             (isFunctional ? 'from-slate-100/70 via-white to-white dark:from-slate-800' : 'from-emerald-50/70 via-white to-white dark:from-emerald-950/30')
           } dark:to-slate-800 border-b border-slate-100 dark:border-slate-700/60">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start space-x-2.5">
+            
+            <!-- HÀNG 1: TÊN KHOA PHÒNG & NÚT THU GỌN (Chiếm trọn bề ngang, không bị bóp nghẹt chữ) -->
+            <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-700/60">
+              <div class="flex items-center space-x-2.5 min-w-0 flex-1">
                 <div class="w-8 h-8 rounded-xl ${badgeColor} flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                   #${d.order}
                 </div>
-                <div>
-                  <div class="flex items-center space-x-2">
-                    <h3 class="text-sm font-black text-slate-900 dark:text-white">${d.name}</h3>
-                    <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold">${d.code}</span>
-                  </div>
-                  <div class="text-[10px] text-slate-500 mt-0.5 flex flex-wrap gap-x-2.5 gap-y-0.5">
-                    <span>👨‍⚕️ Trưởng khoa: <strong>${d.doctor_in_charge || 'Chưa cập nhật'}</strong></span>
-                    <span>👩‍⚕️ ĐD/KTV Trưởng: <strong>${d.head_nurse || 'Chưa cập nhật'}</strong></span>
-                    <span>📞 Hotline: <strong>${d.phone || '0211.386.115'}</strong></span>
-                  </div>
-
-                  <!-- TRẠNG THÁI TIẾN ĐỘ 5S HÔM NAY CỦA KHOA -->
-                  <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
-                    ${(() => {
-                      const daily = this.getDepartmentDailyStatus(d.id);
-                      if (daily.isCompleted) {
-                        return `
-                          <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
-                            <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i>
-                            <span>Đã nộp hôm nay (${daily.count} phiếu)</span>
-                          </span>
-                          ${daily.status === 'pending' ? '<span class="px-1.5 py-0.5 rounded-full text-[9px] bg-amber-100 text-amber-800 border border-amber-300 font-bold">Chờ duyệt</span>' : 
-                            (daily.status === 'approved' ? '<span class="px-1.5 py-0.5 rounded-full text-[9px] bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold">Đạt chuẩn 5S</span>' :
-                            '<span class="px-1.5 py-0.5 rounded-full text-[9px] bg-red-100 text-red-800 border border-red-300 font-bold">Nhắc nhở lỗi</span>')}
-                          ${daily.latestAudit ? `
-                            <button onclick="app5s.openAuditEvaluationModal('${daily.latestAudit.id}')" class="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold hover:underline flex items-center space-x-0.5">
-                              <span>Xem & đánh giá</span>
-                              <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                            </button>
-                          ` : ''}
-                        `;
-                      } else {
-                        return `
-                          <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300">
-                            <i data-lucide="alert-triangle" class="w-3 h-3 text-red-600"></i>
-                            <span>Chưa gửi ảnh hôm nay</span>
-                          </span>
-                          <button onclick="app5s.remindSingleDept('${d.id}')" class="px-2 py-0.5 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-300 rounded-lg text-[9px] font-bold hover:bg-amber-100 transition flex items-center space-x-1">
-                            <i data-lucide="bell" class="w-2.5 h-2.5"></i>
-                            <span>Nhắc nộp</span>
-                          </button>
-                        `;
-                      }
-                    })()}
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <h3 class="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight">${d.name}</h3>
+                    <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold shrink-0">${d.code}</span>
+                    <span class="text-[9px] px-1.5 py-0.5 rounded-full ${
+                      isParaclinical ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300' : 
+                      (isFunctional ? 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300')
+                    } font-semibold shrink-0">
+                      ${isParaclinical ? 'Cận lâm sàng' : (isFunctional ? 'Khối chức năng' : 'Khối lâm sàng')}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <!-- Các nút hành động cấp Khoa -->
+              <!-- Nút Thao tác nhanh & Thu gọn / Mở rộng nhóm -->
               <div class="flex items-center space-x-1 shrink-0">
                 ${this.isReorderMode ? `
                   <div class="flex items-center space-x-0.5 mr-1">
@@ -5064,29 +5032,113 @@ class App5S {
                   </div>
                 ` : ''}
 
-                <!-- Nút Kiểm tra & Đánh giá 5S Khoa (V8) -->
-                <button onclick="app5s.openDeptEvaluationModal('${d.id}')" title="Kiểm tra & Đánh giá 5S Khoa" class="px-2 py-1 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center space-x-1 transition shadow-2xs">
-                  <i data-lucide="award" class="w-3.5 h-3.5"></i>
-                  <span class="text-[10px]">Đánh giá</span>
-                </button>
-
-                <!-- Nút Sửa Khoa -->
-                <button onclick="app5s.openEditDeptModal('${d.id}')" title="Sửa thông tin khoa" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-emerald-100 hover:text-emerald-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center space-x-1 transition">
-                  <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                  <span class="hidden sm:inline text-[10px]">Sửa</span>
-                </button>
-
-                <!-- Nút Thêm Khu Vực Làm Việc vào Khoa này -->
-                <button onclick="app5s.openAddRoomModal('${d.id}')" title="Thêm khu vực làm việc vào ${d.name}" class="p-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center space-x-1 transition border border-emerald-200 dark:border-emerald-800">
-                  <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
-                  <span class="text-[10px] font-bold">+ Khu vực</span>
-                </button>
-
-                <!-- Nút Thu gọn / Mở rộng nhóm khoa -->
-                <button onclick="app5s.toggleCollapseDept('${d.id}')" title="${isCollapsed ? 'Mở rộng nhóm' : 'Thu gọn nhóm'}" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+                <button onclick="app5s.toggleCollapseDept('${d.id}')" title="${isCollapsed ? 'Mở rộng nhóm' : 'Thu gọn nhóm'}" class="p-1.5 rounded-xl bg-white/80 dark:bg-slate-700/80 hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-500 dark:text-slate-300 border border-slate-200/90 dark:border-slate-600 transition shadow-2xs flex items-center space-x-1">
+                  <span class="text-[10px] font-bold text-slate-400 hidden sm:inline">${isCollapsed ? 'Mở' : 'Gọn'}</span>
                   <i data-lucide="${isCollapsed ? 'chevron-down' : 'chevron-up'}" class="w-4 h-4"></i>
                 </button>
               </div>
+            </div>
+
+            <!-- HÀNG 2: BỐ CỤC 2 CỘT CÂN ĐỐI (Lấp đầy khoảng trống bên phải) -->
+            <div class="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+              <!-- Khối Trái: Thông tin Nhân sự & Hotline -->
+              <div class="bg-white/80 dark:bg-slate-800/80 p-2.5 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-1 text-slate-600 dark:text-slate-300">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-slate-400 shrink-0">👨‍⚕️ Trưởng khoa:</span>
+                  <strong class="text-slate-800 dark:text-slate-100 truncate">${d.doctor_in_charge || 'Chưa cập nhật'}</strong>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-slate-400 shrink-0">👩‍⚕️ ĐD/KTV Trưởng:</span>
+                  <strong class="text-slate-800 dark:text-slate-100 truncate">${d.head_nurse || 'Chưa cập nhật'}</strong>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-slate-400 shrink-0">📞 Hotline:</span>
+                  <strong class="text-slate-800 dark:text-slate-100">${d.phone || '0211.386.115'}</strong>
+                </div>
+              </div>
+
+              <!-- Khối Phải: Tình trạng 5S Hôm Nay, Đánh Giá & Quy Mô (Lấp đầy khoảng trống) -->
+              <div class="bg-white/80 dark:bg-slate-800/80 p-2.5 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 flex flex-col justify-between space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400 text-[10px] shrink-0 font-medium">Tiến độ 5S hôm nay:</span>
+                  ${(() => {
+                    const daily = this.getDepartmentDailyStatus(d.id);
+                    if (daily.isCompleted) {
+                      return `
+                        <div class="flex items-center space-x-1.5">
+                          <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
+                            <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i>
+                            <span>Đã nộp (${daily.count} phiếu)</span>
+                          </span>
+                          ${daily.status === 'pending' ? '<span class="px-1.5 py-0.5 rounded-full text-[9px] bg-amber-100 text-amber-800 border border-amber-300 font-bold">Chờ duyệt</span>' : 
+                            (daily.status === 'approved' ? '<span class="px-1.5 py-0.5 rounded-full text-[9px] bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold">Đạt 5S</span>' :
+                            '<span class="px-1.5 py-0.5 rounded-full text-[9px] bg-red-100 text-red-800 border border-red-300 font-bold">Nhắc lỗi</span>')}
+                          ${daily.latestAudit ? `
+                            <button onclick="app5s.openAuditEvaluationModal('${daily.latestAudit.id}')" class="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold hover:underline flex items-center space-x-0.5">
+                              <span>Xem</span>
+                              <i data-lucide="arrow-right" class="w-2.5 h-2.5"></i>
+                            </button>
+                          ` : ''}
+                        </div>
+                      `;
+                    } else {
+                      return `
+                        <div class="flex items-center space-x-1.5">
+                          <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300">
+                            <i data-lucide="alert-triangle" class="w-3 h-3 text-red-600"></i>
+                            <span>Chưa gửi ảnh</span>
+                          </span>
+                          <button onclick="app5s.remindSingleDept('${d.id}')" class="px-1.5 py-0.5 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-300 rounded-lg text-[9px] font-bold hover:bg-amber-100 transition flex items-center space-x-0.5">
+                            <i data-lucide="bell" class="w-2.5 h-2.5"></i>
+                            <span>Nhắc nộp</span>
+                          </button>
+                        </div>
+                      `;
+                    }
+                  })()}
+                </div>
+
+                <div class="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-100 dark:border-slate-700/60">
+                  <div class="flex items-center space-x-1">
+                    <i data-lucide="layout-grid" class="w-3 h-3 text-slate-400"></i>
+                    <span>Quy mô: <strong class="text-slate-700 dark:text-slate-200">${deptRooms.length} buồng phòng</strong></span>
+                  </div>
+                  ${(() => {
+                    const deptEval = (this.data.department_evaluations || []).find(e => e.dept_id == d.id);
+                    if (deptEval && deptEval.score) {
+                      return `
+                        <span class="inline-flex items-center space-x-1 font-bold text-indigo-700 dark:text-indigo-400">
+                          <i data-lucide="award" class="w-3 h-3 text-indigo-600"></i>
+                          <span>5S Khoa: ${deptEval.score}đ (${deptEval.grade || 'Đạt'})</span>
+                        </span>
+                      `;
+                    } else {
+                      return `<span class="text-slate-400 italic">Chưa đánh giá 5S khoa</span>`;
+                    }
+                  })()}
+                </div>
+              </div>
+            </div>
+
+            <!-- HÀNG 3: THANH CÔNG CỤ HÀNH ĐỘNG CẤP KHOA (3 nút trải đều, cân đối, dễ bấm) -->
+            <div class="mt-2.5 grid grid-cols-3 gap-1.5 sm:gap-2 pt-1">
+              <!-- Nút Kiểm tra & Đánh giá 5S Khoa (V8) -->
+              <button onclick="app5s.openDeptEvaluationModal('${d.id}')" title="Kiểm tra & Đánh giá 5S Khoa" class="w-full py-1.5 px-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center justify-center space-x-1 transition shadow-2xs">
+                <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                <span class="text-[11px] truncate">Đánh giá 5S</span>
+              </button>
+
+              <!-- Nút Sửa Khoa -->
+              <button onclick="app5s.openEditDeptModal('${d.id}')" title="Sửa thông tin khoa" class="w-full py-1.5 px-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center space-x-1 transition border border-slate-200 dark:border-slate-600">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                <span class="text-[11px] truncate">Sửa Khoa</span>
+              </button>
+
+              <!-- Nút Thêm Khu Vực Làm Việc vào Khoa này -->
+              <button onclick="app5s.openAddRoomModal('${d.id}')" title="Thêm khu vực làm việc vào ${d.name}" class="w-full py-1.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center space-x-1 transition border border-emerald-200 dark:border-emerald-800">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                <span class="text-[11px] truncate">+ Khu vực</span>
+              </button>
             </div>
           </div>
 
