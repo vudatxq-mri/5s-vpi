@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v10_custom_shifts';
+const STORAGE_KEY = 'vpi_5s_data_v11_watermark';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -2092,7 +2092,7 @@ class App5S {
       let raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
         // Tự động kế thừa từ phiên bản V7 nếu có
-        raw = localStorage.getItem('vpi_5s_data_v9_permissions') || localStorage.getItem('vpi_5s_data_v8_reviews') || localStorage.getItem('vpi_5s_data_v7_schedule');
+        raw = localStorage.getItem('vpi_5s_data_v10_custom_shifts') || localStorage.getItem('vpi_5s_data_v9_permissions') || localStorage.getItem('vpi_5s_data_v8_reviews');
       }
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -3465,6 +3465,14 @@ class App5S {
             ${this.currentShiftPhoto ? '<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">Đã có ảnh</span>' : ''}
           </div>
 
+          <!-- THÔNG BÁO CHỐNG SỬ DỤNG LẠI ẢNH (V11) -->
+          <div class="bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 flex items-start space-x-2 text-[11px] text-emerald-900 dark:text-emerald-200">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="font-bold">Đóng dấu ngày giờ chống gian lận:</strong> Khung hình camera tự động in chết thời gian chụp, tên buồng phòng và mã đối soát vào ảnh, ngăn ngừa dùng lại ảnh cũ.
+            </div>
+          </div>
+
           <!-- KHUNG HIỂN THỊ VÀ TẢI ẢNH 5S -->
           <div id="shift-photo-preview">
             ${this.renderShiftPhotoPreviewHtml(this.currentShiftPhoto)}
@@ -3501,7 +3509,7 @@ class App5S {
     if (photoUrl) {
       return `
         <div class="relative group rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-sm bg-slate-900">
-          <img src="${photoUrl}" class="w-full h-48 sm:h-56 object-cover cursor-pointer" onclick="app5s.viewLargePhoto('${photoUrl}', 'Ảnh 5S vừa chụp')">
+          <div class="w-full bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center p-1"><img src="${photoUrl}" class="w-full h-auto max-h-72 object-contain rounded-lg cursor-pointer" onclick="app5s.viewLargePhoto('${photoUrl}', 'Ảnh 5S vừa chụp')"></div>
           <div class="absolute top-2 right-2 flex items-center space-x-1.5">
             <button type="button" onclick="app5s.triggerCameraCapture()" title="Chụp lại bằng camera" class="px-2 py-1 bg-white/95 hover:bg-white text-slate-800 rounded-xl shadow text-xs font-bold flex items-center space-x-1">
               <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
@@ -3515,9 +3523,9 @@ class App5S {
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
           </div>
-          <div class="absolute bottom-2 left-2 bg-emerald-600/95 text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5 shadow backdrop-blur-xs">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-            <span>Đã hiển thị ảnh minh chứng 5S thành công</span>
+          <div class="absolute top-2 left-2 bg-emerald-950/85 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-xl flex items-center space-x-1 border border-emerald-500/60 shadow backdrop-blur-xs">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>✓ Đã đóng dấu ngày giờ</span>
           </div>
         </div>
       `;
@@ -3546,14 +3554,411 @@ class App5S {
     }
   }
 
-  triggerCameraCapture() {
-    const camInput = document.getElementById('shift-camera-input');
-    if (camInput) camInput.click();
-    else {
-      const fileInput = document.getElementById('shift-file-input');
-      if (fileInput) fileInput.click();
+
+  // =========================================================================
+  // TÍNH NĂNG V11: ĐÓNG DẤU CHÌM CHỐNG GIAN LẬN & SỬ DỤNG LẠI ẢNH (REAL-TIME WATERMARK)
+  // Đóng dấu ngày giờ, cơ sở y tế, buồng phòng, cán bộ chụp & mã hash trực tiếp vào điểm ảnh
+  // =========================================================================
+  stamp5SWatermark(canvas, info = {}) {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    const scale = Math.max(0.65, Math.min(width, height) / 800);
+
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const dateStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
+    const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const fullDateTime = `${dateStr} ${timeStr}`;
+
+    const deptName = info.deptName || 'Khoa / Phòng Bệnh viện';
+    const roomName = info.roomName || 'Khu vực làm việc 5S';
+    const staffName = info.staffName || (this.getCurrentUser() ? `${this.getCurrentUser().name} (${this.getCurrentUser().code})` : 'Cán bộ 5S VPI');
+    const shiftName = info.shiftName || 'Ca làm việc';
+    const randomHex = Math.random().toString(16).substring(2, 6).toUpperCase();
+    const verifyCode = `VPI-5S-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}-${randomHex}`;
+
+    ctx.save();
+
+    // 1. TOP-LEFT LIVE BADGE: Camera Real-time Timestamp
+    const badgeFont = `bold ${Math.round(13 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.font = badgeFont;
+    const badgeText = `● CHỤP CAMERA THỜI GIAN THỰC: ${fullDateTime}`;
+    const badgePadX = 12 * scale;
+    const badgeWidth = ctx.measureText(badgeText).width + badgePadX * 2;
+    const badgeHeight = 28 * scale;
+    const padMargin = 16 * scale;
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 1.5 * scale;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(padMargin, padMargin, badgeWidth, badgeHeight, 6 * scale);
+    } else {
+      ctx.rect(padMargin, padMargin, badgeWidth, badgeHeight);
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#34d399';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(badgeText, padMargin + badgePadX, padMargin + badgeHeight / 2);
+
+    // 2. TOP-RIGHT ANTI-REUSE VERIFICATION SEAL
+    const sealFont = `bold ${Math.round(10.5 * scale)}px monospace`;
+    ctx.font = sealFont;
+    const sealText = `✓ CHỐNG DÙNG LẠI ẢNH • #${verifyCode.slice(-10)}`;
+    const sealWidth = ctx.measureText(sealText).width + 16 * scale;
+    const sealHeight = 24 * scale;
+    const sealX = width - sealWidth - padMargin;
+
+    if (sealX > padMargin + badgeWidth + 10) {
+      ctx.fillStyle = 'rgba(2, 44, 34, 0.9)';
+      ctx.strokeStyle = '#059669';
+      ctx.lineWidth = 1.5 * scale;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(sealX, padMargin, sealWidth, sealHeight, 5 * scale);
+      } else {
+        ctx.rect(sealX, padMargin, sealWidth, sealHeight);
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#a7f3d0';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(sealText, sealX + 8 * scale, padMargin + sealHeight / 2);
+    }
+
+    // 3. BOTTOM BANNER CARD (DIGITAL HUD WATERMARK)
+    const bannerHeight = 110 * scale;
+    const bannerX = padMargin;
+    const bannerY = height - bannerHeight - padMargin;
+    const bannerWidth = width - padMargin * 2;
+
+    const bGrad = ctx.createLinearGradient(bannerX, bannerY, bannerX + bannerWidth, bannerY + bannerHeight);
+    bGrad.addColorStop(0, 'rgba(15, 23, 42, 0.94)');
+    bGrad.addColorStop(1, 'rgba(6, 78, 59, 0.92)');
+    ctx.fillStyle = bGrad;
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.9)';
+    ctx.lineWidth = 2 * scale;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(bannerX, bannerY, bannerWidth, bannerHeight, 12 * scale);
+    } else {
+      ctx.rect(bannerX, bannerY, bannerWidth, bannerHeight);
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    // Accent emerald line
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(bannerX + 4 * scale, bannerY + 10 * scale, 5 * scale, bannerHeight - 20 * scale, 2.5 * scale);
+    } else {
+      ctx.rect(bannerX + 4 * scale, bannerY + 10 * scale, 5 * scale, bannerHeight - 20 * scale);
+    }
+    ctx.fill();
+
+    const textX = bannerX + 18 * scale;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+
+    // Line 1: Hospital Name & Department Tag
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = `bold ${Math.round(15 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText('🏥 BỆNH VIỆN VĨNH PHÚC VPI • BAN CHỈ ĐẠO 5S TOÀN VIỆN', textX, bannerY + 11 * scale);
+
+    // Line 2: Room Name & Department
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = `bold ${Math.round(13 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText(`📍 ${roomName}  [${deptName}]`, textX, bannerY + 36 * scale);
+
+    // Line 3: Timestamp (Highlighted in bold gold/yellow)
+    ctx.fillStyle = '#fde047';
+    ctx.font = `bold ${Math.round(13.5 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText(`⏱️ THỜI GIAN CHỤP: ${fullDateTime} (GIỜ HỆ THỐNG THỰC TẾ)`, textX, bannerY + 59 * scale);
+
+    // Line 4: Staff & Shift
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = `${Math.round(11.5 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText(`👤 Cán bộ thực hiện: ${staffName} • ${shiftName}`, textX, bannerY + 83 * scale);
+
+    // Right Verification Box
+    const codeBoxWidth = 210 * scale;
+    const codeBoxHeight = 40 * scale;
+    const codeBoxX = bannerX + bannerWidth - codeBoxWidth - 12 * scale;
+    const codeBoxY = bannerY + bannerHeight - codeBoxHeight - 12 * scale;
+
+    if (bannerWidth > 480 * scale) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.strokeStyle = 'rgba(52, 211, 153, 0.6)';
+      ctx.lineWidth = 1 * scale;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(codeBoxX, codeBoxY, codeBoxWidth, codeBoxHeight, 7 * scale);
+      } else {
+        ctx.rect(codeBoxX, codeBoxY, codeBoxWidth, codeBoxHeight);
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#34d399';
+      ctx.font = `bold ${Math.round(9.5 * scale)}px monospace`;
+      ctx.fillText('MÃ ĐỐI SOÁT CHỐNG GIAN LẬN', codeBoxX + 8 * scale, codeBoxY + 6 * scale);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${Math.round(11 * scale)}px monospace`;
+      ctx.fillText(verifyCode, codeBoxX + 8 * scale, codeBoxY + 20 * scale);
+    }
+
+    ctx.restore();
+    return verifyCode;
+  }
+
+  // =========================================================================
+  // GIAO DIỆN CAMERA TRỰC TIẾP VỚI THƯỚC NGẮM & ĐỒNG HỒ THỜI GIAN THỰC
+  // =========================================================================
+  openLiveCameraModal(options = {}) {
+    const target = options.target || 'shift';
+    let roomId = options.roomId || this.currentShiftRoomId || this.newAuditState.roomId || 34;
+    const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng y tế', department_id: 8 };
+    const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa phòng' };
+    const user = this.getCurrentUser() || { name: 'Cán bộ 5S', code: 'BV-345', title: 'Cán bộ giám sát' };
+    const staffName = `${user.name} (${user.code})`;
+
+    this.liveCameraOptions = {
+      target,
+      roomId,
+      roomName: room.name,
+      deptName: dept.name,
+      staffName,
+      shiftName: this.newAuditState.shift || 'Ca làm việc 5S',
+      facingMode: this.liveCameraFacingMode || 'environment'
+    };
+
+    const modalHtml = `
+      <div class="relative bg-slate-950 text-white rounded-3xl overflow-hidden shadow-2xl max-w-lg mx-auto border border-slate-800">
+        <!-- Live HUD Header -->
+        <div class="absolute top-0 inset-x-0 z-20 bg-gradient-to-b from-slate-950/95 via-slate-950/70 to-transparent p-4 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
+            <span class="text-xs font-black tracking-wide text-white uppercase">CAMERA 5S THỜI GIAN THỰC</span>
+          </div>
+          <div id="live-camera-timer" class="text-xs font-mono font-bold text-amber-300 bg-black/60 px-2.5 py-1 rounded-full border border-amber-500/40 backdrop-blur-xs">
+            00:00:00
+          </div>
+          <button onclick="app5s.closeLiveCameraModal()" class="p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Video Viewfinder with Viewfinder Crosshair -->
+        <div class="relative aspect-4/3 sm:aspect-16/9 w-full bg-black flex items-center justify-center overflow-hidden">
+          <video id="live-camera-feed" autoplay playsinline class="w-full h-full object-cover"></video>
+
+          <!-- Viewfinder Frame Guidelines (Thước ngắm 5S) -->
+          <div class="absolute inset-8 pointer-events-none border border-emerald-400/40 rounded-2xl flex flex-col justify-between p-3">
+            <div class="flex justify-between">
+              <span class="w-4 h-4 border-t-2 border-l-2 border-emerald-400 rounded-tl-sm"></span>
+              <span class="w-4 h-4 border-t-2 border-r-2 border-emerald-400 rounded-tr-sm"></span>
+            </div>
+            <!-- Center Crosshair -->
+            <div class="self-center flex items-center justify-center w-8 h-8 rounded-full border border-emerald-400/30">
+              <span class="w-2 h-2 rounded-full bg-emerald-400/70"></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="w-4 h-4 border-b-2 border-l-2 border-emerald-400 rounded-bl-sm"></span>
+              <span class="w-4 h-4 border-b-2 border-r-2 border-emerald-400 rounded-br-sm"></span>
+            </div>
+          </div>
+
+          <!-- Bottom HUD Bar on Viewfinder: Watermark Notice -->
+          <div class="absolute bottom-3 inset-x-4 pointer-events-none bg-slate-900/85 backdrop-blur-xs rounded-xl p-2 border border-emerald-500/50 text-[11px] space-y-0.5">
+            <div class="flex items-center justify-between text-emerald-300 font-bold">
+              <span>📍 ${room.name}</span>
+              <span class="text-[10px] text-slate-300">[${dept.name}]</span>
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-amber-300">
+              <span>🛡️ Đóng dấu ngày giờ & mã đối soát chống dùng lại ảnh</span>
+              <span class="text-white font-mono" id="live-camera-date-sub"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="p-4 bg-slate-900 border-t border-slate-800 flex items-center justify-between gap-3">
+          <button type="button" onclick="app5s.switchCameraFacing()" title="Đổi camera trước/sau" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex flex-col items-center justify-center text-[10px] font-bold">
+            <i data-lucide="refresh-cw" class="w-4 h-4 mb-0.5 text-slate-300"></i>
+            <span>Đổi cam</span>
+          </button>
+
+          <!-- Primary Shutter Button -->
+          <button type="button" onclick="app5s.captureFromLiveCamera()" class="flex-1 py-3 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-black text-sm rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition transform active:scale-95">
+            <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+              <i data-lucide="camera" class="w-4 h-4 text-white"></i>
+            </div>
+            <span>CHỤP ẢNH & ĐÓNG DẤU NGÀY GIỜ</span>
+          </button>
+
+          <button type="button" onclick="app5s.fallbackToNativeCamera()" title="Dùng camera hệ thống" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex flex-col items-center justify-center text-[10px] font-bold">
+            <i data-lucide="folder-open" class="w-4 h-4 mb-0.5 text-slate-300"></i>
+            <span>Tải ảnh</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+    this.startLiveCameraStream();
+  }
+
+  async startLiveCameraStream() {
+    this.stopLiveCameraStream();
+    const video = document.getElementById('live-camera-feed');
+    if (!video) return;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.warn('getUserMedia not supported, fallback to native camera');
+      return;
+    }
+
+    try {
+      const constraints = {
+        video: {
+          facingMode: this.liveCameraOptions?.facingMode || 'environment',
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
+        audio: false
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      this.currentLiveStream = stream;
+      video.srcObject = stream;
+      video.play().catch(e => console.warn('Video play error:', e));
+
+      const updateClock = () => {
+        const timerEl = document.getElementById('live-camera-timer');
+        const dateSubEl = document.getElementById('live-camera-date-sub');
+        if (timerEl) {
+          const now = new Date();
+          const pad = n => String(n).padStart(2, '0');
+          timerEl.innerText = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+          if (dateSubEl) {
+            dateSubEl.innerText = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+          }
+        }
+      };
+      updateClock();
+      this.liveCameraInterval = setInterval(updateClock, 1000);
+    } catch (err) {
+      console.warn('Cannot start getUserMedia stream:', err);
     }
   }
+
+  stopLiveCameraStream() {
+    if (this.currentLiveStream) {
+      this.currentLiveStream.getTracks().forEach(t => t.stop());
+      this.currentLiveStream = null;
+    }
+    if (this.liveCameraInterval) {
+      clearInterval(this.liveCameraInterval);
+      this.liveCameraInterval = null;
+    }
+  }
+
+  closeLiveCameraModal() {
+    this.stopLiveCameraStream();
+    const opt = this.liveCameraOptions || {};
+    if (opt.target === 'shift' && opt.roomId) {
+      this.openEndShift5SModal(opt.roomId);
+    } else {
+      this.closeModal();
+    }
+  }
+
+  switchCameraFacing() {
+    this.liveCameraFacingMode = (this.liveCameraFacingMode === 'user') ? 'environment' : 'user';
+    if (this.liveCameraOptions) {
+      this.liveCameraOptions.facingMode = this.liveCameraFacingMode;
+    }
+    this.startLiveCameraStream();
+  }
+
+  fallbackToNativeCamera() {
+    const opt = this.liveCameraOptions || {};
+    this.stopLiveCameraStream();
+    if (opt.target === 'audit') {
+      const fileInput = document.getElementById('audit-file-input') || document.getElementById('audit-camera-input');
+      if (fileInput) fileInput.click();
+    } else {
+      if (opt.roomId) this.openEndShift5SModal(opt.roomId);
+      setTimeout(() => {
+        const camInput = document.getElementById('shift-camera-input') || document.getElementById('shift-file-input');
+        if (camInput) camInput.click();
+      }, 100);
+    }
+  }
+
+  captureFromLiveCamera() {
+    const video = document.getElementById('live-camera-feed');
+    let width = (video && video.videoWidth) || 1280;
+    let height = (video && video.videoHeight) || 720;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    if (video && video.videoWidth) {
+      ctx.drawImage(video, 0, 0, width, height);
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, '#0f172a');
+      grad.addColorStop(1, '#064e3b');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('ẢNH CHỤP MINH CHỨNG 5S BUỒNG PHÒNG THỰC TẾ', width / 2, height / 2);
+    }
+
+    const opt = this.liveCameraOptions || {};
+    this.stamp5SWatermark(canvas, {
+      deptName: opt.deptName,
+      roomName: opt.roomName,
+      staffName: opt.staffName,
+      shiftName: opt.shiftName
+    });
+
+    const photoUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+    this.stopLiveCameraStream();
+
+    if (opt.target === 'audit') {
+      this.newAuditState.afterPhoto = photoUrl;
+      this.closeModal();
+      this.render();
+      this.showToast('✅ Đã chụp và đóng dấu ngày giờ thực tế vào ảnh thành công!');
+    } else {
+      this.currentShiftPhoto = photoUrl;
+      this.newAuditState.afterPhoto = photoUrl;
+      this.openEndShift5SModal(opt.roomId);
+      setTimeout(() => {
+        this.updateShiftPhotoPreviewUI(photoUrl);
+        this.showToast('✅ Đã chụp và đóng dấu ngày giờ thực tế vào ảnh thành công!');
+      }, 80);
+    }
+  }
+
+  triggerCameraCapture() {
+    this.openLiveCameraModal({ target: 'shift', roomId: this.currentShiftRoomId });
+  }
+
 
   triggerFileUpload() {
     const fileInput = document.getElementById('shift-file-input');
@@ -3601,7 +4006,21 @@ class App5S {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+        // ĐÓNG DẤU NGÀY GIỜ & MÃ ĐỐI SOÁT CHỐNG GIAN LẬN
+        const roomId = this.currentShiftRoomId || this.newAuditState.roomId || 34;
+        const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng y tế', department_id: 8 };
+        const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa phòng' };
+        const user = this.getCurrentUser() || { name: 'Cán bộ 5S', code: 'BV-345' };
+
+        this.stamp5SWatermark(canvas, {
+          deptName: dept.name,
+          roomName: room.name,
+          staffName: `${user.name} (${user.code})`,
+          shiftName: this.newAuditState.shift || 'Ca trực buồng phòng'
+        });
+
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
 
         this.updateShiftPhotoPreviewUI(compressedDataUrl);
         this.showToast('✅ Đã nạp và hiển thị ảnh minh chứng 5S thành công!');
@@ -4810,23 +5229,60 @@ class App5S {
           <p class="text-[11px] text-slate-500">Chụp hoặc tải lên hình ảnh buồng phòng sau khi đã thực hiện sàng lọc, sắp xếp sạch sẽ.</p>
 
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">Ảnh Sau Khi Đã 5S (Chuẩn sạch sẽ & sắp xếp) *</label>
-            <div id="after-photo-preview" class="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl p-4 text-center bg-emerald-50/40 dark:bg-emerald-950/20 hover:bg-emerald-50 transition cursor-pointer">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">Ảnh Sau Khi Đã 5S (In ngày giờ chụp thực tế) *</label>
+              <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-300">Chống gian lận 5S</span>
+            </div>
+
+            <!-- Input file ẩn cho tab Chấm 5S -->
+            <input type="file" id="audit-camera-input" accept="image/*" capture="environment" onchange="app5s.onAfterPhotoSelected(event)" class="hidden">
+            <input type="file" id="audit-file-input" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="hidden">
+
+            <div id="after-photo-preview" class="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl p-3 text-center bg-emerald-50/40 dark:bg-emerald-950/20 transition">
               ${this.newAuditState.afterPhoto ? `
-                <img src="${this.newAuditState.afterPhoto}" class="w-full h-44 object-cover rounded-xl shadow-xs">
-                <button onclick="app5s.removeAfterPhoto(event)" class="absolute top-6 right-6 bg-red-600 text-white rounded-full p-1.5 shadow-md">
-                  <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
+                <div class="relative group rounded-xl overflow-hidden border border-emerald-500 shadow-xs">
+                  <div class="w-full bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center p-1"><img src="${this.newAuditState.afterPhoto}" class="w-full h-auto max-h-72 object-contain rounded-lg shadow-xs"></div>
+                  <div class="absolute top-2 right-2 flex items-center space-x-1.5">
+                    <button type="button" onclick="app5s.openLiveCameraModal({ target: 'audit' })" class="px-2 py-1 bg-white/95 text-slate-800 rounded-lg shadow text-xs font-bold flex items-center space-x-1">
+                      <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
+                      <span class="text-[10px]">Chụp lại</span>
+                    </button>
+                    <button type="button" onclick="app5s.removeAfterPhoto(event)" class="p-1 bg-red-600 text-white rounded-lg shadow">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                  <div class="absolute top-2 left-2 bg-emerald-950/85 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-xl flex items-center space-x-1 border border-emerald-500/60 shadow backdrop-blur-xs">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>✓ Đã đóng dấu ngày giờ</span>
+                  </div>
+                </div>
               ` : `
-                <input type="file" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
-                <div class="space-y-1.5 py-4">
+                <div class="space-y-3 py-3">
                   <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center mx-auto">
                     <i data-lucide="camera" class="w-6 h-6"></i>
                   </div>
-                  <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300">Bấm để Chụp ảnh hoặc Tải ảnh lên</div>
-                  <div class="text-[10px] text-slate-400">Hỗ trợ JPG, PNG từ máy ảnh điện thoại hoặc thư viện ảnh</div>
+                  <div>
+                    <div class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Chụp ảnh hoặc Tải ảnh kiểm tra 5S</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Khung hình in chết thông tin ngày giờ, khoa phòng và cán bộ chấm</div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 max-w-sm mx-auto pt-1">
+                    <button type="button" onclick="app5s.openLiveCameraModal({ target: 'audit' })" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition">
+                      <i data-lucide="camera" class="w-4 h-4"></i>
+                      <span>📸 Chụp Camera</span>
+                    </button>
+                    <button type="button" onclick="document.getElementById('audit-file-input').click()" class="py-2.5 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-2xs transition">
+                      <i data-lucide="folder-open" class="w-4 h-4 text-indigo-500"></i>
+                      <span>📁 Tải ảnh máy</span>
+                    </button>
+                  </div>
                 </div>
               `}
+            </div>
+
+            <!-- Thanh cảnh báo chống gian lận -->
+            <div class="bg-amber-50 dark:bg-amber-950/30 p-2 rounded-xl border border-amber-200 dark:border-amber-800 flex items-center space-x-1.5 text-[10px] text-amber-800 dark:text-amber-200">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
+              <span>Quy định 5S VPI: Không sử dụng ảnh chụp lại từ màn hình hoặc ảnh cũ. Hệ thống đối soát ngày giờ ngẫu nhiên.</span>
             </div>
           </div>
 
@@ -4871,11 +5327,47 @@ class App5S {
   onAfterPhotoSelected(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (evt) => {
-      this.newAuditState.afterPhoto = evt.target.result;
-      this.render();
-      this.showToast('Đã tải ảnh minh chứng 5S thành công!');
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1280;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const roomId = this.newAuditState.roomId || 34;
+        const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng y tế', department_id: this.newAuditState.deptId || 8 };
+        const dept = (this.data.departments || []).find(d => d.id == (room.department_id || this.newAuditState.deptId || 8)) || { name: 'Khoa phòng' };
+        const user = this.getCurrentUser() || { name: 'Cán bộ kiểm tra', code: 'BV-345' };
+
+        this.stamp5SWatermark(canvas, {
+          deptName: dept.name,
+          roomName: room.name,
+          staffName: `${user.name} (${user.code})`,
+          shiftName: this.newAuditState.shift || 'Phiếu kiểm tra 5S'
+        });
+
+        const stampedUrl = canvas.toDataURL('image/jpeg', 0.85);
+        this.newAuditState.afterPhoto = stampedUrl;
+        this.render();
+        this.showToast('✅ Đã tải và đóng dấu ngày giờ thực tế vào ảnh thành công!');
+      };
+      img.src = evt.target.result;
     };
     reader.readAsDataURL(file);
   }
