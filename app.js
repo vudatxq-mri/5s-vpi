@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v15_pro';
+const STORAGE_KEY = 'vpi_5s_data_v16_pro';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -2095,7 +2095,7 @@ class App5S {
       let raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
         // Tự động kế thừa từ phiên bản V7 nếu có
-        raw = localStorage.getItem('vpi_5s_data_v14_pro') || localStorage.getItem('vpi_5s_data_v13_enterprise') || localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark');
+        raw = localStorage.getItem('vpi_5s_data_v15_pro') || localStorage.getItem('vpi_5s_data_v14_pro') || localStorage.getItem('vpi_5s_data_v13_enterprise') || localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark');
       }
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -3401,21 +3401,39 @@ class App5S {
           </button>
         </div>
 
-        <!-- CÔNG TẮC BẬT / TẮT TRẠNG THÁI LÀM VIỆC CỦA PHÒNG -->
-        <div class="bg-slate-50 dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
-          <div class="space-y-0.5">
-            <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Trạng thái hoạt động buồng phòng:</span>
-            <div class="text-[10px] text-slate-500 font-medium">Bật nếu phòng đang mở cửa phục vụ bệnh nhân trong ca này</div>
-          </div>
-          <button onclick="app5s.toggleRoomWorkingStatus(${roomId}); app5s.openManageRoomStaffModal(${roomId});" class="px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 ${
-            rs.is_working 
-              ? 'bg-emerald-600 text-white shadow-xs hover:bg-emerald-700' 
-              : 'bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-400'
-          }">
-            <i data-lucide="${rs.is_working ? 'check-circle' : 'circle'}" class="w-3.5 h-3.5"></i>
-            <span>${rs.is_working ? 'ĐANG LÀM VIỆC' : 'KHÔNG LÀM VIỆC'}</span>
-          </button>
-        </div>
+        <!-- V16 PHÂN QUYỀN BUỒNG PHÒNG: Quản lý khoa hoặc Admin mới được đổi trạng thái & phân công -->
+        ${(() => {
+          const canManage = this.isAdmin() || this.canManageDeptRooms(room.department_id);
+          return `
+            <div class="bg-slate-50 dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div class="space-y-0.5">
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Trạng thái hoạt động buồng phòng:</span>
+                <div class="text-[10px] text-slate-500 font-medium">${canManage ? 'Bật/tắt trạng thái mở cửa phục vụ' : 'Chỉ xem trạng thái phân công'}</div>
+              </div>
+              ${canManage ? `
+                <button onclick="app5s.toggleRoomWorkingStatus(${roomId}); app5s.openManageRoomStaffModal(${roomId});" class="px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 ${
+                  rs.is_working 
+                    ? 'bg-emerald-600 text-white shadow-xs hover:bg-emerald-700' 
+                    : 'bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-400'
+                }">
+                  <i data-lucide="${rs.is_working ? 'check-circle' : 'circle'}" class="w-3.5 h-3.5"></i>
+                  <span>${rs.is_working ? 'ĐANG LÀM VIỆC' : 'KHÔNG LÀM VIỆC'}</span>
+                </button>
+              ` : `
+                <span class="px-3 py-1.5 rounded-xl font-bold text-xs flex items-center space-x-1.5 ${rs.is_working ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}">
+                  <i data-lucide="${rs.is_working ? 'check-circle' : 'circle'}" class="w-3.5 h-3.5"></i>
+                  <span>${rs.is_working ? 'ĐANG HOẠT ĐỘNG' : 'NGHỈ CA'}</span>
+                </span>
+              `}
+            </div>
+            ${!canManage ? `
+              <div class="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[10.5px] text-amber-800 dark:text-amber-300 flex items-center space-x-1.5">
+                <i data-lucide="shield" class="w-3.5 h-3.5 shrink-0"></i>
+                <span>Chế độ xem: Tài khoản cá nhân chỉ được xem danh sách phân công; chỉ Quản lý khoa phòng mới có quyền điều chỉnh.</span>
+              </div>
+            ` : ''}
+          `;
+        })()}
 
         <!-- DANH SÁCH NHÂN SỰ ĐƯỢC PHÂN CÔNG TẠI VỊ TRÍ NÀY -->
         <div class="space-y-2">
@@ -4113,25 +4131,29 @@ Trân trọng cảm ơn!`);
 
   renderAppFooterHtml() {
     return `
-      <footer class="mt-8 mb-4 px-4 py-3 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xs rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center space-y-1.5 shadow-2xs">
-        <div class="flex items-center justify-center space-x-1.5 text-xs font-bold text-slate-700 dark:text-slate-200">
-          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-          <span>Hệ thống Quản lý 5S Bệnh viện Vĩnh Phúc VPI</span>
+      <footer class="mt-8 mb-4 px-4 py-4 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-3xl border border-slate-200/90 dark:border-slate-700/90 text-center space-y-2.5 shadow-sm">
+        <div class="flex items-center justify-center space-x-2 text-xs font-bold text-slate-800 dark:text-slate-100">
+          <div class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+            <i data-lucide="headset" class="w-3.5 h-3.5"></i>
+          </div>
+          <span class="uppercase tracking-tight font-black text-emerald-700 dark:text-emerald-400">HỖ TRỢ KỸ THUẬT & LIÊN HỆ HỆ THỐNG 5S VPI</span>
         </div>
-        <div class="text-xs font-black text-emerald-600 dark:text-emerald-400">
-          Bản quyền thuộc về: Vũ Đạt
+
+        <div class="text-xs font-black text-slate-700 dark:text-slate-200">
+          Bản quyền thuộc về: <strong class="text-emerald-600 dark:text-emerald-400">Vũ Đạt</strong>
         </div>
-        <div class="text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-0.5">
-          <a href="mailto:vudatxq@gmail.com" class="hover:text-emerald-600 font-medium flex items-center space-x-1 transition">
-            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
+
+        <div class="text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 pt-1 border-t border-slate-100 dark:border-slate-700/60">
+          <a href="mailto:vudatxq@gmail.com" class="hover:text-emerald-600 font-semibold flex items-center space-x-1.5 transition">
+            <i data-lucide="mail" class="w-3.5 h-3.5 text-indigo-500"></i>
             <span>vudatxq@gmail.com</span>
           </a>
-          <a href="tel:+84916306115" class="hover:text-emerald-600 font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1 transition">
+          <a href="tel:+84916306115" class="hover:text-emerald-600 font-black text-emerald-600 dark:text-emerald-400 flex items-center space-x-1.5 transition">
             <i data-lucide="phone-call" class="w-3.5 h-3.5 text-emerald-600"></i>
             <span>Hotline: +84916306115</span>
           </a>
-          <button onclick="app5s.openFeedbackModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-1 transition">
-            <i data-lucide="message-square-plus" class="w-3.5 h-3.5"></i>
+          <button onclick="app5s.openFeedbackModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-1.5 transition">
+            <i data-lucide="message-square-plus" class="w-3.5 h-3.5 text-indigo-600"></i>
             <span>Nhắn tin cho Admin</span>
           </button>
         </div>
@@ -6015,24 +6037,58 @@ Trân trọng cảm ơn!`);
           </div>
         </div>
 
-        <!-- THÔNG BÁO KHẨN CẤP TOÀN VIỆN -->
-        ${hosp.notice && hosp.notice.enabled ? `
-          <div class="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 rounded-2xl p-3.5 shadow-xs space-y-1.5 animate-pulse">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-1.5 text-red-700 dark:text-red-400 font-extrabold text-xs">
-                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                <span>${hosp.notice.title}</span>
+        <!-- V16: BẢNG TIN THÔNG BÁO 5S (TOÀN VIỆN HOẶC NỘI BỘ KHOA PHÒNG) -->
+        ${(() => {
+          const userDeptId = this.getUserDepartmentId();
+          const deptNotice = (userDeptId && this.data.hospital.dept_notices && this.data.hospital.dept_notices[userDeptId]);
+          const canHospitalNotice = hosp.notice && hosp.notice.enabled;
+          const canDeptNotice = deptNotice && deptNotice.enabled;
+
+          let html = '';
+          if (canHospitalNotice) {
+            html += `
+              <div class="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 rounded-2xl p-3.5 shadow-xs space-y-1.5 animate-pulse">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-1.5 text-red-700 dark:text-red-400 font-black text-xs">
+                    <span class="bg-red-600 text-white text-[9px] px-1.5 py-0.2 rounded font-mono">TOÀN VIỆN</span>
+                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                    <span>${hosp.notice.title}</span>
+                  </div>
+                  <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-red-600 hover:underline font-bold">Chỉnh sửa</button>
+                </div>
+                <p class="text-xs text-red-900 dark:text-red-200 leading-relaxed font-medium">
+                  ${hosp.notice.content}
+                </p>
+                <div class="text-[10px] text-red-500 text-right">
+                  Cập nhật: ${hosp.notice.updatedAt} • Tác giả: ${hosp.notice.author || 'Ban Giám Sát'}
+                </div>
               </div>
-              <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-red-600 hover:underline font-bold">Chỉnh sửa</button>
-            </div>
-            <p class="text-xs text-red-900 dark:text-red-200 leading-relaxed font-medium">
-              ${hosp.notice.content}
-            </p>
-            <div class="text-[10px] text-red-500 text-right">
-              Cập nhật: ${hosp.notice.updatedAt}
-            </div>
-          </div>
-        ` : ''}
+            `;
+          }
+
+          if (canDeptNotice) {
+            html += `
+              <div class="bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-900/60 rounded-2xl p-3.5 shadow-xs space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-1.5 text-indigo-700 dark:text-indigo-400 font-black text-xs">
+                    <span class="bg-indigo-600 text-white text-[9px] px-1.5 py-0.2 rounded font-mono">NỘI BỘ KHOA</span>
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    <span>${deptNotice.title}</span>
+                  </div>
+                  <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-indigo-600 hover:underline font-bold">Chỉnh sửa</button>
+                </div>
+                <p class="text-xs text-indigo-900 dark:text-indigo-200 leading-relaxed font-medium">
+                  ${deptNotice.content}
+                </p>
+                <div class="text-[10px] text-indigo-500 text-right">
+                  Cập nhật: ${deptNotice.updatedAt} • Tác giả: ${deptNotice.author || 'Quản lý khoa'}
+                </div>
+              </div>
+            `;
+          }
+
+          return html;
+        })()}
 
         <!-- TIẾN ĐỘ THỰC HIỆN 5S TOÀN VIỆN HÔM NAY & CẢNH BÁO ĐÔN ĐỐC -->
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 border border-slate-200/90 dark:border-slate-700 shadow-sm space-y-3">
@@ -6189,45 +6245,7 @@ Trân trọng cảm ơn!`);
           <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
         </button>
 
-        <!-- THẺ THÔNG TIN LIÊN HỆ, HỖ TRỢ & BẢN QUYỀN (V12) -->
-        <div class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-4 border border-emerald-500/40 shadow-md space-y-3">
-          <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
-            <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
-                <i data-lucide="headset" class="w-4 h-4"></i>
-              </div>
-              <div>
-                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-300">HỖ TRỢ KỸ THUẬT & LIÊN HỆ</h3>
-                <p class="text-[10px] text-slate-300">Bản quyền thuộc về: <strong class="text-white">Vũ Đạt</strong></p>
-              </div>
-            </div>
-            <button onclick="app5s.openContactSupportModal()" class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold hover:bg-emerald-500/30 transition">
-              Chi tiết →
-            </button>
-          </div>
 
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <a href="mailto:vudatxq@gmail.com" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
-              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
-                <i data-lucide="mail" class="w-3 h-3 text-indigo-300"></i>
-                <span>Email hỗ trợ:</span>
-              </div>
-              <div class="font-bold text-white font-mono text-[11px] truncate mt-0.5">vudatxq@gmail.com</div>
-            </a>
-            <a href="tel:+84916306115" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
-              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
-                <i data-lucide="phone-call" class="w-3 h-3 text-emerald-300"></i>
-                <span>Hotline 24/7:</span>
-              </div>
-              <div class="font-bold text-emerald-300 font-mono text-[11px] truncate mt-0.5">+84916306115</div>
-            </a>
-          </div>
-
-          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 px-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:from-indigo-600 text-white rounded-xl font-black text-xs flex items-center justify-center space-x-2 shadow-xs transition">
-            <i data-lucide="message-square-plus" class="w-4 h-4"></i>
-            <span>NHẮN TIN / GÓP Ý KIẾN CHO ADMIN</span>
-          </button>
-        </div>
 
         <!-- Lối Tắt Nhanh Đầy Đủ 4 Mục Chính -->
         <div class="grid grid-cols-4 gap-2">
@@ -6370,6 +6388,46 @@ Trân trọng cảm ơn!`);
               </div>
             `).join('')}
           </div>
+        </div>
+
+        <!-- THẺ THÔNG TIN LIÊN HỆ, HỖ TRỢ & BẢN QUYỀN (V12) -->
+        <div class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-4 border border-emerald-500/40 shadow-md space-y-3">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
+                <i data-lucide="headset" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-300">HỖ TRỢ KỸ THUẬT & LIÊN HỆ</h3>
+                <p class="text-[10px] text-slate-300">Bản quyền thuộc về: <strong class="text-white">Vũ Đạt</strong></p>
+              </div>
+            </div>
+            <button onclick="app5s.openContactSupportModal()" class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold hover:bg-emerald-500/30 transition">
+              Chi tiết →
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <a href="mailto:vudatxq@gmail.com" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
+              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
+                <i data-lucide="mail" class="w-3 h-3 text-indigo-300"></i>
+                <span>Email hỗ trợ:</span>
+              </div>
+              <div class="font-bold text-white font-mono text-[11px] truncate mt-0.5">vudatxq@gmail.com</div>
+            </a>
+            <a href="tel:+84916306115" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
+              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
+                <i data-lucide="phone-call" class="w-3 h-3 text-emerald-300"></i>
+                <span>Hotline 24/7:</span>
+              </div>
+              <div class="font-bold text-emerald-300 font-mono text-[11px] truncate mt-0.5">+84916306115</div>
+            </a>
+          </div>
+
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 px-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:from-indigo-600 text-white rounded-xl font-black text-xs flex items-center justify-center space-x-2 shadow-xs transition">
+            <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            <span>NHẮN TIN / GÓP Ý KIẾN CHO ADMIN</span>
+          </button>
         </div>
       </div>
     `;
@@ -6994,17 +7052,25 @@ Trân trọng cảm ơn!`);
                 <span class="text-[11px] truncate">Đánh giá 5S</span>
               </button>
 
-              <!-- Nút Sửa Khoa -->
-              <button onclick="app5s.openEditDeptModal('${d.id}')" title="Sửa thông tin khoa" class="w-full py-1.5 px-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center space-x-1 transition border border-slate-200 dark:border-slate-600">
-                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                <span class="text-[11px] truncate">Sửa Khoa</span>
-              </button>
+              <!-- V16: Sửa Khoa chỉ dành cho Lãnh Đạo Viện / Admin -->
+              ${(this.isAdmin() || this.isHospitalLeaderOrSupervisor()) ? `
+                <button onclick="app5s.openEditDeptModal('${d.id}')" title="Sửa thông tin khoa" class="w-full py-1.5 px-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center space-x-1 transition border border-slate-200 dark:border-slate-600">
+                  <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                  <span class="text-[11px] truncate">Sửa Khoa</span>
+                </button>
+              ` : ''}
 
-              <!-- Nút Thêm Khu Vực Làm Việc vào Khoa này -->
-              <button onclick="app5s.openAddRoomModal('${d.id}')" title="Thêm khu vực làm việc vào ${d.name}" class="w-full py-1.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center space-x-1 transition border border-emerald-200 dark:border-emerald-800">
-                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
-                <span class="text-[11px] truncate">+ Khu vực</span>
-              </button>
+              <!-- V16: Thêm Khu Vực chỉ dành cho Quản Lý Khoa hoặc Admin -->
+              ${(this.isAdmin() || this.canManageDeptRooms(d.id)) ? `
+                <button onclick="app5s.openAddRoomModal('${d.id}')" title="Thêm khu vực làm việc vào ${d.name}" class="w-full py-1.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center space-x-1 transition border border-emerald-200 dark:border-emerald-800">
+                  <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                  <span class="text-[11px] truncate">+ Khu vực</span>
+                </button>
+              ` : `
+                <div class="w-full py-1.5 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 text-center text-[10px] font-bold border border-slate-200 dark:border-slate-700">
+                  🔒 Quyền quản lý
+                </div>
+              `}
             </div>
           </div>
 
@@ -7013,13 +7079,13 @@ Trân trọng cảm ơn!`);
             <div class="p-3 space-y-2 bg-slate-50/50 dark:bg-slate-900/40">
               <div class="flex items-center justify-between text-[11px] text-slate-500 px-1 font-semibold">
                 <span>Các khu vực làm việc / buồng phòng (${deptRooms.length}):</span>
-                <button onclick="app5s.openAddRoomModal('${d.id}')" class="text-[10px] text-emerald-600 font-bold hover:underline">+ Thêm khu vực mới</button>
+                ${(this.isAdmin() || this.canManageDeptRooms(d.id)) ? `<button onclick="app5s.openAddRoomModal('${d.id}')" class="text-[10px] text-emerald-600 font-bold hover:underline">+ Thêm khu vực mới</button>` : ''}
               </div>
 
               ${deptRooms.length === 0 ? `
                 <div class="p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl bg-white dark:bg-slate-800 text-xs text-slate-400 space-y-2">
                   <p>Khoa này chưa có khu vực làm việc nào.</p>
-                  <button onclick="app5s.openAddRoomModal('${d.id}')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">+ Thêm khu vực đầu tiên</button>
+                  ${(this.isAdmin() || this.canManageDeptRooms(d.id)) ? `<button onclick="app5s.openAddRoomModal('${d.id}')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">+ Thêm khu vực đầu tiên</button>` : ''}
                 </div>
               ` : `
                 <div class="space-y-1.5">
@@ -7056,36 +7122,36 @@ Trân trọng cảm ơn!`);
                           <span class="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400">99.0 đ</span>
                           <span class="block text-[8px] font-bold text-emerald-600">Đạt 5S</span>
                         </div>
-                        <!-- Nút Sửa Khu Vực Làm Việc -->
-                        <button onclick="app5s.openEditRoomModal('${room.id}')" title="Chỉnh sửa thông tin khu vực làm việc này" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
-                          <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                        </button>
+                        <!-- V16: Sửa và Xóa khu vực làm việc CHỈ HIỂN THỊ cho Quản Lý Khoa hoặc Admin -->
                         ${(this.isAdmin() || this.canManageDeptRooms(room.department_id)) ? `
+                          <button onclick="app5s.openEditRoomModal('${room.id}')" title="Chỉnh sửa thông tin khu vực làm việc này" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                          </button>
                           <button onclick="app5s.deleteRoom('${room.id}')" title="Xóa khu vực làm việc này" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 transition">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                           </button>
                         ` : ''}
                         <!-- Nút Chấm 5S ngay -->
-                        <button onclick="app5s.quickAuditRoom('${room.id}')" title="Chấm điểm 5S khu vực này ngay" class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 hover:bg-emerald-100 transition">
-                          <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
-                        </button>
-                        <!-- Nút Xóa khu vực -->
-                        <button onclick="app5s.deleteRoom('${room.id}')" title="Xóa khu vực làm việc này" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition">
-                          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                        </button>
+                        ${this.canAudit5S() ? `
+                          <button onclick="app5s.quickAuditRoom('${room.id}')" title="Chấm điểm 5S khu vực này ngay" class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 hover:bg-emerald-100 transition">
+                            <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
+                          </button>
+                        ` : ''}
                       </div>
                     </div>
                   `).join('')}
                 </div>
               `}
 
-              <!-- Nút thêm khu vực làm việc con ở chân card -->
-              <div class="pt-1">
-                <button onclick="app5s.openAddRoomModal('${d.id}')" class="w-full py-2 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl text-xs font-bold text-emerald-700 dark:text-emerald-300 flex items-center justify-center space-x-1.5 transition">
-                  <i data-lucide="plus" class="w-4 h-4"></i>
-                  <span>Thêm khu vực làm việc mới vào ${d.name}</span>
-                </button>
-              </div>
+              <!-- V16: Nút thêm khu vực làm việc con ở chân card (Chỉ Quản Lý Khoa hoặc Admin) -->
+              ${(this.isAdmin() || this.canManageDeptRooms(d.id)) ? `
+                <div class="pt-1">
+                  <button onclick="app5s.openAddRoomModal('${d.id}')" class="w-full py-2 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl text-xs font-bold text-emerald-700 dark:text-emerald-300 flex items-center justify-center space-x-1.5 transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>Thêm khu vực làm việc mới vào ${d.name}</span>
+                  </button>
+                </div>
+              ` : ''}
             </div>
           ` : ''}
         </div>
@@ -7151,10 +7217,17 @@ Trân trọng cảm ơn!`);
                 <span class="truncate">Tiêu Chuẩn</span>
               </button>
             `}
-            <button onclick="app5s.openAddRoomModal()" title="Thêm Khu vực làm việc / Buồng phòng mới" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
-              <i data-lucide="plus-circle" class="w-3.5 h-3.5 shrink-0"></i>
-              <span class="truncate">Thêm Vị Trí</span>
-            </button>
+            ${(this.isAdmin() || this.isDepartmentManager()) ? `
+              <button onclick="app5s.openAddRoomModal()" title="Thêm Khu vực làm việc / Buồng phòng mới" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5 shrink-0"></i>
+                <span class="truncate">Thêm Vị Trí</span>
+              </button>
+            ` : `
+              <button onclick="app5s.openDailySummaryModal()" title="Xem tiêu chuẩn 5S" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-1 border border-slate-200 dark:border-slate-600 transition">
+                <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                <span class="truncate">Nội Bộ</span>
+              </button>
+            `}
             <button onclick="app5s.toggleReorderMode()" class="py-2 px-1 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 ${
               this.isReorderMode ? 'bg-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
             }">
@@ -7484,15 +7557,17 @@ Trân trọng cảm ơn!`);
             </div>
 
             <div class="flex items-center space-x-1">
-              <!-- Nút Sửa nhân sự -->
-              <button onclick="app5s.openEditStaffModal('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition" title="Chỉnh sửa chức danh & phân công buồng phòng">
-                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-              </button>
+              <!-- V16: Nút Sửa & Xóa nhân sự CHỈ HIỂN THỊ cho Quản Lý Khoa hoặc Admin -->
               ${(this.isAdmin() || this.canManageDeptStaff(s.department_id)) ? `
+                <button onclick="app5s.openEditStaffModal('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition" title="Chỉnh sửa chức danh & phân công buồng phòng">
+                  <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                </button>
                 <button onclick="app5s.deleteStaffMember('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 transition" title="Xóa nhân sự khỏi khoa phòng">
                   <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 </button>
-              ` : ''}
+              ` : `
+                <span class="text-[9px] text-slate-400 italic px-1.5 py-0.5 bg-slate-50 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">Chỉ xem</span>
+              `}
             </div>
           </div>
 
@@ -8260,6 +8335,10 @@ Trân trọng cảm ơn!`);
   }
 
   openAddRoomModal(preselectedDeptId = null) {
+    if (!this.isAdmin() && !this.isDepartmentManager()) {
+      alert('🔒 Tài khoản cá nhân không có quyền thêm khu vực làm việc. Quyền này chỉ dành cho Quản lý cấp khoa phòng hoặc Admin.');
+      return;
+    }
     const depts = this.getSortedDepartments();
     let targetDeptId = depts[0] ? depts[0].id : 8;
     if (preselectedDeptId !== null && preselectedDeptId !== undefined) {
@@ -8393,11 +8472,14 @@ Trân trọng cảm ơn!`);
             </div>
           </div>
 
-          <!-- MỤC VAI TRÒ PHÂN QUYỀN VÀ CHỨC DANH CHUYÊN MÔN (YÊU CẦU 3) -->
-          <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
-              🛡️ Vai Trò Phân Quyền & Cấp Bậc 5S *
-            </label>
+          <!-- MỤC VAI TRÒ PHÂN QUYỀN VÀ CẤP BẬC 5S (V16: CÓ TÙY CHỈNH DANH MỤC VÀ GHI CHÚ) -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="block font-bold text-slate-700 dark:text-slate-300">
+                🛡️ Vai Trò Phân Quyền & Cấp Bậc 5S *
+              </label>
+              <span class="text-[10px] text-emerald-600 font-bold">Có tùy chỉnh tên tự do</span>
+            </div>
             <select id="edit-staff-role" onchange="app5s.onRoleSelectChange(this.value, 'edit-staff')" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-xs text-slate-900 dark:text-white">
               <optgroup label="🌟 Lãnh Đạo & Ban Chỉ Đạo 5S (Toàn quyền Admin)">
                 <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc" ${s.role === 'admin' && (s.role_title || '').includes('Trưởng Ban') ? 'selected' : ''}>👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
@@ -8424,7 +8506,29 @@ Trân trọng cảm ơn!`);
                 <option value="staff|Nhân viên Hành chính / Kế toán" ${s.role === 'staff' && (s.role_title || '').includes('Hành chính') ? 'selected' : ''}>📑 Nhân viên Hành chính / Kế toán</option>
                 <option value="staff|Cán bộ / Nhân viên 5S" ${s.role === 'staff' && (s.role_title || '').includes('Nhân viên 5S') ? 'selected' : ''}>✨ Cán bộ / Nhân viên 5S</option>
               </optgroup>
+              <optgroup label="✏️ Tùy Chỉnh Linh Hoạt">
+                <option value="custom|custom">✏️ [Tùy Chỉnh Tên Vai Trò / Cấp Bậc Riêng...]</option>
+              </optgroup>
             </select>
+
+            <!-- Ô Tùy Chỉnh Tên Vai Trò / Cấp Bậc Của Người Dùng -->
+            <div id="edit-staff-custom-role-wrap" class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 space-y-1">
+              <label class="block text-[11px] font-bold text-amber-900 dark:text-amber-300">
+                ✏️ Tùy chỉnh tên Vai trò / Cấp bậc trong danh mục:
+              </label>
+              <input type="text" id="edit-staff-custom-role-title" value="${s.role_title || s.title || ''}" placeholder="Gõ tên vai trò / cấp bậc tùy biến (VD: Trưởng Đơn Nguyên, Bác sĩ Nội Trú...)" class="w-full bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-lg p-2 text-xs font-bold text-slate-900 dark:text-white">
+              <div class="text-[9.5px] text-amber-700 dark:text-amber-400">
+                * Có thể sửa đổi tên chức danh hiển thị theo đặc thù khoa phòng.
+              </div>
+            </div>
+
+            <!-- Ô Ghi Chú Thông Tin Thêm & Cấu Hình Bổ Sung -->
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                📝 Ghi Chú Cấu Hình Bổ Sung / Thông Tin Thêm:
+              </label>
+              <input type="text" id="edit-staff-notes" value="${s.notes || ''}" placeholder="Ghi chú thêm thông tin phân công, số điện thoại nội bộ, chứng chỉ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 text-xs text-slate-800 dark:text-slate-100">
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -8524,6 +8628,17 @@ Trân trọng cảm ơn!`);
       role = roleRaw;
     }
 
+    const customRoleInput = document.getElementById('edit-staff-custom-role-title');
+    if (customRoleInput && customRoleInput.value.trim() !== '') {
+      roleTitle = customRoleInput.value.trim();
+      const lower = roleTitle.toLowerCase();
+      if (lower.includes('trưởng') || lower.includes('phó') || lower.includes('quản lý') || lower.includes('giám đốc')) {
+        role = 'manager';
+      }
+    }
+    const notesInput = document.getElementById('edit-staff-notes');
+    const notes = notesInput ? notesInput.value.trim() : '';
+
     const checkedBoxes = document.querySelectorAll('input[name="staff-assigned-rooms"]:checked');
     const assignedRooms = Array.from(checkedBoxes).map(cb => cb.value.trim());
 
@@ -8545,11 +8660,12 @@ Trân trọng cảm ơn!`);
       s.staff_code = code;
     }
     s.department_id = deptId;
-    s.title = title || roleTitle;
+    s.title = roleTitle || title;
     s.role_title = roleTitle;
-    s.position = title || roleTitle;
+    s.position = roleTitle || title;
     s.role = role;
     s.role_level = role;
+    s.notes = notes;
     if (username) s.username = username;
     if (pass) s.password = pass;
 
@@ -8812,42 +8928,160 @@ Trân trọng cảm ơn!`);
   }
 
   openNoticeEditModal() {
-    const notice = this.data.hospital.notice;
+    const user = this.getCurrentUser();
+    const canHospitalWide = this.canBroadcastHospitalNotice();
+    const userDeptId = this.getUserDepartmentId();
+    const userDept = (this.data.departments || []).find(d => d.id == userDeptId) || { id: userDeptId || 1, name: 'Khoa phòng' };
+    
+    // Khởi tạo dept_notices nếu chưa có
+    if (!this.data.hospital.dept_notices) {
+      this.data.hospital.dept_notices = {};
+    }
+
+    const hospNotice = this.data.hospital.notice || { enabled: false, title: '', content: '' };
+    const deptNotice = (userDeptId && this.data.hospital.dept_notices[userDeptId]) || { enabled: false, title: '', content: '' };
+
     this.showModal(`
-      <div class="p-4 space-y-3">
-        <div class="flex items-center justify-between border-b pb-2">
-          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Soạn Bảng Tin Thông Báo Khẩn</h3>
-          <button onclick="app5s.closeModal()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
-        </div>
-        <div class="space-y-2.5 text-xs">
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-3">
           <div class="flex items-center space-x-2">
-            <input type="checkbox" id="modal-notice-enabled" ${notice.enabled ? 'checked' : ''} class="rounded text-emerald-600 w-4 h-4">
-            <label for="modal-notice-enabled" class="font-bold">Bật hiển thị thông báo khẩn trên đầu ứng dụng</label>
+            <div class="w-9 h-9 rounded-2xl ${canHospitalWide ? 'bg-red-600' : 'bg-indigo-600'} text-white flex items-center justify-center font-bold">
+              <i data-lucide="bell-ring" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">SOẠN BẢNG TIN THÔNG BÁO 5S</h3>
+              <p class="text-[10px] ${canHospitalWide ? 'text-red-600' : 'text-indigo-600'} font-bold">
+                ${canHospitalWide ? '⭐ Quyền Quản Lý Toàn Viện: Phát thông báo toàn viện & nội bộ' : `🔒 Quyền Nội Bộ: Phát thông báo cho ${userDept.name}`}
+              </p>
+            </div>
           </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <!-- LỰA CHỌN PHẠM VI THÔNG BÁO -->
           <div>
-            <label class="block font-bold mb-1">Tiêu đề thông báo</label>
-            <input type="text" id="modal-notice-title" value="${notice.title}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2 font-bold text-red-600">
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">Phạm vi phát thông báo *</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="p-2.5 rounded-xl border flex items-center space-x-2 ${
+                canHospitalWide 
+                  ? 'cursor-pointer hover:bg-slate-50 border-red-300 bg-red-50/40 text-red-900' 
+                  : 'opacity-50 cursor-not-allowed bg-slate-100 border-slate-200 text-slate-400'
+              }">
+                <input type="radio" name="notice-scope" value="hospital" ${canHospitalWide ? 'checked' : 'disabled'} onchange="app5s.onNoticeScopeChanged(this.value)">
+                <div>
+                  <span class="font-bold block text-xs">📢 Toàn Viện</span>
+                  <span class="text-[9px] block">20 Khoa phòng (Chỉ Admin / Giám Sát)</span>
+                </div>
+              </label>
+
+              <label class="p-2.5 rounded-xl border flex items-center space-x-2 cursor-pointer hover:bg-slate-50 border-indigo-300 bg-indigo-50/40 text-indigo-900">
+                <input type="radio" name="notice-scope" value="department" ${!canHospitalWide ? 'checked' : ''} onchange="app5s.onNoticeScopeChanged(this.value)">
+                <div>
+                  <span class="font-bold block text-xs">🏢 Nội Bộ Khoa</span>
+                  <span class="text-[9px] block">${userDept.name}</span>
+                </div>
+              </label>
+            </div>
+            ${!canHospitalWide ? `
+              <div class="text-[10px] text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 p-2 rounded-xl mt-1.5 border border-amber-200 dark:border-amber-800">
+                🔒 Tài khoản cán bộ cá nhân / quản lý khoa chỉ được phát thông báo trong nội bộ <strong>${userDept.name}</strong>. Quyền phát thông báo Toàn viện dành riêng cho Ban Giám Đốc và Ban Chỉ Đạo 5S.
+              </div>
+            ` : ''}
           </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <input type="checkbox" id="modal-notice-enabled" ${(canHospitalWide ? hospNotice.enabled : deptNotice.enabled) ? 'checked' : ''} class="rounded text-emerald-600 w-4 h-4">
+            <label for="modal-notice-enabled" class="font-bold text-slate-800 dark:text-slate-100">Bật hiển thị thông báo này ngay trên đầu ứng dụng</label>
+          </div>
+
           <div>
-            <label class="block font-bold mb-1">Nội dung chỉ đạo / yêu cầu khẩn</label>
-            <textarea id="modal-notice-content" rows="3" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2">${notice.content}</textarea>
+            <label class="block font-bold mb-1">Tiêu đề thông báo *</label>
+            <input type="text" id="modal-notice-title" value="${canHospitalWide ? (hospNotice.title || 'THÔNG BÁO 5S TOÀN VIỆN') : (deptNotice.title || ('THÔNG BÁO NỘI BỘ: ' + userDept.name.toUpperCase()))}" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-bold text-red-600">
           </div>
-          <button onclick="app5s.saveNoticeSettings()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl">Cập Nhật Thông Báo</button>
+
+          <div>
+            <label class="block font-bold mb-1">Nội dung chỉ đạo / nhắc nhở thực hiện 5S *</label>
+            <textarea id="modal-notice-content" rows="3" placeholder="Nhập nội dung nhắc nhở dọn dẹp vệ sinh, sàng lọc sắp xếp buồng phòng..." class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 text-xs">${canHospitalWide ? (hospNotice.content || '') : (deptNotice.content || '')}</textarea>
+          </div>
+
+          <button onclick="app5s.saveNoticeSettings()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white font-black py-2.5 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Phát Thông Báo Ngay</span>
+          </button>
         </div>
       </div>
     `);
   }
 
+  onNoticeScopeChanged(scope) {
+    const userDeptId = this.getUserDepartmentId();
+    const userDept = (this.data.departments || []).find(d => d.id == userDeptId) || { name: 'Khoa phòng' };
+    const titleInput = document.getElementById('modal-notice-title');
+    const contentInput = document.getElementById('modal-notice-content');
+    const enabledInput = document.getElementById('modal-notice-enabled');
+
+    if (scope === 'hospital') {
+      const hospNotice = this.data.hospital.notice || {};
+      if (titleInput) titleInput.value = hospNotice.title || 'THÔNG BÁO 5S TOÀN VIỆN';
+      if (contentInput) contentInput.value = hospNotice.content || '';
+      if (enabledInput) enabledInput.checked = !!hospNotice.enabled;
+    } else {
+      const deptNotices = this.data.hospital.dept_notices || {};
+      const deptNotice = deptNotices[userDeptId] || {};
+      if (titleInput) titleInput.value = deptNotice.title || `THÔNG BÁO NỘI BỘ: ${userDept.name.toUpperCase()}`;
+      if (contentInput) contentInput.value = deptNotice.content || '';
+      if (enabledInput) enabledInput.checked = !!deptNotice.enabled;
+    }
+  }
+
   saveNoticeSettings() {
-    this.data.hospital.notice.enabled = document.getElementById('modal-notice-enabled').checked;
-    this.data.hospital.notice.title = document.getElementById('modal-notice-title').value.trim();
-    this.data.hospital.notice.content = document.getElementById('modal-notice-content').value.trim();
-    this.data.hospital.notice.updatedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const scopeRadios = document.getElementsByName('notice-scope');
+    let scope = 'department';
+    for (const r of scopeRadios) {
+      if (r.checked) scope = r.value;
+    }
+
+    const enabled = document.getElementById('modal-notice-enabled').checked;
+    const title = document.getElementById('modal-notice-title').value.trim();
+    const content = document.getElementById('modal-notice-content').value.trim();
+    const updatedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const user = this.getCurrentUser();
+    const userDeptId = this.getUserDepartmentId();
+
+    if (scope === 'hospital') {
+      if (!this.canBroadcastHospitalNotice()) {
+        alert('🔒 Bạn không có quyền phát thông báo toàn viện!');
+        return;
+      }
+      this.data.hospital.notice = {
+        enabled,
+        title,
+        content,
+        updatedAt,
+        scope: 'hospital',
+        author: user ? user.name : 'Ban Giám Sát'
+      };
+      this.showToast('Đã phát thông báo khẩn cấp toàn viện thành công!');
+    } else {
+      if (!this.data.hospital.dept_notices) this.data.hospital.dept_notices = {};
+      this.data.hospital.dept_notices[userDeptId] = {
+        enabled,
+        title,
+        content,
+        updatedAt,
+        scope: 'department',
+        department_id: userDeptId,
+        author: user ? user.name : 'Quản lý khoa'
+      };
+      this.showToast('Đã phát thông báo nội bộ khoa phòng thành công!');
+    }
 
     this.saveData();
     this.closeModal();
     this.render();
-    this.showToast('Đã phát thông báo khẩn cấp toàn viện!');
   }
 
   openLoginModal() {
@@ -9260,6 +9494,10 @@ Trân trọng cảm ơn!`);
     if (user.role === 'supervisor' || user.is_supervisor === true) return true;
     const title = (user.title || user.role_title || user.position || '').toLowerCase();
     return title.includes('giám sát 5s') || title.includes('ban giám đốc') || title.includes('trưởng ban chỉ đạo') || title.includes('lãnh đạo viện') || title.includes('điều dưỡng trưởng bv');
+  }
+
+  canBroadcastHospitalNotice() {
+    return this.isAdmin() || this.isHospitalLeaderOrSupervisor();
   }
 
   canAudit5S() {
