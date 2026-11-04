@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v11_watermark';
+const STORAGE_KEY = 'vpi_5s_data_v12_pro';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -21,7 +21,10 @@ const DEFAULT_SEED_DATA = {
     department: 'Hội đồng Quản lý Chất lượng & Ban Chỉ đạo 5S Toàn Viện',
     slogan: 'Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng',
     address: 'Lạc Ý, Định Trung, TP. Vĩnh Yên, Tỉnh Vĩnh Phúc',
-    hotline: '0211.386.115',
+    hotline: '+84916306115',
+    supportEmail: 'vudatxq@gmail.com',
+    author: 'Vũ Đạt',
+    copyright: 'Bản quyền thuộc về: Vũ Đạt',
     director: 'ThS. BSCKII. Phạm Quỳnh Hưng',
     directorTitle: 'Trưởng ban Chỉ đạo 5S Bệnh viện',
     officer: 'KTV. Vũ Bá Đạt',
@@ -2092,7 +2095,7 @@ class App5S {
       let raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
         // Tự động kế thừa từ phiên bản V7 nếu có
-        raw = localStorage.getItem('vpi_5s_data_v10_custom_shifts') || localStorage.getItem('vpi_5s_data_v9_permissions') || localStorage.getItem('vpi_5s_data_v8_reviews');
+        raw = localStorage.getItem('vpi_5s_data_v11_watermark') || localStorage.getItem('vpi_5s_data_v10_custom_shifts') || localStorage.getItem('vpi_5s_data_v9_permissions');
       }
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -2112,6 +2115,29 @@ class App5S {
     }
     if (!this.data.hospital) {
       this.data.hospital = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital));
+    }
+    this.data.hospital.hotline = '+84916306115';
+    this.data.hospital.supportEmail = 'vudatxq@gmail.com';
+    this.data.hospital.author = 'Vũ Đạt';
+    this.data.hospital.copyright = 'Bản quyền thuộc về: Vũ Đạt';
+
+    if (!this.data.admin_messages || !Array.isArray(this.data.admin_messages)) {
+      this.data.admin_messages = [
+        {
+          id: 1,
+          date: '04/11/2026 07:15',
+          sender_name: 'BSCKI. Vũ Đình Khiêm',
+          sender_code: 'BV-105',
+          dept_id: 2,
+          dept_name: 'Khoa Khám bệnh',
+          topic: 'Cải tiến 5S',
+          priority: 'normal',
+          title: 'Đề xuất bổ sung thùng phân loại rác thải 4 màu',
+          content: 'Khoa Khám bệnh đề xuất bổ sung thêm bảng chỉ dẫn 5S và thùng rác y tế phân loại 4 màu tại sảnh chờ tầng 1.',
+          status: 'replied',
+          reply: 'Admin (Vũ Đạt): Đã tiếp nhận và chuyển phòng Vật tư cấp phát bổ sung trong tuần này.'
+        }
+      ];
     }
     this.data.hospital.name = 'Bệnh viện Vĩnh Phúc VPI';
     this.data.hospital.legalName = 'Bệnh viện Vĩnh Phúc VPI';
@@ -2564,6 +2590,7 @@ class App5S {
     container.innerHTML = `
       <main id="main-content-scroll" class="flex-1 overflow-y-auto pb-28 px-1 pt-1 no-scrollbar">
         ${tabContent}
+        ${this.renderAppFooterHtml()}
       </main>
       ${this.renderBottomNavigationHtml()}
     `;
@@ -2572,6 +2599,12 @@ class App5S {
     this.updateHospitalBranding();
     this.updateNoticeBanner();
     this.renderBottomNavigation();
+
+    if (this.activeTab === 'schedule') {
+      setTimeout(() => this.initScheduleDeptTicker(), 50);
+    } else {
+      this.stopScheduleDeptTicker();
+    }
 
     if (window.lucide) window.lucide.createIcons();
   }
@@ -3409,6 +3442,419 @@ class App5S {
   // =========================================================================
   // V9 TÍNH NĂNG 1: CHỤP ẢNH CAMERA & TẢI ẢNH BÀN GIAO 5S HIỂN THỊ TỨC THÌ
   // =========================================================================
+
+  // =========================================================================
+  // TÍNH NĂNG V12: DANH SÁCH 20 KHOA/PHÒNG TỰ ĐỘNG CHẠY NGANG (TICKER MARQUEE)
+  // =========================================================================
+  initScheduleDeptTicker() {
+    this.stopScheduleDeptTicker();
+    const ticker = document.getElementById('schedule-dept-ticker');
+    if (!ticker) return;
+
+    this.isDeptTickerPaused = !!this.isDeptTickerManualPaused;
+
+    const step = () => {
+      if (!this.isDeptTickerPaused && ticker) {
+        ticker.scrollLeft += 0.85; // Tốc độ chạy ngang mượt mà
+        const halfWidth = ticker.scrollWidth / 2;
+        if (halfWidth > 0 && ticker.scrollLeft >= halfWidth) {
+          ticker.scrollLeft -= halfWidth;
+        }
+      }
+      this.deptTickerAnimFrame = requestAnimationFrame(step);
+    };
+
+    this.deptTickerAnimFrame = requestAnimationFrame(step);
+
+    ticker.onmouseenter = () => { this.isDeptTickerPaused = true; };
+    ticker.onmouseleave = () => {
+      if (!this.isDeptTickerManualPaused) this.isDeptTickerPaused = false;
+    };
+    ticker.ontouchstart = () => { this.isDeptTickerPaused = true; };
+    ticker.ontouchend = () => {
+      setTimeout(() => {
+        if (!this.isDeptTickerManualPaused) this.isDeptTickerPaused = false;
+      }, 2500);
+    };
+  }
+
+  toggleDeptTicker() {
+    this.isDeptTickerManualPaused = !this.isDeptTickerManualPaused;
+    this.isDeptTickerPaused = this.isDeptTickerManualPaused;
+    const btn = document.getElementById('dept-ticker-toggle-btn');
+    if (btn) {
+      if (this.isDeptTickerManualPaused) {
+        btn.innerHTML = `<i data-lucide="play" class="w-3 h-3 text-amber-500"></i><span>Chạy tiếp</span>`;
+      } else {
+        btn.innerHTML = `<i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i><span>Tạm dừng</span>`;
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  nudgeDeptTicker(delta) {
+    const ticker = document.getElementById('schedule-dept-ticker');
+    if (ticker) {
+      ticker.scrollBy({ left: delta, behavior: 'smooth' });
+    }
+  }
+
+  stopScheduleDeptTicker() {
+    if (this.deptTickerAnimFrame) {
+      cancelAnimationFrame(this.deptTickerAnimFrame);
+      this.deptTickerAnimFrame = null;
+    }
+  }
+
+  // =========================================================================
+  // TÍNH NĂNG V12: HỖ TRỢ KỸ THUẬT, LIÊN HỆ, GÓP Ý ADMIN & BẢN QUYỀN VŨ ĐẠT
+  // =========================================================================
+  openContactSupportModal() {
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <i data-lucide="headset" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">THÔNG TIN LIÊN HỆ & HỖ TRỢ KỸ THUẬT</h3>
+              <p class="text-[10px] text-emerald-600 font-bold">Hệ thống Quản lý 5S Bệnh viện Vĩnh Phúc VPI</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-900 rounded-3xl p-5 text-white space-y-2 shadow-lg">
+          <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-300"></i>
+            <span>BẢN QUYỀN TÁC GIẢ CHÍNH THỨC</span>
+          </div>
+          <div class="text-base font-black">Bản quyền thuộc về: Vũ Đạt</div>
+          <p class="text-xs text-emerald-100 opacity-90 leading-relaxed">
+            Phần mềm Giám sát 5S Y tế, Bàn giao Buồng phòng & Chấm điểm 5S Chuẩn Quốc gia Bệnh viện Vĩnh Phúc VPI.
+          </p>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <a href="mailto:vudatxq@gmail.com" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition flex items-center space-x-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 font-medium">Email Hỗ Trợ Kỹ Thuật:</div>
+              <div class="font-bold text-slate-900 dark:text-white font-mono text-sm">vudatxq@gmail.com</div>
+              <div class="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">Chạm vào đây để gửi email ngay &rarr;</div>
+            </div>
+          </a>
+
+          <a href="tel:+84916306115" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition flex items-center space-x-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+              <i data-lucide="phone-call" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 font-medium">Hotline Trực Tiếp 24/7:</div>
+              <div class="font-bold text-slate-900 dark:text-white font-mono text-sm">+84916306115</div>
+              <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Chạm vào đây để gọi điện thoại ngay &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="app5s.openFeedbackModal()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
+            <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            <span>NHẮN TIN / GÓP Ý KIẾN CHO ADMIN NGAY</span>
+          </button>
+        </div>
+      </div>
+    `;
+    this.showModal(modalHtml);
+  }
+
+  openFeedbackModal() {
+    const user = this.getCurrentUser() || { name: 'Cán bộ 5S', code: 'BV-345', department_id: 1 };
+    const depts = this.getSortedDepartments();
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xs">
+              <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">GÓP Ý KIẾN & NHẮN TIN CHO ADMIN</h3>
+              <p class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">Tiếp nhận bởi Quản trị viên: Vũ Đạt</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Admin Contact Badge -->
+        <div class="bg-gradient-to-r from-emerald-50 dark:bg-emerald-950/40 p-3 rounded-2xl border border-emerald-200 dark:border-emerald-800 space-y-1.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+              <span>Bản quyền thuộc về: <strong class="text-emerald-700 dark:text-emerald-400">Vũ Đạt</strong></span>
+            </span>
+            <span class="text-[10px] bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full">Admin 5S</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-600 dark:text-slate-300">
+            <a href="tel:+84916306115" class="hover:text-emerald-600 font-bold font-mono">📞 Hotline: +84916306115</a>
+            <a href="mailto:vudatxq@gmail.com" class="hover:text-emerald-600 font-mono">✉️ vudatxq@gmail.com</a>
+          </div>
+        </div>
+
+        <!-- Form fields -->
+        <div class="space-y-3 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Cán bộ gửi tin *</label>
+              <input type="text" id="feedback-sender-name" value="${user.name} (${user.code})" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Khoa / Phòng *</label>
+              <select id="feedback-dept-id" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                ${depts.map(d => `<option value="${d.id}" ${user.department_id == d.id ? 'selected' : ''}>#${d.order || ''} ${d.name}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Chủ đề góp ý *</label>
+              <select id="feedback-topic" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                <option value="Cải tiến 5S">💡 Đề xuất cải tiến 5S</option>
+                <option value="Báo lỗi phần mềm">🛠️ Báo lỗi kỹ thuật App</option>
+                <option value="Vật tư 5S">📦 Yêu cầu tem nhãn, vật tư 5S</option>
+                <option value="Góp ý khác">💬 Ý kiến đóng góp khác</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mức độ ưu tiên</label>
+              <select id="feedback-priority" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                <option value="normal">⚪ Bình thường</option>
+                <option value="urgent">🔴 Cần hỗ trợ gấp</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tiêu đề tin nhắn *</label>
+            <input type="text" id="feedback-title" placeholder="Tóm tắt ngắn gọn nội dung góp ý..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nội dung tin nhắn / góp ý *</label>
+            <textarea id="feedback-content" rows="3" placeholder="Mô tả cụ thể ý kiến đóng góp, đề xuất cải tiến hoặc vấn đề kỹ thuật gửi tới Admin..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-2">
+            <button type="button" onclick="app5s.sendFeedbackToAdmin()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>GỬI TIN NHẮN CHO ADMIN</span>
+            </button>
+            <button type="button" onclick="app5s.sendFeedbackViaEmail()" title="Gửi trực tiếp qua Email client" class="p-3 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 rounded-2xl border border-indigo-200 dark:border-indigo-800 font-bold transition flex items-center space-x-1.5">
+              <i data-lucide="mail" class="w-4 h-4 text-indigo-600"></i>
+              <span class="hidden sm:inline text-xs">Email</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lịch sử tin nhắn -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px]">
+          <span class="text-slate-400">Đã lưu ${(this.data.admin_messages || []).length} tin nhắn trong hệ thống</span>
+          <button onclick="app5s.openAdminInboxModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-1">
+            <i data-lucide="inbox" class="w-3.5 h-3.5"></i>
+            <span>Xem Hộp Thư Admin (${(this.data.admin_messages || []).length}) &rarr;</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  sendFeedbackToAdmin() {
+    const senderName = document.getElementById('feedback-sender-name')?.value.trim();
+    const deptId = parseInt(document.getElementById('feedback-dept-id')?.value) || 1;
+    const topic = document.getElementById('feedback-topic')?.value || 'Góp ý chung';
+    const priority = document.getElementById('feedback-priority')?.value || 'normal';
+    const title = document.getElementById('feedback-title')?.value.trim();
+    const content = document.getElementById('feedback-content')?.value.trim();
+
+    if (!title || !content) {
+      alert('Vui lòng nhập đầy đủ tiêu đề và nội dung góp ý!');
+      return;
+    }
+
+    const dept = (this.data.departments || []).find(d => d.id == deptId) || { name: 'Khoa phòng' };
+    const user = this.getCurrentUser() || { code: 'BV-345', name: 'Cán bộ 5S' };
+
+    const newMsg = {
+      id: Date.now(),
+      date: new Date().toLocaleString('vi-VN'),
+      sender_name: senderName || user.name,
+      sender_code: user.code,
+      dept_id: deptId,
+      dept_name: dept.name,
+      topic: topic,
+      priority: priority,
+      title: title,
+      content: content,
+      status: 'received',
+      reply: ''
+    };
+
+    if (!this.data.admin_messages) this.data.admin_messages = [];
+    this.data.admin_messages.unshift(newMsg);
+    this.saveData();
+
+    this.showToast('✅ Ý kiến đóng góp của bạn đã được gửi thành công đến Admin (Vũ Đạt)!');
+    this.closeModal();
+    this.render();
+  }
+
+  sendFeedbackViaEmail() {
+    const title = document.getElementById('feedback-title')?.value.trim() || 'Góp ý hệ thống 5S VPI';
+    const content = document.getElementById('feedback-content')?.value.trim() || 'Kính gửi Admin Vũ Đạt...';
+    const senderName = document.getElementById('feedback-sender-name')?.value.trim() || 'Cán bộ 5S';
+    const mailSubject = encodeURIComponent(`[5S VPI] ${title}`);
+    const mailBody = encodeURIComponent(`Kính gửi Admin Vũ Đạt (Hotline: +84916306115),
+
+Người gửi: ${senderName}
+
+Nội dung góp ý:
+${content}
+
+Trân trọng cảm ơn!`);
+    window.open(`mailto:vudatxq@gmail.com?subject=${mailSubject}&body=${mailBody}`, '_blank');
+  }
+
+  openAdminInboxModal() {
+    const messages = this.data.admin_messages || [];
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+              <i data-lucide="inbox" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">HỘP THƯ TIN NHẮN & GÓP Ý ADMIN</h3>
+              <p class="text-[10px] text-indigo-600 font-bold">Quản trị viên: Vũ Đạt • Hotline: +84916306115</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl text-slate-400 hover:bg-slate-100">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          ${messages.length === 0 ? `
+            <div class="text-center py-8 text-slate-400 text-xs">
+              <i data-lucide="message-square-off" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+              <p>Chưa có tin nhắn hoặc ý kiến đóng góp nào.</p>
+            </div>
+          ` : messages.map((m, idx) => `
+            <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center space-x-1.5">
+                  <span class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center text-[10px] font-mono">
+                    #${messages.length - idx}
+                  </span>
+                  <strong class="text-slate-900 dark:text-white">${m.sender_name}</strong>
+                  <span class="text-[10px] text-slate-400">[${m.dept_name}]</span>
+                </div>
+                <span class="text-[10px] ${m.priority === 'urgent' ? 'bg-red-100 text-red-700 border border-red-300' : 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded-full font-bold">
+                  ${m.topic}
+                </span>
+              </div>
+
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-100">
+                ${m.title}
+              </div>
+
+              <div class="text-[11.5px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-xl leading-relaxed">
+                ${m.content}
+              </div>
+
+              ${m.reply ? `
+                <div class="text-[11px] text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 p-2 rounded-xl border border-emerald-200 dark:border-emerald-800 flex items-start space-x-1.5">
+                  <i data-lucide="corner-down-right" class="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5"></i>
+                  <div><strong>Phản hồi:</strong> ${m.reply}</div>
+                </div>
+              ` : `
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-[10px] text-slate-400">🕒 ${m.date}</span>
+                  <button onclick="app5s.quickReplyMessage(${m.id})" class="text-[10px] font-bold text-indigo-600 hover:underline">
+                    ✍️ Trả lời tin nhắn
+                  </button>
+                </div>
+              `}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="pt-2">
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Soạn Tin Nhắn / Góp Ý Mới</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  quickReplyMessage(msgId) {
+    const msg = (this.data.admin_messages || []).find(m => m.id == msgId);
+    if (!msg) return;
+    const replyText = prompt(`Nhập nội dung phản hồi cho "${msg.sender_name}" (${msg.title}):`, `Admin (Vũ Đạt): Đã tiếp nhận và xử lý.`);
+    if (replyText && replyText.trim()) {
+      msg.reply = replyText.trim();
+      msg.status = 'replied';
+      this.saveData();
+      this.showToast('Đã lưu phản hồi cho cán bộ thành công!');
+      this.openAdminInboxModal();
+    }
+  }
+
+  renderAppFooterHtml() {
+    return `
+      <footer class="mt-8 mb-4 px-4 py-3 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xs rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center space-y-1.5 shadow-2xs">
+        <div class="flex items-center justify-center space-x-1.5 text-xs font-bold text-slate-700 dark:text-slate-200">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+          <span>Hệ thống Quản lý 5S Bệnh viện Vĩnh Phúc VPI</span>
+        </div>
+        <div class="text-xs font-black text-emerald-600 dark:text-emerald-400">
+          Bản quyền thuộc về: Vũ Đạt
+        </div>
+        <div class="text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-0.5">
+          <a href="mailto:vudatxq@gmail.com" class="hover:text-emerald-600 font-medium flex items-center space-x-1 transition">
+            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span>vudatxq@gmail.com</span>
+          </a>
+          <a href="tel:+84916306115" class="hover:text-emerald-600 font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1 transition">
+            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Hotline: +84916306115</span>
+          </a>
+          <button onclick="app5s.openFeedbackModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-1 transition">
+            <i data-lucide="message-square-plus" class="w-3.5 h-3.5"></i>
+            <span>Nhắn tin cho Admin</span>
+          </button>
+        </div>
+      </footer>
+    `;
+  }
+
   openEndShift5SModal(roomId) {
     const room = (this.data.rooms || []).find(r => r.id == roomId);
     if (!room) return;
@@ -4471,25 +4917,71 @@ class App5S {
             <input type="text" oninput="app5s.onScheduleSearch(this.value)" placeholder="Tìm vị trí làm việc, buồng phòng, nhân sự trực ca..." value="${this.scheduleState.searchQuery || ''}" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
 
-          <!-- Lọc theo 20 Khoa / Phòng -->
-          <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
-            <button onclick="app5s.setScheduleDeptFilter('all')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition ${
-              this.scheduleState.selectedDept === 'all'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-            }">
-              Tất cả khoa (${depts.length})
-            </button>
-            ${depts.map(d => `
-              <button onclick="app5s.setScheduleDeptFilter('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
-                this.scheduleState.selectedDept === String(d.id)
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-              }">
-                <span class="text-[9px] opacity-75 font-mono">#${d.order || ''}</span>
-                <span>${d.name}</span>
-              </button>
-            `).join('')}
+          <!-- Lọc theo 20 Khoa / Phòng TỰ ĐỘNG CHẠY NGANG (V12 PRO) -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 dark:text-slate-200 px-0.5">
+              <div class="flex items-center space-x-1.5">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>20 KHOA / PHÒNG TOÀN VIỆN:</span>
+                <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.2 rounded border border-emerald-300 dark:border-emerald-800">
+                  Tự động chạy ngang
+                </span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <button type="button" onclick="app5s.nudgeDeptTicker(-140)" title="Cuộn sang trái" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
+                  <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" onclick="app5s.toggleDeptTicker()" id="dept-ticker-toggle-btn" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[10px] text-indigo-600 dark:text-indigo-400 font-bold flex items-center space-x-1 transition">
+                  <i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i>
+                  <span>Tạm dừng</span>
+                </button>
+                <button type="button" onclick="app5s.nudgeDeptTicker(140)" title="Cuộn sang phải" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
+                  <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Khung ticker tự động chạy ngang với hiệu ứng mờ biên -->
+            <div class="relative group">
+              <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
+              <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
+
+              <div id="schedule-dept-ticker" class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold scroll-smooth">
+                <!-- Nút Tất cả khoa -->
+                <button onclick="app5s.setScheduleDeptFilter('all')" data-dept-pill="all" class="shrink-0 px-3 py-1.5 rounded-xl transition ${
+                  this.scheduleState.selectedDept === 'all'
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                }">
+                  Tất cả khoa (${depts.length})
+                </button>
+                <!-- 20 Khoa phòng (Lần 1) -->
+                ${depts.map(d => `
+                  <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                    this.scheduleState.selectedDept === String(d.id)
+                      ? 'bg-indigo-600 text-white shadow-xs'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                  }">
+                    <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                    <span>${d.name}</span>
+                  </button>
+                `).join('')}
+                <!-- 20 Khoa phòng (Lặp lại lần 2 để tạo vòng cuộn vô tận mượt mà) -->
+                ${depts.map(d => `
+                  <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                    this.scheduleState.selectedDept === String(d.id)
+                      ? 'bg-indigo-600 text-white shadow-xs'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                  }">
+                    <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                    <span>${d.name}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
           </div>
 
           <!-- Bộ lọc Trạng thái hoạt động & Kiểm duyệt ảnh 5S (V8) -->
@@ -4747,6 +5239,9 @@ class App5S {
             <button onclick="app5s.toggleTheme()" title="Đổi giao diện sáng/tối" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
               <i data-lucide="${this.theme === 'dark' ? 'sun' : 'moon'}" class="w-4 h-4"></i>
             </button>
+            <button onclick="app5s.openFeedbackModal()" title="Nhắn tin / Góp ý kiến cho Admin" class="p-2 rounded-xl text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 transition">
+              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            </button>
             <button onclick="app5s.openLoginModal()" title="Tài khoản / Đổi mật khẩu" class="p-2 rounded-xl text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
               <i data-lucide="user-cog" class="w-4 h-4"></i>
             </button>
@@ -4948,6 +5443,46 @@ class App5S {
           </div>
           <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
         </button>
+
+        <!-- THẺ THÔNG TIN LIÊN HỆ, HỖ TRỢ & BẢN QUYỀN (V12) -->
+        <div class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-4 border border-emerald-500/40 shadow-md space-y-3">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
+                <i data-lucide="headset" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-300">HỖ TRỢ KỸ THUẬT & LIÊN HỆ</h3>
+                <p class="text-[10px] text-slate-300">Bản quyền thuộc về: <strong class="text-white">Vũ Đạt</strong></p>
+              </div>
+            </div>
+            <button onclick="app5s.openContactSupportModal()" class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold hover:bg-emerald-500/30 transition">
+              Chi tiết →
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <a href="mailto:vudatxq@gmail.com" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
+              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
+                <i data-lucide="mail" class="w-3 h-3 text-indigo-300"></i>
+                <span>Email hỗ trợ:</span>
+              </div>
+              <div class="font-bold text-white font-mono text-[11px] truncate mt-0.5">vudatxq@gmail.com</div>
+            </a>
+            <a href="tel:+84916306115" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
+              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
+                <i data-lucide="phone-call" class="w-3 h-3 text-emerald-300"></i>
+                <span>Hotline 24/7:</span>
+              </div>
+              <div class="font-bold text-emerald-300 font-mono text-[11px] truncate mt-0.5">+84916306115</div>
+            </a>
+          </div>
+
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 px-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:from-indigo-600 text-white rounded-xl font-black text-xs flex items-center justify-center space-x-2 shadow-xs transition">
+            <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            <span>NHẮN TIN / GÓP Ý KIẾN CHO ADMIN</span>
+          </button>
+        </div>
 
         <!-- Lối Tắt Nhanh Đầy Đủ 4 Mục Chính -->
         <div class="grid grid-cols-4 gap-2">
@@ -6429,6 +6964,35 @@ class App5S {
             <div>Trạng thái phát: <strong>${hosp.notice.enabled ? '🟢 Đang hiển thị toàn viện' : '⚪ Đang ẩn'}</strong></div>
             <div>Tiêu đề: <strong>${hosp.notice.title}</strong></div>
             <div class="text-[11px] text-slate-500 bg-slate-50 dark:bg-slate-900/50 p-2 rounded-xl mt-1">${hosp.notice.content}</div>
+          </div>
+        </div>
+
+        <!-- THÔNG TIN HỖ TRỢ KỸ THUẬT & BẢN QUYỀN HỆ THỐNG (V12) -->
+        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-4 border border-indigo-500/40 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-indigo-700/60 pb-2">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">Bản Quyền & Hỗ Trợ Kỹ Thuật</h3>
+            </div>
+            <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">
+              Bản quyền Vũ Đạt
+            </span>
+          </div>
+          <div class="space-y-1.5 text-xs text-slate-200">
+            <div>Tác giả phần mềm: <strong class="text-white font-bold">Vũ Đạt</strong></div>
+            <div>Bản quyền: <strong class="text-emerald-300 font-black">Bản quyền thuộc về: Vũ Đạt</strong></div>
+            <div>Email hỗ trợ: <a href="mailto:vudatxq@gmail.com" class="text-indigo-300 hover:underline font-mono font-bold">vudatxq@gmail.com</a></div>
+            <div>Hotline trực tiếp: <a href="tel:+84916306115" class="text-emerald-300 hover:underline font-mono font-bold">+84916306115</a></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="app5s.openFeedbackModal()" class="py-2.5 px-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+              <span>Nhắn Tin Admin</span>
+            </button>
+            <button onclick="app5s.openAdminInboxModal()" class="py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="inbox" class="w-4 h-4 text-amber-300"></i>
+              <span>Hộp Thư Admin (${(this.data.admin_messages || []).length})</span>
+            </button>
           </div>
         </div>
 
