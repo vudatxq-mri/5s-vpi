@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v14_pro';
+const STORAGE_KEY = 'vpi_5s_data_v15_pro';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -2095,7 +2095,7 @@ class App5S {
       let raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
         // Tự động kế thừa từ phiên bản V7 nếu có
-        raw = localStorage.getItem('vpi_5s_data_v13_enterprise') || localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark');
+        raw = localStorage.getItem('vpi_5s_data_v14_pro') || localStorage.getItem('vpi_5s_data_v13_enterprise') || localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark');
       }
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -2559,11 +2559,15 @@ class App5S {
     const avatar = document.getElementById('user-avatar');
     const nameEl = document.getElementById('user-name');
     const roleEl = document.getElementById('user-role');
+    const topUserDisplay = document.getElementById('top-user-display');
 
     if (user) {
       if (avatar) avatar.innerText = (user.name || 'D').split(' ').pop().charAt(0);
-      if (nameEl) nameEl.innerText = user.name.split(' ').slice(-2).join(' ');
+      if (nameEl) nameEl.innerText = user.name;
       if (roleEl) roleEl.innerText = user.title || user.role_title || user.position || 'Cán bộ 5S';
+      if (topUserDisplay) {
+        topUserDisplay.innerHTML = `<span class="text-emerald-400 font-bold">👤 ${user.name}</span> <span class="text-slate-400 font-mono text-[10px]">(${user.code})</span>`;
+      }
     }
   }
 
@@ -2627,10 +2631,14 @@ class App5S {
     this.updateNoticeBanner();
     this.renderBottomNavigation();
 
+    // V15: QUẢN LÝ KHỞI ĐỘNG CÁC DẢI TICKER KHOA PHÒNG THEO TAB ĐANG CHỌN
+    this.stopAllDeptTickers();
     if (this.activeTab === 'schedule') {
       setTimeout(() => this.initScheduleDeptTicker(), 50);
-    } else {
-      this.stopScheduleDeptTicker();
+    } else if (this.activeTab === 'departments') {
+      setTimeout(() => this.initDepartmentsDeptTicker(), 50);
+    } else if (this.activeTab === 'staff') {
+      setTimeout(() => this.initStaffDeptTicker(), 50);
     }
 
     if (window.lucide) window.lucide.createIcons();
@@ -2644,7 +2652,7 @@ class App5S {
     const tabs = [
       { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
       { id: 'schedule', name: 'Khu vực', icon: 'layout-grid' },
-      { id: 'audit', name: 'Chấm 5S', icon: 'camera' },
+      { id: 'audit', name: this.canAudit5S() ? 'Chấm 5S' : 'Chấm 5S 🔒', icon: this.canAudit5S() ? 'camera' : 'lock' },
       { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
       { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' }
@@ -2685,7 +2693,7 @@ class App5S {
     const tabs = [
       { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
       { id: 'schedule', name: 'Khu vực', icon: 'layout-grid' },
-      { id: 'audit', name: 'Chấm 5S', icon: 'camera' },
+      { id: 'audit', name: this.canAudit5S() ? 'Chấm 5S' : 'Chấm 5S 🔒', icon: this.canAudit5S() ? 'camera' : 'lock' },
       { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
       { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' }
@@ -3663,6 +3671,115 @@ class App5S {
     }
   }
 
+  // =========================================================================
+  // V15 TICKER QUẢN LÝ TỰ ĐỘNG CHẠY NGANG CHO KHOA PHÒNG & NHÂN SỰ
+  // =========================================================================
+  initDepartmentsDeptTicker() {
+    this.stopDepartmentsDeptTicker();
+    const ticker = document.getElementById('departments-tab-ticker');
+    if (!ticker) return;
+
+    this.isDeptsTickerPaused = !!this.isDeptsTickerManualPaused;
+    const step = () => {
+      if (!this.isDeptsTickerPaused && ticker) {
+        ticker.scrollLeft += 0.85;
+        const halfWidth = ticker.scrollWidth / 2;
+        if (halfWidth > 0 && ticker.scrollLeft >= halfWidth) {
+          ticker.scrollLeft -= halfWidth;
+        }
+      }
+      this.deptsTickerAnimFrame = requestAnimationFrame(step);
+    };
+    this.deptsTickerAnimFrame = requestAnimationFrame(step);
+
+    ticker.onmouseenter = () => { this.isDeptsTickerPaused = true; };
+    ticker.onmouseleave = () => { if (!this.isDeptsTickerManualPaused) this.isDeptsTickerPaused = false; };
+    ticker.ontouchstart = () => { this.isDeptsTickerPaused = true; };
+    ticker.ontouchend = () => { setTimeout(() => { if (!this.isDeptsTickerManualPaused) this.isDeptsTickerPaused = false; }, 2500); };
+  }
+
+  toggleDepartmentsTicker() {
+    this.isDeptsTickerManualPaused = !this.isDeptsTickerManualPaused;
+    this.isDeptsTickerPaused = this.isDeptsTickerManualPaused;
+    const btn = document.getElementById('dept-tab-ticker-toggle-btn');
+    if (btn) {
+      if (this.isDeptsTickerManualPaused) {
+        btn.innerHTML = `<i data-lucide="play" class="w-3 h-3 text-amber-500"></i><span>Chạy tiếp</span>`;
+      } else {
+        btn.innerHTML = `<i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i><span>Tạm dừng</span>`;
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  nudgeDepartmentsTicker(delta) {
+    const ticker = document.getElementById('departments-tab-ticker');
+    if (ticker) ticker.scrollBy({ left: delta, behavior: 'smooth' });
+  }
+
+  stopDepartmentsDeptTicker() {
+    if (this.deptsTickerAnimFrame) {
+      cancelAnimationFrame(this.deptsTickerAnimFrame);
+      this.deptsTickerAnimFrame = null;
+    }
+  }
+
+  initStaffDeptTicker() {
+    this.stopStaffDeptTicker();
+    const ticker = document.getElementById('staff-tab-ticker');
+    if (!ticker) return;
+
+    this.isStaffTickerPaused = !!this.isStaffTickerManualPaused;
+    const step = () => {
+      if (!this.isStaffTickerPaused && ticker) {
+        ticker.scrollLeft += 0.85;
+        const halfWidth = ticker.scrollWidth / 2;
+        if (halfWidth > 0 && ticker.scrollLeft >= halfWidth) {
+          ticker.scrollLeft -= halfWidth;
+        }
+      }
+      this.staffTickerAnimFrame = requestAnimationFrame(step);
+    };
+    this.staffTickerAnimFrame = requestAnimationFrame(step);
+
+    ticker.onmouseenter = () => { this.isStaffTickerPaused = true; };
+    ticker.onmouseleave = () => { if (!this.isStaffTickerManualPaused) this.isStaffTickerPaused = false; };
+    ticker.ontouchstart = () => { this.isStaffTickerPaused = true; };
+    ticker.ontouchend = () => { setTimeout(() => { if (!this.isStaffTickerManualPaused) this.isStaffTickerPaused = false; }, 2500); };
+  }
+
+  toggleStaffTicker() {
+    this.isStaffTickerManualPaused = !this.isStaffTickerManualPaused;
+    this.isStaffTickerPaused = this.isStaffTickerManualPaused;
+    const btn = document.getElementById('staff-tab-ticker-toggle-btn');
+    if (btn) {
+      if (this.isStaffTickerManualPaused) {
+        btn.innerHTML = `<i data-lucide="play" class="w-3 h-3 text-amber-500"></i><span>Chạy tiếp</span>`;
+      } else {
+        btn.innerHTML = `<i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i><span>Tạm dừng</span>`;
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  nudgeStaffTicker(delta) {
+    const ticker = document.getElementById('staff-tab-ticker');
+    if (ticker) ticker.scrollBy({ left: delta, behavior: 'smooth' });
+  }
+
+  stopStaffDeptTicker() {
+    if (this.staffTickerAnimFrame) {
+      cancelAnimationFrame(this.staffTickerAnimFrame);
+      this.staffTickerAnimFrame = null;
+    }
+  }
+
+  stopAllDeptTickers() {
+    this.stopScheduleDeptTicker();
+    this.stopDepartmentsDeptTicker();
+    this.stopStaffDeptTicker();
+  }
+
   stopScheduleDeptTicker() {
     if (this.deptTickerAnimFrame) {
       cancelAnimationFrame(this.deptTickerAnimFrame);
@@ -4043,6 +4160,17 @@ Trân trọng cảm ơn!`);
   // =========================================================================
   // V13 TÍNH NĂNG 2: ĐIỀU CHỈNH KHUNG GIỜ CA LÀM VIỆC TÙY CHỌN
   // =========================================================================
+  getCurrentShiftHoursDisplay() {
+    const sc = this.data.shift_config || {};
+    if (sc.custom && sc.custom.start && sc.custom.end) {
+      return `${sc.custom.start} - ${sc.custom.end} (${sc.custom.name || 'Ca tùy chỉnh'})`;
+    }
+    if (sc.morning && sc.morning.start && sc.afternoon && sc.afternoon.end) {
+      return `${sc.morning.start} - ${sc.afternoon.end} (Hành chính / Toàn viện)`;
+    }
+    return '07:30 - 17:00 (Hành chính)';
+  }
+
   openCustomizeShiftHoursModal() {
     const sc = this.data.shift_config || {
       morning: { name: 'Ca sáng', start: '07:00', end: '11:30' },
@@ -5393,20 +5521,30 @@ Trân trọng cảm ơn!`);
             </div>
           </div>
 
-          <!-- THANH CHỌN CA LÀM VIỆC & NÚT ĐỔI GIỜ CA TÙY CHỈNH (V13) -->
-          <div class="flex items-center space-x-1.5 overflow-x-auto pb-0.5 no-scrollbar text-xs font-bold">
-            ${shifts.map(s => `
-              <button onclick="app5s.setScheduleShift('${s.id}')" class="shrink-0 px-2 py-1 rounded-lg text-[10.5px] font-bold transition ${
-                this.scheduleState.selectedShift === s.id
-                  ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900'
-                  : 'bg-white dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700'
-              }">
-                ${s.name}
-              </button>
-            `).join('')}
-            <button onclick="app5s.openCustomizeShiftHoursModal()" title="Điều chỉnh khung giờ ca theo ý muốn" class="shrink-0 px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 font-bold text-[10.5px] transition flex items-center space-x-1">
-              <i data-lucide="clock" class="w-3 h-3 text-amber-600"></i>
-              <span>⏰ Đổi Giờ</span>
+          <!-- V15: BỎ CA SÁNG / CHIỀU / ĐÊM CỐ ĐỊNH - ĐỂ MỤC TÙY CHỈNH ĐỔI GIỜ LINH HOẠT -->
+          <div class="bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center space-x-2 min-w-0">
+              <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 shadow-2xs">
+                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center space-x-1.5 flex-wrap">
+                  <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">Khung Giờ Ca Trực:</span>
+                  <span class="text-xs font-black text-amber-700 dark:text-amber-300 font-mono">
+                    ${this.getCurrentShiftHoursDisplay()}
+                  </span>
+                  <span class="text-[9px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-bold px-1.5 py-0.2 rounded-full border border-amber-300">
+                    Linh hoạt
+                  </span>
+                </div>
+                <p class="text-[9.5px] text-slate-500 dark:text-slate-400 truncate">Áp dụng thời gian làm việc & thời hạn nộp ảnh 5S buồng phòng</p>
+              </div>
+            </div>
+
+            <!-- Nút Tùy Chỉnh Đổi Giờ Ca -->
+            <button onclick="app5s.openCustomizeShiftHoursModal()" title="Điều chỉnh giờ làm việc theo yêu cầu khoa phòng" class="shrink-0 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-xs transition flex items-center space-x-1.5">
+              <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
+              <span>⏰ Đổi Giờ Làm Việc</span>
             </button>
           </div>
         </div>
@@ -5785,43 +5923,72 @@ Trân trọng cảm ơn!`);
 
     return `
       <div class="p-4 space-y-4">
-        <!-- Top Bar Profile -->
-        <div class="flex items-center justify-between bg-white dark:bg-slate-800 rounded-2xl p-3 border border-slate-200/80 dark:border-slate-700 shadow-2xs">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-bold flex items-center justify-center text-sm shadow-xs">
-              ${initial}
+        <!-- Top Bar Profile (V15: BỐ CỤC TÊN ĐĂNG NHẬP CÂN ĐỐI, HIỂN THỊ ĐẦY ĐỦ TÊN, KHÔNG CẮT CHỮ) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-slate-200/90 dark:border-slate-700 shadow-2xs space-y-2.5">
+          <!-- Hàng 1: Avatar + Tên đầy đủ + Mã NV + Huy hiệu Phân Quyền -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2.5 min-w-0">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-xs shrink-0 ring-2 ring-emerald-100 dark:ring-emerald-950">
+                ${initial}
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center space-x-1.5 flex-wrap">
+                  <h2 class="text-xs font-black text-slate-900 dark:text-white truncate">
+                    ${userName}
+                  </h2>
+                  <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shrink-0">
+                    ${user ? user.code : 'BV-345'}
+                  </span>
+                </div>
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 flex items-center space-x-1.5 mt-0.5 truncate">
+                  <span>${userTitle}</span>
+                  <span>•</span>
+                  <span class="text-indigo-600 dark:text-indigo-400 font-bold">${(depts.find(d => d.id == this.getUserDepartmentId())?.name) || 'Toàn viện'}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <div class="flex items-center space-x-1.5">
-                <span class="text-xs font-black text-slate-800 dark:text-slate-100">${shortName}</span>
-                <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold px-1.5 py-0.5 rounded-full border border-emerald-300">
-                  ${user ? user.code : 'BV-345'}
-                </span>
-              </div>
-              <div class="text-[10px] text-slate-500 flex items-center space-x-1 mt-0.5">
-                <span>👨‍⚕️ ${userTitle}</span>
-              </div>
+
+            <!-- Huy hiệu vai trò chính thức -->
+            <div class="shrink-0">
+              <span class="text-[9.5px] font-bold px-2 py-1 rounded-xl flex items-center space-x-1 ${
+                this.isAdmin() 
+                  ? 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-300'
+                  : (this.isHospitalLeaderOrSupervisor() 
+                      ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-300'
+                      : (this.isDepartmentManager() 
+                          ? 'bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300 border border-teal-300'
+                          : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300 border border-slate-200'))
+              }">
+                <i data-lucide="${this.isAdmin() ? 'crown' : (this.isHospitalLeaderOrSupervisor() ? 'shield-check' : 'user')}" class="w-3 h-3"></i>
+                <span>${this.isAdmin() ? 'Admin' : (this.isHospitalLeaderOrSupervisor() ? 'Giám Sát 5S' : (this.isDepartmentManager() ? 'Quản Lý Khoa' : 'Nhân Viên'))}</span>
+              </span>
             </div>
           </div>
-          <div class="flex items-center space-x-1">
-            <button onclick="app5s.openNoticeEditModal()" title="Chỉnh sửa thông báo khẩn" class="p-2 rounded-xl text-amber-600 hover:bg-amber-50 dark:hover:bg-slate-700 transition">
-              <i data-lucide="bell" class="w-4 h-4"></i>
-            </button>
-            <button onclick="app5s.toggleTheme()" title="Đổi giao diện sáng/tối" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-              <i data-lucide="${this.theme === 'dark' ? 'sun' : 'moon'}" class="w-4 h-4"></i>
-            </button>
-            <button onclick="app5s.openMyMessagesModal()" title="Hòm thư tin nhắn riêng tư từ Admin" class="relative p-2 rounded-xl text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 transition">
-              <i data-lucide="message-square" class="w-4 h-4"></i>
+
+          <!-- Hàng 2: Bộ 4 nút tác vụ nhanh cân đối, không chen chúc -->
+          <div class="grid grid-cols-4 gap-1.5 pt-2 border-t border-slate-100 dark:border-slate-700/60 text-xs">
+            <button onclick="app5s.openMyMessagesModal()" title="Hòm thư riêng tư từ Admin" class="relative py-1.5 px-1 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 border border-indigo-200 dark:border-indigo-800/80 transition">
+              <i data-lucide="message-square" class="w-3.5 h-3.5 text-indigo-600"></i>
+              <span class="truncate">Hòm Thư</span>
               ${(this.data.admin_messages || []).some(m => (m.sender_code === (user ? user.code : '') || (user && m.sender_name === user.name)) && m.reply && !m.read_by_user) ? `
-                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
-                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full"></span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full"></span>
               ` : ''}
             </button>
-            <button onclick="app5s.openFeedbackModal()" title="Nhắn tin / Góp ý kiến cho Admin" class="p-2 rounded-xl text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 transition">
-              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+
+            <button onclick="app5s.openFeedbackModal()" title="Góp ý trực tiếp cho Admin (Vũ Đạt)" class="py-1.5 px-1 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 border border-emerald-200 dark:border-emerald-800/80 transition">
+              <i data-lucide="message-square-plus" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span class="truncate">Góp Ý</span>
             </button>
-            <button onclick="app5s.openLoginModal()" title="Tài khoản / Đổi mật khẩu" class="p-2 rounded-xl text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
-              <i data-lucide="user-cog" class="w-4 h-4"></i>
+
+            <button onclick="app5s.toggleTheme()" title="Đổi giao diện Sáng / Tối" class="py-1.5 px-1 bg-slate-50 hover:bg-slate-100 dark:bg-slate-700/70 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 border border-slate-200 dark:border-slate-600 transition">
+              <i data-lucide="${this.theme === 'dark' ? 'sun' : 'moon'}" class="w-3.5 h-3.5 text-amber-500"></i>
+              <span class="truncate">${this.theme === 'dark' ? 'Sáng' : 'Tối'}</span>
+            </button>
+
+            <button onclick="app5s.openLoginModal()" title="Cài đặt tài khoản & Đăng xuất" class="py-1.5 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 border border-slate-300 dark:border-slate-600 transition">
+              <i data-lucide="user-cog" class="w-3.5 h-3.5 text-slate-600 dark:text-slate-300"></i>
+              <span class="truncate">Tài Khoản</span>
             </button>
           </div>
         </div>
@@ -6212,6 +6379,9 @@ Trân trọng cảm ơn!`);
   // TAB 2: CHẤM 5S (1 ẢNH MINH CHỨNG SAU KHI 5S)
   // =========================================================================
   renderAuditTab() {
+    if (!this.canAudit5S()) {
+      return this.renderAuditLockedScreen();
+    }
     const sortedDepts = this.getSortedDepartments();
     const currentDeptId = parseInt(this.newAuditState.deptId) || sortedDepts[0].id;
     const sortedRooms = this.getSortedRooms(currentDeptId);
@@ -6236,8 +6406,8 @@ Trân trọng cảm ơn!`);
               <h2 class="text-base font-black text-slate-900 dark:text-white">Kiểm Tra Vệ Sinh & 5S</h2>
             </div>
             <div class="text-right">
-              <div class="text-xl font-mono font-black text-emerald-600 dark:text-emerald-400">${totalScore} / 100</div>
-              ${gradeBadge}
+              <div id="audit-total-score-val" class="text-xl font-mono font-black text-emerald-600 dark:text-emerald-400">${totalScore} / 100</div>
+              <div id="audit-grade-badge">${gradeBadge}</div>
             </div>
           </div>
 
@@ -6317,10 +6487,10 @@ Trân trọng cảm ơn!`);
                 <div class="space-y-1.5">
                   <div class="flex items-center justify-between text-xs">
                     <span class="font-bold text-slate-800 dark:text-slate-200">${c.name}</span>
-                    <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">${currentScore} / ${c.max}đ</span>
+                    <span id="score-val-${c.id}" class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">${currentScore} / ${c.max}đ</span>
                   </div>
                   <p class="text-[10px] text-slate-500">${c.desc}</p>
-                  <input type="range" min="0" max="${c.max}" step="1" value="${currentScore}" oninput="app5s.setCriterionScore(${c.id}, parseInt(this.value))" class="w-full accent-emerald-600 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg cursor-pointer">
+                  <input type="range" id="criterion-range-${c.id}" min="0" max="${c.max}" step="1" value="${currentScore}" oninput="app5s.setCriterionScore(${c.id}, parseInt(this.value))" class="w-full accent-emerald-600 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg cursor-pointer">
                   <div class="flex justify-between text-[9px] text-slate-400 font-mono">
                     <span>0đ</span>
                     <span>10đ</span>
@@ -6428,13 +6598,48 @@ Trân trọng cảm ơn!`);
   }
 
   setCriterionScore(criterionId, pts) {
+    if (!this.newAuditState.scores) this.newAuditState.scores = {};
     this.newAuditState.scores[criterionId] = pts;
-    this.render();
+
+    // V15 FIX: Cập nhật DOM trực tiếp tại chỗ - TUYỆT ĐỐI KHÔNG GỌI this.render() ĐỂ TRÁNH NHẢY LÊN ĐẦU TRANG
+    const scoreValEl = document.getElementById('score-val-' + criterionId);
+    if (scoreValEl) {
+      scoreValEl.textContent = `${pts} / 20đ`;
+    }
+
+    const totalScore = Object.values(this.newAuditState.scores).reduce((a, b) => a + b, 0);
+    const totalEl = document.getElementById('audit-total-score-val');
+    if (totalEl) {
+      totalEl.textContent = `${totalScore} / 100`;
+    }
+
+    const badgeEl = document.getElementById('audit-grade-badge');
+    if (badgeEl) {
+      if (totalScore < 70) {
+        badgeEl.innerHTML = '<span class="text-red-700 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-full font-bold text-xs">CẦN CẢI TIẾN (< 70đ)</span>';
+      } else if (totalScore < 90) {
+        badgeEl.innerHTML = '<span class="text-blue-700 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full font-bold text-xs">ĐẠT CHUẨN (70 - 89đ)</span>';
+      } else {
+        badgeEl.innerHTML = '<span class="text-emerald-700 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full font-bold text-xs">XUẤT SẮC (90 - 100đ)</span>';
+      }
+    }
   }
 
   setAllMaxScores() {
     this.newAuditState.scores = { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 };
-    this.render();
+    for (let i = 1; i <= 5; i++) {
+      const rangeEl = document.getElementById('criterion-range-' + i);
+      if (rangeEl) rangeEl.value = 20;
+      const scoreValEl = document.getElementById('score-val-' + i);
+      if (scoreValEl) scoreValEl.textContent = '20 / 20đ';
+    }
+    const totalEl = document.getElementById('audit-total-score-val');
+    if (totalEl) totalEl.textContent = '100 / 100';
+    const badgeEl = document.getElementById('audit-grade-badge');
+    if (badgeEl) {
+      badgeEl.innerHTML = '<span class="text-emerald-700 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full font-bold text-xs">XUẤT SẮC (90 - 100đ)</span>';
+    }
+    this.showToast('Đã chấm tối đa 100 điểm (20đ cho tất cả 5 tiêu chí)!');
   }
 
   onAfterPhotoSelected(e) {
@@ -6980,6 +7185,55 @@ Trân trọng cảm ơn!`);
           </button>
         </div>
 
+        <!-- V15: DẢI TICKER 20 KHOA PHÒNG TỰ ĐỘNG CHẠY NGANG CHO TAB KHOA PHÒNG -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-2.5 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-1.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-1.5">
+              <i data-lucide="building-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Khoa / Phòng Toàn Viện (${visibleDepts.length})</span>
+              <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.2 rounded border border-emerald-300 dark:border-emerald-800">
+                Tự động chạy ngang
+              </span>
+            </div>
+            <div class="flex items-center space-x-1">
+              <button type="button" onclick="app5s.nudgeDepartmentsTicker(-140)" title="Cuộn sang trái" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" onclick="app5s.toggleDepartmentsTicker()" id="dept-tab-ticker-toggle-btn" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center space-x-1 transition">
+                <i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i>
+                <span>Tạm dừng</span>
+              </button>
+              <button type="button" onclick="app5s.nudgeDepartmentsTicker(140)" title="Cuộn sang phải" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white dark:from-slate-800 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-slate-800 to-transparent z-10 pointer-events-none"></div>
+
+            <div id="departments-tab-ticker" class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold scroll-smooth">
+              <button onclick="app5s.onSearchInput('')" class="shrink-0 px-2.5 py-1 rounded-xl bg-emerald-600 text-white shadow-xs">
+                Tất cả khoa (${visibleDepts.length})
+              </button>
+              ${visibleDepts.map(d => `
+                <button onclick="app5s.onSearchInput('${d.name}')" class="shrink-0 px-2.5 py-1 rounded-xl transition flex items-center space-x-1 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                  <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                  <span>${d.name}</span>
+                </button>
+              `).join('')}
+              <!-- Lặp lần 2 cho cuộn vô tận -->
+              ${visibleDepts.map(d => `
+                <button onclick="app5s.onSearchInput('${d.name}')" class="shrink-0 px-2.5 py-1 rounded-xl transition flex items-center space-x-1 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                  <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                  <span>${d.name}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
         <!-- BỘ LỌC PHÂN KHỐI CHỨC NĂNG -->
         <div class="grid grid-cols-4 gap-1.5 text-center text-xs">
           <button onclick="app5s.setFilterCategory('all')" class="py-1.5 px-2 rounded-xl font-bold transition text-[11px] ${
@@ -7305,24 +7559,67 @@ Trân trọng cảm ơn!`);
           <input type="text" id="staff-search-input" oninput="app5s.onStaffSearchInput(this.value)" placeholder="Tìm kiếm theo tên, mã NV, chức danh, buồng phòng phụ trách..." value="${this.staffSearchQuery}" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
 
-        <!-- Lọc Nhân sự theo Khoa -->
-        <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar">
-          <button onclick="app5s.setStaffDeptFilter('all')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-            this.filterStaffDept === 'all' ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-          }">
-            Tất cả (${this.data.staff.length})
-          </button>
-          ${depts.map(d => {
-            const count = this.data.staff.filter(s => s.department_id == d.id).length;
-            return `
-              <button onclick="app5s.setStaffDeptFilter('${d.id}')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 ${
-                this.filterStaffDept === String(d.id) ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-              }">
-                <span>${d.name}</span>
-                <span class="text-[9px] opacity-75 font-mono">(${count})</span>
+        <!-- V15: DẢI TICKER 20 KHOA PHÒNG TỰ ĐỘNG CHẠY NGANG CHO TAB NHÂN SỰ -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-2.5 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-1.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-1.5">
+              <i data-lucide="users" class="w-3.5 h-3.5 text-indigo-600"></i>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Khoa / Phòng (${depts.length})</span>
+              <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.2 rounded border border-emerald-300 dark:border-emerald-800">
+                Tự động chạy ngang
+              </span>
+            </div>
+            <div class="flex items-center space-x-1">
+              <button type="button" onclick="app5s.nudgeStaffTicker(-140)" title="Cuộn sang trái" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
               </button>
-            `;
-          }).join('')}
+              <button type="button" onclick="app5s.toggleStaffTicker()" id="staff-tab-ticker-toggle-btn" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-[10px] text-indigo-600 dark:text-indigo-400 font-bold flex items-center space-x-1 transition">
+                <i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i>
+                <span>Tạm dừng</span>
+              </button>
+              <button type="button" onclick="app5s.nudgeStaffTicker(140)" title="Cuộn sang phải" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white dark:from-slate-800 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-slate-800 to-transparent z-10 pointer-events-none"></div>
+
+            <div id="staff-tab-ticker" class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold scroll-smooth">
+              <button onclick="app5s.setStaffDeptFilter('all')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${
+                this.filterStaffDept === 'all' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+              }">
+                Tất cả (${this.data.staff.length})
+              </button>
+              ${depts.map(d => {
+                const count = this.data.staff.filter(s => s.department_id == d.id).length;
+                const isSelected = this.filterStaffDept === String(d.id);
+                return `
+                  <button onclick="app5s.setStaffDeptFilter('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                    isSelected ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
+                  }">
+                    <span>${d.name}</span>
+                    <span class="text-[9px] opacity-75 font-mono">(${count})</span>
+                  </button>
+                `;
+              }).join('')}
+              <!-- Lặp lần 2 cho cuộn vô tận -->
+              ${depts.map(d => {
+                const count = this.data.staff.filter(s => s.department_id == d.id).length;
+                const isSelected = this.filterStaffDept === String(d.id);
+                return `
+                  <button onclick="app5s.setStaffDeptFilter('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                    isSelected ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
+                  }">
+                    <span>${d.name}</span>
+                    <span class="text-[9px] opacity-75 font-mono">(${count})</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
         </div>
 
         <!-- Danh Sách Cán Bộ & Nhân Viên -->
@@ -8963,6 +9260,81 @@ Trân trọng cảm ơn!`);
     if (user.role === 'supervisor' || user.is_supervisor === true) return true;
     const title = (user.title || user.role_title || user.position || '').toLowerCase();
     return title.includes('giám sát 5s') || title.includes('ban giám đốc') || title.includes('trưởng ban chỉ đạo') || title.includes('lãnh đạo viện') || title.includes('điều dưỡng trưởng bv');
+  }
+
+  canAudit5S() {
+    const user = this.getCurrentUser();
+    if (!user) return false;
+    if (this.isAdmin() || this.isHospitalLeaderOrSupervisor() || this.isDepartmentManager()) return true;
+    if (user.can_audit === true || user.is_auditor === true || user.role === 'auditor' || user.is_supervisor === true) return true;
+    return false;
+  }
+
+  renderAuditLockedScreen() {
+    const user = this.getCurrentUser();
+    const userName = (user && user.name) ? user.name : 'Cán bộ nhân viên';
+    const userTitle = (user && (user.title || user.role_title || user.position)) ? (user.title || user.role_title || user.position) : 'Nhân viên';
+    const userCode = user ? user.code : 'NV-000';
+    const dept = (this.data.departments || []).find(d => d.id == this.getUserDepartmentId());
+    const deptName = dept ? dept.name : 'Nội bộ khoa phòng';
+
+    return `
+      <div class="p-4 space-y-4">
+        <!-- Card Khóa Phân Quyền Chấm 5S (V15 PRO) -->
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-amber-200 dark:border-amber-800/80 shadow-md text-center space-y-4">
+          <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-amber-500/20">
+            <i data-lucide="shield-alert" class="w-8 h-8"></i>
+          </div>
+
+          <div class="space-y-1.5">
+            <span class="text-[10.5px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-bold px-3 py-0.5 rounded-full border border-amber-300 font-mono uppercase tracking-wider inline-flex items-center space-x-1">
+              <span>🔒 CHỨC NĂNG ĐÃ ĐƯỢC PHÂN QUYỀN RIÊNG</span>
+            </span>
+            <h2 class="text-base font-black text-slate-900 dark:text-white">
+              CHẤM ĐIỂM 5S CHỈ MỞ CHO CÁN BỘ ĐƯỢC PHÂN QUYỀN
+            </h2>
+            <p class="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto leading-relaxed">
+              Theo quy định phân cấp Bệnh viện VPI, tính năng <strong>Chấm điểm & Đánh giá 5S</strong> buồng phòng chỉ dành riêng cho: <strong>Admin, Ban Chỉ Đạo 5S, Cán Bộ Giám Sát Toàn Viện và Quản Lý Cấp Khoa Phòng</strong> (Trưởng/Phó khoa, Điều dưỡng trưởng, KTV trưởng, Hộ sinh trưởng...). Tài khoản cán bộ nhân viên thường không được mở quyền tự chấm điểm.
+            </p>
+          </div>
+
+          <!-- Card thông tin tài khoản hiện tại -->
+          <div class="bg-slate-50 dark:bg-slate-900/70 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs text-left space-y-1.5 max-w-sm mx-auto">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400 font-medium">Cán bộ đăng nhập:</span>
+              <strong class="text-slate-800 dark:text-slate-100">${userName}</strong>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400 font-medium">Mã nhân viên:</span>
+              <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">${userCode}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400 font-medium">Chức danh / Khoa:</span>
+              <span class="text-slate-700 dark:text-slate-300">${userTitle} • ${deptName}</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
+              <span class="text-slate-400 font-medium">Trạng thái quyền:</span>
+              <span class="text-[10px] font-bold text-amber-700 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-full">🔒 Khóa quyền Chấm 5S</span>
+            </div>
+          </div>
+
+          <!-- Các nút tác vụ -->
+          <div class="space-y-2 max-w-sm mx-auto pt-1">
+            <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-2 shadow-sm transition">
+              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+              <span>Nhắn Tin Admin Xin Mở Quyền Chấm 5S</span>
+            </button>
+            <button onclick="app5s.openSwitchAccountModal()" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border border-slate-300 dark:border-slate-600 transition">
+              <i data-lucide="shield" class="w-4 h-4 text-indigo-600"></i>
+              <span>Chuyển Tài Khoản Giám Sát Để Kiểm Thử</span>
+            </button>
+            <button onclick="app5s.switchTab('schedule')" class="w-full py-2 px-4 bg-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 text-xs font-semibold">
+              Quay lại Tab Khu Vực Làm Việc
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   isDepartmentManager() {
