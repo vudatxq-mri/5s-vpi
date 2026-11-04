@@ -1,6 +1,6 @@
-# 5S VPI - HỆ THỐNG QUẢN LÝ VỆ SINH & BÁO CÁO 5S BỆNH VIỆN VĨNH PHÚC VPI
+# 5S VPI - HỆ THỐNG QUẢN LÝ VỆ SINH & BÁO CÁO 5S BỆNH VIỆN QUỐC TẾ VĨNH PHÚC
 
-Ứng dụng web Progressive Web App (PWA) hỗ trợ giám sát, chụp ảnh vi phạm & cải tiến 5S, chấm điểm theo 5 tiêu chí Bộ Y tế và xuất báo cáo tự động cho Bệnh viện Vĩnh Phúc VPI.
+Ứng dụng web Progressive Web App (PWA) hỗ trợ giám sát, chụp ảnh vi phạm & cải tiến 5S, chấm điểm theo 5 tiêu chí Bộ Y tế và xuất báo cáo tự động cho Bệnh viện Đa khoa Quốc tế Vĩnh Phúc (VPI).
 
 ---
 

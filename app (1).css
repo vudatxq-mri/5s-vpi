@@ -1,3 +1,6 @@
+* {
+  font-family: 'Times New Roman', Times, 'Tinos', serif !important;
+}
 /* ==========================================================================
    5S VPI - GIAO DIỆN CHUYÊN DỤNG CHO BỆNH VIỆN VĨNH PHÚC
    Hệ Thống Quản Lý Vệ Sinh & Chụp Ảnh Báo Cáo 5S Buồng Phòng Y Tế
@@ -38,7 +41,7 @@
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Times New Roman', Times, 'Tinos', serif !important;
   background-color: var(--bg-main);
   color: var(--text-main);
   transition: background-color 0.25s ease, color 0.25s ease;
