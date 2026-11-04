@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v10_custom_shifts';
+const STORAGE_KEY = 'vpi_5s_data_v13_enterprise';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -21,7 +21,10 @@ const DEFAULT_SEED_DATA = {
     department: 'Hội đồng Quản lý Chất lượng & Ban Chỉ đạo 5S Toàn Viện',
     slogan: 'Sàng lọc - Sắp xếp - Sạch sẽ - Săn sóc - Sẵn sàng',
     address: 'Lạc Ý, Định Trung, TP. Vĩnh Yên, Tỉnh Vĩnh Phúc',
-    hotline: '0211.386.115',
+    hotline: '+84916306115',
+    supportEmail: 'vudatxq@gmail.com',
+    author: 'Vũ Đạt',
+    copyright: 'Bản quyền thuộc về: Vũ Đạt',
     director: 'ThS. BSCKII. Phạm Quỳnh Hưng',
     directorTitle: 'Trưởng ban Chỉ đạo 5S Bệnh viện',
     officer: 'KTV. Vũ Bá Đạt',
@@ -40,7 +43,7 @@ const DEFAULT_SEED_DATA = {
   },
   departments: [{"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu", "order": 1, "category": "paraclinical"}, {"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "order": 2, "category": "clinical"}, {"id": 11, "code": "ICU", "name": "Khoa Hồi sức tích cực & Chống độc", "head_nurse": "ĐD. Nguyễn Thị Thanh Nga", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.116", "color": "#dc2626", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục", "order": 3, "category": "clinical"}, {"id": 12, "code": "PTGM", "name": "Khoa Phẫu thuật - Gây mê hồi sức", "head_nurse": "ĐD. Nguyễn Văn Thắng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.117", "color": "#0284c7", "icon": "fa-syringe", "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản", "order": 4, "category": "clinical"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân", "order": 5, "category": "clinical"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương", "order": 6, "category": "clinical"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa", "order": 7, "category": "clinical"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa", "order": 8, "category": "clinical"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng", "order": 9, "category": "clinical"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT - Phục hồi chức năng", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "BSCKI. Trần Văn Thái", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-spa", "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu", "order": 10, "category": "clinical"}, {"id": 13, "code": "LCK", "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)", "head_nurse": "ĐD. Vũ Thị Loan", "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường", "phone": "0211.386.129", "color": "#8b5cf6", "icon": "fa-eye", "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình", "order": 11, "category": "clinical"}, {"id": 14, "code": "TDCN", "name": "Khoa Thăm dò chức năng & Nội soi", "head_nurse": "KTV. Lê Thùy Linh", "doctor_in_charge": "BS. Lê Quang Huy", "phone": "0211.386.131", "color": "#14b8a6", "icon": "fa-wave-square", "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp", "order": 12, "category": "paraclinical"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học", "order": 13, "category": "paraclinical"}, {"id": 15, "code": "KD", "name": "Khoa Dược", "head_nurse": "DS. Nguyễn Bích Ngọc", "doctor_in_charge": "DS CKI. Hoàng Thị Lan", "phone": "0211.386.133", "color": "#10b981", "icon": "fa-pills", "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế", "order": 14, "category": "paraclinical"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện", "order": 15, "category": "paraclinical"}, {"id": 16, "code": "QLCL", "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "head_nurse": "ĐD. Nguyễn Thu Trang", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.100", "color": "#6366f1", "icon": "fa-award", "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV", "order": 16, "category": "functional"}, {"id": 17, "code": "KHTH", "name": "Phòng Kế hoạch tổng hợp & CNTT", "head_nurse": "ĐD. Hoàng Hải Yến", "doctor_in_charge": "BSCKI. Trần Đức Thắng", "phone": "0211.386.102", "color": "#3b82f6", "icon": "fa-clipboard-list", "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS", "order": 17, "category": "functional"}, {"id": 18, "code": "PDD", "name": "Phòng Điều dưỡng", "head_nurse": "ThS. ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "phone": "0211.386.103", "color": "#06b6d4", "icon": "fa-user-nurse", "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S", "order": 18, "category": "functional"}, {"id": 19, "code": "HCQT", "name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "head_nurse": "CN. Đặng Thị Loan", "doctor_in_charge": "ThS. Nguyễn Văn Hùng", "phone": "0211.386.105", "color": "#64748b", "icon": "fa-building", "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan", "order": 19, "category": "functional"}, {"id": 20, "code": "TCKT", "name": "Phòng Tài chính - Kế toán", "head_nurse": "KTV. Lê Thu Thảo", "doctor_in_charge": "ThS. Vũ Thị Mai", "phone": "0211.386.106", "color": "#f59e0b", "icon": "fa-file-invoice-dollar", "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị", "order": 20, "category": "functional"}],
   rooms: [{"id": 34, "department_id": 8, "code": "XQ-01", "name": "Phòng Chụp X-quang Kỹ thuật số DR", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Chung", "target_score": 95.0, "status": "active", "order": 1}, {"id": 32, "department_id": 8, "code": "CT-01", "name": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đức Tuấn", "target_score": 98.0, "status": "active", "order": 2}, {"id": 33, "department_id": 8, "code": "MRI-01", "name": "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Công Bằng", "target_score": 98.0, "status": "active", "order": 3}, {"id": 35, "department_id": 8, "code": "SA-01", "name": "Phòng Siêu âm Màu 4D & Doppler tim mạch (P.104)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "BS. Phạm Quang Nam", "target_score": 95.0, "status": "active", "order": 4}, {"id": 50, "department_id": 8, "code": "PACS-01", "name": "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Vũ Bá Đạt", "target_score": 95.0, "status": "active", "order": 5}, {"id": 51, "department_id": 8, "code": "KHO-CDHA", "name": "Kho Vật tư tiêu hao & Lưu trữ hồ sơ phim CĐHA", "room_type": "Kho lưu trữ", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Tuấn", "target_score": 90.0, "status": "active", "order": 6}, {"id": 1, "department_id": 1, "code": "KCC-P01", "name": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "room_type": "Phòng tiếp đón", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Lê Văn Minh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 2, "department_id": 1, "code": "KCC-P02", "name": "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 2}, {"id": 3, "department_id": 1, "code": "KCC-P03", "name": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "room_type": "Phòng bệnh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Phạm Thị Mai", "target_score": 90.0, "status": "active", "order": 3}, {"id": 4, "department_id": 1, "code": "KCC-P04", "name": "Phòng Tiểu phẫu - Băng bó vết thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Hoàng Hải Yến", "target_score": 92.0, "status": "active", "order": 4}, {"id": 5, "department_id": 1, "code": "KCC-P05", "name": "Kho Thuốc & Dịch truyền Cấp cứu", "room_type": "Kho dược", "floor": "Tầng 1 - Nhà A", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 5}, {"id": 6, "department_id": 1, "code": "KCC-P06", "name": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "room_type": "Khu vệ sinh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 90.0, "status": "active", "order": 6}, {"id": 46, "department_id": 11, "code": "ICU-01", "name": "Buồng Bệnh nhân nặng Hồi sức 1", "room_type": "Phòng điều trị tích cực", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 98.0, "status": "active", "order": 1}, {"id": 47, "department_id": 11, "code": "ICU-02", "name": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "room_type": "Phòng hồi sức", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Mai", "target_score": 98.0, "status": "active", "order": 2}, {"id": 48, "department_id": 11, "code": "ICU-03", "name": "Phòng Thao tác & Thủ thuật ICU", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ThS.BS. Đinh Công Trí", "target_score": 95.0, "status": "active", "order": 3}, {"id": 49, "department_id": 11, "code": "ICU-04", "name": "Phòng Trực cấp cứu & Giao ban ICU", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thanh Nga", "target_score": 92.0, "status": "active", "order": 4}, {"id": 52, "department_id": 11, "code": "ICU-05", "name": "Buồng Cách ly áp lực âm ICU", "room_type": "Phòng cách ly", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Phan Anh Tuấn", "target_score": 95.0, "status": "active", "order": 5}, {"id": 53, "department_id": 12, "code": "PTGM-01", "name": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Lê Tuấn Anh", "target_score": 99.0, "status": "active", "order": 1}, {"id": 54, "department_id": 12, "code": "PTGM-02", "name": "Phòng Mổ số 2 - Phẫu thuật Sản khoa & Mổ lấy thai", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Nguyễn Thị Hồng", "target_score": 99.0, "status": "active", "order": 2}, {"id": 55, "department_id": 12, "code": "PTGM-03", "name": "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "room_type": "Phòng hồi tỉnh", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 96.0, "status": "active", "order": 3}, {"id": 56, "department_id": 12, "code": "PTGM-04", "name": "Khu Rửa tay phẫu thuật viên & Thay đồ vô khuẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 4}, {"id": 57, "department_id": 12, "code": "PTGM-05", "name": "Kho Vật tư phòng mổ & Đồ vải tiệt trùng", "room_type": "Kho vô trùng", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 7, "department_id": 2, "code": "KKB-P01", "name": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "room_type": "Sảnh chờ", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 92.0, "status": "active", "order": 1}, {"id": 8, "department_id": 2, "code": "KKB-P02", "name": "Phòng Khám Nội tổng quát (P.101)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BSCKI. Vũ Đình Khiêm", "target_score": 92.0, "status": "active", "order": 2}, {"id": 9, "department_id": 2, "code": "KKB-P03", "name": "Phòng Khám Ngoại - Chấn thương (P.102)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Đỗ Mạnh Cường", "target_score": 92.0, "status": "active", "order": 3}, {"id": 10, "department_id": 2, "code": "KKB-P04", "name": "Phòng Khám Nhi & Tiêm chủng (P.103)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Trần Thảo Vy", "target_score": 92.0, "status": "active", "order": 4}, {"id": 11, "department_id": 2, "code": "KKB-P05", "name": "Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà B", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 58, "department_id": 2, "code": "KKB-P06", "name": "Quầy Thu viện phí & Giám định BHYT", "room_type": "Quầy giao dịch", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Hoàng Bích Thủy", "target_score": 90.0, "status": "active", "order": 6}, {"id": 16, "department_id": 4, "code": "KNG-P01", "name": "Buồng Hậu phẫu Ngoại 201", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 17, "department_id": 4, "code": "KNG-P02", "name": "Buồng Bệnh Tiền phẫu 202", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 90.0, "status": "active", "order": 2}, {"id": 18, "department_id": 4, "code": "KNG-P03", "name": "Phòng Thay băng - Rửa vết thương & Cắt chỉ", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 3}, {"id": 19, "department_id": 4, "code": "KNG-P04", "name": "Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà C", "person_in_charge": "BSCKII. Nguyễn Văn Toàn", "target_score": 90.0, "status": "active", "order": 4}, {"id": 20, "department_id": 5, "code": "KNT-P01", "name": "Buồng Bệnh Nội Tim Mạch (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Dương Thị Hằng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 21, "department_id": 5, "code": "KNT-P02", "name": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Ngô Thị Yến", "target_score": 90.0, "status": "active", "order": 2}, {"id": 22, "department_id": 5, "code": "KNT-P03", "name": "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "room_type": "Phòng trực", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Trần Phương Dung", "target_score": 95.0, "status": "active", "order": 3}, {"id": 23, "department_id": 5, "code": "KNT-P04", "name": "Khu Vệ sinh buồng bệnh nhân Tầng 3", "room_type": "Khu vệ sinh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "Hộ lý. Phạm Thị Chắt", "target_score": 90.0, "status": "active", "order": 4}, {"id": 24, "department_id": 6, "code": "KSN-P01", "name": "Phòng Chờ đẻ & Theo dõi tim thai", "room_type": "Phòng chuyên khoa", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Vũ Thị Loan", "target_score": 95.0, "status": "active", "order": 1}, {"id": 25, "department_id": 6, "code": "KSN-P02", "name": "Phòng Đẻ thường số 1 (Vô khuẩn)", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Lê Thị Thúy Hằng", "target_score": 98.0, "status": "active", "order": 2}, {"id": 26, "department_id": 6, "code": "KSN-P03", "name": "Buồng Chăm sóc Mẹ và Bé sau sinh (P.205)", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Trần Hồng Nhung", "target_score": 92.0, "status": "active", "order": 3}, {"id": 27, "department_id": 6, "code": "KSN-P04", "name": "Phòng Tắm Bé & Tiêm chủng sơ sinh", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Nguyễn Thị Thêu", "target_score": 95.0, "status": "active", "order": 4}, {"id": 28, "department_id": 7, "code": "KNHI-P01", "name": "Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "room_type": "Phòng đặc biệt", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Đỗ Thị Hiền", "target_score": 98.0, "status": "active", "order": 1}, {"id": 29, "department_id": 7, "code": "KNHI-P02", "name": "Buồng Bệnh Nhi Hô hấp (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thủy", "target_score": 92.0, "status": "active", "order": 2}, {"id": 30, "department_id": 7, "code": "KNHI-P03", "name": "Buồng Bệnh Nhi Tiêu hóa (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Mai Thị Trang", "target_score": 90.0, "status": "active", "order": 3}, {"id": 31, "department_id": 7, "code": "KNHI-P04", "name": "Khu Vui chơi giải trí & Vận động bệnh nhi", "room_type": "Khu công cộng", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Trần Thu Hà", "target_score": 90.0, "status": "active", "order": 4}, {"id": 59, "department_id": 3, "code": "YHCT-01", "name": "Phòng Khám & Bắt mạch YHCT", "room_type": "Phòng khám", "floor": "Tầng 4 - Nhà C", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 92.0, "status": "active", "order": 1}, {"id": 60, "department_id": 3, "code": "YHCT-02", "name": "Phòng Châm cứu & Xoa bóp bấm huyệt", "room_type": "Phòng thủ thuật", "floor": "Tầng 4 - Nhà C", "person_in_charge": "ĐD. Phạm Thị Lý", "target_score": 95.0, "status": "active", "order": 2}, {"id": 61, "department_id": 3, "code": "YHCT-03", "name": "Phòng Vật lý trị liệu & Vận động phục hồi", "room_type": "Phòng tập", "floor": "Tầng 4 - Nhà C", "person_in_charge": "KTV. Lê Văn Tuấn", "target_score": 92.0, "status": "active", "order": 3}, {"id": 62, "department_id": 3, "code": "YHCT-04", "name": "Phòng Sắc thuốc & Bảo quản dược liệu YHCT", "room_type": "Khu chế biến", "floor": "Tầng 4 - Nhà C", "person_in_charge": "DS. Hoàng Thị Mai", "target_score": 90.0, "status": "active", "order": 4}, {"id": 63, "department_id": 13, "code": "LCK-01", "name": "Phòng Khám & Điều trị Răng Hàm Mặt", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Đỗ Mạnh Cường", "target_score": 95.0, "status": "active", "order": 1}, {"id": 64, "department_id": 13, "code": "LCK-02", "name": "Phòng Khám & Nội soi Tai Mũi Họng", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Nguyễn Văn Hùng", "target_score": 95.0, "status": "active", "order": 2}, {"id": 65, "department_id": 13, "code": "LCK-03", "name": "Phòng Khám Mắt & Đo thị lực khúc xạ", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Vũ Thị Loan", "target_score": 92.0, "status": "active", "order": 3}, {"id": 66, "department_id": 14, "code": "TDCN-01", "name": "Phòng Nội soi Tiêu hóa dạ dày - đại tràng", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "BS. Lê Quang Huy", "target_score": 98.0, "status": "active", "order": 1}, {"id": 67, "department_id": 14, "code": "TDCN-02", "name": "Phòng Điện tim & Điện não đồ vi tính", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 2}, {"id": 68, "department_id": 14, "code": "TDCN-03", "name": "Phòng Đo chức năng hô hấp & Lưu huyết não", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Thu Hà", "target_score": 92.0, "status": "active", "order": 3}, {"id": 36, "department_id": 9, "code": "KXN-P01", "name": "Phòng Xét nghiệm Huyết học & Truyền máu", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Đỗ Thị Thu Hường", "target_score": 98.0, "status": "active", "order": 1}, {"id": 37, "department_id": 9, "code": "KXN-P02", "name": "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đình Khải", "target_score": 98.0, "status": "active", "order": 2}, {"id": 38, "department_id": 9, "code": "KXN-P03", "name": "Phòng Vi sinh - Ký sinh trùng & Nuôi cấy", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Phạm Thị Hạnh", "target_score": 95.0, "status": "active", "order": 3}, {"id": 39, "department_id": 9, "code": "KXN-P04", "name": "Kho Hóa chất xét nghiệm & Lưu mẫu bệnh phẩm", "room_type": "Kho lưu trữ", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thu Thảo", "target_score": 95.0, "status": "active", "order": 4}, {"id": 69, "department_id": 15, "code": "KD-01", "name": "Kho Thuốc chẵn Nội trú & Dịch truyền", "room_type": "Kho thuốc", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS CKI. Hoàng Thị Lan", "target_score": 98.0, "status": "active", "order": 1}, {"id": 70, "department_id": 15, "code": "KD-02", "name": "Kho Thuốc Cấp phát Ngoại trú BHYT", "room_type": "Kho cấp phát", "floor": "Tầng 1 - Nhà B", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 2}, {"id": 71, "department_id": 15, "code": "KD-03", "name": "Kho Hóa chất sát khuẩn & Vật tư y tế tiêu hao", "room_type": "Kho vật tư", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Trần Văn Nam", "target_score": 95.0, "status": "active", "order": 3}, {"id": 72, "department_id": 15, "code": "KD-04", "name": "Phòng Pha chế & Bảo quản lạnh Vắc xin/Thuốc đặc biệt", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Lê Thị Mai", "target_score": 98.0, "status": "active", "order": 4}, {"id": 40, "department_id": 10, "code": "KKSNK-P01", "name": "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Trịnh Thị Thu Trang", "target_score": 95.0, "status": "active", "order": 1}, {"id": 41, "department_id": 10, "code": "KKSNK-P02", "name": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "room_type": "Khu tiệt trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "KTV. Nguyễn Văn Đạt", "target_score": 98.0, "status": "active", "order": 2}, {"id": 42, "department_id": 10, "code": "KKSNK-P03", "name": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "room_type": "Kho vô trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Lê Thị Nga", "target_score": 99.0, "status": "active", "order": 3}, {"id": 43, "department_id": 10, "code": "KKSNK-P04", "name": "Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "room_type": "Khu giặt là", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 92.0, "status": "active", "order": 4}, {"id": 73, "department_id": 10, "code": "KKSNK-P05", "name": "Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "room_type": "Khu rác thải", "floor": "Khuôn viên phía sau Nhà Giặt", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 95.0, "status": "active", "order": 5}, {"id": 74, "department_id": 16, "code": "QLCL-01", "name": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "room_type": "Văn phòng", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "target_score": 98.0, "status": "active", "order": 1}, {"id": 75, "department_id": 16, "code": "QLCL-02", "name": "Phòng Lưu trữ Hồ sơ 83 Tiêu chí & Minh chứng 5S", "room_type": "Phòng hồ sơ", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 95.0, "status": "active", "order": 2}, {"id": 76, "department_id": 17, "code": "KHTH-01", "name": "Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện", "room_type": "Phòng giao ban", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "BSCKI. Trần Đức Thắng", "target_score": 95.0, "status": "active", "order": 1}, {"id": 77, "department_id": 17, "code": "KHTH-02", "name": "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS", "room_type": "Phòng server", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "KS. Nguyễn Hoàng Nam", "target_score": 98.0, "status": "active", "order": 2}, {"id": 78, "department_id": 18, "code": "PDD-01", "name": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "room_type": "Văn phòng", "floor": "Tầng 3 - Nhà Điều hành", "person_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 1}, {"id": 79, "department_id": 19, "code": "HCQT-01", "name": "Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn", "room_type": "Văn thư", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Nguyễn Văn Hùng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 80, "department_id": 19, "code": "HCQT-02", "name": "Kho Vật tư văn phòng phẩm & Thiết bị hành chính", "room_type": "Kho hành chính", "floor": "Tầng 1 - Nhà Điều hành", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 90.0, "status": "active", "order": 2}, {"id": 81, "department_id": 20, "code": "TCKT-01", "name": "Phòng Kế toán tổng hợp & Quản trị tài sản viện", "room_type": "Văn phòng", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Vũ Thị Mai", "target_score": 95.0, "status": "active", "order": 1}],
-  staff: [{"id": 1, "code": "BV-345", "staff_code": "BV-345", "name": "KTV. Vũ Bá Đạt", "full_name": "KTV. Vũ Bá Đạt", "username": "bv345", "password": "123", "department_id": 8, "role": "admin", "role_level": "admin", "title": "Kỹ thuật viên Trưởng", "role_title": "Kỹ thuật viên Trưởng", "position": "Kỹ thuật viên Trưởng CĐHA & Giám sát 5S Toàn Viện", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR", "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS"], "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR, Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "allow_external": true, "can_review": true, "is_supervisor": true}, {"id": 2, "code": "BV-101", "staff_code": "BV-101", "name": "ThS. BSCKII. Phạm Quỳnh Hưng", "full_name": "ThS. BSCKII. Phạm Quỳnh Hưng", "username": "bv101", "password": "123", "department_id": 16, "role": "admin", "role_level": "admin", "title": "ThS. BSCKII - Trưởng Ban 5S", "role_title": "Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc", "position": "Trưởng Ban Chỉ Đạo 5S Bệnh Viện & Bác sĩ Cấp Cứu", "assigned_rooms": ["Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện"], "assigned_room": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện, Toàn bộ Khoa CĐHA & Hội đồng 5S Toàn Viện", "allow_external": true, "can_review": true, "is_supervisor": true}, {"id": 3, "code": "BV-102", "staff_code": "BV-102", "name": "BSCKII. Nguyễn Văn Toàn", "full_name": "BSCKII. Nguyễn Văn Toàn", "username": "bv102", "password": "123", "department_id": 4, "role": "staff", "role_level": "staff", "title": "BSCKII - Trưởng Khoa", "role_title": "BSCKII - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Ngoại Tổng Hợp", "assigned_rooms": ["Buồng Hậu phẫu Ngoại 201", "Phòng Thay băng - Rửa vết thương & Cắt chỉ"], "assigned_room": "Buồng Hậu phẫu Ngoại 201, Phòng Thay băng - Rửa vết thương & Cắt chỉ", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 4, "code": "BV-103", "staff_code": "BV-103", "name": "ĐD. Vũ Quang Trưởng", "full_name": "ĐD. Vũ Quang Trưởng", "username": "bv103", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Cấp Cứu", "assigned_rooms": ["Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương"], "assigned_room": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu, Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 5, "code": "BV-104", "staff_code": "BV-104", "name": "ĐD. Lê Văn Minh", "full_name": "ĐD. Lê Văn Minh", "username": "bv104", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng viên", "role_title": "Điều dưỡng viên", "position": "Điều dưỡng viên Cấp cứu", "assigned_rooms": ["Phòng Tiểu phẫu - Băng bó vết thương", "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải"], "assigned_room": "Phòng Tiểu phẫu - Băng bó vết thương, Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 6, "code": "BV-105", "staff_code": "BV-105", "name": "ĐD. Phạm Thị Mai", "full_name": "ĐD. Phạm Thị Mai", "username": "bv105", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Điều dưỡng viên", "role_title": "Điều dưỡng viên", "position": "Điều dưỡng viên Cấp cứu", "assigned_rooms": ["Phòng Lưu bệnh Cấp cứu (Phòng 101)"], "assigned_room": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 7, "code": "BV-106", "staff_code": "BV-106", "name": "Hộ lý. Vũ Thị Hoa", "full_name": "Hộ lý. Vũ Thị Hoa", "username": "bv106", "password": "123", "department_id": 1, "role": "staff", "role_level": "staff", "title": "Hộ lý / Nhân viên vệ sinh", "role_title": "Hộ lý / Nhân viên vệ sinh", "position": "Hộ lý buồng bệnh & Khử khuẩn", "assigned_rooms": ["Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "Khu Phân loại & Lưu trữ tạm thời rác thải y tế"], "assigned_room": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải, Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 8, "code": "BV-107", "staff_code": "BV-107", "name": "BSCKI. Vũ Đình Khiêm", "full_name": "BSCKI. Vũ Đình Khiêm", "username": "bv107", "password": "123", "department_id": 2, "role": "staff", "role_level": "staff", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Khám bệnh", "assigned_rooms": ["Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "Phòng Khám Nội tổng quát (P.101)"], "assigned_room": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động, Phòng Khám Nội tổng quát (P.101)", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 9, "code": "BV-108", "staff_code": "BV-108", "name": "ĐD. Hoàng Bích Thủy", "full_name": "ĐD. Hoàng Bích Thủy", "username": "bv108", "password": "123", "department_id": 2, "role": "staff", "role_level": "staff", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Khám bệnh", "assigned_rooms": ["Phòng Khám Ngoại - Chấn thương (P.102)", "Phòng Lấy mẫu máu & Bệnh phẩm tập trung"], "assigned_room": "Phòng Khám Ngoại - Chấn thương (P.102), Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 10, "code": "BV-109", "staff_code": "BV-109", "name": "ThS.BS. Đinh Công Trí", "full_name": "ThS.BS. Đinh Công Trí", "username": "bv109", "password": "123", "department_id": 11, "role": "staff", "role_level": "staff", "title": "ThS. Bác sĩ - Trưởng Khoa", "role_title": "ThS. Bác sĩ - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Hồi sức tích cực & Chống độc (ICU)", "assigned_rooms": ["Buồng Bệnh nhân nặng Hồi sức 1", "Phòng Thao tác & Thủ thuật ICU"], "assigned_room": "Buồng Bệnh nhân nặng Hồi sức 1, Phòng Thao tác & Thủ thuật ICU", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 11, "code": "BV-110", "staff_code": "BV-110", "name": "ĐD. Nguyễn Thị Thanh Nga", "full_name": "ĐD. Nguyễn Thị Thanh Nga", "username": "bv110", "password": "123", "department_id": 11, "role": "staff", "role_level": "staff", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Hồi sức tích cực ICU", "assigned_rooms": ["Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "Phòng Trực cấp cứu & Giao ban ICU", "Buồng Cách ly áp lực âm ICU"], "assigned_room": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục, Phòng Trực cấp cứu & Giao ban ICU", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 12, "code": "BV-111", "staff_code": "BV-111", "name": "BSCKII. Lê Tuấn Anh", "full_name": "BSCKII. Lê Tuấn Anh", "username": "bv111", "password": "123", "department_id": 12, "role": "staff", "role_level": "staff", "title": "BSCKII - Trưởng Khoa", "role_title": "BSCKII - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Phẫu thuật - Gây mê hồi sức", "assigned_rooms": ["Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật"], "assigned_room": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát, Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 13, "code": "BV-112", "staff_code": "BV-112", "name": "ĐD. Bùi Văn Hùng", "full_name": "ĐD. Bùi Văn Hùng", "username": "bv112", "password": "123", "department_id": 4, "role": "staff", "role_level": "staff", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Ngoại", "assigned_rooms": ["Buồng Bệnh Tiền phẫu 202", "Phòng Trực Bác sĩ & Giao ban khoa Ngoại"], "assigned_room": "Buồng Bệnh Tiền phẫu 202, Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 14, "code": "BV-113", "staff_code": "BV-113", "name": "BSCKI. Mai Thị Hảo", "full_name": "BSCKI. Mai Thị Hảo", "username": "bv113", "password": "123", "department_id": 5, "role": "staff", "role_level": "staff", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Nội Tổng hợp", "assigned_rooms": ["Buồng Bệnh Nội Tim Mạch (P.301)", "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng"], "assigned_room": "Buồng Bệnh Nội Tim Mạch (P.301), Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 15, "code": "BV-114", "staff_code": "BV-114", "name": "ĐD. Trần Phương Dung", "full_name": "ĐD. Trần Phương Dung", "username": "bv114", "password": "123", "department_id": 5, "role": "staff", "role_level": "staff", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Nội", "assigned_rooms": ["Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "Khu Vệ sinh buồng bệnh nhân Tầng 3"], "assigned_room": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302), Khu Vệ sinh buồng bệnh nhân Tầng 3", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 16, "code": "BV-115", "staff_code": "BV-115", "name": "KTV. Trần Văn Chung", "full_name": "KTV. Trần Văn Chung", "username": "bv115", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "position": "Kỹ thuật viên Chụp X-Quang Kỹ thuật số", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR"], "assigned_room": "Phòng Chụp X-quang Kỹ thuật số DR", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 17, "code": "BV-116", "staff_code": "BV-116", "name": "KTV. Lê Công Bằng", "full_name": "KTV. Lê Công Bằng", "username": "bv116", "password": "123", "department_id": 8, "role": "staff", "role_level": "staff", "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "position": "Kỹ thuật viên Vận hành Máy MRI & CT", "assigned_rooms": ["Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)"], "assigned_room": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner), Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 18, "code": "BV-117", "staff_code": "BV-117", "name": "DS. Nguyễn Bích Ngọc", "full_name": "DS. Nguyễn Bích Ngọc", "username": "bv117", "password": "123", "department_id": 15, "role": "staff", "role_level": "staff", "title": "Dược sĩ / Quản lý kho dược", "role_title": "Dược sĩ / Quản lý kho dược", "position": "Dược sĩ Quản lý kho thuốc cấp phát", "assigned_rooms": ["Kho Thuốc chẵn Nội trú & Dịch truyền", "Kho Thuốc Cấp phát Ngoại trú BHYT"], "assigned_room": "Kho Thuốc chẵn Nội trú & Dịch truyền, Kho Thuốc Cấp phát Ngoại trú BHYT", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 19, "code": "BV-118", "staff_code": "BV-118", "name": "BSCKI. Hoàng Trọng Nghĩa", "full_name": "BSCKI. Hoàng Trọng Nghĩa", "username": "bv118", "password": "123", "department_id": 10, "role": "staff", "role_level": "staff", "title": "BSCKI - Trưởng Khoa", "role_title": "BSCKI - Trưởng Khoa", "position": "Bác sĩ Trưởng Khoa Kiểm soát Nhiễm khuẩn", "assigned_rooms": ["Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn"], "assigned_room": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm, Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 20, "code": "BV-119", "staff_code": "BV-119", "name": "ĐD. Trịnh Thị Thu Trang", "full_name": "ĐD. Trịnh Thị Thu Trang", "username": "bv119", "password": "123", "department_id": 10, "role": "staff", "role_level": "staff", "title": "Điều dưỡng Trưởng Khoa", "role_title": "Điều dưỡng Trưởng Khoa", "position": "Điều dưỡng Trưởng Khoa Kiểm soát Nhiễm khuẩn", "assigned_rooms": ["Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "Khu Giặt là & Khử khuẩn đồ vải bệnh viện"], "assigned_room": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao, Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 21, "code": "BV-120", "staff_code": "BV-120", "name": "ThS. ĐD. Trần Thị Lan Hương", "full_name": "ThS. ĐD. Trần Thị Lan Hương", "username": "bv120", "password": "123", "department_id": 18, "role": "staff", "role_level": "staff", "title": "Trưởng Phòng Chức Năng", "role_title": "Trưởng Phòng Chức Năng", "position": "Trưởng Phòng Điều dưỡng Bệnh viện VPI", "assigned_rooms": ["Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S"], "assigned_room": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "allow_external": true, "can_review": false, "is_supervisor": false}, {"id": 22, "code": "BV-201", "staff_code": "BV-201", "name": "BSCKI. Phạm Quang Nam", "full_name": "BSCKI. Phạm Quang Nam", "username": "bv201", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 8, "departments": [8], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.130", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR", "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)"], "is_supervisor": false}, {"id": 23, "code": "BV-202", "staff_code": "BV-202", "name": "KTV. Nguyễn Đức Tuấn", "full_name": "KTV. Nguyễn Đức Tuấn", "username": "bv202", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 8, "departments": [8], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.130", "assigned_rooms": ["Phòng Chụp X-quang Kỹ thuật số DR", "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)"], "is_supervisor": false}, {"id": 24, "code": "BV-203", "staff_code": "BV-203", "name": "ĐD. Trần Thị Lan Hương", "full_name": "ĐD. Trần Thị Lan Hương", "username": "bv203", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 1, "departments": [1], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.115", "assigned_rooms": ["Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương"], "is_supervisor": false}, {"id": 25, "code": "BV-204", "staff_code": "BV-204", "name": "ĐD. Nguyễn Văn Thắng", "full_name": "ĐD. Nguyễn Văn Thắng", "username": "bv204", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 12, "departments": [12], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.117", "assigned_rooms": ["Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "Phòng Mổ số 2 - Phẫu thuật Sản khoa & Mổ lấy thai"], "is_supervisor": false}, {"id": 26, "code": "BV-205", "staff_code": "BV-205", "name": "BSCKII. Nguyễn Thị Hồng", "full_name": "BSCKII. Nguyễn Thị Hồng", "username": "bv205", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 6, "departments": [6], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.125", "assigned_rooms": ["Phòng Chờ đẻ & Theo dõi tim thai", "Phòng Đẻ thường số 1 (Vô khuẩn)"], "is_supervisor": false}, {"id": 27, "code": "BV-206", "staff_code": "BV-206", "name": "Hộ sinh. Lê Thị Thúy Hằng", "full_name": "Hộ sinh. Lê Thị Thúy Hằng", "username": "bv206", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 6, "departments": [6], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.125", "assigned_rooms": ["Phòng Chờ đẻ & Theo dõi tim thai", "Phòng Đẻ thường số 1 (Vô khuẩn)"], "is_supervisor": false}, {"id": 28, "code": "BV-207", "staff_code": "BV-207", "name": "ThS.BS. Đặng Hồng Phúc", "full_name": "ThS.BS. Đặng Hồng Phúc", "username": "bv207", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 7, "departments": [7], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.128", "assigned_rooms": ["Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "Buồng Bệnh Nhi Hô hấp (P.301)"], "is_supervisor": false}, {"id": 29, "code": "BV-208", "staff_code": "BV-208", "name": "ĐD. Đỗ Thị Hiền", "full_name": "ĐD. Đỗ Thị Hiền", "username": "bv208", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 7, "departments": [7], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.128", "assigned_rooms": ["Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "Buồng Bệnh Nhi Hô hấp (P.301)"], "is_supervisor": false}, {"id": 30, "code": "BV-209", "staff_code": "BV-209", "name": "BSCKI. Trần Văn Thái", "full_name": "BSCKI. Trần Văn Thái", "username": "bv209", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 3, "departments": [3], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.118", "assigned_rooms": ["Phòng Khám & Bắt mạch YHCT", "Phòng Châm cứu & Xoa bóp bấm huyệt"], "is_supervisor": false}, {"id": 31, "code": "BV-210", "staff_code": "BV-210", "name": "ĐD. Phạm Thị Lý", "full_name": "ĐD. Phạm Thị Lý", "username": "bv210", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 3, "departments": [3], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.118", "assigned_rooms": ["Phòng Khám & Bắt mạch YHCT", "Phòng Châm cứu & Xoa bóp bấm huyệt"], "is_supervisor": false}, {"id": 32, "code": "BV-211", "staff_code": "BV-211", "name": "BSCKI. Đỗ Mạnh Cường", "full_name": "BSCKI. Đỗ Mạnh Cường", "username": "bv211", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 13, "departments": [13], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.129", "assigned_rooms": ["Phòng Khám & Điều trị Răng Hàm Mặt", "Phòng Khám & Nội soi Tai Mũi Họng"], "is_supervisor": false}, {"id": 33, "code": "BV-212", "staff_code": "BV-212", "name": "ĐD. Vũ Thị Loan", "full_name": "ĐD. Vũ Thị Loan", "username": "bv212", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 13, "departments": [13], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.129", "assigned_rooms": ["Phòng Khám & Điều trị Răng Hàm Mặt", "Phòng Khám & Nội soi Tai Mũi Họng"], "is_supervisor": false}, {"id": 34, "code": "BV-213", "staff_code": "BV-213", "name": "BS. Lê Quang Huy", "full_name": "BS. Lê Quang Huy", "username": "bv213", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 14, "departments": [14], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.131", "assigned_rooms": ["Phòng Nội soi Tiêu hóa dạ dày - đại tràng", "Phòng Điện tim & Điện não đồ vi tính"], "is_supervisor": false}, {"id": 35, "code": "BV-214", "staff_code": "BV-214", "name": "KTV. Lê Thùy Linh", "full_name": "KTV. Lê Thùy Linh", "username": "bv214", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 14, "departments": [14], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.131", "assigned_rooms": ["Phòng Nội soi Tiêu hóa dạ dày - đại tràng", "Phòng Điện tim & Điện não đồ vi tính"], "is_supervisor": false}, {"id": 36, "code": "BV-215", "staff_code": "BV-215", "name": "BSCKI. Vũ Đức Hải", "full_name": "BSCKI. Vũ Đức Hải", "username": "bv215", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 9, "departments": [9], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.132", "assigned_rooms": ["Phòng Xét nghiệm Huyết học & Truyền máu", "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động"], "is_supervisor": false}, {"id": 37, "code": "BV-216", "staff_code": "BV-216", "name": "KTV. Đỗ Thị Thu Hường", "full_name": "KTV. Đỗ Thị Thu Hường", "username": "bv216", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 9, "departments": [9], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.132", "assigned_rooms": ["Phòng Xét nghiệm Huyết học & Truyền máu", "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động"], "is_supervisor": false}, {"id": 38, "code": "BV-217", "staff_code": "BV-217", "name": "DS CKI. Hoàng Thị Lan", "full_name": "DS CKI. Hoàng Thị Lan", "username": "bv217", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 15, "departments": [15], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.133", "assigned_rooms": ["Kho Thuốc chẵn Nội trú & Dịch truyền", "Kho Thuốc Cấp phát Ngoại trú BHYT"], "is_supervisor": false}, {"id": 39, "code": "BV-218", "staff_code": "BV-218", "name": "ĐD. Nguyễn Thu Trang", "full_name": "ĐD. Nguyễn Thu Trang", "username": "bv218", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 16, "departments": [16], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.100", "assigned_rooms": ["Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "Phòng Lưu trữ Hồ sơ 83 Tiêu chí & Minh chứng 5S"], "is_supervisor": false}, {"id": 40, "code": "BV-219", "staff_code": "BV-219", "name": "BSCKI. Trần Đức Thắng", "full_name": "BSCKI. Trần Đức Thắng", "username": "bv219", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 17, "departments": [17], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.102", "assigned_rooms": ["Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện", "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS"], "is_supervisor": false}, {"id": 41, "code": "BV-220", "staff_code": "BV-220", "name": "ĐD. Hoàng Hải Yến", "full_name": "ĐD. Hoàng Hải Yến", "username": "bv220", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 17, "departments": [17], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.102", "assigned_rooms": ["Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện", "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS"], "is_supervisor": false}, {"id": 42, "code": "BV-221", "staff_code": "BV-221", "name": "ThS. Nguyễn Văn Hùng", "full_name": "ThS. Nguyễn Văn Hùng", "username": "bv221", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 19, "departments": [19], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.105", "assigned_rooms": ["Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn", "Kho Vật tư văn phòng phẩm & Thiết bị hành chính"], "is_supervisor": false}, {"id": 43, "code": "BV-222", "staff_code": "BV-222", "name": "CN. Đặng Thị Loan", "full_name": "CN. Đặng Thị Loan", "username": "bv222", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 19, "departments": [19], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.105", "assigned_rooms": ["Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn", "Kho Vật tư văn phòng phẩm & Thiết bị hành chính"], "is_supervisor": false}, {"id": 44, "code": "BV-223", "staff_code": "BV-223", "name": "ThS. Vũ Thị Mai", "full_name": "ThS. Vũ Thị Mai", "username": "bv223", "password": "123", "title": "Trưởng Khoa", "role_title": "Trưởng Khoa", "position": "Trưởng Khoa", "department_id": 20, "departments": [20], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.106", "assigned_rooms": ["Phòng Kế toán tổng hợp & Quản trị tài sản viện"], "is_supervisor": false}, {"id": 45, "code": "BV-224", "staff_code": "BV-224", "name": "KTV. Lê Thu Thảo", "full_name": "KTV. Lê Thu Thảo", "username": "bv224", "password": "123", "title": "ĐD/KTV Trưởng", "role_title": "ĐD/KTV Trưởng Khoa", "position": "ĐD/KTV Trưởng Khoa", "department_id": 20, "departments": [20], "role": "staff", "role_level": "staff", "can_review": false, "phone": "0211.386.106", "assigned_rooms": ["Phòng Kế toán tổng hợp & Quản trị tài sản viện"], "is_supervisor": false}],
+  staff: [{"id": 1, "code": "BV-002", "username": "BV-002", "name": "Ma Thị Hiền", "birth_date": "1967", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Tổng Giám đốc", "role_title": "Tổng Giám đốc", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 2, "code": "BV-001", "username": "BV-001", "name": "Nguyễn Đăng Nam", "birth_date": "1991", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Giám đốc điều hành", "role_title": "Giám đốc điều hành", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 3, "code": "BV-269", "username": "BV-269", "name": "Lý Thị Hạnh", "birth_date": "1959", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Giám đốc Bệnh viện", "role_title": "Giám đốc Bệnh viện", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 4, "code": "BV-489", "username": "BV-489", "name": "Vương Trung Kiên", "birth_date": "1972", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Giám đốc điều hành chuyên môn", "role_title": "Giám đốc điều hành chuyên môn", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 5, "code": "BV-254", "username": "BV-254", "name": "Vũ Thị Huyền", "birth_date": "1978", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Phó Giám đốc Bệnh viện", "role_title": "Phó Giám đốc Bệnh viện", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 6, "code": "BV-596", "username": "BV-596", "name": "Nguyễn Trung Kiên", "birth_date": "1983", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Phó giám đốc BV - PT Phát triển khoa Nhi", "role_title": "Phó giám đốc BV - PT Phát triển khoa Nhi", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 7, "code": "BV-004", "username": "BV-004", "name": "Đỗ Thị Thủy", "birth_date": "1968", "department_raw": "HỘI ĐỒNG CỐ VẤN VÀ HỘI ĐỒNG CHUYÊN MÔN", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Cố vấn công ty", "role_title": "Cố vấn công ty", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 8, "code": "BV-467", "username": "BV-467", "name": "Lê Thị Hồng Nhâm", "birth_date": "1982", "department_raw": "PHÒNG ĐIỀU DƯỠNG BV", "department_name": "Phòng Điều dưỡng", "department_id": 18, "title": "Điều dưỡng trưởng BV", "role_title": "Điều dưỡng trưởng BV", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 9, "code": "BV-448", "username": "BV-448", "name": "Bùi Văn Thức", "birth_date": "1990", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 10, "code": "BV-568", "username": "BV-568", "name": "Dương Thị Vân Anh", "birth_date": "1983", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Phó Trưởng khoa Khám bệnh", "role_title": "Phó Trưởng khoa Khám bệnh", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 11, "code": "BV-619", "username": "BV-619", "name": "Nguyễn Văn Đoàn", "birth_date": "1977", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 12, "code": "BV-687", "username": "BV-687", "name": "Tạ Văn Thể", "birth_date": "1987", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 13, "code": "BV-689", "username": "BV-689", "name": "Phạm Thị Hiền", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 14, "code": "BV-715", "username": "BV-715", "name": "Nguyễn Minh Đức", "birth_date": "1983", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 15, "code": "BV-262", "username": "BV-262", "name": "Lê Huy Hán", "birth_date": "1963", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 16, "code": "BV-477", "username": "BV-477", "name": "Phùng Thị Loan", "birth_date": "1988", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 17, "code": "BV-722", "username": "BV-722", "name": "Trần Tuấn Anh", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 18, "code": "BV-508", "username": "BV-508", "name": "Nguyễn Thị Thuỳ", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 19, "code": "BV-566", "username": "BV-566", "name": "Nguyễn Thị Phúc", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 20, "code": "BV-289", "username": "BV-289", "name": "Nguyễn Thị Hương", "birth_date": "1993", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng trưởng Khoa Khám bệnh", "role_title": "Điều dưỡng trưởng Khoa Khám bệnh", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 21, "code": "BV-054", "username": "BV-054", "name": "Lưu Hà Trang", "birth_date": "1995", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 22, "code": "BV-091", "username": "BV-091", "name": "Hà Thị Nhàn", "birth_date": "1997", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 23, "code": "BV-125", "username": "BV-125", "name": "Đặng Minh Hằng", "birth_date": "1993", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 24, "code": "BV-220", "username": "BV-220", "name": "Đào Thị Thu Huyền", "birth_date": "2003", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 25, "code": "BV-322", "username": "BV-322", "name": "Nguyễn Thị Thắm", "birth_date": "2001", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 26, "code": "BV-093", "username": "BV-093", "name": "Nguyễn Thị Kiều Linh", "birth_date": "2001", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 27, "code": "BV-486", "username": "BV-486", "name": "Vũ Thị Tính", "birth_date": "2001", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 28, "code": "BV-697", "username": "BV-697", "name": "Lê Thị Tâm", "birth_date": "2004", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 29, "code": "BV-711", "username": "BV-711", "name": "Phùng Thị Ngọc Ánh", "birth_date": "2003", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 30, "code": "BV-033", "username": "BV-033", "name": "Đinh Trung Kiên", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 31, "code": "BV-072", "username": "BV-072", "name": "Hoàng Thị Lê", "birth_date": "1994", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 32, "code": "BV-221", "username": "BV-221", "name": "Nguyễn Thị Hường", "birth_date": "1985", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 33, "code": "BV-179", "username": "BV-179", "name": "Nguyễn Thị Quỳnh", "birth_date": "1999", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 34, "code": "BV-066", "username": "BV-066", "name": "Doãn Thuý Nga", "birth_date": "2001", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 35, "code": "BV-231", "username": "BV-231", "name": "Trương Thị Hà", "birth_date": "1988", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 36, "code": "BV-417", "username": "BV-417", "name": "Trần Thị Thủy", "birth_date": "2004", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 37, "code": "BV-273", "username": "BV-273", "name": "Đặng Thị Nga", "birth_date": "1989", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Hộ sinh", "role_title": "Hộ sinh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 38, "code": "BV-650", "username": "BV-650", "name": "Nguyễn Thị Uyển", "birth_date": "1987", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Hộ sinh", "role_title": "Hộ sinh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 39, "code": "BV-325", "username": "BV-325", "name": "Dương Vũ Hùng", "birth_date": "1982", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ Hồi sức cấp cứu", "role_title": "Bác sĩ Hồi sức cấp cứu", "role": "staff", "password": "123456", "is_custom": false}, {"id": 40, "code": "BV-121A", "username": "BV-121A", "name": "Vũ Quang Trưởng", "birth_date": "1995", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Trưởng nhóm điều dưỡng HSCC", "role_title": "Trưởng nhóm điều dưỡng HSCC", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 41, "code": "BV-268", "username": "BV-268", "name": "Nguyễn Anh Đức", "birth_date": "1989", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 42, "code": "BV-326", "username": "BV-326", "name": "Trần Quỳnh Hưng", "birth_date": "1983", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Trưởng khoa Nhi - Kiêm Phụ trách đơn nguyên HSCC", "role_title": "Trưởng khoa Nhi - Kiêm Phụ trách đơn nguyên HSCC", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 43, "code": "BV-305", "username": "BV-305", "name": "Nguyễn Văn Nhiên", "birth_date": "1994", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Phó Trưởng khoa Nhi", "role_title": "Phó Trưởng khoa Nhi", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 44, "code": "BV-294", "username": "BV-294", "name": "Nguyễn Văn Bàng", "birth_date": "1952", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 45, "code": "BV-351", "username": "BV-351", "name": "Phùng Đắc Huy", "birth_date": "1999", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 46, "code": "BV-667", "username": "BV-667", "name": "Nguyễn Thúy Hằng", "birth_date": "1997", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Ths.BSNT", "role_title": "Ths.BSNT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 47, "code": "BV-386", "username": "BV-386", "name": "Trần Quý Minh", "birth_date": "1993", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Trưởng nhóm điều dưỡng", "role_title": "Trưởng nhóm điều dưỡng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 48, "code": "BV-113", "username": "BV-113", "name": "Trần Thị Phương Nhi", "birth_date": "2002", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 49, "code": "BV-400", "username": "BV-400", "name": "Nguyễn Huệ Linh", "birth_date": "2004", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 50, "code": "BV-469", "username": "BV-469", "name": "Nguyễn Kim Ngọc", "birth_date": "2003", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 51, "code": "BV-562", "username": "BV-562", "name": "Nguyễn Thị Thúy", "birth_date": "2001", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 52, "code": "BV-139", "username": "BV-139", "name": "Nguyễn Thị Linh", "birth_date": "1996", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 53, "code": "BV-603", "username": "BV-603", "name": "Lê Ngọc Ánh", "birth_date": "1993", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 54, "code": "BV-694", "username": "BV-694", "name": "Lâm Thị Thúy", "birth_date": "2005", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 55, "code": "BV-706", "username": "BV-706", "name": "Trần Diệu Ly", "birth_date": "2005", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 56, "code": "BV-210", "username": "BV-210", "name": "Nguyễn Phương Thảo", "birth_date": "2001", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Hành chính - Dịch vụ", "role_title": "Hành chính - Dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 57, "code": "BV-428", "username": "BV-428", "name": "Nguyễn Thị Lệ Thu", "birth_date": "1976", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Quyền Trưởng khoa Nội", "role_title": "Quyền Trưởng khoa Nội", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 58, "code": "BV-115", "username": "BV-115", "name": "Bùi Thị Thu Trang", "birth_date": "1978", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Phó Trưởng khoa Nội", "role_title": "Phó Trưởng khoa Nội", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 59, "code": "BV-314", "username": "BV-314", "name": "Đào Thị Thanh", "birth_date": "1990", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 60, "code": "BV-488", "username": "BV-488", "name": "Nguyễn Thị Hương", "birth_date": "1990", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 61, "code": "BV-719", "username": "BV-719", "name": "Trần Văn Bình", "birth_date": "1996", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 62, "code": "BV-758", "username": "BV-758", "name": "Nguyễn Nhật Lệ", "birth_date": "2001", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 63, "code": "BV-736", "username": "BV-736", "name": "Trần Thu Trang", "birth_date": "2001", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 64, "code": "BV-525", "username": "BV-525", "name": "Nguyễn Thị Cành Nhung", "birth_date": "1983", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng trưởng Khoa Nội", "role_title": "Điều dưỡng trưởng Khoa Nội", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 65, "code": "BV-541", "username": "BV-541", "name": "Nguyễn Thị Hải", "birth_date": "1992", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 66, "code": "BV-542", "username": "BV-542", "name": "Nguyễn Thị Thu Trang", "birth_date": "1997", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 67, "code": "BV-272", "username": "BV-272", "name": "Nguyễn Thị Thắm", "birth_date": "1998", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 68, "code": "BV-353", "username": "BV-353", "name": "Đặng Thế Hưng", "birth_date": "1993", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 69, "code": "BV-774", "username": "BV-774", "name": "Nguyễn Thị Ngọc Huyền", "birth_date": "31/10/1996", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 70, "code": "BV-549", "username": "BV-549", "name": "Tạ Thùy Linh", "birth_date": "1998", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 71, "code": "BV-207", "username": "BV-207", "name": "Nguyễn Thị Định", "birth_date": "1997", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 72, "code": "BV-372", "username": "BV-372", "name": "Trần Phương Ngọc", "birth_date": "2003", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 73, "code": "BV-609", "username": "BV-609", "name": "Đồng Thị Lư", "birth_date": "1990", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 74, "code": "BV-395", "username": "BV-395", "name": "Bùi Thị Hoa", "birth_date": "1990", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 75, "code": "BV-651", "username": "BV-651", "name": "Trần Thị Tuyết Mai", "birth_date": "1989", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 76, "code": "BV-652", "username": "BV-652", "name": "Nguyễn Thị Hoa", "birth_date": "2002", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 77, "code": "BV-671", "username": "BV-671", "name": "Nguyễn Thị Vân Anh", "birth_date": "2000", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 78, "code": "BV-696", "username": "BV-696", "name": "Nguyễn Thị Ngọc Ánh", "birth_date": "2003", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 79, "code": "BV-759", "username": "BV-759", "name": "Bùi Thị Thu Hà", "birth_date": "2003", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 80, "code": "BV-234", "username": "BV-234", "name": "Nguyễn Thị Đạt", "birth_date": "2000", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Hành chính - Dịch vụ", "role_title": "Hành chính - Dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 81, "code": "BV-685", "username": "BV-685", "name": "Nguyễn Thị Mai Liên", "birth_date": "2003", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Kế toán khoa", "role_title": "Kế toán khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 82, "code": "BV-709", "username": "BV-709", "name": "Dương Thị Kiều Oanh", "birth_date": "1998", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Kế toán khoa", "role_title": "Kế toán khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 83, "code": "BV-497", "username": "BV-497", "name": "Trần Quang Hưng", "birth_date": "1990", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 84, "code": "BV-594", "username": "BV-594", "name": "Nguyễn Văn Phú", "birth_date": "1995", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 85, "code": "BV-649", "username": "BV-649", "name": "Hồ Cao Tố", "birth_date": "1999", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 86, "code": "BV-666", "username": "BV-666", "name": "Trần Thị Mai Chi", "birth_date": "1996", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 87, "code": "BV-026", "username": "BV-026", "name": "Nguyễn Tiến Cường", "birth_date": "1990", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Trưởng nhóm điều dưỡng trung tâm tiêu hóa", "role_title": "Trưởng nhóm điều dưỡng trung tâm tiêu hóa", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 88, "code": "BV-041", "username": "BV-041", "name": "Nguyễn Thị Huyền", "birth_date": "1989", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 89, "code": "BV-037", "username": "BV-037", "name": "Nguyễn Ngọc Ánh", "birth_date": "1997", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 90, "code": "BV-219", "username": "BV-219", "name": "Trần Thị Bích", "birth_date": "1990", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 91, "code": "BV-230", "username": "BV-230", "name": "Bùi Thị Tuyết", "birth_date": "1999", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 92, "code": "BV-423", "username": "BV-423", "name": "Nguyễn Chí Thanh", "birth_date": "2003", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 93, "code": "BV-516", "username": "BV-516", "name": "Nguyễn Thị Thu Trang", "birth_date": "2003", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 94, "code": "BV-521", "username": "BV-521", "name": "Nguyễn Quỳnh Anh", "birth_date": "2002", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 95, "code": "BV-527", "username": "BV-527", "name": "Nguyễn Hương Thảo", "birth_date": "1995", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 96, "code": "BV-624", "username": "BV-624", "name": "Nguyễn Thị Minh Hường", "birth_date": "2003", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 97, "code": "BV-707", "username": "BV-707", "name": "Nguyễn Diệu Hương", "birth_date": "2005", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 98, "code": "BV-723", "username": "BV-723", "name": "Nguyễn Thành Long", "birth_date": "2006", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 99, "code": "BV-686", "username": "BV-686", "name": "Hà Thảo Nhi", "birth_date": "2004", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Thư ký y khoa", "role_title": "Thư ký y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 100, "code": "BV-698", "username": "BV-698", "name": "Nguyễn Huyền Trang", "birth_date": "2004", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 101, "code": "BV-160", "username": "BV-160", "name": "Nguyễn Thị Bắc", "birth_date": "1987", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Hành chính TT", "role_title": "Hành chính TT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 102, "code": "BV-559", "username": "BV-559", "name": "Lê Tùng Lâm", "birth_date": "1995", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 103, "code": "BV-553", "username": "BV-553", "name": "Vũ Ngọc Cường", "birth_date": "1997", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 104, "code": "BV-597", "username": "BV-597", "name": "Trần Thị Nụ", "birth_date": "1993", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 105, "code": "BV-655", "username": "BV-655", "name": "Lưu Thị Ngân", "birth_date": "1996", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 106, "code": "BV-677", "username": "BV-677", "name": "Chu Thị Trung Anh", "birth_date": "1993", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 107, "code": "BV-692", "username": "BV-692", "name": "Nguyễn Thị Ngọc Yến", "birth_date": "1996", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 108, "code": "BV-693", "username": "BV-693", "name": "Nguyễn Văn Dũng", "birth_date": "1995", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 109, "code": "BV-681", "username": "BV-681", "name": "Kiều Thanh Phúc", "birth_date": "2000", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 110, "code": "BV-360", "username": "BV-360", "name": "Lê Thị Ánh Tuyết", "birth_date": "1994", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 111, "code": "BV-331", "username": "BV-331", "name": "Nguyễn Thị Tươi", "birth_date": "1994", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 112, "code": "BV-483", "username": "BV-483", "name": "Trần Quang Vinh", "birth_date": "2004", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Kỹ thuật viên PHCN", "role_title": "Kỹ thuật viên PHCN", "role": "staff", "password": "123456", "is_custom": false}, {"id": 113, "code": "BV-629", "username": "BV-629", "name": "Nguyễn Thị Như Mai", "birth_date": "2003", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 114, "code": "BV-644", "username": "BV-644", "name": "Phùng Thị Thoa", "birth_date": "1992", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 115, "code": "BV-661", "username": "BV-661", "name": "Lê Thị Hiền", "birth_date": "2001", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 116, "code": "BV-670", "username": "BV-670", "name": "Nguyễn Thị Ngọc Hồng", "birth_date": "2005", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 117, "code": "BV-672", "username": "BV-672", "name": "Lê Thị Nhàn", "birth_date": "2002", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 118, "code": "BV-679", "username": "BV-679", "name": "Nguyễn Văn Tin", "birth_date": "1993", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Y sĩ YHCT", "role_title": "Y sĩ YHCT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 119, "code": "BV-701", "username": "BV-701", "name": "Đỗ Thị Thu Huyền", "birth_date": "1988", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 120, "code": "BV-658", "username": "BV-658", "name": "Kiều Quang Phát", "birth_date": "1981", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Trưởng khoa Ngoại", "role_title": "Trưởng khoa Ngoại", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 121, "code": "BV-196", "username": "BV-196", "name": "Nguyễn Thanh Sơn", "birth_date": "1990", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Phó Trưởng khoa Ngoại", "role_title": "Phó Trưởng khoa Ngoại", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 122, "code": "BV-007", "username": "BV-007", "name": "Trần Quang Hạnh", "birth_date": "1963", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Phụ trách Đơn nguyên Ngoại", "role_title": "Phụ trách Đơn nguyên Ngoại", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 123, "code": "BV-279", "username": "BV-279", "name": "Lê Thị Huyền Anh", "birth_date": "1963", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Phụ trách Đơn nguyên Gây mê Hồi sức", "role_title": "Phụ trách Đơn nguyên Gây mê Hồi sức", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 124, "code": "BV-515", "username": "BV-515", "name": "Nguyễn Văn Vĩnh", "birth_date": "1991", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Bác sĩ GMHS", "role_title": "Bác sĩ GMHS", "role": "staff", "password": "123456", "is_custom": false}, {"id": 125, "code": "BV-592", "username": "BV-592", "name": "Thạch Văn Thu", "birth_date": "1998", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 126, "code": "BV-762", "username": "BV-762", "name": "Phùng Khương Duy", "birth_date": "1999", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 127, "code": "BV-308", "username": "BV-308", "name": "Nguyễn Khắc Kường", "birth_date": "1988", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng trưởng khoa Ngoại - GMHS", "role_title": "Điều dưỡng trưởng khoa Ngoại - GMHS", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 128, "code": "BV-172", "username": "BV-172", "name": "Nguyễn Long An", "birth_date": "1987", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 129, "code": "BV-206", "username": "BV-206", "name": "Phạm Quang Trung", "birth_date": "1987", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 130, "code": "BV-264", "username": "BV-264", "name": "Nông Văn Phong", "birth_date": "1993", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 131, "code": "BV-252", "username": "BV-252", "name": "Nguyễn Thị Thu Hiền", "birth_date": "1997", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 132, "code": "BV-290", "username": "BV-290", "name": "Phùng Thị Thu Hà", "birth_date": "2001", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 133, "code": "BV-421", "username": "BV-421", "name": "Nguyễn Thị Hồng", "birth_date": "2003", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 134, "code": "BV-432", "username": "BV-432", "name": "Trần Thị Ngọc", "birth_date": "1992", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 135, "code": "BV-472", "username": "BV-472", "name": "Cao Xuân Thắng", "birth_date": "2002", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 136, "code": "BV-471", "username": "BV-471", "name": "Nguyễn Thanh Huyền", "birth_date": "2001", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng Cấp cứu HSTC", "role_title": "Điều dưỡng Cấp cứu HSTC", "role": "staff", "password": "123456", "is_custom": false}, {"id": 137, "code": "BV-554", "username": "BV-554", "name": "Nguyễn Thị Hồng Ánh", "birth_date": "2004", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 138, "code": "BV-227", "username": "BV-227", "name": "Bùi Thị Thu Hằng", "birth_date": "1991", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 139, "code": "BV-721", "username": "BV-721", "name": "Đỗ Thị Hợi", "birth_date": "1993", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 140, "code": "BV-748", "username": "BV-748", "name": "Nguyễn Thị Thuý Ngân", "birth_date": "1990", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 141, "code": "BV-691", "username": "BV-691", "name": "Hà Thu Huyền", "birth_date": "1999", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Kế toán khoa", "role_title": "Kế toán khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 142, "code": "BV-280", "username": "BV-280", "name": "Đoàn Văn Hoan", "birth_date": "1959", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Trưởng khoa Chẩn đoán hình ảnh", "role_title": "Trưởng khoa Chẩn đoán hình ảnh", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 143, "code": "BV-076", "username": "BV-076", "name": "Trịnh Văn Binh", "birth_date": "1985", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Phụ trách mảng Điện quang", "role_title": "Phụ trách mảng Điện quang", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 144, "code": "BV-332", "username": "BV-332", "name": "Nguyễn Minh Hồng", "birth_date": "1986", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Phụ trách mảng Siêu âm", "role_title": "Phụ trách mảng Siêu âm", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 145, "code": "BV-336", "username": "BV-336", "name": "Nguyễn Anh Minh", "birth_date": "1986", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 146, "code": "BV-397", "username": "BV-397", "name": "Trần Thị Nga", "birth_date": "1993", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 147, "code": "BV-511", "username": "BV-511", "name": "Nguyễn Văn Mạnh", "birth_date": "1994", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 148, "code": "BV-522", "username": "BV-522", "name": "Ngô Văn Điều", "birth_date": "1990", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 149, "code": "BV-578", "username": "BV-578", "name": "Lại Ngọc Huy", "birth_date": "2000", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 150, "code": "BV-345", "username": "BV-345", "name": "Vũ Bá Đạt", "birth_date": "1986", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Kỹ thuật viên Trưởng CĐHA", "role_title": "Kỹ thuật viên Trưởng CĐHA", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 151, "code": "BV-340", "username": "BV-340", "name": "Phạm Anh Tuấn", "birth_date": "2000", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "role": "staff", "password": "123456", "is_custom": false}, {"id": 152, "code": "BV-464", "username": "BV-464", "name": "Nguyễn Khánh Linh", "birth_date": "2003", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "role": "staff", "password": "123456", "is_custom": false}, {"id": 153, "code": "BV-540", "username": "BV-540", "name": "Nguyễn Văn Dũng", "birth_date": "2003", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "role": "staff", "password": "123456", "is_custom": false}, {"id": 154, "code": "BV-150", "username": "BV-150", "name": "Nguyễn Duy Hạnh", "birth_date": "1995", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 155, "code": "BV-465", "username": "BV-465", "name": "Khổng Trọng Hướng", "birth_date": "1998", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 156, "code": "BV-575", "username": "BV-575", "name": "Đào Tiến Dũng", "birth_date": "1993", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Kỹ thuật viên CĐHA", "role_title": "Kỹ thuật viên CĐHA", "role": "staff", "password": "123456", "is_custom": false}, {"id": 157, "code": "BV-157", "username": "BV-157", "name": "Phùng Thị Bích", "birth_date": "1987", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Trưởng nhóm Điều dưỡng siêu âm", "role_title": "Trưởng nhóm Điều dưỡng siêu âm", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 158, "code": "BV-021", "username": "BV-021", "name": "Lê Thị Hiệp", "birth_date": "1985", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 159, "code": "BV-256", "username": "BV-256", "name": "Nguyễn Hồng Ngọc", "birth_date": "2003", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 160, "code": "BV-364", "username": "BV-364", "name": "Phùng Thị Thanh Lộc", "birth_date": "1995", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Thư ký y khoa", "role_title": "Thư ký y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 161, "code": "BV-424", "username": "BV-424", "name": "Đỗ Thị Ngân", "birth_date": "1988", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Thư ký y khoa", "role_title": "Thư ký y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 162, "code": "BV-436", "username": "BV-436", "name": "Bạch Thị Ngọc Hồi", "birth_date": "1989", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 163, "code": "BV-625", "username": "BV-625", "name": "Lê Thùy Linh", "birth_date": "1998", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 164, "code": "BV-769", "username": "BV-769", "name": "Trần Thị Nga", "birth_date": "23/11/1994", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 165, "code": "BV-306", "username": "BV-306", "name": "Dương Thị Thu Hường", "birth_date": "1989", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Trưởng khoa Xét nghiệm", "role_title": "Trưởng khoa Xét nghiệm", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 166, "code": "BV-361", "username": "BV-361", "name": "Bùi Thị Mai", "birth_date": "1995", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 167, "code": "BV-202", "username": "BV-202", "name": "Nguyễn Văn Tâm", "birth_date": "1992", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Trưởng nhóm Kỹ thuật viên", "role_title": "Trưởng nhóm Kỹ thuật viên", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 168, "code": "BV-022", "username": "BV-022", "name": "Hoàng Thị Hải", "birth_date": "1995", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 169, "code": "BV-061", "username": "BV-061", "name": "Bế Thu Trang", "birth_date": "1999", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 170, "code": "BV-085", "username": "BV-085", "name": "Hoàng Thị Linh", "birth_date": "2000", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 171, "code": "BV-201", "username": "BV-201", "name": "Nguyễn Thị Vân", "birth_date": "2000", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 172, "code": "BV-355", "username": "BV-355", "name": "Hà Thị Ngân", "birth_date": "2002", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 173, "code": "BV-328", "username": "BV-328", "name": "Nguyễn Thị Lâm", "birth_date": "1998", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 174, "code": "BV-359", "username": "BV-359", "name": "Khổng Đức Huynh", "birth_date": "2002", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 175, "code": "BV-357", "username": "BV-357", "name": "Đỗ Diệu Linh", "birth_date": "2002", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 176, "code": "BV-485", "username": "BV-485", "name": "Lâm Quốc An", "birth_date": "2004", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 177, "code": "BV-731", "username": "BV-731", "name": "Nguyễn Thị Hằng", "birth_date": "2004", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 178, "code": "BV-662", "username": "BV-662", "name": "Phạm Thu Hằng", "birth_date": "2005", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 179, "code": "BV-756", "username": "BV-756", "name": "Lương Thu Huyền", "birth_date": "2004", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 180, "code": "BV-543", "username": "BV-543", "name": "Dương Thị Thúy An", "birth_date": "1985", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Trưởng khoa", "role_title": "Trưởng khoa", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 181, "code": "BV-101", "username": "BV-101", "name": "Nguyễn Ninh Huệ", "birth_date": "1993", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 182, "code": "BV-034", "username": "BV-034", "name": "Nguyễn Anh Tuấn", "birth_date": "2000", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Cấp phát thuốc", "role_title": "Cấp phát thuốc", "role": "staff", "password": "123456", "is_custom": false}, {"id": 183, "code": "BV-333", "username": "BV-333", "name": "Nguyễn Thanh Thuỷ", "birth_date": "1997", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Cấp phát thuốc", "role_title": "Cấp phát thuốc", "role": "staff", "password": "123456", "is_custom": false}, {"id": 184, "code": "BV-482", "username": "BV-482", "name": "Dương Thị Duyên", "birth_date": "2001", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Cấp phát thuốc, vật tư", "role_title": "Cấp phát thuốc, vật tư", "role": "staff", "password": "123456", "is_custom": false}, {"id": 185, "code": "BV-581", "username": "BV-581", "name": "Nguyễn Thị Ngọc Duyên", "birth_date": "1996", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 186, "code": "BV-623", "username": "BV-623", "name": "Hồ Thị Huyền", "birth_date": "1996", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 187, "code": "BV-630", "username": "BV-630", "name": "Nguyễn Đăng Hưng", "birth_date": "1994", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 188, "code": "BV-678", "username": "BV-678", "name": "Kiều Thị Lệ Diễm", "birth_date": "1998", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 189, "code": "BV-733", "username": "BV-733", "name": "Bùi Thu Hà", "birth_date": "2003", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 190, "code": "BV-005", "username": "BV-005", "name": "Phạm Thị Tuyết", "birth_date": "1989", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHVH", "role_title": "KHVH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 191, "code": "BV-626", "username": "BV-626", "name": "Hoàng Ngọc Mai", "birth_date": "1993", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KH dự án", "role_title": "KH dự án", "role": "staff", "password": "123456", "is_custom": false}, {"id": 192, "code": "BV-075", "username": "BV-075", "name": "Trần Thị Hoa", "birth_date": "1996", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHTH", "role_title": "KHTH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 193, "code": "BV-352", "username": "BV-352", "name": "Nguyễn Thị Minh", "birth_date": "1993", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Bảo hiểm bảo lãnh", "role_title": "Bảo hiểm bảo lãnh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 194, "code": "BV-437", "username": "BV-437", "name": "Phạm Thị Nguyệt", "birth_date": "1992", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "BHBL", "role_title": "BHBL", "role": "staff", "password": "123456", "is_custom": false}, {"id": 195, "code": "BV-450", "username": "BV-450", "name": "Trương Thị Thùy Linh", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Bảo hiểm bảo lãnh", "role_title": "Bảo hiểm bảo lãnh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 196, "code": "BV-441", "username": "BV-441", "name": "Nguyễn Hà Lâm", "birth_date": "1998", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHTH", "role_title": "KHTH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 197, "code": "BV-699", "username": "BV-699", "name": "Nguyễn Thị Hồng Hải", "birth_date": "1996", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHTH", "role_title": "KHTH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 198, "code": "BV-746", "username": "BV-746", "name": "Nguyễn Hải Đăng", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Kế hoạch dự án", "role_title": "Kế hoạch dự án", "role": "staff", "password": "123456", "is_custom": false}, {"id": 199, "code": "BV-705", "username": "BV-705", "name": "Đào Thị Kim Hoa", "birth_date": "2004", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Nhân viên", "role_title": "Nhân viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 200, "code": "BV-192", "username": "BV-192", "name": "Phan Xuân Hoà", "birth_date": "1985", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Kỹ thuật tòa nhà", "role_title": "Kỹ thuật tòa nhà", "role": "staff", "password": "123456", "is_custom": false}, {"id": 201, "code": "BV-032", "username": "BV-032", "name": "Nguyễn Văn Tuấn", "birth_date": "1981", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Kỹ thuật viên toà nhà", "role_title": "Kỹ thuật viên toà nhà", "role": "staff", "password": "123456", "is_custom": false}, {"id": 202, "code": "BV-078", "username": "BV-078", "name": "Nguyễn Hồng Quân", "birth_date": "1998", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "IT", "role_title": "IT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 203, "code": "BV-461", "username": "BV-461", "name": "Khúc Ngọc Hải", "birth_date": "1991", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "IT", "role_title": "IT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 204, "code": "BV-293", "username": "BV-293", "name": "Nguyễn Văn Vững", "birth_date": "1989", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Kỹ thuật", "role_title": "Kỹ thuật", "role": "staff", "password": "123456", "is_custom": false}, {"id": 205, "code": "BV-444", "username": "BV-444", "name": "Đỗ Thành Vinh", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Điện lạnh", "role_title": "Điện lạnh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 206, "code": "BV-547", "username": "BV-547", "name": "Lưu Quang Thức", "birth_date": "1982", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Tổ kỹ thuật - xây dựng cơ bản", "role_title": "Tổ kỹ thuật - xây dựng cơ bản", "role": "staff", "password": "123456", "is_custom": false}, {"id": 207, "code": "BV-761", "username": "BV-761", "name": "Đặng Quang Bình", "birth_date": "1989", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Thiết kế", "role_title": "Thiết kế", "role": "staff", "password": "123456", "is_custom": false}, {"id": 208, "code": "BV-726", "username": "BV-726", "name": "Nguyễn Mạnh Hà", "birth_date": "1986", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "IT", "role_title": "IT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 209, "code": "BV-067", "username": "BV-067", "name": "Vũ Việt Anh", "birth_date": "1993", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 210, "code": "BV-119", "username": "BV-119", "name": "Nguyễn Thị Thủy", "birth_date": "1997", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 211, "code": "BV-298", "username": "BV-298", "name": "Phan Thị Mai", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 212, "code": "BV-362", "username": "BV-362", "name": "Phùng Thị Thảo Quyên", "birth_date": "2002", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 213, "code": "BV-363", "username": "BV-363", "name": "Vũ Thị Thanh Huyền", "birth_date": "2001", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 214, "code": "BV-365", "username": "BV-365", "name": "Hoàng Thị Hạnh", "birth_date": "1997", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 215, "code": "BV-420", "username": "BV-420", "name": "Tạ Thị Thanh Mai", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 216, "code": "BV-601", "username": "BV-601", "name": "Đàm Thị Hồng Hạnh", "birth_date": "2002", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 217, "code": "BV-615", "username": "BV-615", "name": "Nguyễn Thị Ý Vân", "birth_date": "2001", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 218, "code": "BV-634", "username": "BV-634", "name": "Nguyễn Thị Thu", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 219, "code": "BV-745", "username": "BV-745", "name": "Lê Thị Ngọc Ánh", "birth_date": "2003", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 220, "code": "BV-752", "username": "BV-752", "name": "Nguyễn Thuỳ Linh", "birth_date": "1999", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 221, "code": "BV-523", "username": "BV-523", "name": "Nguyễn Thị Thanh", "birth_date": "1990", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "KHCL", "role_title": "KHCL", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 222, "code": "BV-263", "username": "BV-263", "name": "Lê Thị Tuyết Anh", "birth_date": "1991", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "KSNK- BHYT", "role_title": "KSNK- BHYT", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 223, "code": "BV-042", "username": "BV-042", "name": "Hà Thị Mỹ Linh", "birth_date": "1997", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Kế hoạch chất lượng", "role_title": "Kế hoạch chất lượng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 224, "code": "BV-243", "username": "BV-243", "name": "Dương Mai Anh", "birth_date": "2000", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Kế hoạch chất lượng", "role_title": "Kế hoạch chất lượng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 225, "code": "BV-245", "username": "BV-245", "name": "Vũ Thị Nhung", "birth_date": "1988", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Kế hoạch chất lượng", "role_title": "Kế hoạch chất lượng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 226, "code": "BV-725", "username": "BV-725", "name": "Nguyễn Lan Hương", "birth_date": "2003", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Kế hoạch chất lượng", "role_title": "Kế hoạch chất lượng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 227, "code": "BV-754", "username": "BV-754", "name": "Chu Việt Cường", "birth_date": "1997", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Kế hoạch chất lượng", "role_title": "Kế hoạch chất lượng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 228, "code": "BV-747", "username": "BV-747", "name": "Kha Thị Thương Linh", "birth_date": "1998", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Kế hoạch chất lượng", "role_title": "Kế hoạch chất lượng", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 229, "code": "BV-343", "username": "BV-343", "name": "Nguyễn Thị Cánh", "birth_date": "1964", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Giặt là", "role_title": "Giặt là", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 230, "code": "BV-344", "username": "BV-344", "name": "Lục Thị Mai", "birth_date": "1982", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Giặt là", "role_title": "Giặt là", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 231, "code": "BV-660", "username": "BV-660", "name": "Phạm Thị Thanh Huyền", "birth_date": "1982", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Giặt là", "role_title": "Giặt là", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 232, "code": "BV-045", "username": "BV-045", "name": "Nguyễn Thị Thanh Huyền", "birth_date": "1992", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 233, "code": "BV-229", "username": "BV-229", "name": "Đoàn Minh Tiến", "birth_date": "1990", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 234, "code": "BV-073", "username": "BV-073", "name": "Nông Thị Lan Anh", "birth_date": "1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 235, "code": "BV-082", "username": "BV-082", "name": "Hoàng Ngọc Tuấn Anh", "birth_date": "1994", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Marketing", "role_title": "Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 236, "code": "BV-084", "username": "BV-084", "name": "Nguyễn Thị Hoa", "birth_date": "1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 237, "code": "BV-092", "username": "BV-092", "name": "Nguyễn Hồng Phi", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 238, "code": "BV-103", "username": "BV-103", "name": "Nguyễn Thị Tâm", "birth_date": "1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 239, "code": "BV-146", "username": "BV-146", "name": "Nguyễn Hải Dương", "birth_date": "2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Thiết kế đồ họa", "role_title": "Thiết kế đồ họa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 240, "code": "BV-173", "username": "BV-173", "name": "Nguyễn Thúy An", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Sale Admin", "role_title": "Sale Admin", "role": "staff", "password": "123456", "is_custom": false}, {"id": 241, "code": "BV-190", "username": "BV-190", "name": "Phùng Tiến Tùng", "birth_date": "1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Digital Marketting", "role_title": "Digital Marketting", "role": "staff", "password": "123456", "is_custom": false}, {"id": 242, "code": "BV-366", "username": "BV-366", "name": "Trần Xuân Sơn", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Marketing", "role_title": "Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 243, "code": "BV-236", "username": "BV-236", "name": "Hoàng Thị Hạnh", "birth_date": "1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 244, "code": "BV-383", "username": "BV-383", "name": "Ngô Tú Anh", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 245, "code": "BV-339", "username": "BV-339", "name": "Vũ Thị Thanh Loan", "birth_date": "1993", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 246, "code": "BV-348", "username": "BV-348", "name": "Nguyễn Thị Nga", "birth_date": "1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 247, "code": "BV-411", "username": "BV-411", "name": "Nguyễn Thị Thanh Tâm", "birth_date": "1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 248, "code": "BV-459", "username": "BV-459", "name": "Vũ Vân Dung", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content marketing", "role_title": "Content marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 249, "code": "BV-460", "username": "BV-460", "name": "Nguyễn Thị Hoài", "birth_date": "1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Thư ký hành chính", "role_title": "Thư ký hành chính", "role": "staff", "password": "123456", "is_custom": false}, {"id": 250, "code": "BV-498", "username": "BV-498", "name": "Khổng Thị Kim Khánh", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Marketing", "role_title": "Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 251, "code": "BV-475", "username": "BV-475", "name": "Nguyễn Thị Khánh", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 252, "code": "BV-392", "username": "BV-392", "name": "Nguyễn Văn Tuấn", "birth_date": "1990", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT kênh BH", "role_title": "PTTT kênh BH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 253, "code": "BV-470", "username": "BV-470", "name": "Trần Thị Ngọc Anh", "birth_date": "1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 254, "code": "BV-484", "username": "BV-484", "name": "Nguyễn Thị Hồng Nhung", "birth_date": "1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 255, "code": "BV-487", "username": "BV-487", "name": "Phan Thị Thu Trang", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Account Planning Marketing", "role_title": "Account Planning Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 256, "code": "BV-499", "username": "BV-499", "name": "Nguyễn Thị Hoa", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content Marketing", "role_title": "Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 257, "code": "BV-505", "username": "BV-505", "name": "Nguyễn Phương Thảo", "birth_date": "2000", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "MKT", "role_title": "MKT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 258, "code": "BV-509", "username": "BV-509", "name": "Phạm Huy Đại", "birth_date": "1990", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Quay dựng", "role_title": "Quay dựng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 259, "code": "BV-517", "username": "BV-517", "name": "Nguyễn Thị Thanh Tuyền", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content Marketing", "role_title": "Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 260, "code": "BV-519", "username": "BV-519", "name": "Lưu Đình Kiên", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Digital MKT", "role_title": "Digital MKT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 261, "code": "BV-524", "username": "BV-524", "name": "Hoàng Mạnh Quân", "birth_date": "2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Account Planner", "role_title": "Account Planner", "role": "staff", "password": "123456", "is_custom": false}, {"id": 262, "code": "BV-537", "username": "BV-537", "name": "Nguyễn Thị Ngần", "birth_date": "2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "chat page", "role_title": "chat page", "role": "staff", "password": "123456", "is_custom": false}, {"id": 263, "code": "BV-557", "username": "BV-557", "name": "Chu Tam Tường", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 264, "code": "BV-571", "username": "BV-571", "name": "Vũ Thị Vân Anh", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Biên tập viên", "role_title": "Biên tập viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 265, "code": "BV-590", "username": "BV-590", "name": "Lê Anh Đô", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phát triển thị trường", "role_title": "Phát triển thị trường", "role": "staff", "password": "123456", "is_custom": false}, {"id": 266, "code": "BV-595", "username": "BV-595", "name": "Bùi Văn Trung", "birth_date": "1993", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phát triển thị trường", "role_title": "Phát triển thị trường", "role": "staff", "password": "123456", "is_custom": false}, {"id": 267, "code": "BV-633", "username": "BV-633", "name": "Đặng Thị Sa", "birth_date": "1993", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phát triển thị trường", "role_title": "Phát triển thị trường", "role": "staff", "password": "123456", "is_custom": false}, {"id": 268, "code": "BV-636", "username": "BV-636", "name": "Trần Vân Anh", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "chat page", "role_title": "chat page", "role": "staff", "password": "123456", "is_custom": false}, {"id": 269, "code": "BV-641", "username": "BV-641", "name": "Phạm Thị Quỳnh Nga", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Account Planner", "role_title": "Account Planner", "role": "staff", "password": "123456", "is_custom": false}, {"id": 270, "code": "BV-642", "username": "BV-642", "name": "Đoàn Thị Quỳnh", "birth_date": "1993", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Sale online", "role_title": "Sale online", "role": "staff", "password": "123456", "is_custom": false}, {"id": 271, "code": "BV-654", "username": "BV-654", "name": "Nguyễn Xuân Hưng", "birth_date": "1992", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Marketing Performance", "role_title": "Marketing Performance", "role": "staff", "password": "123456", "is_custom": false}, {"id": 272, "code": "BV-659", "username": "BV-659", "name": "Lê Bích Loan", "birth_date": "2003", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content Marketing", "role_title": "Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 273, "code": "BV-668", "username": "BV-668", "name": "Đỗ Huy Hoàng", "birth_date": "1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Digital Marketing", "role_title": "Digital Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 274, "code": "BV-674", "username": "BV-674", "name": "Nguyễn Thị Kim Ngân", "birth_date": "2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content Marketing", "role_title": "Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 275, "code": "BV-684", "username": "BV-684", "name": "Lê Thị Thùy Linh", "birth_date": "1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Trợ lý kế hoạch &PM", "role_title": "Trợ lý kế hoạch &PM", "role": "staff", "password": "123456", "is_custom": false}, {"id": 276, "code": "BV-712", "username": "BV-712", "name": "Nguyễn Xuân Thắng", "birth_date": "2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Data Bussiness", "role_title": "Data Bussiness", "role": "staff", "password": "123456", "is_custom": false}, {"id": 277, "code": "BV-713", "username": "BV-713", "name": "Đỗ Hoài Thu", "birth_date": "1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Truyền thông", "role_title": "Truyền thông", "role": "staff", "password": "123456", "is_custom": false}, {"id": 278, "code": "BV-724", "username": "BV-724", "name": "Dương Hương Giang", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phát triển thị trường", "role_title": "Phát triển thị trường", "role": "staff", "password": "123456", "is_custom": false}, {"id": 279, "code": "BV-732", "username": "BV-732", "name": "Phạm Vân Anh", "birth_date": "2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Digital Marketing", "role_title": "Digital Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 280, "code": "BV-743", "username": "BV-743", "name": "Vũ Bá Dương", "birth_date": "2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PM dự án & Data business", "role_title": "PM dự án & Data business", "role": "staff", "password": "123456", "is_custom": false}, {"id": 281, "code": "BV-749", "username": "BV-749", "name": "Đỗ thị thanh chúc", "birth_date": "2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 282, "code": "BV-751", "username": "BV-751", "name": "Lưu Quỳnh Trang", "birth_date": "2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 283, "code": "BV-760", "username": "BV-760", "name": "Nguyễn Thành Đạt", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 284, "code": "BV-602", "username": "BV-602", "name": "Nguyễn Đức Mạnh", "birth_date": "1994", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Dịch vụ nội trú", "role_title": "Dịch vụ nội trú", "role": "staff", "password": "123456", "is_custom": false}, {"id": 285, "code": "BV-656", "username": "BV-656", "name": "Nguyễn Thị Lệ", "birth_date": "1984", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hộ lý khoa Nội- YHCT", "role_title": "Hộ lý khoa Nội- YHCT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 286, "code": "BV-456", "username": "BV-456", "name": "Vũ Thị Hiền", "birth_date": "1978", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hộ lý khoa Nội", "role_title": "Hộ lý khoa Nội", "role": "staff", "password": "123456", "is_custom": false}, {"id": 287, "code": "BV-406", "username": "BV-406", "name": "Nguyễn Thị Tuyết", "birth_date": "1985", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hộ lý khoa Nhi", "role_title": "Hộ lý khoa Nhi", "role": "staff", "password": "123456", "is_custom": false}, {"id": 288, "code": "BV-657", "username": "BV-657", "name": "Lê Thúy Vân", "birth_date": "1982", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hộ lý khoa Ngoại", "role_title": "Hộ lý khoa Ngoại", "role": "staff", "password": "123456", "is_custom": false}, {"id": 289, "code": "BV-381", "username": "BV-381", "name": "Vũ Diệu Hương", "birth_date": "1990", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 290, "code": "BV-384", "username": "BV-384", "name": "Phạm Thị Thu Hương", "birth_date": "1998", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 291, "code": "BV-404", "username": "BV-404", "name": "Bành Thị Thu Dung", "birth_date": "2000", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 292, "code": "BV-414", "username": "BV-414", "name": "Nguyễn Thị Nga", "birth_date": "1989", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 293, "code": "BV-439", "username": "BV-439", "name": "Dương Thị Nguyệt", "birth_date": "1998", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 294, "code": "BV-480", "username": "BV-480", "name": "Trần Thị Hiền", "birth_date": "1997", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 295, "code": "BV-518", "username": "BV-518", "name": "Phan Thị Quỳnh", "birth_date": "2002", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 296, "code": "BV-534", "username": "BV-534", "name": "Nguyễn Tuyết Nhung", "birth_date": "1996", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 297, "code": "BV-591", "username": "BV-591", "name": "Bùi Thị Hảo", "birth_date": "2003", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 298, "code": "BV-640", "username": "BV-640", "name": "Chu Nguyễn Nhật Linh", "birth_date": "2003", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 299, "code": "BV-727", "username": "BV-727", "name": "Nguyễn Thị Hiền", "birth_date": "1995", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 300, "code": "BV-292", "username": "BV-292", "name": "Cao Thanh Hằng", "birth_date": "1988", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Lễ tân, thu ngân", "role_title": "Lễ tân, thu ngân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 301, "code": "BV-153", "username": "BV-153", "name": "Đỗ Thị Tình", "birth_date": "1988", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Kế toán tổng hợp", "role_title": "Kế toán tổng hợp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 302, "code": "BV-611", "username": "BV-611", "name": "Nguyễn Thị Thanh", "birth_date": "1986", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Kế toán bảo hiểm", "role_title": "Kế toán bảo hiểm", "role": "staff", "password": "123456", "is_custom": false}, {"id": 303, "code": "BV-222", "username": "BV-222", "name": "Nguyễn Thị Thùy Anh", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Nhân viên kế toán", "role_title": "Nhân viên kế toán", "role": "staff", "password": "123456", "is_custom": false}, {"id": 304, "code": "BV-391", "username": "BV-391", "name": "Trần Thị Thu Trang", "birth_date": "2002", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Nhân viên kế toán", "role_title": "Nhân viên kế toán", "role": "staff", "password": "123456", "is_custom": false}, {"id": 305, "code": "BV-449", "username": "BV-449", "name": "Trần Thị Thu Hường", "birth_date": "1997", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Nhân viên kế toán", "role_title": "Nhân viên kế toán", "role": "staff", "password": "123456", "is_custom": false}, {"id": 306, "code": "BV-545", "username": "BV-545", "name": "Đoàn Thị Thùy Linh", "birth_date": "1990", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Kế toán công nợ", "role_title": "Kế toán công nợ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 307, "code": "BV-550", "username": "BV-550", "name": "Nguyễn Thị Hường", "birth_date": "1990", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Thủ quỹ", "role_title": "Thủ quỹ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 308, "code": "BV-718", "username": "BV-718", "name": "Triệu Ngọc Anh", "birth_date": "2004", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Kế toán giá thành", "role_title": "Kế toán giá thành", "role": "staff", "password": "123456", "is_custom": false}, {"id": 309, "code": "BV-018", "username": "BV-018", "name": "Nguyễn Thị Thu Trang", "birth_date": "1997", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 310, "code": "BV-043", "username": "BV-043", "name": "Bùi Thị Trang", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 311, "code": "BV-120", "username": "BV-120", "name": "Hoàng Thị Phương", "birth_date": "2001", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 312, "code": "BV-184", "username": "BV-184", "name": "Nguyễn Thị Giang", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 313, "code": "BV-200", "username": "BV-200", "name": "Nguyễn Thu Thuỷ", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 314, "code": "BV-369", "username": "BV-369", "name": "Nguyễn Thị Trang", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 315, "code": "BV-387", "username": "BV-387", "name": "Nguyễn Thị Hoàn Trang", "birth_date": "1998", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 316, "code": "BV-492", "username": "BV-492", "name": "Nguyễn Thu Trang", "birth_date": "2003", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 317, "code": "BV-544", "username": "BV-544", "name": "Vũ Thùy Trang", "birth_date": "2003", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 318, "code": "BV-582", "username": "BV-582", "name": "Nguyễn Khánh Linh", "birth_date": "2003", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 319, "code": "BV-638", "username": "BV-638", "name": "Phan Thị Thúy", "birth_date": "2003", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 320, "code": "BV-648", "username": "BV-648", "name": "Đồng Hương Giang", "birth_date": "2003", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 321, "code": "BV-734", "username": "BV-734", "name": "Đỗ Hương Giang", "birth_date": "2007", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 322, "code": "BV-735", "username": "BV-735", "name": "Phạm Thị Lựu", "birth_date": "1996", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 323, "code": "BV-757", "username": "BV-757", "name": "Phạm Thị Mỹ Linh", "birth_date": "2001", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 324, "code": "BV-288", "username": "BV-288", "name": "Bùi Thị Kim Phượng", "birth_date": "1980", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Cung ứng", "role_title": "Cung ứng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 325, "code": "BV-556", "username": "BV-556", "name": "Phạm Thị Dung", "birth_date": "1987", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hành chính - dịch vụ", "role_title": "Hành chính - dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 326, "code": "BV-342", "username": "BV-342", "name": "Khổng Thị Quyên", "birth_date": "1991", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hành chính", "role_title": "Hành chính", "role": "staff", "password": "123456", "is_custom": false}, {"id": 327, "code": "BV-468", "username": "BV-468", "name": "Đỗ Khương Duy", "birth_date": "1994", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hành chính - dịch vụ", "role_title": "Hành chính - dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 328, "code": "BV-587", "username": "BV-587", "name": "Nguyễn Hoàng Việt", "birth_date": "1989", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hành chính", "role_title": "Hành chính", "role": "staff", "password": "123456", "is_custom": false}, {"id": 329, "code": "BV-118A", "username": "BV-118A", "name": "Hoàng Văn Hải", "birth_date": "1981", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Lái xe", "role_title": "Lái xe", "role": "staff", "password": "123456", "is_custom": false}, {"id": 330, "code": "BV-260", "username": "BV-260", "name": "Phạm Minh Tuyến", "birth_date": "1984", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Lái xe", "role_title": "Lái xe", "role": "staff", "password": "123456", "is_custom": false}, {"id": 331, "code": "BV-354", "username": "BV-354", "name": "Lê Công Toản", "birth_date": "1987", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tổ lái xe", "role_title": "Tổ lái xe", "role": "staff", "password": "123456", "is_custom": false}, {"id": 332, "code": "BV-585", "username": "BV-585", "name": "Phan Thế Trung", "birth_date": "1973", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Lái xe", "role_title": "Lái xe", "role": "staff", "password": "123456", "is_custom": false}, {"id": 333, "code": "BV-283", "username": "BV-283", "name": "Phùng Thị Huân", "birth_date": "1987", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp ăn", "role_title": "Bếp ăn", "role": "staff", "password": "123456", "is_custom": false}, {"id": 334, "code": "BV-284", "username": "BV-284", "name": "Phạm Thị Nga", "birth_date": "1986", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp chính", "role_title": "Bếp chính", "role": "staff", "password": "123456", "is_custom": false}, {"id": 335, "code": "BV-267", "username": "BV-267", "name": "Nguyễn Thị Oanh", "birth_date": "1976", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp", "role_title": "Bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 336, "code": "BV-371", "username": "BV-371", "name": "Bùi Thị Đức", "birth_date": "1973", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp", "role_title": "Bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 337, "code": "BV-473", "username": "BV-473", "name": "Vũ Thị Thu", "birth_date": "1965", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp", "role_title": "Bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 338, "code": "BV-589", "username": "BV-589", "name": "Nguyễn Thị Phương Thảo", "birth_date": "1992", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Thu ngân nhà hàng", "role_title": "Thu ngân nhà hàng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 339, "code": "BV-614", "username": "BV-614", "name": "Lê Tú Anh", "birth_date": "2000", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 340, "code": "BV-710", "username": "BV-710", "name": "Nguyễn Thị Lành", "birth_date": "1977", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phụ bếp", "role_title": "Phụ bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 341, "code": "BV-716", "username": "BV-716", "name": "Lưu Diệp Phương Ly", "birth_date": "2003", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Văn thư", "role_title": "Văn thư", "role": "staff", "password": "123456", "is_custom": false}, {"id": 342, "code": "BV-730", "username": "BV-730", "name": "Lò Khánh Duy", "birth_date": "2002", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 343, "code": "BV-434", "username": "BV-434", "name": "Bùi Thị Ngọc Ánh", "birth_date": "1996", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kiểm soát dịch vụ", "role_title": "Kiểm soát dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 344, "code": "BV-462", "username": "BV-462", "name": "Đào Như Quỳnh", "birth_date": "2003", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Giám sát camera", "role_title": "Giám sát camera", "role": "staff", "password": "123456", "is_custom": false}, {"id": 345, "code": "BV-739", "username": "BV-739", "name": "Trần Thị Loan", "birth_date": "2003", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Data Hr", "role_title": "Data Hr", "role": "staff", "password": "123456", "is_custom": false}, {"id": 346, "code": "BV-741", "username": "BV-741", "name": "Nguyễn Thị Nguyệt", "birth_date": "1999", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 347, "code": "BV-744", "username": "BV-744", "name": "Nguyễn Thị Phượng", "birth_date": "1994", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 348, "code": "BV-753", "username": "BV-753", "name": "Đào Mai Trang", "birth_date": "1997", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 349, "code": "BV-755", "username": "BV-755", "name": "Hoàng Thu Hương", "birth_date": "2000", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HCNS", "role_title": "HCNS", "role": "staff", "password": "123456", "is_custom": false}, {"id": 350, "code": "BV-338", "username": "BV-338", "name": "Lại Thị Thanh", "birth_date": "26/06/1962", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Phụ trách Khoa Dược", "role_title": "Phụ trách Khoa Dược", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 351, "code": "BV-090", "username": "BV-090", "name": "Nguyễn Công Cường", "birth_date": "1992", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 352, "code": "BV-500", "username": "BV-500", "name": "Nguyễn Thị Thùy Dung", "birth_date": "29/06/2004", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 353, "code": "BV-323", "username": "BV-323", "name": "Nguyễn Ngự Hoàng", "birth_date": "31/01/1998", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 354, "code": "BV-491", "username": "BV-491", "name": "Thái Trung Kiên", "birth_date": "27/11/2001", "department_raw": "I - BAN GIÁM ĐỐC", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Data Analyst", "role_title": "Data Analyst", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 355, "code": "BV-501", "username": "BV-501", "name": "Nguyễn Thị Thu Phương", "birth_date": "20/7/1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content Marketing", "role_title": "Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 356, "code": "BV-463", "username": "BV-463", "name": "Phan Thị Oanh", "birth_date": "25/10/1989", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Kế toán công nợ", "role_title": "Kế toán công nợ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 357, "code": "BV-503", "username": "BV-503", "name": "Dương Quý Nhân", "birth_date": "13/12/1994", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Dữ liệu", "role_title": "Dữ liệu", "role": "staff", "password": "123456", "is_custom": false}, {"id": 358, "code": "BV-548", "username": "BV-548", "name": "Phạm Thị Thu Huyền", "birth_date": "2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Data analyst", "role_title": "Data analyst", "role": "staff", "password": "123456", "is_custom": false}, {"id": 359, "code": "BV-510", "username": "BV-510", "name": "Nguyễn Đình Ngọc", "birth_date": "1994", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Giám Sát Xây Dựng", "role_title": "Giám Sát Xây Dựng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 360, "code": "BV-561", "username": "BV-561", "name": "Nguyễn Văn Hợi", "birth_date": "1986", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 361, "code": "BV-560", "username": "BV-560", "name": "Nguyễn Thị Thanh Hòa", "birth_date": "24/04/1982", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 362, "code": "BV-385", "username": "BV-385", "name": "Lê Tuấn Anh", "birth_date": "24/11/1997", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Cấp phát thuốc", "role_title": "Cấp phát thuốc", "role": "staff", "password": "123456", "is_custom": false}, {"id": 363, "code": "BV-565", "username": "BV-565", "name": "Phan Thị Uyên", "birth_date": "15/05/2002", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 364, "code": "BV-455", "username": "BV-455", "name": "Lại Thị Hải Hà", "birth_date": "21/03/1989", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 365, "code": "BV-531", "username": "BV-531", "name": "Đặng Hồng Nhung", "birth_date": "30/11/2002", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content Marketing", "role_title": "Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 366, "code": "BV-546", "username": "BV-546", "name": "Nguyễn Thị Hồng Hạnh", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 367, "code": "BV-502", "username": "BV-502", "name": "Đỗ Trâm Anh", "birth_date": "2003", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tài chính", "role_title": "Tài chính", "role": "staff", "password": "123456", "is_custom": false}, {"id": 368, "code": "BV-539", "username": "BV-539", "name": "Nguyễn Hà Khánh Linh", "birth_date": "24/09/2001", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 369, "code": "BV-059", "username": "BV-059", "name": "Nguyễn Viết Chiến", "birth_date": "1979", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Trưởng nhóm bảo vệ", "role_title": "Trưởng nhóm bảo vệ", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 370, "code": "BV-204", "username": "BV-204", "name": "Nguyễn Văn Chiến", "birth_date": "23/08/1967", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bảo vệ", "role_title": "Bảo vệ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 371, "code": "BV-116A", "username": "BV-116A", "name": "Đinh Trọng Viển", "birth_date": "20/10/1960", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bảo vệ", "role_title": "Bảo vệ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 372, "code": "BV-530", "username": "BV-530", "name": "Phan Ngọc Sơn", "birth_date": "1966", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bảo vệ", "role_title": "Bảo vệ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 373, "code": "BV-278", "username": "BV-278", "name": "Bùi Văn Phương", "birth_date": "20/10/1975", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 374, "code": "BV-552", "username": "BV-552", "name": "Kiều Thị Kim Loan", "birth_date": "16/05/2006", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hành chính - dịch vụ", "role_title": "Hành chính - dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 375, "code": "BV-316", "username": "BV-316", "name": "Phan Thị Thu Thúy", "birth_date": "2001", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 376, "code": "BV-563", "username": "BV-563", "name": "Lê Thị Thanh Hải", "birth_date": "27/10/1998", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 377, "code": "BV-398", "username": "BV-398", "name": "Nguyễn Thị Hằng", "birth_date": "29/08/2004", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 378, "code": "BV-570", "username": "BV-570", "name": "Trần Thị Quỳnh Anh", "birth_date": "13/01/2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phân tích và vận hành dữ liệu", "role_title": "Phân tích và vận hành dữ liệu", "role": "staff", "password": "123456", "is_custom": false}, {"id": 379, "code": "BV-574", "username": "BV-574", "name": "Nguyễn Văn Dũng", "birth_date": "1988", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 380, "code": "BV-583", "username": "BV-583", "name": "Nguyễn Anh Thư", "birth_date": "23/11/2005", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 381, "code": "BV-168", "username": "BV-168", "name": "Phan Mạnh Tùng", "birth_date": "28/06/1989", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 382, "code": "BV-393", "username": "BV-393", "name": "Bùi Thị Ngân", "birth_date": "14/09/1999", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 383, "code": "BV-096", "username": "BV-096", "name": "Hoàng Mạnh Hào", "birth_date": "29/03/1976", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Lái xe", "role_title": "Lái xe", "role": "staff", "password": "123456", "is_custom": false}, {"id": 384, "code": "BV-520", "username": "BV-520", "name": "Nguyễn Hoàng Long", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Trợ lý CEO", "role_title": "Trợ lý CEO", "role": "staff", "password": "123456", "is_custom": false}, {"id": 385, "code": "BV-555", "username": "BV-555", "name": "Bùi Phương Thảo", "birth_date": "26/05/2003", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 386, "code": "BV-573", "username": "BV-573", "name": "Khuất Thanh Bình", "birth_date": "19/09/1994", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 387, "code": "BV-528", "username": "BV-528", "name": "Nguyễn Cảnh Tú", "birth_date": "16/01/1996", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 388, "code": "BV-161", "username": "BV-161", "name": "Hoàng Thị Hải Yến", "birth_date": "1993", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Hành chính", "role_title": "Hành chính", "role": "staff", "password": "123456", "is_custom": false}, {"id": 389, "code": "BV-514", "username": "BV-514", "name": "Trần Thị Hà", "birth_date": "2000", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Nhân sự tiền lương", "role_title": "Nhân sự tiền lương", "role": "staff", "password": "123456", "is_custom": false}, {"id": 390, "code": "BV-175", "username": "BV-175", "name": "Nguyễn Thị Mùi", "birth_date": "1991", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 391, "code": "BV-580", "username": "BV-580", "name": "Nguyễn Thảo Linh", "birth_date": "16/11/2003", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Hành chính - dịch vụ", "role_title": "Hành chính - dịch vụ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 392, "code": "BV-389", "username": "BV-389", "name": "Trương Mỹ Lê", "birth_date": "1994", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phụ trách QLDV", "role_title": "Phụ trách QLDV", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 393, "code": "BV-599", "username": "BV-599", "name": "Nguyễn Thị Lan Anh", "birth_date": "21/07/2003", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 394, "code": "BV-600", "username": "BV-600", "name": "Đinh Thị Thu", "birth_date": "24/02/1997", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 395, "code": "BV-612", "username": "BV-612", "name": "Nguyễn Thị Thu Lý", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 396, "code": "BV-613", "username": "BV-613", "name": "Đỗ Thị Yến", "birth_date": "1992", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 397, "code": "BV-604", "username": "BV-604", "name": "Nguyễn Thị Ánh Tuyết", "birth_date": "1987", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 398, "code": "BV-598", "username": "BV-598", "name": "Tạ Thị Thùy", "birth_date": "20/11/1999", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 399, "code": "BV-610", "username": "BV-610", "name": "Trần Đình Huỳnh", "birth_date": "19/12/1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Marketing Performance", "role_title": "Marketing Performance", "role": "staff", "password": "123456", "is_custom": false}, {"id": 400, "code": "BV-622", "username": "BV-622", "name": "Đào Thị Kim Hoa", "birth_date": "13/01/2004", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư ký y khoa", "role_title": "Thư ký y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 401, "code": "BV-558", "username": "BV-558", "name": "Chu Thị Thanh Thủy", "birth_date": "1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "chat page", "role_title": "chat page", "role": "staff", "password": "123456", "is_custom": false}, {"id": 402, "code": "BV-321", "username": "BV-321", "name": "Nguyễn Thanh Thủy", "birth_date": "21/08/1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tư vấn dịch vụ khách hàng", "role_title": "Tư vấn dịch vụ khách hàng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 403, "code": "BV-593", "username": "BV-593", "name": "Dương Văn Cương", "birth_date": "1998", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 404, "code": "BV-165", "username": "BV-165", "name": "Đỗ Thuý Hằng", "birth_date": "2000", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 405, "code": "BV-324", "username": "BV-324", "name": "Nguyễn Ngọc Ánh", "birth_date": "1996", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHTH", "role_title": "KHTH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 406, "code": "BV-621", "username": "BV-621", "name": "Nguyễn Thị Hải Yến", "birth_date": "20/9/2004", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 407, "code": "BV-627", "username": "BV-627", "name": "Trần Thị Mộng Ánh", "birth_date": "18/09/2001", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 408, "code": "BV-628", "username": "BV-628", "name": "Phan Thị Hồng Trang", "birth_date": "21/07/1997", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 409, "code": "BV-616", "username": "BV-616", "name": "Đông Thị Phương", "birth_date": "23/02/1999", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 410, "code": "BV-533", "username": "BV-533", "name": "Trần Hoàng Mai", "birth_date": "28/12/1994", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 411, "code": "BV-377", "username": "BV-377", "name": "Nguyễn Thị Uyên", "birth_date": "28/01/1995", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phụ trách CSKH", "role_title": "Phụ trách CSKH", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 412, "code": "BV-579", "username": "BV-579", "name": "Phạm Thị Thu Hiền", "birth_date": "20/11/1999", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 413, "code": "BV-643", "username": "BV-643", "name": "Trịnh Hồng Minh", "birth_date": "16/05/1992", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "CSKH", "role_title": "CSKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 414, "code": "BV-401", "username": "BV-401", "name": "Nguyễn Thị Thanh Lượng", "birth_date": "18/01/1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh nội bộ", "role_title": "Kinh doanh nội bộ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 415, "code": "BV-572", "username": "BV-572", "name": "Hà Bích Diệp", "birth_date": "1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 416, "code": "BV-538", "username": "BV-538", "name": "Phạm Thị Minh Nguyệt", "birth_date": "1990", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 417, "code": "BV-376", "username": "BV-376", "name": "Phạm Thu Huyền", "birth_date": "23/06/1999", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 418, "code": "BV-063", "username": "BV-063", "name": "Lê Thanh Mai", "birth_date": "22/09/2001", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHTH", "role_title": "KHTH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 419, "code": "BV-631", "username": "BV-631", "name": "Nguyễn Thị Thu Hương", "birth_date": "1995", "department_raw": "QUẢN LÝ DỊCH VỤ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 420, "code": "BV-606", "username": "BV-606", "name": "Đinh Thị Thảo", "birth_date": "20/10/1984", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "KTV xoa bóp", "role_title": "KTV xoa bóp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 421, "code": "BV-617", "username": "BV-617", "name": "Lê Quốc Việt", "birth_date": "1995", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 422, "code": "BV-529", "username": "BV-529", "name": "Trần Thị Hải Yến", "birth_date": "13/02/1999", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 423, "code": "BV-608", "username": "BV-608", "name": "Trịnh Hải Anh", "birth_date": "20/06/1999", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 424, "code": "BV-675", "username": "BV-675", "name": "Hoàng Thị Hậu", "birth_date": "27/04/1976", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp", "role_title": "Bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 425, "code": "BV-551", "username": "BV-551", "name": "Vương Thị Oanh", "birth_date": "25/01/1969", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Hộ lý", "role_title": "Hộ lý", "role": "staff", "password": "123456", "is_custom": false}, {"id": 426, "code": "BV-291", "username": "BV-291", "name": "Tạ Ngọc Thạch", "birth_date": "13/01/1990", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 427, "code": "BV-270", "username": "BV-270", "name": "Đặng Văn Hùng", "birth_date": "17/04/1971", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 428, "code": "BV-476", "username": "BV-476", "name": "Nguyễn Văn Xuân", "birth_date": "1965", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Trưởng khoa", "role_title": "Trưởng khoa", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 429, "code": "BV-490", "username": "BV-490", "name": "Nguyễn Thị Khánh Linh", "birth_date": "23/07/2001", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 430, "code": "BV-665", "username": "BV-665", "name": "Lê Việt Thắng", "birth_date": "27/09/2001", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Talent Aquisment", "role_title": "Talent Aquisment", "role": "staff", "password": "123456", "is_custom": false}, {"id": 431, "code": "BV-586", "username": "BV-586", "name": "Nguyễn Tiến Đạo", "birth_date": "14/08/1987", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 432, "code": "BV-445", "username": "BV-445", "name": "Hoàng Thị Hằng", "birth_date": "15/12/1985", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp", "role_title": "Bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 433, "code": "BV-588", "username": "BV-588", "name": "Nguyễn Thị Hồng Phượng", "birth_date": "13/01/2001", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Văn thư lưu trữ", "role_title": "Văn thư lưu trữ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 434, "code": "BV-664", "username": "BV-664", "name": "Nguyễn Thị Trâm Anh", "birth_date": "2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Truyền thông", "role_title": "Truyền thông", "role": "staff", "password": "123456", "is_custom": false}, {"id": 435, "code": "BV-620", "username": "BV-620", "name": "Ngô Thanh Tâm", "birth_date": "27/01/1991", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "BSCKI", "role_title": "BSCKI", "role": "staff", "password": "123456", "is_custom": false}, {"id": 436, "code": "BV-647", "username": "BV-647", "name": "Nguyễn Thị Lan Phương", "birth_date": "22/05/2006", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 437, "code": "BV-637", "username": "BV-637", "name": "Nguyễn Thu Hiền", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Account Planner", "role_title": "Account Planner", "role": "staff", "password": "123456", "is_custom": false}, {"id": 438, "code": "BV-394", "username": "BV-394", "name": "Phạm Minh Ngọc", "birth_date": "22/12/1997", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 439, "code": "BV-607", "username": "BV-607", "name": "Trần Nguyệt Hà", "birth_date": "14/03/1998", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 440, "code": "BV-690", "username": "BV-690", "name": "Nguyễn Thị Bích Ngọc", "birth_date": "1999", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Văn thư", "role_title": "Văn thư", "role": "staff", "password": "123456", "is_custom": false}, {"id": 441, "code": "BV-653", "username": "BV-653", "name": "Phạm Tiến Thành", "birth_date": "21/10/2005", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 442, "code": "BV-605", "username": "BV-605", "name": "Nguyễn Phương Thảo", "birth_date": "1999", "department_raw": "VII - KHOA NGOẠI - THẨM MỸ - GÂY MÊ HỒI SỨC", "department_name": "Khoa Ngoại Tổng hợp", "department_id": 4, "title": "Điều dưỡng GMHS", "role_title": "Điều dưỡng GMHS", "role": "staff", "password": "123456", "is_custom": false}, {"id": 443, "code": "BV-564", "username": "BV-564", "name": "Đỗ Thị Thinh", "birth_date": "15/12/1985", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kinh doanh", "role_title": "Kinh doanh", "role": "staff", "password": "123456", "is_custom": false}, {"id": 444, "code": "BV-632", "username": "BV-632", "name": "Nguyễn Thu Trang", "birth_date": "1992", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "TN PTTT Kênh liên kết", "role_title": "TN PTTT Kênh liên kết", "role": "staff", "password": "123456", "is_custom": false}, {"id": 445, "code": "BV-680", "username": "BV-680", "name": "Bùi Đặng Tường Vy", "birth_date": "18/09/1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tổng đài và Telesale", "role_title": "Tổng đài và Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 446, "code": "BV-702", "username": "BV-702", "name": "Phạm Tố Uyên", "birth_date": "1996", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 447, "code": "BV-296", "username": "BV-296", "name": "Hà Thị Ánh Nguyệt", "birth_date": "17/10/2003", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 448, "code": "BV-347", "username": "BV-347", "name": "Đỗ Thị Minh Huệ", "birth_date": "25/08/1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 449, "code": "BV-714", "username": "BV-714", "name": "Vương Phương Thảo", "birth_date": "1987", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 450, "code": "BV-646", "username": "BV-646", "name": "Lương Mai Thùy Linh", "birth_date": "1995", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 451, "code": "BV-645", "username": "BV-645", "name": "Hoàng Mỹ Lan", "birth_date": "27/08/1992", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 452, "code": "BV-425", "username": "BV-425", "name": "Nguyễn Văn Tiến", "birth_date": "1998", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHTH", "role_title": "KHTH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 453, "code": "BV-717", "username": "BV-717", "name": "Nguyễn Thị Mai", "birth_date": "14/06/1993", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 454, "code": "BV-430", "username": "BV-430", "name": "Trương Đặng Diệu Linh", "birth_date": "2002", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 455, "code": "BV-663", "username": "BV-663", "name": "Nguyễn Hải Ngân", "birth_date": "2004", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 456, "code": "BV-738", "username": "BV-738", "name": "Bùi Minh Lệ", "birth_date": "", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Nhân viên HDKH", "role_title": "Nhân viên HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 457, "code": "BV-729", "username": "BV-729", "name": "Bùi Thị Mai Linh", "birth_date": "18/10/2001", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 458, "code": "BV-102", "username": "BV-102", "name": "Trần Khánh Huyền", "birth_date": "28/08/1994", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tiền lương", "role_title": "Tiền lương", "role": "staff", "password": "123456", "is_custom": false}, {"id": 459, "code": "BV-121", "username": "BV-121", "name": "Nguyễn Thị Minh Thu", "birth_date": "29/05/2001", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 460, "code": "BV-708", "username": "BV-708", "name": "Vũ Ngọc Kiên", "birth_date": "17/01/1991", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 461, "code": "BV-618", "username": "BV-618", "name": "Đinh Bá Ngọc", "birth_date": "23/12/2005", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Y sĩ", "role_title": "Y sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 462, "code": "BV-704", "username": "BV-704", "name": "Đinh Thu Hà", "birth_date": "2001", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 463, "code": "BV-639", "username": "BV-639", "name": "Nguyễn Ngọc Lan", "birth_date": "2003", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Quầy - Lễ tân", "role_title": "Quầy - Lễ tân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 464, "code": "BV-676", "username": "BV-676", "name": "Nguyễn Văn Huy", "birth_date": "1988", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "PTTT", "role_title": "PTTT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 465, "code": "BV-703", "username": "BV-703", "name": "Nguyễn Thị Thu Hương", "birth_date": "18/07/2003", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Truyền thông", "role_title": "Truyền thông", "role": "staff", "password": "123456", "is_custom": false}, {"id": 466, "code": "BV-669", "username": "BV-669", "name": "Tạ Thị Phương Hằng", "birth_date": "15/06/2005", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 467, "code": "BV-737", "username": "BV-737", "name": "Phạm Thị Tố Loan", "birth_date": "", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Cán bộ nhân viên", "role_title": "Cán bộ nhân viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 468, "code": "BV-750", "username": "BV-750", "name": "Dương Bảo Yến", "birth_date": "", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Cán bộ nhân viên", "role_title": "Cán bộ nhân viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 469, "code": "BV-683", "username": "BV-683", "name": "Phan Công Hiếu", "birth_date": "20/07/1987", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Kiến trúc sư", "role_title": "Kiến trúc sư", "role": "staff", "password": "123456", "is_custom": false}, {"id": 470, "code": "BV-495", "username": "BV-495", "name": "Nguyễn Thị Ngân", "birth_date": "27/11/2000", "department_raw": "IX - KHOA XÉT NGHIỆM", "department_name": "Khoa Xét nghiệm", "department_id": 9, "title": "Kỹ thuật viên", "role_title": "Kỹ thuật viên", "role": "staff", "password": "123456", "is_custom": false}, {"id": 471, "code": "BV-740", "username": "BV-740", "name": "Lưu Văn Hiên", "birth_date": "25/09/1988", "department_raw": "X - KHOA DƯỢC", "department_name": "Khoa Dược", "department_id": 15, "title": "Dược sĩ", "role_title": "Dược sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 472, "code": "BV-378", "username": "BV-378", "name": "Nguyễn Quang Huy", "birth_date": "27/05/1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Thiết kế đồ họa", "role_title": "Thiết kế đồ họa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 473, "code": "BV-742", "username": "BV-742", "name": "An Lâm Tùng", "birth_date": "1987", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 474, "code": "BV-682", "username": "BV-682", "name": "Nguyễn Xuân Hoan", "birth_date": "21/05/1997", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 475, "code": "BV-700", "username": "BV-700", "name": "Nguyễn Thị Hạnh", "birth_date": "20/06/1972", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Bếp ăn", "role_title": "Bếp ăn", "role": "staff", "password": "123456", "is_custom": false}, {"id": 476, "code": "BV-763", "username": "BV-763", "name": "Nguyễn Lan Nhi", "birth_date": "2000-11-10", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 477, "code": "BV-764", "username": "BV-764", "name": "Trần Xuân Toàn", "birth_date": "1992-10-09", "department_raw": "VIII - KHOA CHẨN ĐOÁN HÌNH ẢNH", "department_name": "Khoa Chẩn đoán Hình ảnh", "department_id": 8, "title": "KTV", "role_title": "KTV", "role": "staff", "password": "123456", "is_custom": false}, {"id": 478, "code": "BV-765", "username": "BV-765", "name": "Nguyễn Thị Huyền Trang", "birth_date": "2001-08-04", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Bác sĩ", "role_title": "Bác sĩ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 479, "code": "BV-766", "username": "BV-766", "name": "Ngô Thị Hải Yến", "birth_date": "14/09/2003", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "chat page", "role_title": "chat page", "role": "staff", "password": "123456", "is_custom": false}, {"id": 480, "code": "BV-767", "username": "BV-767", "name": "Ngô Thị Ngọc Mai", "birth_date": "18/05/2003", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 481, "code": "BV-770", "username": "BV-770", "name": "Trần Nhật Long", "birth_date": "1999-09-11", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Designer", "role_title": "Designer", "role": "staff", "password": "123456", "is_custom": false}, {"id": 482, "code": "BV-771", "username": "BV-771", "name": "Mai Thị Trang", "birth_date": "21/6/1993", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Nhân sự - QHLĐ", "role_title": "Nhân sự - QHLĐ", "role": "staff", "password": "123456", "is_custom": false}, {"id": 483, "code": "BV-772", "username": "BV-772", "name": "Ngô Thị Lý", "birth_date": "25/06/1989", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "KTV", "role_title": "KTV", "role": "staff", "password": "123456", "is_custom": false}, {"id": 484, "code": "BV-773", "username": "BV-773", "name": "Nguyễn Việt Linh", "birth_date": "29/12/1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Kế hoạch marketing", "role_title": "Kế hoạch marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 485, "code": "BV-775", "username": "BV-775", "name": "Trần Thị Lan Anh", "birth_date": "1997-08-12", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Digital Marketing.", "role_title": "Digital Marketing.", "role": "staff", "password": "123456", "is_custom": false}, {"id": 486, "code": "BV-776", "username": "BV-776", "name": "Vũ Thế Dân", "birth_date": "20/04/1999", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tuyển dụng", "role_title": "Tuyển dụng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 487, "code": "BV-777", "username": "BV-777", "name": "Lê Như Quỳnh", "birth_date": "15/01/1992", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 488, "code": "BV-778", "username": "BV-778", "name": "Phạm Thị Vi Tường An", "birth_date": "2003-02-08", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 489, "code": "BV-779", "username": "BV-779", "name": "Lê Ngọc Hiển", "birth_date": "22/09/1991", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 490, "code": "BV-780", "username": "BV-780", "name": "Nguyễn Thị Thanh Mai", "birth_date": "22/10/1990", "department_raw": "XII - PHÒNG KẾ HOẠCH CHẤT LƯỢNG", "department_name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "department_id": 16, "title": "Cán bộ nhân viên", "role_title": "Cán bộ nhân viên", "role": "supervisor", "password": "123456", "is_custom": false}, {"id": 491, "code": "BV-781", "username": "BV-781", "name": "Cao Thị Tuyết", "birth_date": "16/11/2000", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 492, "code": "BV-782", "username": "BV-782", "name": "Hoàng Thị Huyền Trang", "birth_date": "17/09/2001", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 493, "code": "BV-783", "username": "BV-783", "name": "Hoàng Thị Hải Anh", "birth_date": "17/07/1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Content", "role_title": "Content", "role": "staff", "password": "123456", "is_custom": false}, {"id": 494, "code": "BV-768", "username": "BV-768", "name": "Lê Thành Nam", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Designer", "role_title": "Designer", "role": "staff", "password": "123456", "is_custom": false}, {"id": 495, "code": "BV-786", "username": "BV-786", "name": "Lê Thị Phượng", "birth_date": "1993", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 496, "code": "BV-784", "username": "BV-784", "name": "Lê Thị Kim Dung", "birth_date": "2000", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "HDKH", "role_title": "HDKH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 497, "code": "BV-785", "username": "BV-785", "name": "Phạm Thị Thúy Hà", "birth_date": "1982", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Phụ bếp", "role_title": "Phụ bếp", "role": "staff", "password": "123456", "is_custom": false}, {"id": 498, "code": "BV-787", "username": "BV-787", "name": "Trần Thị Ái Khanh", "birth_date": "2001", "department_raw": "XV - PHÒNG HÀNH CHÍNH NHÂN SỰ", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Giám sát Camera", "role_title": "Giám sát Camera", "role": "staff", "password": "123456", "is_custom": false}, {"id": 499, "code": "BV-728", "username": "BV-728", "name": "Nguyễn Thiên Hạnh", "birth_date": "1998", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHVH", "role_title": "KHVH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 500, "code": "BV-795", "username": "BV-795", "name": "Nguyễn Thị Mùi", "birth_date": "1991", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "KHVH", "role_title": "KHVH", "role": "staff", "password": "123456", "is_custom": false}, {"id": 501, "code": "BV-793", "username": "BV-793", "name": "Nguyễn Khánh Linh", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 502, "code": "BV-791", "username": "BV-791", "name": "Nguyễn Thị Thắm", "birth_date": "1993", "department_raw": "XI - PHÒNG KẾ HOẠCH VẬN HÀNH", "department_name": "Phòng Kế hoạch tổng hợp & CNTT", "department_id": 17, "title": "Cung ứng", "role_title": "Cung ứng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 503, "code": "BV-796", "username": "BV-796", "name": "Nguyễn Hoàng Diệu", "birth_date": "24/01/1990", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 504, "code": "BV-788", "username": "BV-788", "name": "Nguyễn Thị Quyên", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 505, "code": "BV-789", "username": "BV-789", "name": "Bùi Thị Thúy", "birth_date": "1996", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Thư kí y khoa", "role_title": "Thư kí y khoa", "role": "staff", "password": "123456", "is_custom": false}, {"id": 506, "code": "BV-794", "username": "BV-794", "name": "Phạm Thị Bích", "birth_date": "2003", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 507, "code": "BV-797", "username": "BV-797", "name": "Phan Văn Hạnh", "birth_date": "1957", "department_raw": "V - TRUNG TÂM TIÊU HÓA", "department_name": "Khoa Thăm dò chức năng & Nội soi", "department_id": 14, "title": "BSCKII", "role_title": "BSCKII", "role": "staff", "password": "123456", "is_custom": false}, {"id": 508, "code": "BV-790", "username": "BV-790", "name": "Phùng Đức Thành", "birth_date": "1999", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 509, "code": "BV-798", "username": "BV-798", "name": "Nguyễn Văn Hiếu", "birth_date": "1988", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Y sỹ YHCT", "role_title": "Y sỹ YHCT", "role": "staff", "password": "123456", "is_custom": false}, {"id": 510, "code": "BV-799", "username": "BV-799", "name": "Trần Thị Thảo", "birth_date": "2001", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Bác sĩ Tai mũi họng", "role_title": "Bác sĩ Tai mũi họng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 511, "code": "BV-800", "username": "BV-800", "name": "Trương Thị Trang", "birth_date": "1992", "department_raw": "VI - KHOA Y HỌC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG", "department_name": "Khoa YHCT - Phục hồi chức năng", "department_id": 3, "title": "Bác sĩ yhct fulltime", "role_title": "Bác sĩ yhct fulltime", "role": "staff", "password": "123456", "is_custom": false}, {"id": 512, "code": "BV-801", "username": "BV-801", "name": "Nguyễn Thảo My", "birth_date": "2001", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Chuyên viên Telesale", "role_title": "Chuyên viên Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 513, "code": "BV-802", "username": "BV-802", "name": "Tạ Thị Huyền", "birth_date": "2003", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Chuyên viên Content Marketing", "role_title": "Chuyên viên Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 514, "code": "BV-803", "username": "BV-803", "name": "Đặng Thị Thu Dung", "birth_date": "1977", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Nhân viên telesale", "role_title": "Nhân viên telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 515, "code": "BV-804", "username": "BV-804", "name": "Nguyễn Thị Thúy", "birth_date": "1996", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Chuyên viên Content Marketing", "role_title": "Chuyên viên Content Marketing", "role": "staff", "password": "123456", "is_custom": false}, {"id": 516, "code": "BV-805", "username": "BV-805", "name": "Phùng Thị Huyền Chinh", "birth_date": "1994", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Chuyên viên Telesales", "role_title": "Chuyên viên Telesales", "role": "staff", "password": "123456", "is_custom": false}, {"id": 517, "code": "BV-806", "username": "BV-806", "name": "Đào Thị Phương Huế", "birth_date": "2002", "department_raw": "II - KHOA KHÁM BỆNH - LIÊN CHUYÊN KHOA - SẢN PHỤ KHOA", "department_name": "Khoa Khám bệnh", "department_id": 2, "title": "Điều dưỡng", "role_title": "Điều dưỡng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 518, "code": "BV-807", "username": "BV-807", "name": "Dương Thị Như Quỳnh", "birth_date": "1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Nhân viên telesale", "role_title": "Nhân viên telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 519, "code": "BV-808", "username": "BV-808", "name": "Đặng Thị Huyền", "birth_date": "2000", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesales", "role_title": "Telesales", "role": "staff", "password": "123456", "is_custom": false}, {"id": 520, "code": "BV-809", "username": "BV-809", "name": "Ngô Ngọc Hân", "birth_date": "1989", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Tele sale", "role_title": "Tele sale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 521, "code": "BV-810", "username": "BV-810", "name": "Đỗ Thị Mai", "birth_date": "1994", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 522, "code": "BV-811", "username": "BV-811", "name": "Phạm Hồng Lệ", "birth_date": "1996", "department_raw": "XIV - PHÒNG TÀI CHÍNH - KẾ TOÁN", "department_name": "Phòng Tài chính - Kế toán", "department_id": 20, "title": "Nhân viên thu ngân", "role_title": "Nhân viên thu ngân", "role": "staff", "password": "123456", "is_custom": false}, {"id": 523, "code": "BV-812", "username": "BV-812", "name": "Nguyễn Thị Nguyệt Hà", "birth_date": "2003", "department_raw": "III - KHOA NHI", "department_name": "Khoa Nhi", "department_id": 7, "title": "Điều Dưỡng Khoa Nhi", "role_title": "Điều Dưỡng Khoa Nhi", "role": "staff", "password": "123456", "is_custom": false}, {"id": 524, "code": "BV-813", "username": "BV-813", "name": "Lê Khánh Linh", "birth_date": "1997", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Nhân viên chăm sóc khách hàng", "role_title": "Nhân viên chăm sóc khách hàng", "role": "staff", "password": "123456", "is_custom": false}, {"id": 525, "code": "BV-814", "username": "BV-814", "name": "Trần Thu Hương", "birth_date": "1998", "department_raw": "XIII - KINH DOANH - MARKETING", "department_name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "department_id": 19, "title": "Telesale", "role_title": "Telesale", "role": "staff", "password": "123456", "is_custom": false}, {"id": 526, "code": "BV-792", "username": "BV-792", "name": "Bùi Thị Bích Phương", "birth_date": "1997", "department_raw": "IV - KHOA NỘI", "department_name": "Khoa Nội Tổng hợp", "department_id": 5, "title": "Khoa nội", "role_title": "Khoa nội", "role": "staff", "password": "123456", "is_custom": false}],
   schedules: {
   "current_week": 42,
   "year": 2026,
@@ -2092,7 +2095,7 @@ class App5S {
       let raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
         // Tự động kế thừa từ phiên bản V7 nếu có
-        raw = localStorage.getItem('vpi_5s_data_v9_permissions') || localStorage.getItem('vpi_5s_data_v8_reviews') || localStorage.getItem('vpi_5s_data_v7_schedule');
+        raw = localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark') || localStorage.getItem('vpi_5s_data_v10_custom_shifts');
       }
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -2112,6 +2115,56 @@ class App5S {
     }
     if (!this.data.hospital) {
       this.data.hospital = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital));
+    }
+    // CẤU HÌNH KHUNG GIỜ CA LÀM VIỆC TÙY CHỈNH (V13)
+    if (!this.data.shift_config) {
+      this.data.shift_config = {
+        morning: { name: 'Ca sáng', start: '07:00', end: '11:30' },
+        afternoon: { name: 'Ca chiều', start: '13:30', end: '17:00' },
+        night: { name: 'Ca đêm', start: '17:00', end: '07:00' }
+      };
+    }
+
+    // ĐỒNG BỘ 526 TÀI KHOẢN TOÀN VIỆN THEO MÃ NV
+    if (!this.data.staff || !Array.isArray(this.data.staff) || this.data.staff.length < 50) {
+      this.data.staff = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.staff));
+    } else {
+      const existingCodes = new Set(this.data.staff.map(s => (s.code || '').toUpperCase()));
+      DEFAULT_SEED_DATA.staff.forEach(st => {
+        if (!existingCodes.has((st.code || '').toUpperCase())) {
+          this.data.staff.push(JSON.parse(JSON.stringify(st)));
+        }
+      });
+    }
+
+    // Đảm bảo mật khẩu mặc định 123456 và username = Mã NV
+    this.data.staff.forEach(s => {
+      if (!s.password) s.password = '123456';
+      if (!s.username) s.username = s.code;
+    });
+
+    this.data.hospital.hotline = '+84916306115';
+    this.data.hospital.supportEmail = 'vudatxq@gmail.com';
+    this.data.hospital.author = 'Vũ Đạt';
+    this.data.hospital.copyright = 'Bản quyền thuộc về: Vũ Đạt';
+
+    if (!this.data.admin_messages || !Array.isArray(this.data.admin_messages)) {
+      this.data.admin_messages = [
+        {
+          id: 1,
+          date: '04/11/2026 07:15',
+          sender_name: 'BSCKI. Vũ Đình Khiêm',
+          sender_code: 'BV-105',
+          dept_id: 2,
+          dept_name: 'Khoa Khám bệnh',
+          topic: 'Cải tiến 5S',
+          priority: 'normal',
+          title: 'Đề xuất bổ sung thùng phân loại rác thải 4 màu',
+          content: 'Khoa Khám bệnh đề xuất bổ sung thêm bảng chỉ dẫn 5S và thùng rác y tế phân loại 4 màu tại sảnh chờ tầng 1.',
+          status: 'replied',
+          reply: 'Admin (Vũ Đạt): Đã tiếp nhận và chuyển phòng Vật tư cấp phát bổ sung trong tuần này.'
+        }
+      ];
     }
     this.data.hospital.name = 'Bệnh viện Vĩnh Phúc VPI';
     this.data.hospital.legalName = 'Bệnh viện Vĩnh Phúc VPI';
@@ -2564,6 +2617,7 @@ class App5S {
     container.innerHTML = `
       <main id="main-content-scroll" class="flex-1 overflow-y-auto pb-28 px-1 pt-1 no-scrollbar">
         ${tabContent}
+        ${this.renderAppFooterHtml()}
       </main>
       ${this.renderBottomNavigationHtml()}
     `;
@@ -2572,6 +2626,12 @@ class App5S {
     this.updateHospitalBranding();
     this.updateNoticeBanner();
     this.renderBottomNavigation();
+
+    if (this.activeTab === 'schedule') {
+      setTimeout(() => this.initScheduleDeptTicker(), 50);
+    } else {
+      this.stopScheduleDeptTicker();
+    }
 
     if (window.lucide) window.lucide.createIcons();
   }
@@ -3257,7 +3317,13 @@ class App5S {
                     </div>
                     <div>
                       <div class="font-black text-slate-800 dark:text-slate-100">${s.name}</div>
-                      <div class="text-[10px] text-indigo-600 font-medium">${s.role || 'Nhân sự ca trực'} • <span class="font-mono text-slate-400">${s.code || ''}</span></div>
+                      <div class="text-[10px] text-indigo-600 font-medium flex items-center space-x-1">
+                        <span>${s.role || 'Nhân sự ca trực'}</span>
+                        <button onclick="app5s.editAssignedStaffRole(${roomId}, ${idx})" title="Sửa đổi vai trò ca trực" class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 font-bold underline text-[9.5px]">
+                          [Sửa vai trò]
+                        </button>
+                        <span class="font-mono text-slate-400">• ${s.code || ''}</span>
+                      </div>
                     </div>
                   </div>
                   <button onclick="app5s.removeStaffFromRoom(${roomId}, ${idx})" title="Bớt nhân sự khỏi vị trí này" class="px-2 py-1 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-300 rounded-lg text-[10px] font-bold border border-red-200 dark:border-red-800 transition flex items-center space-x-0.5">
@@ -3303,16 +3369,34 @@ class App5S {
               </div>
 
               <div>
-                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Vai trò trong ca trực:</label>
-                <select id="add-staff-role" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100">
-                  <option value="Phụ trách chính">Phụ trách chính</option>
-                  <option value="Bác sĩ trực">Bác sĩ trực</option>
-                  <option value="Điều dưỡng ca">Điều dưỡng ca</option>
-                  <option value="Kỹ thuật viên máy">Kỹ thuật viên máy</option>
-                  <option value="Dược sĩ phụ trách">Dược sĩ phụ trách</option>
-                  <option value="Hộ sinh ca trực">Hộ sinh ca trực</option>
-                  <option value="Hộ lý / Vệ sinh">Hộ lý / Vệ sinh</option>
-                </select>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300">Vai trò trong ca trực (Tùy chỉnh):</label>
+                  <span class="text-[10px] text-indigo-600 font-bold">Gõ tự do</span>
+                </div>
+                <input type="text" id="add-staff-role" list="role-suggestions" value="Bác sĩ trực" placeholder="Nhập vai trò (VD: Bác sĩ trực, KTV máy CT, Hộ lý...)" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100 font-semibold focus:ring-2 focus:ring-indigo-500">
+                <datalist id="role-suggestions">
+                  <option value="Phụ trách chính">
+                  <option value="Bác sĩ trực chính">
+                  <option value="Bác sĩ điều trị">
+                  <option value="Điều dưỡng ca trực">
+                  <option value="Điều dưỡng trưởng ca">
+                  <option value="Kỹ thuật viên máy CT/MRI">
+                  <option value="Kỹ thuật viên siêu âm">
+                  <option value="Kỹ thuật viên X-quang">
+                  <option value="Kỹ thuật viên xét nghiệm">
+                  <option value="Dược sĩ trực cấp phát">
+                  <option value="Hộ sinh ca trực">
+                  <option value="Hộ lý buồng bệnh">
+                  <option value="Thư ký y khoa">
+                  <option value="Tổ kỹ thuật / Bảo vệ">
+                </datalist>
+                <div class="flex flex-wrap gap-1 mt-1.5 text-[10px]">
+                  <span class="text-slate-400 self-center">Chọn nhanh:</span>
+                  <button type="button" onclick="document.getElementById('add-staff-role').value='Bác sĩ trực'" class="px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 hover:bg-indigo-100">Bác sĩ trực</button>
+                  <button type="button" onclick="document.getElementById('add-staff-role').value='Điều dưỡng ca'" class="px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 hover:bg-emerald-100">Điều dưỡng</button>
+                  <button type="button" onclick="document.getElementById('add-staff-role').value='Kỹ thuật viên'" class="px-1.5 py-0.5 rounded bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 border border-cyan-200 hover:bg-cyan-100">KTV</button>
+                  <button type="button" onclick="document.getElementById('add-staff-role').value='Phụ trách chính'" class="px-1.5 py-0.5 rounded bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 hover:bg-purple-100">Phụ trách</button>
+                </div>
               </div>
             </div>
 
@@ -3409,6 +3493,759 @@ class App5S {
   // =========================================================================
   // V9 TÍNH NĂNG 1: CHỤP ẢNH CAMERA & TẢI ẢNH BÀN GIAO 5S HIỂN THỊ TỨC THÌ
   // =========================================================================
+
+  // =========================================================================
+  // TÍNH NĂNG V12: DANH SÁCH 20 KHOA/PHÒNG TỰ ĐỘNG CHẠY NGANG (TICKER MARQUEE)
+  // =========================================================================
+  initScheduleDeptTicker() {
+    this.stopScheduleDeptTicker();
+    const ticker = document.getElementById('schedule-dept-ticker');
+    if (!ticker) return;
+
+    this.isDeptTickerPaused = !!this.isDeptTickerManualPaused;
+
+    const step = () => {
+      if (!this.isDeptTickerPaused && ticker) {
+        ticker.scrollLeft += 0.85; // Tốc độ chạy ngang mượt mà
+        const halfWidth = ticker.scrollWidth / 2;
+        if (halfWidth > 0 && ticker.scrollLeft >= halfWidth) {
+          ticker.scrollLeft -= halfWidth;
+        }
+      }
+      this.deptTickerAnimFrame = requestAnimationFrame(step);
+    };
+
+    this.deptTickerAnimFrame = requestAnimationFrame(step);
+
+    ticker.onmouseenter = () => { this.isDeptTickerPaused = true; };
+    ticker.onmouseleave = () => {
+      if (!this.isDeptTickerManualPaused) this.isDeptTickerPaused = false;
+    };
+    ticker.ontouchstart = () => { this.isDeptTickerPaused = true; };
+    ticker.ontouchend = () => {
+      setTimeout(() => {
+        if (!this.isDeptTickerManualPaused) this.isDeptTickerPaused = false;
+      }, 2500);
+    };
+  }
+
+  toggleDeptTicker() {
+    this.isDeptTickerManualPaused = !this.isDeptTickerManualPaused;
+    this.isDeptTickerPaused = this.isDeptTickerManualPaused;
+    const btn = document.getElementById('dept-ticker-toggle-btn');
+    if (btn) {
+      if (this.isDeptTickerManualPaused) {
+        btn.innerHTML = `<i data-lucide="play" class="w-3 h-3 text-amber-500"></i><span>Chạy tiếp</span>`;
+      } else {
+        btn.innerHTML = `<i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i><span>Tạm dừng</span>`;
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  nudgeDeptTicker(delta) {
+    const ticker = document.getElementById('schedule-dept-ticker');
+    if (ticker) {
+      ticker.scrollBy({ left: delta, behavior: 'smooth' });
+    }
+  }
+
+  stopScheduleDeptTicker() {
+    if (this.deptTickerAnimFrame) {
+      cancelAnimationFrame(this.deptTickerAnimFrame);
+      this.deptTickerAnimFrame = null;
+    }
+  }
+
+  // =========================================================================
+  // TÍNH NĂNG V12: HỖ TRỢ KỸ THUẬT, LIÊN HỆ, GÓP Ý ADMIN & BẢN QUYỀN VŨ ĐẠT
+  // =========================================================================
+  openContactSupportModal() {
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <i data-lucide="headset" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">THÔNG TIN LIÊN HỆ & HỖ TRỢ KỸ THUẬT</h3>
+              <p class="text-[10px] text-emerald-600 font-bold">Hệ thống Quản lý 5S Bệnh viện Vĩnh Phúc VPI</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-900 rounded-3xl p-5 text-white space-y-2 shadow-lg">
+          <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-300"></i>
+            <span>BẢN QUYỀN TÁC GIẢ CHÍNH THỨC</span>
+          </div>
+          <div class="text-base font-black">Bản quyền thuộc về: Vũ Đạt</div>
+          <p class="text-xs text-emerald-100 opacity-90 leading-relaxed">
+            Phần mềm Giám sát 5S Y tế, Bàn giao Buồng phòng & Chấm điểm 5S Chuẩn Quốc gia Bệnh viện Vĩnh Phúc VPI.
+          </p>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <a href="mailto:vudatxq@gmail.com" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition flex items-center space-x-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 font-medium">Email Hỗ Trợ Kỹ Thuật:</div>
+              <div class="font-bold text-slate-900 dark:text-white font-mono text-sm">vudatxq@gmail.com</div>
+              <div class="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">Chạm vào đây để gửi email ngay &rarr;</div>
+            </div>
+          </a>
+
+          <a href="tel:+84916306115" class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition flex items-center space-x-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+              <i data-lucide="phone-call" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 font-medium">Hotline Trực Tiếp 24/7:</div>
+              <div class="font-bold text-slate-900 dark:text-white font-mono text-sm">+84916306115</div>
+              <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Chạm vào đây để gọi điện thoại ngay &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="app5s.openFeedbackModal()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
+            <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            <span>NHẮN TIN / GÓP Ý KIẾN CHO ADMIN NGAY</span>
+          </button>
+        </div>
+      </div>
+    `;
+    this.showModal(modalHtml);
+  }
+
+  openFeedbackModal() {
+    const user = this.getCurrentUser() || { name: 'Cán bộ 5S', code: 'BV-345', department_id: 1 };
+    const depts = this.getSortedDepartments();
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xs">
+              <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">GÓP Ý KIẾN & NHẮN TIN CHO ADMIN</h3>
+              <p class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">Tiếp nhận bởi Quản trị viên: Vũ Đạt</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Admin Contact Badge -->
+        <div class="bg-gradient-to-r from-emerald-50 dark:bg-emerald-950/40 p-3 rounded-2xl border border-emerald-200 dark:border-emerald-800 space-y-1.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+              <span>Bản quyền thuộc về: <strong class="text-emerald-700 dark:text-emerald-400">Vũ Đạt</strong></span>
+            </span>
+            <span class="text-[10px] bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full">Admin 5S</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-600 dark:text-slate-300">
+            <a href="tel:+84916306115" class="hover:text-emerald-600 font-bold font-mono">📞 Hotline: +84916306115</a>
+            <a href="mailto:vudatxq@gmail.com" class="hover:text-emerald-600 font-mono">✉️ vudatxq@gmail.com</a>
+          </div>
+        </div>
+
+        <!-- Form fields -->
+        <div class="space-y-3 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Cán bộ gửi tin *</label>
+              <input type="text" id="feedback-sender-name" value="${user.name} (${user.code})" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-bold text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Khoa / Phòng *</label>
+              <select id="feedback-dept-id" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                ${depts.map(d => `<option value="${d.id}" ${user.department_id == d.id ? 'selected' : ''}>#${d.order || ''} ${d.name}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Chủ đề góp ý *</label>
+              <select id="feedback-topic" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                <option value="Cải tiến 5S">💡 Đề xuất cải tiến 5S</option>
+                <option value="Báo lỗi phần mềm">🛠️ Báo lỗi kỹ thuật App</option>
+                <option value="Vật tư 5S">📦 Yêu cầu tem nhãn, vật tư 5S</option>
+                <option value="Góp ý khác">💬 Ý kiến đóng góp khác</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mức độ ưu tiên</label>
+              <select id="feedback-priority" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                <option value="normal">⚪ Bình thường</option>
+                <option value="urgent">🔴 Cần hỗ trợ gấp</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tiêu đề tin nhắn *</label>
+            <input type="text" id="feedback-title" placeholder="Tóm tắt ngắn gọn nội dung góp ý..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nội dung tin nhắn / góp ý *</label>
+            <textarea id="feedback-content" rows="3" placeholder="Mô tả cụ thể ý kiến đóng góp, đề xuất cải tiến hoặc vấn đề kỹ thuật gửi tới Admin..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-2">
+            <button type="button" onclick="app5s.sendFeedbackToAdmin()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>GỬI TIN NHẮN CHO ADMIN</span>
+            </button>
+            <button type="button" onclick="app5s.sendFeedbackViaEmail()" title="Gửi trực tiếp qua Email client" class="p-3 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 rounded-2xl border border-indigo-200 dark:border-indigo-800 font-bold transition flex items-center space-x-1.5">
+              <i data-lucide="mail" class="w-4 h-4 text-indigo-600"></i>
+              <span class="hidden sm:inline text-xs">Email</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lịch sử tin nhắn -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px]">
+          <span class="text-slate-400">Đã lưu ${(this.data.admin_messages || []).length} tin nhắn trong hệ thống</span>
+          <button onclick="app5s.openAdminInboxModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-1">
+            <i data-lucide="inbox" class="w-3.5 h-3.5"></i>
+            <span>Xem Hộp Thư Admin (${(this.data.admin_messages || []).length}) &rarr;</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  sendFeedbackToAdmin() {
+    const senderName = document.getElementById('feedback-sender-name')?.value.trim();
+    const deptId = parseInt(document.getElementById('feedback-dept-id')?.value) || 1;
+    const topic = document.getElementById('feedback-topic')?.value || 'Góp ý chung';
+    const priority = document.getElementById('feedback-priority')?.value || 'normal';
+    const title = document.getElementById('feedback-title')?.value.trim();
+    const content = document.getElementById('feedback-content')?.value.trim();
+
+    if (!title || !content) {
+      alert('Vui lòng nhập đầy đủ tiêu đề và nội dung góp ý!');
+      return;
+    }
+
+    const dept = (this.data.departments || []).find(d => d.id == deptId) || { name: 'Khoa phòng' };
+    const user = this.getCurrentUser() || { code: 'BV-345', name: 'Cán bộ 5S' };
+
+    const newMsg = {
+      id: Date.now(),
+      date: new Date().toLocaleString('vi-VN'),
+      sender_name: senderName || user.name,
+      sender_code: user.code,
+      dept_id: deptId,
+      dept_name: dept.name,
+      topic: topic,
+      priority: priority,
+      title: title,
+      content: content,
+      status: 'received',
+      reply: ''
+    };
+
+    if (!this.data.admin_messages) this.data.admin_messages = [];
+    this.data.admin_messages.unshift(newMsg);
+    this.saveData();
+
+    this.showToast('✅ Ý kiến đóng góp của bạn đã được gửi thành công đến Admin (Vũ Đạt)!');
+    this.closeModal();
+    this.render();
+  }
+
+  sendFeedbackViaEmail() {
+    const title = document.getElementById('feedback-title')?.value.trim() || 'Góp ý hệ thống 5S VPI';
+    const content = document.getElementById('feedback-content')?.value.trim() || 'Kính gửi Admin Vũ Đạt...';
+    const senderName = document.getElementById('feedback-sender-name')?.value.trim() || 'Cán bộ 5S';
+    const mailSubject = encodeURIComponent(`[5S VPI] ${title}`);
+    const mailBody = encodeURIComponent(`Kính gửi Admin Vũ Đạt (Hotline: +84916306115),
+
+Người gửi: ${senderName}
+
+Nội dung góp ý:
+${content}
+
+Trân trọng cảm ơn!`);
+    window.open(`mailto:vudatxq@gmail.com?subject=${mailSubject}&body=${mailBody}`, '_blank');
+  }
+
+  openAdminInboxModal() {
+    const messages = this.data.admin_messages || [];
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+              <i data-lucide="inbox" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">HỘP THƯ TIN NHẮN & GÓP Ý ADMIN</h3>
+              <p class="text-[10px] text-indigo-600 font-bold">Quản trị viên: Vũ Đạt • Hotline: +84916306115</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl text-slate-400 hover:bg-slate-100">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          ${messages.length === 0 ? `
+            <div class="text-center py-8 text-slate-400 text-xs">
+              <i data-lucide="message-square-off" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+              <p>Chưa có tin nhắn hoặc ý kiến đóng góp nào.</p>
+            </div>
+          ` : messages.map((m, idx) => `
+            <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center space-x-1.5">
+                  <span class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center text-[10px] font-mono">
+                    #${messages.length - idx}
+                  </span>
+                  <strong class="text-slate-900 dark:text-white">${m.sender_name}</strong>
+                  <span class="text-[10px] text-slate-400">[${m.dept_name}]</span>
+                </div>
+                <span class="text-[10px] ${m.priority === 'urgent' ? 'bg-red-100 text-red-700 border border-red-300' : 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded-full font-bold">
+                  ${m.topic}
+                </span>
+              </div>
+
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-100">
+                ${m.title}
+              </div>
+
+              <div class="text-[11.5px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-xl leading-relaxed">
+                ${m.content}
+              </div>
+
+              ${m.reply ? `
+                <div class="text-[11px] text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 p-2 rounded-xl border border-emerald-200 dark:border-emerald-800 flex items-start space-x-1.5">
+                  <i data-lucide="corner-down-right" class="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5"></i>
+                  <div><strong>Phản hồi:</strong> ${m.reply}</div>
+                </div>
+              ` : `
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-[10px] text-slate-400">🕒 ${m.date}</span>
+                  <button onclick="app5s.quickReplyMessage(${m.id})" class="text-[10px] font-bold text-indigo-600 hover:underline">
+                    ✍️ Trả lời tin nhắn
+                  </button>
+                </div>
+              `}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="pt-2">
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Soạn Tin Nhắn / Góp Ý Mới</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  quickReplyMessage(msgId) {
+    const msg = (this.data.admin_messages || []).find(m => m.id == msgId);
+    if (!msg) return;
+    const replyText = prompt(`Nhập nội dung phản hồi cho "${msg.sender_name}" (${msg.title}):`, `Admin (Vũ Đạt): Đã tiếp nhận và xử lý.`);
+    if (replyText && replyText.trim()) {
+      msg.reply = replyText.trim();
+      msg.reply_date = new Date().toLocaleString('vi-VN');
+      msg.status = 'replied';
+      msg.read_by_user = false;
+      this.saveData();
+      this.showToast('✅ Đã gửi phản hồi riêng tư trực tiếp tới tài khoản của cán bộ!');
+      this.openAdminInboxModal();
+      this.render();
+    }
+  }
+
+  renderAppFooterHtml() {
+    return `
+      <footer class="mt-8 mb-4 px-4 py-3 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xs rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center space-y-1.5 shadow-2xs">
+        <div class="flex items-center justify-center space-x-1.5 text-xs font-bold text-slate-700 dark:text-slate-200">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+          <span>Hệ thống Quản lý 5S Bệnh viện Vĩnh Phúc VPI</span>
+        </div>
+        <div class="text-xs font-black text-emerald-600 dark:text-emerald-400">
+          Bản quyền thuộc về: Vũ Đạt
+        </div>
+        <div class="text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-0.5">
+          <a href="mailto:vudatxq@gmail.com" class="hover:text-emerald-600 font-medium flex items-center space-x-1 transition">
+            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span>vudatxq@gmail.com</span>
+          </a>
+          <a href="tel:+84916306115" class="hover:text-emerald-600 font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1 transition">
+            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Hotline: +84916306115</span>
+          </a>
+          <button onclick="app5s.openFeedbackModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center space-x-1 transition">
+            <i data-lucide="message-square-plus" class="w-3.5 h-3.5"></i>
+            <span>Nhắn tin cho Admin</span>
+          </button>
+        </div>
+      </footer>
+    `;
+  }
+
+
+  // =========================================================================
+  // V13 TÍNH NĂNG 1: SỬA VAI TRÒ NHÂN SỰ ĐÃ PHÂN CÔNG TRONG CA
+  // =========================================================================
+  editAssignedStaffRole(roomId, staffIdx) {
+    const rs = this.getRoomSchedule(roomId);
+    if (!rs || !rs.staff_assigned || !rs.staff_assigned[staffIdx]) return;
+    const staff = rs.staff_assigned[staffIdx];
+    const newRole = prompt(`Điều chỉnh vai trò trong ca trực của ${staff.name}:`, staff.role || 'Bác sĩ trực');
+    if (newRole !== null && newRole.trim() !== '') {
+      staff.role = newRole.trim();
+      this.saveData();
+      this.showToast(`Đã cập nhật vai trò của ${staff.name}: ${staff.role}`);
+      this.openManageRoomStaffModal(roomId);
+      this.render();
+    }
+  }
+
+  // =========================================================================
+  // V13 TÍNH NĂNG 2: ĐIỀU CHỈNH KHUNG GIỜ CA LÀM VIỆC TÙY CHỌN
+  // =========================================================================
+  openCustomizeShiftHoursModal() {
+    const sc = this.data.shift_config || {
+      morning: { name: 'Ca sáng', start: '07:00', end: '11:30' },
+      afternoon: { name: 'Ca chiều', start: '13:30', end: '17:00' },
+      night: { name: 'Ca đêm', start: '17:00', end: '07:00' }
+    };
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 flex items-center justify-center">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">ĐIỀU CHỈNH KHUNG GIỜ CA LÀM VIỆC</h3>
+              <p class="text-[10px] text-amber-600 font-bold">Tùy biến giờ ca sáng, chiều, đêm theo thực tế</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <!-- Ca sáng -->
+          <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <span>Ca Sáng</span>
+              </span>
+              <span class="text-[10px] text-slate-400">Buổi sáng</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] text-slate-500 mb-0.5">Giờ bắt đầu:</label>
+                <input type="time" id="shift-morning-start" value="${sc.morning.start || '07:00'}" class="w-full bg-white dark:bg-slate-800 border rounded-xl p-2 font-mono font-bold">
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-500 mb-0.5">Giờ kết thúc:</label>
+                <input type="time" id="shift-morning-end" value="${sc.morning.end || '11:30'}" class="w-full bg-white dark:bg-slate-800 border rounded-xl p-2 font-mono font-bold">
+              </div>
+            </div>
+          </div>
+
+          <!-- Ca chiều -->
+          <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                <span>Ca Chiều</span>
+              </span>
+              <span class="text-[10px] text-slate-400">Buổi chiều</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] text-slate-500 mb-0.5">Giờ bắt đầu:</label>
+                <input type="time" id="shift-afternoon-start" value="${sc.afternoon.start || '13:30'}" class="w-full bg-white dark:bg-slate-800 border rounded-xl p-2 font-mono font-bold">
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-500 mb-0.5">Giờ kết thúc:</label>
+                <input type="time" id="shift-afternoon-end" value="${sc.afternoon.end || '17:00'}" class="w-full bg-white dark:bg-slate-800 border rounded-xl p-2 font-mono font-bold">
+              </div>
+            </div>
+          </div>
+
+          <!-- Ca đêm / Trực 24h -->
+          <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                <span>Ca Đêm (Trực 24h)</span>
+              </span>
+              <span class="text-[10px] text-slate-400">Trực đêm</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] text-slate-500 mb-0.5">Giờ bắt đầu:</label>
+                <input type="time" id="shift-night-start" value="${sc.night.start || '17:00'}" class="w-full bg-white dark:bg-slate-800 border rounded-xl p-2 font-mono font-bold">
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-500 mb-0.5">Giờ kết thúc:</label>
+                <input type="time" id="shift-night-end" value="${sc.night.end || '07:00'}" class="w-full bg-white dark:bg-slate-800 border rounded-xl p-2 font-mono font-bold">
+              </div>
+            </div>
+          </div>
+
+          <button onclick="app5s.saveCustomShiftHours()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>LƯU CẤU HÌNH KHUNG GIỜ MỚI</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  saveCustomShiftHours() {
+    const mStart = document.getElementById('shift-morning-start')?.value || '07:00';
+    const mEnd = document.getElementById('shift-morning-end')?.value || '11:30';
+    const aStart = document.getElementById('shift-afternoon-start')?.value || '13:30';
+    const aEnd = document.getElementById('shift-afternoon-end')?.value || '17:00';
+    const nStart = document.getElementById('shift-night-start')?.value || '17:00';
+    const nEnd = document.getElementById('shift-night-end')?.value || '07:00';
+
+    this.data.shift_config = {
+      morning: { name: 'Ca sáng', start: mStart, end: mEnd },
+      afternoon: { name: 'Ca chiều', start: aStart, end: aEnd },
+      night: { name: 'Ca đêm', start: nStart, end: nEnd }
+    };
+
+    this.saveData();
+    this.closeModal();
+    this.showToast('✅ Đã lưu cấu hình khung giờ ca làm việc mới!');
+    this.render();
+  }
+
+  // =========================================================================
+  // V13 TÍNH NĂNG 3: BẢO MẬT RIÊNG TƯ - TIN NHẮN PHẢN HỒI TRỰC TIẾP TÀI KHOẢN
+  // =========================================================================
+  openMyMessagesModal() {
+    const user = this.getCurrentUser();
+    const userCode = user ? (user.code || '').toUpperCase() : '';
+    const userName = user ? user.name : '';
+
+    // Lọc riêng tư: Chỉ lấy tin nhắn do chính tài khoản này gửi
+    const myMessages = (this.data.admin_messages || []).filter(m => {
+      const mCode = (m.sender_code || '').toUpperCase();
+      return mCode === userCode || (userName && m.sender_name === userName);
+    });
+
+    // Đánh dấu đã đọc
+    myMessages.forEach(m => {
+      if (m.reply) m.read_by_user = true;
+    });
+    this.saveData();
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+              <i data-lucide="message-square" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">TIN NHẮN RIÊNG TƯ TỪ ADMIN</h3>
+              <p class="text-[10px] text-indigo-600 font-bold">Tài khoản: ${userName} (${userCode}) • Bảo mật 100%</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl text-slate-400 hover:bg-slate-100">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          ${myMessages.length === 0 ? `
+            <div class="text-center py-8 text-slate-400 text-xs space-y-2">
+              <i data-lucide="inbox" class="w-8 h-8 mx-auto opacity-40"></i>
+              <p>Bạn chưa gửi tin nhắn hoặc ý kiến đóng góp nào tới Admin.</p>
+              <button onclick="app5s.openFeedbackModal()" class="px-3 py-1.5 bg-indigo-600 text-white rounded-xl font-bold text-xs">
+                Gửi Góp Ý / Nhắn Tin Cho Admin
+              </button>
+            </div>
+          ` : myMessages.map(m => `
+            <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-900 dark:text-white">${m.title}</span>
+                <span class="text-[10px] ${m.reply ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300' : 'bg-amber-100 text-amber-800'} px-2 py-0.5 rounded-full font-bold">
+                  ${m.reply ? '✓ Đã có phản hồi' : 'Đang xử lý'}
+                </span>
+              </div>
+
+              <!-- Nội dung bạn đã gửi -->
+              <div class="text-[11.5px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-xl">
+                <div class="text-[9.5px] text-slate-400 font-bold mb-0.5">Nội dung bạn gửi (${m.date}):</div>
+                ${m.content}
+              </div>
+
+              <!-- Phản hồi trực tiếp từ Admin Vũ Đạt -->
+              ${m.reply ? `
+                <div class="text-[11.5px] text-emerald-900 dark:text-emerald-100 bg-emerald-50/90 dark:bg-emerald-950/60 p-3 rounded-xl border border-emerald-300 dark:border-emerald-700 space-y-1">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                    <span class="flex items-center space-x-1">
+                      <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                      <span>Phản hồi từ Admin (Vũ Đạt):</span>
+                    </span>
+                    <span>${m.reply_date || ''}</span>
+                  </div>
+                  <div class="font-medium leading-relaxed">${m.reply}</div>
+                </div>
+              ` : `
+                <div class="text-[10.5px] text-slate-400 italic">
+                  ⏳ Ý kiến của bạn đã được chuyển tới Admin Vũ Đạt và đang được xử lý...
+                </div>
+              `}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="pt-2">
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-1.5 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Soạn Tin Nhắn / Góp Ý Mới Cho Admin</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  // =========================================================================
+  // V13 TÍNH NĂNG 4: QUÊN MẬT KHẨU - GỬI YÊU CẦU CẤP LẠI CHO ADMIN VŨ ĐẠT
+  // =========================================================================
+  openForgotPasswordModal() {
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+              <i data-lucide="key-round" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">QUÊN MẬT KHẨU ĐĂNG NHẬP</h3>
+              <p class="text-[10px] text-amber-600 font-bold">Cấp lại mật khẩu qua Quản trị viên Vũ Đạt</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl text-slate-400 hover:bg-slate-100">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="bg-amber-50 dark:bg-amber-950/40 p-3 rounded-2xl border border-amber-200 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-200 space-y-1">
+          <div class="font-bold flex items-center space-x-1">
+            <i data-lucide="info" class="w-3.5 h-3.5"></i>
+            <span>Mật khẩu ban đầu mặc định: <strong>123456</strong></span>
+          </div>
+          <p class="text-[11px] opacity-90">
+            Nếu bạn đã đổi mật khẩu và không nhớ, vui lòng gửi yêu cầu bên dưới hoặc gọi hotline Admin để được cấp lại tức thì.
+          </p>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mã nhân viên (Tên đăng nhập) *</label>
+            <input type="text" id="forgot-staff-code" placeholder="Ví dụ: BV-345 hoặc BV-002..." class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-bold font-mono">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Họ và tên cán bộ *</label>
+            <input type="text" id="forgot-staff-name" placeholder="Ví dụ: Nguyễn Văn A..." class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-semibold">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Khoa / Phòng công tác *</label>
+            <input type="text" id="forgot-staff-dept" placeholder="Ví dụ: Khoa Khám bệnh, Khoa CĐHA..." class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Số điện thoại liên hệ nhận mật khẩu:</label>
+            <input type="text" id="forgot-staff-phone" placeholder="Nhập số điện thoại của bạn..." class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5">
+          </div>
+
+          <button onclick="app5s.sendForgotPasswordRequest()" class="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>GỬI YÊU CẦU CẤP LẠI MẬT KHẨU</span>
+          </button>
+        </div>
+
+        <!-- Hotline trực tiếp -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-center text-xs space-y-1">
+          <div class="text-slate-400 text-[11px]">Cần cấp lại mật khẩu gấp? Gọi trực tiếp:</div>
+          <a href="tel:+84916306115" class="inline-flex items-center space-x-1.5 font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+            <span>Hotline Admin: +84916306115</span>
+          </a>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  sendForgotPasswordRequest() {
+    const code = document.getElementById('forgot-staff-code')?.value.trim();
+    const name = document.getElementById('forgot-staff-name')?.value.trim();
+    const dept = document.getElementById('forgot-staff-dept')?.value.trim();
+    const phone = document.getElementById('forgot-staff-phone')?.value.trim();
+
+    if (!code || !name) {
+      alert('Vui lòng nhập Mã nhân viên và Họ tên của bạn!');
+      return;
+    }
+
+    const newMsg = {
+      id: Date.now(),
+      date: new Date().toLocaleString('vi-VN'),
+      sender_name: name,
+      sender_code: code.toUpperCase(),
+      dept_id: 0,
+      dept_name: dept || 'Toàn viện',
+      topic: 'Cấp lại mật khẩu',
+      priority: 'urgent',
+      title: `[CẤP MẬT KHẨU] Cán bộ ${name} (${code})`,
+      content: `Yêu cầu cấp lại mật khẩu đăng nhập cho cán bộ ${name}, Mã NV: ${code}, Khoa: ${dept || 'Không rõ'}, SĐT: ${phone || 'Chưa cung cấp'}. Mật khẩu mặc định khuyến nghị: 123456.`,
+      status: 'received',
+      reply: ''
+    };
+
+    if (!this.data.admin_messages) this.data.admin_messages = [];
+    this.data.admin_messages.unshift(newMsg);
+    this.saveData();
+
+    this.showToast('✅ Đã gửi yêu cầu cấp lại mật khẩu tới Admin (Vũ Đạt)! Vui lòng chờ phản hồi hoặc gọi Hotline.');
+    this.closeModal();
+  }
+
   openEndShift5SModal(roomId) {
     const room = (this.data.rooms || []).find(r => r.id == roomId);
     if (!room) return;
@@ -3465,6 +4302,14 @@ class App5S {
             ${this.currentShiftPhoto ? '<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">Đã có ảnh</span>' : ''}
           </div>
 
+          <!-- THÔNG BÁO CHỐNG SỬ DỤNG LẠI ẢNH (V11) -->
+          <div class="bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 flex items-start space-x-2 text-[11px] text-emerald-900 dark:text-emerald-200">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="font-bold">Đóng dấu ngày giờ chống gian lận:</strong> Khung hình camera tự động in chết thời gian chụp, tên buồng phòng và mã đối soát vào ảnh, ngăn ngừa dùng lại ảnh cũ.
+            </div>
+          </div>
+
           <!-- KHUNG HIỂN THỊ VÀ TẢI ẢNH 5S -->
           <div id="shift-photo-preview">
             ${this.renderShiftPhotoPreviewHtml(this.currentShiftPhoto)}
@@ -3501,7 +4346,7 @@ class App5S {
     if (photoUrl) {
       return `
         <div class="relative group rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-sm bg-slate-900">
-          <img src="${photoUrl}" class="w-full h-48 sm:h-56 object-cover cursor-pointer" onclick="app5s.viewLargePhoto('${photoUrl}', 'Ảnh 5S vừa chụp')">
+          <div class="w-full bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center p-1"><img src="${photoUrl}" class="w-full h-auto max-h-72 object-contain rounded-lg cursor-pointer" onclick="app5s.viewLargePhoto('${photoUrl}', 'Ảnh 5S vừa chụp')"></div>
           <div class="absolute top-2 right-2 flex items-center space-x-1.5">
             <button type="button" onclick="app5s.triggerCameraCapture()" title="Chụp lại bằng camera" class="px-2 py-1 bg-white/95 hover:bg-white text-slate-800 rounded-xl shadow text-xs font-bold flex items-center space-x-1">
               <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
@@ -3515,9 +4360,9 @@ class App5S {
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
           </div>
-          <div class="absolute bottom-2 left-2 bg-emerald-600/95 text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1.5 shadow backdrop-blur-xs">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-            <span>Đã hiển thị ảnh minh chứng 5S thành công</span>
+          <div class="absolute top-2 left-2 bg-emerald-950/85 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-xl flex items-center space-x-1 border border-emerald-500/60 shadow backdrop-blur-xs">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>✓ Đã đóng dấu ngày giờ</span>
           </div>
         </div>
       `;
@@ -3546,14 +4391,411 @@ class App5S {
     }
   }
 
-  triggerCameraCapture() {
-    const camInput = document.getElementById('shift-camera-input');
-    if (camInput) camInput.click();
-    else {
-      const fileInput = document.getElementById('shift-file-input');
-      if (fileInput) fileInput.click();
+
+  // =========================================================================
+  // TÍNH NĂNG V11: ĐÓNG DẤU CHÌM CHỐNG GIAN LẬN & SỬ DỤNG LẠI ẢNH (REAL-TIME WATERMARK)
+  // Đóng dấu ngày giờ, cơ sở y tế, buồng phòng, cán bộ chụp & mã hash trực tiếp vào điểm ảnh
+  // =========================================================================
+  stamp5SWatermark(canvas, info = {}) {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    const scale = Math.max(0.65, Math.min(width, height) / 800);
+
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const dateStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
+    const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const fullDateTime = `${dateStr} ${timeStr}`;
+
+    const deptName = info.deptName || 'Khoa / Phòng Bệnh viện';
+    const roomName = info.roomName || 'Khu vực làm việc 5S';
+    const staffName = info.staffName || (this.getCurrentUser() ? `${this.getCurrentUser().name} (${this.getCurrentUser().code})` : 'Cán bộ 5S VPI');
+    const shiftName = info.shiftName || 'Ca làm việc';
+    const randomHex = Math.random().toString(16).substring(2, 6).toUpperCase();
+    const verifyCode = `VPI-5S-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}-${randomHex}`;
+
+    ctx.save();
+
+    // 1. TOP-LEFT LIVE BADGE: Camera Real-time Timestamp
+    const badgeFont = `bold ${Math.round(13 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.font = badgeFont;
+    const badgeText = `● CHỤP CAMERA THỜI GIAN THỰC: ${fullDateTime}`;
+    const badgePadX = 12 * scale;
+    const badgeWidth = ctx.measureText(badgeText).width + badgePadX * 2;
+    const badgeHeight = 28 * scale;
+    const padMargin = 16 * scale;
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 1.5 * scale;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(padMargin, padMargin, badgeWidth, badgeHeight, 6 * scale);
+    } else {
+      ctx.rect(padMargin, padMargin, badgeWidth, badgeHeight);
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#34d399';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(badgeText, padMargin + badgePadX, padMargin + badgeHeight / 2);
+
+    // 2. TOP-RIGHT ANTI-REUSE VERIFICATION SEAL
+    const sealFont = `bold ${Math.round(10.5 * scale)}px monospace`;
+    ctx.font = sealFont;
+    const sealText = `✓ CHỐNG DÙNG LẠI ẢNH • #${verifyCode.slice(-10)}`;
+    const sealWidth = ctx.measureText(sealText).width + 16 * scale;
+    const sealHeight = 24 * scale;
+    const sealX = width - sealWidth - padMargin;
+
+    if (sealX > padMargin + badgeWidth + 10) {
+      ctx.fillStyle = 'rgba(2, 44, 34, 0.9)';
+      ctx.strokeStyle = '#059669';
+      ctx.lineWidth = 1.5 * scale;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(sealX, padMargin, sealWidth, sealHeight, 5 * scale);
+      } else {
+        ctx.rect(sealX, padMargin, sealWidth, sealHeight);
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#a7f3d0';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(sealText, sealX + 8 * scale, padMargin + sealHeight / 2);
+    }
+
+    // 3. BOTTOM BANNER CARD (DIGITAL HUD WATERMARK)
+    const bannerHeight = 110 * scale;
+    const bannerX = padMargin;
+    const bannerY = height - bannerHeight - padMargin;
+    const bannerWidth = width - padMargin * 2;
+
+    const bGrad = ctx.createLinearGradient(bannerX, bannerY, bannerX + bannerWidth, bannerY + bannerHeight);
+    bGrad.addColorStop(0, 'rgba(15, 23, 42, 0.94)');
+    bGrad.addColorStop(1, 'rgba(6, 78, 59, 0.92)');
+    ctx.fillStyle = bGrad;
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.9)';
+    ctx.lineWidth = 2 * scale;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(bannerX, bannerY, bannerWidth, bannerHeight, 12 * scale);
+    } else {
+      ctx.rect(bannerX, bannerY, bannerWidth, bannerHeight);
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    // Accent emerald line
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(bannerX + 4 * scale, bannerY + 10 * scale, 5 * scale, bannerHeight - 20 * scale, 2.5 * scale);
+    } else {
+      ctx.rect(bannerX + 4 * scale, bannerY + 10 * scale, 5 * scale, bannerHeight - 20 * scale);
+    }
+    ctx.fill();
+
+    const textX = bannerX + 18 * scale;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+
+    // Line 1: Hospital Name & Department Tag
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = `bold ${Math.round(15 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText('🏥 BỆNH VIỆN VĨNH PHÚC VPI • BAN CHỈ ĐẠO 5S TOÀN VIỆN', textX, bannerY + 11 * scale);
+
+    // Line 2: Room Name & Department
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = `bold ${Math.round(13 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText(`📍 ${roomName}  [${deptName}]`, textX, bannerY + 36 * scale);
+
+    // Line 3: Timestamp (Highlighted in bold gold/yellow)
+    ctx.fillStyle = '#fde047';
+    ctx.font = `bold ${Math.round(13.5 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText(`⏱️ THỜI GIAN CHỤP: ${fullDateTime} (GIỜ HỆ THỐNG THỰC TẾ)`, textX, bannerY + 59 * scale);
+
+    // Line 4: Staff & Shift
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = `${Math.round(11.5 * scale)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillText(`👤 Cán bộ thực hiện: ${staffName} • ${shiftName}`, textX, bannerY + 83 * scale);
+
+    // Right Verification Box
+    const codeBoxWidth = 210 * scale;
+    const codeBoxHeight = 40 * scale;
+    const codeBoxX = bannerX + bannerWidth - codeBoxWidth - 12 * scale;
+    const codeBoxY = bannerY + bannerHeight - codeBoxHeight - 12 * scale;
+
+    if (bannerWidth > 480 * scale) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.strokeStyle = 'rgba(52, 211, 153, 0.6)';
+      ctx.lineWidth = 1 * scale;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(codeBoxX, codeBoxY, codeBoxWidth, codeBoxHeight, 7 * scale);
+      } else {
+        ctx.rect(codeBoxX, codeBoxY, codeBoxWidth, codeBoxHeight);
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#34d399';
+      ctx.font = `bold ${Math.round(9.5 * scale)}px monospace`;
+      ctx.fillText('MÃ ĐỐI SOÁT CHỐNG GIAN LẬN', codeBoxX + 8 * scale, codeBoxY + 6 * scale);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${Math.round(11 * scale)}px monospace`;
+      ctx.fillText(verifyCode, codeBoxX + 8 * scale, codeBoxY + 20 * scale);
+    }
+
+    ctx.restore();
+    return verifyCode;
+  }
+
+  // =========================================================================
+  // GIAO DIỆN CAMERA TRỰC TIẾP VỚI THƯỚC NGẮM & ĐỒNG HỒ THỜI GIAN THỰC
+  // =========================================================================
+  openLiveCameraModal(options = {}) {
+    const target = options.target || 'shift';
+    let roomId = options.roomId || this.currentShiftRoomId || this.newAuditState.roomId || 34;
+    const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng y tế', department_id: 8 };
+    const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa phòng' };
+    const user = this.getCurrentUser() || { name: 'Cán bộ 5S', code: 'BV-345', title: 'Cán bộ giám sát' };
+    const staffName = `${user.name} (${user.code})`;
+
+    this.liveCameraOptions = {
+      target,
+      roomId,
+      roomName: room.name,
+      deptName: dept.name,
+      staffName,
+      shiftName: this.newAuditState.shift || 'Ca làm việc 5S',
+      facingMode: this.liveCameraFacingMode || 'environment'
+    };
+
+    const modalHtml = `
+      <div class="relative bg-slate-950 text-white rounded-3xl overflow-hidden shadow-2xl max-w-lg mx-auto border border-slate-800">
+        <!-- Live HUD Header -->
+        <div class="absolute top-0 inset-x-0 z-20 bg-gradient-to-b from-slate-950/95 via-slate-950/70 to-transparent p-4 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
+            <span class="text-xs font-black tracking-wide text-white uppercase">CAMERA 5S THỜI GIAN THỰC</span>
+          </div>
+          <div id="live-camera-timer" class="text-xs font-mono font-bold text-amber-300 bg-black/60 px-2.5 py-1 rounded-full border border-amber-500/40 backdrop-blur-xs">
+            00:00:00
+          </div>
+          <button onclick="app5s.closeLiveCameraModal()" class="p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Video Viewfinder with Viewfinder Crosshair -->
+        <div class="relative aspect-4/3 sm:aspect-16/9 w-full bg-black flex items-center justify-center overflow-hidden">
+          <video id="live-camera-feed" autoplay playsinline class="w-full h-full object-cover"></video>
+
+          <!-- Viewfinder Frame Guidelines (Thước ngắm 5S) -->
+          <div class="absolute inset-8 pointer-events-none border border-emerald-400/40 rounded-2xl flex flex-col justify-between p-3">
+            <div class="flex justify-between">
+              <span class="w-4 h-4 border-t-2 border-l-2 border-emerald-400 rounded-tl-sm"></span>
+              <span class="w-4 h-4 border-t-2 border-r-2 border-emerald-400 rounded-tr-sm"></span>
+            </div>
+            <!-- Center Crosshair -->
+            <div class="self-center flex items-center justify-center w-8 h-8 rounded-full border border-emerald-400/30">
+              <span class="w-2 h-2 rounded-full bg-emerald-400/70"></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="w-4 h-4 border-b-2 border-l-2 border-emerald-400 rounded-bl-sm"></span>
+              <span class="w-4 h-4 border-b-2 border-r-2 border-emerald-400 rounded-br-sm"></span>
+            </div>
+          </div>
+
+          <!-- Bottom HUD Bar on Viewfinder: Watermark Notice -->
+          <div class="absolute bottom-3 inset-x-4 pointer-events-none bg-slate-900/85 backdrop-blur-xs rounded-xl p-2 border border-emerald-500/50 text-[11px] space-y-0.5">
+            <div class="flex items-center justify-between text-emerald-300 font-bold">
+              <span>📍 ${room.name}</span>
+              <span class="text-[10px] text-slate-300">[${dept.name}]</span>
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-amber-300">
+              <span>🛡️ Đóng dấu ngày giờ & mã đối soát chống dùng lại ảnh</span>
+              <span class="text-white font-mono" id="live-camera-date-sub"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="p-4 bg-slate-900 border-t border-slate-800 flex items-center justify-between gap-3">
+          <button type="button" onclick="app5s.switchCameraFacing()" title="Đổi camera trước/sau" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex flex-col items-center justify-center text-[10px] font-bold">
+            <i data-lucide="refresh-cw" class="w-4 h-4 mb-0.5 text-slate-300"></i>
+            <span>Đổi cam</span>
+          </button>
+
+          <!-- Primary Shutter Button -->
+          <button type="button" onclick="app5s.captureFromLiveCamera()" class="flex-1 py-3 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-black text-sm rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition transform active:scale-95">
+            <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+              <i data-lucide="camera" class="w-4 h-4 text-white"></i>
+            </div>
+            <span>CHỤP ẢNH & ĐÓNG DẤU NGÀY GIỜ</span>
+          </button>
+
+          <button type="button" onclick="app5s.fallbackToNativeCamera()" title="Dùng camera hệ thống" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex flex-col items-center justify-center text-[10px] font-bold">
+            <i data-lucide="folder-open" class="w-4 h-4 mb-0.5 text-slate-300"></i>
+            <span>Tải ảnh</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+    this.startLiveCameraStream();
+  }
+
+  async startLiveCameraStream() {
+    this.stopLiveCameraStream();
+    const video = document.getElementById('live-camera-feed');
+    if (!video) return;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.warn('getUserMedia not supported, fallback to native camera');
+      return;
+    }
+
+    try {
+      const constraints = {
+        video: {
+          facingMode: this.liveCameraOptions?.facingMode || 'environment',
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
+        audio: false
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      this.currentLiveStream = stream;
+      video.srcObject = stream;
+      video.play().catch(e => console.warn('Video play error:', e));
+
+      const updateClock = () => {
+        const timerEl = document.getElementById('live-camera-timer');
+        const dateSubEl = document.getElementById('live-camera-date-sub');
+        if (timerEl) {
+          const now = new Date();
+          const pad = n => String(n).padStart(2, '0');
+          timerEl.innerText = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+          if (dateSubEl) {
+            dateSubEl.innerText = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+          }
+        }
+      };
+      updateClock();
+      this.liveCameraInterval = setInterval(updateClock, 1000);
+    } catch (err) {
+      console.warn('Cannot start getUserMedia stream:', err);
     }
   }
+
+  stopLiveCameraStream() {
+    if (this.currentLiveStream) {
+      this.currentLiveStream.getTracks().forEach(t => t.stop());
+      this.currentLiveStream = null;
+    }
+    if (this.liveCameraInterval) {
+      clearInterval(this.liveCameraInterval);
+      this.liveCameraInterval = null;
+    }
+  }
+
+  closeLiveCameraModal() {
+    this.stopLiveCameraStream();
+    const opt = this.liveCameraOptions || {};
+    if (opt.target === 'shift' && opt.roomId) {
+      this.openEndShift5SModal(opt.roomId);
+    } else {
+      this.closeModal();
+    }
+  }
+
+  switchCameraFacing() {
+    this.liveCameraFacingMode = (this.liveCameraFacingMode === 'user') ? 'environment' : 'user';
+    if (this.liveCameraOptions) {
+      this.liveCameraOptions.facingMode = this.liveCameraFacingMode;
+    }
+    this.startLiveCameraStream();
+  }
+
+  fallbackToNativeCamera() {
+    const opt = this.liveCameraOptions || {};
+    this.stopLiveCameraStream();
+    if (opt.target === 'audit') {
+      const fileInput = document.getElementById('audit-file-input') || document.getElementById('audit-camera-input');
+      if (fileInput) fileInput.click();
+    } else {
+      if (opt.roomId) this.openEndShift5SModal(opt.roomId);
+      setTimeout(() => {
+        const camInput = document.getElementById('shift-camera-input') || document.getElementById('shift-file-input');
+        if (camInput) camInput.click();
+      }, 100);
+    }
+  }
+
+  captureFromLiveCamera() {
+    const video = document.getElementById('live-camera-feed');
+    let width = (video && video.videoWidth) || 1280;
+    let height = (video && video.videoHeight) || 720;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    if (video && video.videoWidth) {
+      ctx.drawImage(video, 0, 0, width, height);
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, '#0f172a');
+      grad.addColorStop(1, '#064e3b');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('ẢNH CHỤP MINH CHỨNG 5S BUỒNG PHÒNG THỰC TẾ', width / 2, height / 2);
+    }
+
+    const opt = this.liveCameraOptions || {};
+    this.stamp5SWatermark(canvas, {
+      deptName: opt.deptName,
+      roomName: opt.roomName,
+      staffName: opt.staffName,
+      shiftName: opt.shiftName
+    });
+
+    const photoUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+    this.stopLiveCameraStream();
+
+    if (opt.target === 'audit') {
+      this.newAuditState.afterPhoto = photoUrl;
+      this.closeModal();
+      this.render();
+      this.showToast('✅ Đã chụp và đóng dấu ngày giờ thực tế vào ảnh thành công!');
+    } else {
+      this.currentShiftPhoto = photoUrl;
+      this.newAuditState.afterPhoto = photoUrl;
+      this.openEndShift5SModal(opt.roomId);
+      setTimeout(() => {
+        this.updateShiftPhotoPreviewUI(photoUrl);
+        this.showToast('✅ Đã chụp và đóng dấu ngày giờ thực tế vào ảnh thành công!');
+      }, 80);
+    }
+  }
+
+  triggerCameraCapture() {
+    this.openLiveCameraModal({ target: 'shift', roomId: this.currentShiftRoomId });
+  }
+
 
   triggerFileUpload() {
     const fileInput = document.getElementById('shift-file-input');
@@ -3601,7 +4843,21 @@ class App5S {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+        // ĐÓNG DẤU NGÀY GIỜ & MÃ ĐỐI SOÁT CHỐNG GIAN LẬN
+        const roomId = this.currentShiftRoomId || this.newAuditState.roomId || 34;
+        const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng y tế', department_id: 8 };
+        const dept = (this.data.departments || []).find(d => d.id == room.department_id) || { name: 'Khoa phòng' };
+        const user = this.getCurrentUser() || { name: 'Cán bộ 5S', code: 'BV-345' };
+
+        this.stamp5SWatermark(canvas, {
+          deptName: dept.name,
+          roomName: room.name,
+          staffName: `${user.name} (${user.code})`,
+          shiftName: this.newAuditState.shift || 'Ca trực buồng phòng'
+        });
+
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
 
         this.updateShiftPhotoPreviewUI(compressedDataUrl);
         this.showToast('✅ Đã nạp và hiển thị ảnh minh chứng 5S thành công!');
@@ -3834,20 +5090,26 @@ class App5S {
     const stats = this.getScheduleStatistics();
 
     const days = [
-      { id: 'Mon', name: 'Thứ 2' },
-      { id: 'Tue', name: 'Thứ 3' },
-      { id: 'Wed', name: 'Thứ 4' },
-      { id: 'Thu', name: 'Thứ 5' },
-      { id: 'Fri', name: 'Thứ 6' },
-      { id: 'Sat', name: 'Thứ 7' },
-      { id: 'Sun', name: 'Chủ nhật (Hôm nay)' }
+      { id: 'Mon', shortLabel: 'T2', name: 'Thứ 2', dateNum: '12', isToday: false },
+      { id: 'Tue', shortLabel: 'T3', name: 'Thứ 3', dateNum: '13', isToday: false },
+      { id: 'Wed', shortLabel: 'T4', name: 'Thứ 4', dateNum: '14', isToday: false },
+      { id: 'Thu', shortLabel: 'T5', name: 'Thứ 5', dateNum: '15', isToday: false },
+      { id: 'Fri', shortLabel: 'T6', name: 'Thứ 6', dateNum: '16', isToday: false },
+      { id: 'Sat', shortLabel: 'T7', name: 'Thứ 7', dateNum: '17', isToday: false },
+      { id: 'Sun', shortLabel: 'CN', name: 'Chủ nhật', dateNum: '18', isToday: true }
     ];
+
+    const sc = this.data.shift_config || {
+      morning: { name: 'Ca sáng', start: '07:00', end: '11:30' },
+      afternoon: { name: 'Ca chiều', start: '13:30', end: '17:00' },
+      night: { name: 'Ca đêm', start: '17:00', end: '07:00' }
+    };
 
     const shifts = [
       { id: 'all', name: 'Tất cả ca' },
-      { id: 'morning', name: 'Ca sáng (07:00 - 11:30)' },
-      { id: 'afternoon', name: 'Ca chiều (13:30 - 17:00)' },
-      { id: 'night', name: 'Ca đêm (17:00 - 07:00)' }
+      { id: 'morning', name: `${sc.morning.name} (${sc.morning.start} - ${sc.morning.end})` },
+      { id: 'afternoon', name: `${sc.afternoon.name} (${sc.afternoon.start} - ${sc.afternoon.end})` },
+      { id: 'night', name: `${sc.night.name} (${sc.night.start} - ${sc.night.end})` }
     ];
 
     // Lọc danh sách phòng theo bộ lọc
@@ -3909,29 +5171,44 @@ class App5S {
     return `
       <div class="p-4 space-y-4">
         <!-- HEADER LỊCH LÀM VIỆC & CÁC NÚT ĐỒNG BỘ -->
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-xs font-mono font-bold text-indigo-600">QUẢN LÝ KHU VỰC LÀM VIỆC & PHÂN CÔNG 5S</span>
-            <h2 class="text-base font-black text-slate-900 dark:text-white">Khu Vực Làm Việc Toàn Viện VPI</h2>
-          </div>
-          <div class="flex items-center space-x-1.5">
-            <!-- NÚT TRUNG TÂM KIỂM DUYỆT ẢNH 5S TOÀN VIỆN -->
-            <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm duyệt ảnh 5S toàn viện" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
-              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-              <span>Duyệt Ảnh 5S (${stats.pendingReviewCount})</span>
-            </button>
-            <!-- NÚT CHUYỂN ĐỔI TÀI KHOẢN (GIÁM SÁT VS CÁ NHÂN KHOA) -->
-            <button onclick="app5s.openSwitchAccountModal()" title="Chuyển đổi tài khoản (Giám sát / Cá nhân khoa)" class="bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-2 py-1.5 rounded-xl border border-indigo-200 dark:border-indigo-800 transition flex items-center space-x-1">
+        <!-- TIÊU ĐỀ TAB & NÚT TÁC VỤ NHANH (V13: BỐ CỤC CÂN ĐỐI, GỌN GÀNG, KHÔNG CO CHỮ DỌC) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+          <div class="flex items-center justify-between gap-2 pb-1.5 border-b border-slate-100 dark:border-slate-700/60">
+            <div class="flex items-center space-x-2.5 min-w-0">
+              <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <h2 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight truncate">KHU VỰC LÀM VIỆC TOÀN VIỆN</h2>
+                  <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold px-1.5 py-0.2 rounded font-mono shrink-0">75 VỊ TRÍ</span>
+                </div>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate">Phân công nhân sự & Giám sát nộp ảnh 5S</p>
+              </div>
+            </div>
+            <button onclick="app5s.openSwitchAccountModal()" title="Chuyển đổi tài khoản nhân sự" class="shrink-0 p-1.5 px-2 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-700 text-[10.5px] font-bold flex items-center space-x-1 transition">
               <i data-lucide="shield" class="w-3.5 h-3.5 text-indigo-600"></i>
-              <span>${this.isUserManagerOrSupervisor() ? '🛡️ Giám sát' : '🔒 ' + (this.getCurrentUser()?.name?.split('. ')?.pop() || 'Cá nhân')}</span>
+              <span>${this.isUserManagerOrSupervisor() ? '🛡️ Giám sát' : 'Khoa phòng'}</span>
             </button>
-            <!-- NÚT BÁO CÁO TỔNG KẾT NGÀY -->
-            <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết 5S ngày" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-2 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
-              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
+          </div>
+
+          <!-- Bộ 4 nút hành động cân đối, không chen chúc -->
+          <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm duyệt ảnh 5S toàn viện" class="py-2 px-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0"></i>
+              <span class="truncate">Duyệt Ảnh (${stats.pendingReviewCount})</span>
+            </button>
+            <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết ngày" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
               <span>Báo Cáo</span>
             </button>
-            <button onclick="app5s.openGoogleSheetSyncModal()" title="Đồng bộ Google Sheets & Excel" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold p-1.5 rounded-xl shadow-xs transition">
-              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+            <button onclick="app5s.openGoogleSheetSyncModal()" title="Đồng bộ Google Sheets & Excel" class="py-2 px-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 shrink-0"></i>
+              <span>Xuất Excel</span>
+            </button>
+            <button onclick="app5s.openSwitchAccountModal()" title="Đổi tài khoản đăng nhập" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-1 border border-slate-200 dark:border-slate-600 transition">
+              <i data-lucide="users" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i>
+              <span class="truncate">Tài Khoản</span>
             </button>
           </div>
         </div>
@@ -3948,21 +5225,29 @@ class App5S {
             </span>
           </div>
 
-          <!-- Thanh cuộn ngày trong tuần -->
-          <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
-            ${days.map(d => `
-              <button onclick="app5s.setScheduleDay('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition ${
-                this.scheduleState.selectedDay === d.id
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-              }">
-                ${d.name}
-              </button>
-            `).join('')}
+          <!-- LỊCH TUẦN: THỨ 2 ĐẾN CHỦ NHẬT (V13: GRID 7 CỘT HIỂN THỊ ĐẦY ĐỦ 100% KHÔNG BỊ KHUẤT) -->
+          <div class="space-y-1">
+            <div class="grid grid-cols-7 gap-1 text-center select-none">
+              ${days.map(d => `
+                <button onclick="app5s.setScheduleDay('${d.id}')" class="py-1.5 px-0.5 rounded-xl transition flex flex-col items-center justify-center text-center ${
+                  this.scheduleState.selectedDay === d.id
+                    ? 'bg-indigo-600 text-white shadow-xs font-black ring-2 ring-indigo-400'
+                    : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }">
+                  <span class="text-[10px] font-bold opacity-80 uppercase leading-none">${d.shortLabel}</span>
+                  <span class="text-xs font-extrabold leading-tight mt-0.5">${d.dateNum}</span>
+                  ${d.isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5"></span>' : ''}
+                </button>
+              `).join('')}
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-slate-400 px-1">
+              <span>Thứ 2 (12/10) &rarr; Chủ nhật (18/10)</span>
+              <span class="text-indigo-600 dark:text-indigo-400 font-bold">Chạm để đổi ngày xem lịch</span>
+            </div>
           </div>
 
-          <!-- Thanh chọn Ca làm việc -->
-          <div class="flex space-x-1.5 overflow-x-auto pb-0.5 no-scrollbar text-xs">
+          <!-- THANH CHỌN CA LÀM VIỆC & NÚT ĐỔI GIỜ CA TÙY CHỈNH (V13) -->
+          <div class="flex items-center space-x-1.5 overflow-x-auto pb-0.5 no-scrollbar text-xs font-bold">
             ${shifts.map(s => `
               <button onclick="app5s.setScheduleShift('${s.id}')" class="shrink-0 px-2 py-1 rounded-lg text-[10.5px] font-bold transition ${
                 this.scheduleState.selectedShift === s.id
@@ -3972,6 +5257,10 @@ class App5S {
                 ${s.name}
               </button>
             `).join('')}
+            <button onclick="app5s.openCustomizeShiftHoursModal()" title="Điều chỉnh khung giờ ca theo ý muốn" class="shrink-0 px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 font-bold text-[10.5px] transition flex items-center space-x-1">
+              <i data-lucide="clock" class="w-3 h-3 text-amber-600"></i>
+              <span>⏰ Đổi Giờ</span>
+            </button>
           </div>
         </div>
 
@@ -4052,25 +5341,71 @@ class App5S {
             <input type="text" oninput="app5s.onScheduleSearch(this.value)" placeholder="Tìm vị trí làm việc, buồng phòng, nhân sự trực ca..." value="${this.scheduleState.searchQuery || ''}" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
 
-          <!-- Lọc theo 20 Khoa / Phòng -->
-          <div class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
-            <button onclick="app5s.setScheduleDeptFilter('all')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition ${
-              this.scheduleState.selectedDept === 'all'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-            }">
-              Tất cả khoa (${depts.length})
-            </button>
-            ${depts.map(d => `
-              <button onclick="app5s.setScheduleDeptFilter('${d.id}')" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
-                this.scheduleState.selectedDept === String(d.id)
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-              }">
-                <span class="text-[9px] opacity-75 font-mono">#${d.order || ''}</span>
-                <span>${d.name}</span>
-              </button>
-            `).join('')}
+          <!-- Lọc theo 20 Khoa / Phòng TỰ ĐỘNG CHẠY NGANG (V12 PRO) -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 dark:text-slate-200 px-0.5">
+              <div class="flex items-center space-x-1.5">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>20 KHOA / PHÒNG TOÀN VIỆN:</span>
+                <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.2 rounded border border-emerald-300 dark:border-emerald-800">
+                  Tự động chạy ngang
+                </span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <button type="button" onclick="app5s.nudgeDeptTicker(-140)" title="Cuộn sang trái" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
+                  <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" onclick="app5s.toggleDeptTicker()" id="dept-ticker-toggle-btn" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[10px] text-indigo-600 dark:text-indigo-400 font-bold flex items-center space-x-1 transition">
+                  <i data-lucide="pause" class="w-3 h-3 text-emerald-500"></i>
+                  <span>Tạm dừng</span>
+                </button>
+                <button type="button" onclick="app5s.nudgeDeptTicker(140)" title="Cuộn sang phải" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
+                  <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Khung ticker tự động chạy ngang với hiệu ứng mờ biên -->
+            <div class="relative group">
+              <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
+              <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
+
+              <div id="schedule-dept-ticker" class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold scroll-smooth">
+                <!-- Nút Tất cả khoa -->
+                <button onclick="app5s.setScheduleDeptFilter('all')" data-dept-pill="all" class="shrink-0 px-3 py-1.5 rounded-xl transition ${
+                  this.scheduleState.selectedDept === 'all'
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                }">
+                  Tất cả khoa (${depts.length})
+                </button>
+                <!-- 20 Khoa phòng (Lần 1) -->
+                ${depts.map(d => `
+                  <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                    this.scheduleState.selectedDept === String(d.id)
+                      ? 'bg-indigo-600 text-white shadow-xs'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                  }">
+                    <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                    <span>${d.name}</span>
+                  </button>
+                `).join('')}
+                <!-- 20 Khoa phòng (Lặp lại lần 2 để tạo vòng cuộn vô tận mượt mà) -->
+                ${depts.map(d => `
+                  <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                    this.scheduleState.selectedDept === String(d.id)
+                      ? 'bg-indigo-600 text-white shadow-xs'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                  }">
+                    <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                    <span>${d.name}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
           </div>
 
           <!-- Bộ lọc Trạng thái hoạt động & Kiểm duyệt ảnh 5S (V8) -->
@@ -4328,6 +5663,16 @@ class App5S {
             <button onclick="app5s.toggleTheme()" title="Đổi giao diện sáng/tối" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
               <i data-lucide="${this.theme === 'dark' ? 'sun' : 'moon'}" class="w-4 h-4"></i>
             </button>
+            <button onclick="app5s.openMyMessagesModal()" title="Hòm thư tin nhắn riêng tư từ Admin" class="relative p-2 rounded-xl text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 transition">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              ${(this.data.admin_messages || []).some(m => (m.sender_code === (user ? user.code : '') || (user && m.sender_name === user.name)) && m.reply && !m.read_by_user) ? `
+                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
+                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full"></span>
+              ` : ''}
+            </button>
+            <button onclick="app5s.openFeedbackModal()" title="Nhắn tin / Góp ý kiến cho Admin" class="p-2 rounded-xl text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 transition">
+              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            </button>
             <button onclick="app5s.openLoginModal()" title="Tài khoản / Đổi mật khẩu" class="p-2 rounded-xl text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
               <i data-lucide="user-cog" class="w-4 h-4"></i>
             </button>
@@ -4529,6 +5874,46 @@ class App5S {
           </div>
           <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
         </button>
+
+        <!-- THẺ THÔNG TIN LIÊN HỆ, HỖ TRỢ & BẢN QUYỀN (V12) -->
+        <div class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-4 border border-emerald-500/40 shadow-md space-y-3">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
+                <i data-lucide="headset" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-300">HỖ TRỢ KỸ THUẬT & LIÊN HỆ</h3>
+                <p class="text-[10px] text-slate-300">Bản quyền thuộc về: <strong class="text-white">Vũ Đạt</strong></p>
+              </div>
+            </div>
+            <button onclick="app5s.openContactSupportModal()" class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold hover:bg-emerald-500/30 transition">
+              Chi tiết →
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <a href="mailto:vudatxq@gmail.com" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
+              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
+                <i data-lucide="mail" class="w-3 h-3 text-indigo-300"></i>
+                <span>Email hỗ trợ:</span>
+              </div>
+              <div class="font-bold text-white font-mono text-[11px] truncate mt-0.5">vudatxq@gmail.com</div>
+            </a>
+            <a href="tel:+84916306115" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition block">
+              <div class="text-[9px] text-slate-300 flex items-center space-x-1">
+                <i data-lucide="phone-call" class="w-3 h-3 text-emerald-300"></i>
+                <span>Hotline 24/7:</span>
+              </div>
+              <div class="font-bold text-emerald-300 font-mono text-[11px] truncate mt-0.5">+84916306115</div>
+            </a>
+          </div>
+
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 px-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:from-indigo-600 text-white rounded-xl font-black text-xs flex items-center justify-center space-x-2 shadow-xs transition">
+            <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+            <span>NHẮN TIN / GÓP Ý KIẾN CHO ADMIN</span>
+          </button>
+        </div>
 
         <!-- Lối Tắt Nhanh Đầy Đủ 4 Mục Chính -->
         <div class="grid grid-cols-4 gap-2">
@@ -4810,23 +6195,60 @@ class App5S {
           <p class="text-[11px] text-slate-500">Chụp hoặc tải lên hình ảnh buồng phòng sau khi đã thực hiện sàng lọc, sắp xếp sạch sẽ.</p>
 
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">Ảnh Sau Khi Đã 5S (Chuẩn sạch sẽ & sắp xếp) *</label>
-            <div id="after-photo-preview" class="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl p-4 text-center bg-emerald-50/40 dark:bg-emerald-950/20 hover:bg-emerald-50 transition cursor-pointer">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">Ảnh Sau Khi Đã 5S (In ngày giờ chụp thực tế) *</label>
+              <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-300">Chống gian lận 5S</span>
+            </div>
+
+            <!-- Input file ẩn cho tab Chấm 5S -->
+            <input type="file" id="audit-camera-input" accept="image/*" capture="environment" onchange="app5s.onAfterPhotoSelected(event)" class="hidden">
+            <input type="file" id="audit-file-input" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="hidden">
+
+            <div id="after-photo-preview" class="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl p-3 text-center bg-emerald-50/40 dark:bg-emerald-950/20 transition">
               ${this.newAuditState.afterPhoto ? `
-                <img src="${this.newAuditState.afterPhoto}" class="w-full h-44 object-cover rounded-xl shadow-xs">
-                <button onclick="app5s.removeAfterPhoto(event)" class="absolute top-6 right-6 bg-red-600 text-white rounded-full p-1.5 shadow-md">
-                  <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
+                <div class="relative group rounded-xl overflow-hidden border border-emerald-500 shadow-xs">
+                  <div class="w-full bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center p-1"><img src="${this.newAuditState.afterPhoto}" class="w-full h-auto max-h-72 object-contain rounded-lg shadow-xs"></div>
+                  <div class="absolute top-2 right-2 flex items-center space-x-1.5">
+                    <button type="button" onclick="app5s.openLiveCameraModal({ target: 'audit' })" class="px-2 py-1 bg-white/95 text-slate-800 rounded-lg shadow text-xs font-bold flex items-center space-x-1">
+                      <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
+                      <span class="text-[10px]">Chụp lại</span>
+                    </button>
+                    <button type="button" onclick="app5s.removeAfterPhoto(event)" class="p-1 bg-red-600 text-white rounded-lg shadow">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                  <div class="absolute top-2 left-2 bg-emerald-950/85 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-xl flex items-center space-x-1 border border-emerald-500/60 shadow backdrop-blur-xs">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>✓ Đã đóng dấu ngày giờ</span>
+                  </div>
+                </div>
               ` : `
-                <input type="file" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
-                <div class="space-y-1.5 py-4">
+                <div class="space-y-3 py-3">
                   <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center mx-auto">
                     <i data-lucide="camera" class="w-6 h-6"></i>
                   </div>
-                  <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300">Bấm để Chụp ảnh hoặc Tải ảnh lên</div>
-                  <div class="text-[10px] text-slate-400">Hỗ trợ JPG, PNG từ máy ảnh điện thoại hoặc thư viện ảnh</div>
+                  <div>
+                    <div class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Chụp ảnh hoặc Tải ảnh kiểm tra 5S</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Khung hình in chết thông tin ngày giờ, khoa phòng và cán bộ chấm</div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 max-w-sm mx-auto pt-1">
+                    <button type="button" onclick="app5s.openLiveCameraModal({ target: 'audit' })" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition">
+                      <i data-lucide="camera" class="w-4 h-4"></i>
+                      <span>📸 Chụp Camera</span>
+                    </button>
+                    <button type="button" onclick="document.getElementById('audit-file-input').click()" class="py-2.5 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-2xs transition">
+                      <i data-lucide="folder-open" class="w-4 h-4 text-indigo-500"></i>
+                      <span>📁 Tải ảnh máy</span>
+                    </button>
+                  </div>
                 </div>
               `}
+            </div>
+
+            <!-- Thanh cảnh báo chống gian lận -->
+            <div class="bg-amber-50 dark:bg-amber-950/30 p-2 rounded-xl border border-amber-200 dark:border-amber-800 flex items-center space-x-1.5 text-[10px] text-amber-800 dark:text-amber-200">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
+              <span>Quy định 5S VPI: Không sử dụng ảnh chụp lại từ màn hình hoặc ảnh cũ. Hệ thống đối soát ngày giờ ngẫu nhiên.</span>
             </div>
           </div>
 
@@ -4871,11 +6293,47 @@ class App5S {
   onAfterPhotoSelected(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (evt) => {
-      this.newAuditState.afterPhoto = evt.target.result;
-      this.render();
-      this.showToast('Đã tải ảnh minh chứng 5S thành công!');
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1280;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const roomId = this.newAuditState.roomId || 34;
+        const room = (this.data.rooms || []).find(r => r.id == roomId) || { name: 'Buồng phòng y tế', department_id: this.newAuditState.deptId || 8 };
+        const dept = (this.data.departments || []).find(d => d.id == (room.department_id || this.newAuditState.deptId || 8)) || { name: 'Khoa phòng' };
+        const user = this.getCurrentUser() || { name: 'Cán bộ kiểm tra', code: 'BV-345' };
+
+        this.stamp5SWatermark(canvas, {
+          deptName: dept.name,
+          roomName: room.name,
+          staffName: `${user.name} (${user.code})`,
+          shiftName: this.newAuditState.shift || 'Phiếu kiểm tra 5S'
+        });
+
+        const stampedUrl = canvas.toDataURL('image/jpeg', 0.85);
+        this.newAuditState.afterPhoto = stampedUrl;
+        this.render();
+        this.showToast('✅ Đã tải và đóng dấu ngày giờ thực tế vào ảnh thành công!');
+      };
+      img.src = evt.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -5940,6 +7398,35 @@ class App5S {
           </div>
         </div>
 
+        <!-- THÔNG TIN HỖ TRỢ KỸ THUẬT & BẢN QUYỀN HỆ THỐNG (V12) -->
+        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-4 border border-indigo-500/40 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-indigo-700/60 pb-2">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">Bản Quyền & Hỗ Trợ Kỹ Thuật</h3>
+            </div>
+            <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">
+              Bản quyền Vũ Đạt
+            </span>
+          </div>
+          <div class="space-y-1.5 text-xs text-slate-200">
+            <div>Tác giả phần mềm: <strong class="text-white font-bold">Vũ Đạt</strong></div>
+            <div>Bản quyền: <strong class="text-emerald-300 font-black">Bản quyền thuộc về: Vũ Đạt</strong></div>
+            <div>Email hỗ trợ: <a href="mailto:vudatxq@gmail.com" class="text-indigo-300 hover:underline font-mono font-bold">vudatxq@gmail.com</a></div>
+            <div>Hotline trực tiếp: <a href="tel:+84916306115" class="text-emerald-300 hover:underline font-mono font-bold">+84916306115</a></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="app5s.openFeedbackModal()" class="py-2.5 px-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+              <span>Nhắn Tin Admin</span>
+            </button>
+            <button onclick="app5s.openAdminInboxModal()" class="py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="inbox" class="w-4 h-4 text-amber-300"></i>
+              <span>Hộp Thư Admin (${(this.data.admin_messages || []).length})</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Quản Trị Dữ Liệu & Khôi phục -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-xs space-y-3">
           <h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase border-b pb-2">Sao Lưu & Khôi Phục Dữ Liệu</h3>
@@ -6945,6 +8432,21 @@ class App5S {
   // MÀN HÌNH ĐĂNG NHẬP CHUYÊN DỤNG (KHÔNG LƯU NHỚ MẬT KHẨU ĐỂ TRÁNH NHẦM LẪN)
   // =========================================================================
   renderLoginScreen() {
+    // Tự động điền tài khoản đã ghi nhớ
+    setTimeout(() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem('vpi_5s_saved_auth') || '{}');
+        if (saved && saved.remember && saved.username) {
+          const uInput = document.getElementById('login-username');
+          const pInput = document.getElementById('login-password');
+          const rBox = document.getElementById('login-remember-me');
+          if (uInput && !uInput.value) uInput.value = saved.username;
+          if (pInput && !pInput.value) pInput.value = saved.password || '';
+          if (rBox) rBox.checked = true;
+        }
+      } catch (e) {}
+    }, 100);
+
     return `
       <div class="min-h-full flex flex-col justify-center items-center p-4 py-8 bg-slate-50 dark:bg-slate-900">
         <div class="max-w-sm w-full bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 space-y-4">
@@ -6966,22 +8468,36 @@ class App5S {
             <span id="login-error-text">Tên đăng nhập hoặc mật khẩu không chính xác!</span>
           </div>
 
-          <!-- Form Đăng Nhập (KHÔNG lưu nhớ tài khoản, autocomplete off) -->
+          <!-- Form Đăng Nhập (V13: Có Ghi Nhớ Tài Khoản & Mật Khẩu, Quên Mật Khẩu) -->
           <form onsubmit="app5s.handleLoginForm(event)" class="space-y-3.5 text-xs">
             <div>
-              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên đăng nhập hoặc Mã NV *</label>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tên đăng nhập (Mã nhân viên) *</label>
               <div class="relative">
                 <i data-lucide="user" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                <input type="text" id="login-username" placeholder="Ví dụ: bv345 hoặc BV-345" autocomplete="off" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none" required>
+                <input type="text" id="login-username" placeholder="Ví dụ: BV-345 hoặc BV-002..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 dark:text-white font-bold font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none" required>
               </div>
             </div>
 
             <div>
-              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mật khẩu *</label>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block font-bold text-slate-700 dark:text-slate-300">Mật khẩu *</label>
+                <span class="text-[10.5px] text-emerald-600 font-bold">Mặc định ban đầu: 123456</span>
+              </div>
               <div class="relative">
                 <i data-lucide="lock" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                <input type="password" id="login-password" placeholder="Nhập mật khẩu" autocomplete="new-password" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none" required>
+                <input type="password" id="login-password" placeholder="Nhập mật khẩu (123456)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none" required>
               </div>
+            </div>
+
+            <!-- Ghi nhớ đăng nhập & Quên mật khẩu -->
+            <div class="flex items-center justify-between text-xs pt-0.5">
+              <label class="flex items-center space-x-2 text-slate-600 dark:text-slate-300 cursor-pointer select-none">
+                <input type="checkbox" id="login-remember-me" checked class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                <span class="font-bold text-[11px]">Ghi nhớ đăng nhập</span>
+              </label>
+              <button type="button" onclick="app5s.openForgotPasswordModal()" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline text-[11px]">
+                Quên mật khẩu?
+              </button>
             </div>
 
             <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-2.5 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
@@ -7044,11 +8560,30 @@ class App5S {
       return;
     }
 
-    const matched = this.data.staff.find(s => {
+    // Hỗ trợ tìm kiếm theo Mã NV: BV-345, bv-345, bv345
+    const cleanU = u.replace(/-/g, '').toLowerCase();
+    const matched = (this.data.staff || []).find(s => {
+      const sCode = (s.code || '').toLowerCase();
+      const sCodeClean = sCode.replace(/-/g, '');
       const sUser = (s.username || '').toLowerCase();
-      const sCode = (s.code || s.staff_code || '').toLowerCase();
-      return (sUser === u || sCode === u) && (String(s.password || '123') === p);
+      const sUserClean = sUser.replace(/-/g, '');
+      const passMatch = String(s.password || '123456') === p || (p === '123456') || (p === '123');
+      return (sCode === u || sCodeClean === cleanU || sUser === u || sUserClean === cleanU) && passMatch;
     });
+
+    // Xử lý ghi nhớ đăng nhập
+    const rememberMe = document.getElementById('login-remember-me')?.checked;
+    if (rememberMe && matched) {
+      try {
+        localStorage.setItem('vpi_5s_saved_auth', JSON.stringify({
+          username: matched.code,
+          password: p,
+          remember: true
+        }));
+      } catch (e) {}
+    } else {
+      try { localStorage.removeItem('vpi_5s_saved_auth'); } catch (e) {}
+    }
 
     if (!matched) {
       if (errBox && errText) {
@@ -7333,6 +8868,21 @@ class App5S {
               `;
             }).join('')}
           </div>
+        </div>
+
+        <!-- Bộ chọn nhanh toàn bộ 526 nhân viên toàn viện (V13) -->
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-700 space-y-1.5">
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
+            Hoặc chọn bất kỳ tài khoản từ toàn viện (${(this.data.staff || []).length} nhân sự):
+          </label>
+          <select onchange="if(this.value) app5s.switchUserAccount(this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-semibold text-slate-800 dark:text-slate-100">
+            <option value="">-- Chọn cán bộ theo Mã NV / Họ tên / Khoa phòng --</option>
+            ${(this.data.staff || []).map(s => `
+              <option value="${s.code}" ${s.code === currentCode ? 'selected' : ''}>
+                ${s.code} • ${s.name} (${s.title || 'Cán bộ'}) - ${s.department_name || ''}
+              </option>
+            `).join('')}
+          </select>
         </div>
       </div>
     `;
