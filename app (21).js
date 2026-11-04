@@ -10,7 +10,7 @@
  * 5. Chấm 5S tinh gọn 1 ảnh sau, chuẩn hóa Bệnh viện Vĩnh Phúc VPI
  */
 
-const STORAGE_KEY = 'vpi_5s_data_v13_enterprise';
+const STORAGE_KEY = 'vpi_5s_data_v14_pro';
 const SECURITY_LOG_KEY = 'vpi_5s_security_logs_v1';
 
 // CSDL Khởi tạo chuẩn 20 Khoa/Phòng & 75 Khu vực làm việc Bệnh viện Vĩnh Phúc VPI
@@ -2095,7 +2095,7 @@ class App5S {
       let raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
         // Tự động kế thừa từ phiên bản V7 nếu có
-        raw = localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark') || localStorage.getItem('vpi_5s_data_v10_custom_shifts');
+        raw = localStorage.getItem('vpi_5s_data_v13_enterprise') || localStorage.getItem('vpi_5s_data_v12_pro') || localStorage.getItem('vpi_5s_data_v11_watermark');
       }
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -3188,21 +3188,29 @@ class App5S {
     };
   }
 
-  getRoomSchedule(roomId) {
+  getRoomSchedule(roomId, customDate = null) {
     if (!this.data.schedules) this.data.schedules = { rooms_schedule: [] };
     if (!this.data.schedules.rooms_schedule) this.data.schedules.rooms_schedule = [];
 
-    let rs = this.data.schedules.rooms_schedule.find(s => s.room_id == roomId);
+    const date = customDate || (this.scheduleState && this.scheduleState.selectedDate) || this.getTodayDateString();
+    const dayOfWeek = (this.scheduleState && this.scheduleState.selectedDay) || 'Wed';
+
+    // Tìm kiếm lịch theo room_id VÀ ngày cụ thể
+    let rs = this.data.schedules.rooms_schedule.find(s => s.room_id == roomId && s.date === date);
     if (!rs) {
       const room = (this.data.rooms || []).find(r => r.id == roomId) || { id: roomId, department_id: 1 };
+      // Kế thừa nhân sự từ ca mặc định nếu có
+      const baseSched = this.data.schedules.rooms_schedule.find(s => s.room_id == roomId);
+      const inheritedStaff = baseSched && Array.isArray(baseSched.staff_assigned) ? JSON.parse(JSON.stringify(baseSched.staff_assigned)) : [];
+
       rs = {
         room_id: roomId,
         department_id: room.department_id,
-        shift_id: 'morning',
-        day_of_week: (this.scheduleState && this.scheduleState.selectedDay) || 'Sun',
-        date: this.getTodayDateString(),
+        shift_id: (this.scheduleState && this.scheduleState.selectedShift !== 'all') ? this.scheduleState.selectedShift : 'morning',
+        day_of_week: dayOfWeek,
+        date: date,
         is_working: true,
-        staff_assigned: [],
+        staff_assigned: inheritedStaff,
         post_shift_5s: { status: 'pending', photo: '', submitted_at: '', submitted_by: '', notes: '' }
       };
       this.data.schedules.rooms_schedule.push(rs);
@@ -3220,6 +3228,111 @@ class App5S {
       ? `🟢 Đã kích hoạt: ${room.name} ĐANG LÀM VIỆC` 
       : `⚪ Đã chuyển: ${room.name} sang trạng thái KHÔNG LÀM VIỆC`
     );
+  }
+
+
+  // =========================================================================
+  // V14 TÍNH NĂNG 1: TỰ ĐỘNG CẬP NHẬT NGÀY GIỜ, TUẦN, NĂM THEO LỊCH VIỆT NAM
+  // =========================================================================
+  getVietnamDateInfo(weekOffset = 0) {
+    const now = new Date();
+    // Chuyển sang múi giờ Việt Nam UTC+7
+    const vnNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+    
+    if (weekOffset !== 0) {
+      vnNow.setDate(vnNow.getDate() + (weekOffset * 7));
+    }
+
+    const year = vnNow.getFullYear();
+    const month = vnNow.getMonth();
+    const date = vnNow.getDate();
+    const dayOfWeek = vnNow.getDay(); // 0 là CN, 1 là T2...
+
+    // Khoảng cách tới Thứ 2 đầu tuần
+    const diffToMon = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const monday = new Date(vnNow);
+    monday.setDate(vnNow.getDate() + diffToMon);
+
+    // Tính số tuần ISO 8601
+    const target = new Date(monday.valueOf());
+    const dayNr = (monday.getDay() + 6) % 7;
+    target.setDate(target.getDate() - dayNr + 3);
+    const firstThursday = target.valueOf();
+    target.setMonth(0, 1);
+    if (target.getDay() !== 4) {
+      target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+    }
+    const weekNum = 1 + Math.ceil((firstThursday - target) / 604800000);
+
+    const dayNames = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
+    const shortLabels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+    const dayKeys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    const realToday = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+    const realTodayIso = `${realToday.getFullYear()}-${String(realToday.getMonth() + 1).padStart(2, '0')}-${String(realToday.getDate()).padStart(2, '0')}`;
+
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const dYear = d.getFullYear();
+      const dMonth = String(d.getMonth() + 1).padStart(2, '0');
+      const dDate = String(d.getDate()).padStart(2, '0');
+      const isoDate = `${dYear}-${dMonth}-${dDate}`;
+      const displayDate = `${dDate}/${dMonth}`;
+
+      days.push({
+        id: dayKeys[i],
+        shortLabel: shortLabels[i],
+        name: dayNames[i],
+        dateNum: displayDate,
+        dayOfMonth: dDate,
+        monthStr: dMonth,
+        fullDate: isoDate,
+        isToday: isoDate === realTodayIso
+      });
+    }
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    const monStr = `${String(monday.getDate()).padStart(2, '0')}/${String(monday.getMonth() + 1).padStart(2, '0')}`;
+    const sunStr = `${String(sunday.getDate()).padStart(2, '0')}/${String(sunday.getMonth() + 1).padStart(2, '0')}`;
+
+    return {
+      year: year,
+      weekNum: weekNum || 45,
+      weekRangeText: `Tuần ${weekNum || 45} (${monStr} – ${sunStr})`,
+      monDisplay: monStr,
+      sunDisplay: sunStr,
+      days: days,
+      realTodayIso: realTodayIso
+    };
+  }
+
+  setScheduleDay(dayId, fullDate) {
+    this.scheduleState.selectedDay = dayId;
+    if (fullDate) {
+      this.scheduleState.selectedDate = fullDate;
+    }
+    this.render();
+    const vnInfo = this.getVietnamDateInfo(this.scheduleWeekOffset || 0);
+    const dObj = vnInfo.days.find(d => d.id === dayId || d.fullDate === fullDate);
+    this.showToast(`📅 Đang xem lịch: ${dObj ? dObj.name + ' (' + dObj.dateNum + ')' : dayId}`);
+  }
+
+  changeScheduleWeek(delta) {
+    this.scheduleWeekOffset = (this.scheduleWeekOffset || 0) + delta;
+    const vnInfo = this.getVietnamDateInfo(this.scheduleWeekOffset);
+    const todayMatch = vnInfo.days.find(d => d.isToday);
+    if (todayMatch) {
+      this.scheduleState.selectedDay = todayMatch.id;
+      this.scheduleState.selectedDate = todayMatch.fullDate;
+    } else {
+      this.scheduleState.selectedDay = vnInfo.days[0].id;
+      this.scheduleState.selectedDate = vnInfo.days[0].fullDate;
+    }
+    this.render();
+    this.showToast(`📅 Đã chuyển sang: ${vnInfo.weekRangeText}`);
   }
 
   setScheduleWeek(week) {
@@ -5089,15 +5202,13 @@ Trân trọng cảm ơn!`);
     const rooms = this.data.rooms || [];
     const stats = this.getScheduleStatistics();
 
-    const days = [
-      { id: 'Mon', shortLabel: 'T2', name: 'Thứ 2', dateNum: '12', isToday: false },
-      { id: 'Tue', shortLabel: 'T3', name: 'Thứ 3', dateNum: '13', isToday: false },
-      { id: 'Wed', shortLabel: 'T4', name: 'Thứ 4', dateNum: '14', isToday: false },
-      { id: 'Thu', shortLabel: 'T5', name: 'Thứ 5', dateNum: '15', isToday: false },
-      { id: 'Fri', shortLabel: 'T6', name: 'Thứ 6', dateNum: '16', isToday: false },
-      { id: 'Sat', shortLabel: 'T7', name: 'Thứ 7', dateNum: '17', isToday: false },
-      { id: 'Sun', shortLabel: 'CN', name: 'Chủ nhật', dateNum: '18', isToday: true }
-    ];
+    const vnDateInfo = this.getVietnamDateInfo(this.scheduleWeekOffset || 0);
+    const days = vnDateInfo.days;
+    if (!this.scheduleState.selectedDate) {
+      this.scheduleState.selectedDate = vnDateInfo.realTodayIso;
+      this.scheduleState.selectedDay = (days.find(d => d.isToday) || days[0]).id;
+    }
+    const currentDayObj = days.find(d => d.id === this.scheduleState.selectedDay) || days.find(d => d.fullDate === this.scheduleState.selectedDate) || days[0];
 
     const sc = this.data.shift_config || {
       morning: { name: 'Ca sáng', start: '07:00', end: '11:30' },
@@ -5118,8 +5229,13 @@ Trân trọng cảm ơn!`);
     const statusFilter = this.scheduleState.selectedStatusFilter;
 
     let filteredRooms = rooms;
+    const canViewAllRooms = this.canViewAllHospitalRooms();
+    const userDeptId = this.getUserDepartmentId();
 
-    if (selectedDept && selectedDept !== 'all') {
+    // V14 BẢO MẬT KHU VỰC: Cán bộ khoa chỉ xem buồng phòng của khoa mình
+    if (!canViewAllRooms && userDeptId) {
+      filteredRooms = filteredRooms.filter(r => String(r.department_id) === String(userDeptId));
+    } else if (selectedDept && selectedDept !== 'all') {
       filteredRooms = filteredRooms.filter(r => String(r.department_id) === String(selectedDept));
     }
 
@@ -5180,8 +5296,12 @@ Trân trọng cảm ơn!`);
               </div>
               <div class="min-w-0">
                 <div class="flex items-center space-x-1.5">
-                  <h2 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight truncate">KHU VỰC LÀM VIỆC TOÀN VIỆN</h2>
-                  <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold px-1.5 py-0.2 rounded font-mono shrink-0">75 VỊ TRÍ</span>
+                  <h2 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight truncate">
+                    ${canViewAllRooms ? 'KHU VỰC LÀM VIỆC TOÀN VIỆN' : ('KHU VỰC: ' + ((depts.find(d => d.id == userDeptId)?.name) || 'KHOA PHÒNG'))}
+                  </h2>
+                  <span class="text-[9px] ${canViewAllRooms ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-indigo-700'} font-bold px-1.5 py-0.2 rounded font-mono shrink-0">
+                    ${canViewAllRooms ? (rooms.length + ' VỊ TRÍ') : (filteredRooms.length + ' PHÒNG')}
+                  </span>
                 </div>
                 <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate">Phân công nhân sự & Giám sát nộp ảnh 5S</p>
               </div>
@@ -5192,57 +5312,84 @@ Trân trọng cảm ơn!`);
             </button>
           </div>
 
-          <!-- Bộ 4 nút hành động cân đối, không chen chúc -->
+          <!-- Bộ 4 nút hành động cân đối, không chen chúc (V14: KHÔNG CO CHỮ) -->
           <div class="grid grid-cols-4 gap-1.5">
-            <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm duyệt ảnh 5S toàn viện" class="py-2 px-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+            <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm duyệt ảnh 5S toàn viện" class="py-2 px-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
               <i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0"></i>
-              <span class="truncate">Duyệt Ảnh (${stats.pendingReviewCount})</span>
+              <span>Duyệt (${stats.pendingReviewCount})</span>
             </button>
-            <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết ngày" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+            <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết ngày" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
               <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
               <span>Báo Cáo</span>
             </button>
-            <button onclick="app5s.openGoogleSheetSyncModal()" title="Đồng bộ Google Sheets & Excel" class="py-2 px-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+            <button onclick="app5s.openGoogleSheetSyncModal()" title="Đồng bộ Google Sheets & Excel" class="py-2 px-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
               <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 shrink-0"></i>
               <span>Xuất Excel</span>
             </button>
-            <button onclick="app5s.openSwitchAccountModal()" title="Đổi tài khoản đăng nhập" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-1 border border-slate-200 dark:border-slate-600 transition">
+            <button onclick="app5s.openSwitchAccountModal()" title="Đổi tài khoản đăng nhập" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-600 transition">
               <i data-lucide="users" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i>
-              <span class="truncate">Tài Khoản</span>
+              <span>Tài Khoản</span>
             </button>
           </div>
         </div>
 
         <!-- BỘ CHỌN TUẦN LÀM VIỆC & THANH NGÀY TRONG TUẦN -->
-        <div class="bg-white dark:bg-slate-800 rounded-3xl p-3.5 border border-slate-200/90 dark:border-slate-700 shadow-sm space-y-2.5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-              <i data-lucide="calendar" class="w-4 h-4 text-indigo-600"></i>
-              <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Tuần 42 (12/10 - 18/10/2026)</span>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl px-2 py-3 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+          <!-- TIÊU ĐỀ TUẦN TỰ ĐỘNG THEO LỊCH VIỆT NAM (V14: GỌN GÀNG, KHÔNG TRÀN LỀ) -->
+          <div class="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-900/60 p-2 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center space-x-1 min-w-0">
+              <button onclick="app5s.changeScheduleWeek(-1)" title="Xem tuần trước" class="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition shrink-0">
+                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+              </button>
+              <span class="flex items-center space-x-1 text-[11px] font-black truncate">
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i>
+                <span class="truncate">${vnDateInfo.weekRangeText}</span>
+              </span>
+              <button onclick="app5s.changeScheduleWeek(1)" title="Xem tuần tới" class="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition shrink-0">
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
-            <span class="text-[10px] bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold px-2 py-0.5 rounded-full border border-indigo-200">
-              Năm 2026
+            <span class="text-[9.5px] bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-lg font-mono font-bold shrink-0">
+              Năm ${vnDateInfo.year}
             </span>
           </div>
 
-          <!-- LỊCH TUẦN: THỨ 2 ĐẾN CHỦ NHẬT (V13: GRID 7 CỘT HIỂN THỊ ĐẦY ĐỦ 100% KHÔNG BỊ KHUẤT) -->
-          <div class="space-y-1">
-            <div class="grid grid-cols-7 gap-1 text-center select-none">
-              ${days.map(d => `
-                <button onclick="app5s.setScheduleDay('${d.id}')" class="py-1.5 px-0.5 rounded-xl transition flex flex-col items-center justify-center text-center ${
-                  this.scheduleState.selectedDay === d.id
-                    ? 'bg-indigo-600 text-white shadow-xs font-black ring-2 ring-indigo-400'
-                    : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }">
-                  <span class="text-[10px] font-bold opacity-80 uppercase leading-none">${d.shortLabel}</span>
-                  <span class="text-xs font-extrabold leading-tight mt-0.5">${d.dateNum}</span>
-                  ${d.isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5"></span>' : ''}
-                </button>
-              `).join('')}
+          <!-- LỊCH TUẦN: THỨ TRÊN - NGÀY DƯỚI (V14: CHẠM ĐỔI NGÀY HOẠT ĐỘNG 100%) -->
+          <div class="space-y-1.5">
+            <div class="grid grid-cols-7 gap-1 text-center select-none pt-0.5 w-full">
+              ${days.map(d => {
+                const isSelected = this.scheduleState.selectedDay === d.id || this.scheduleState.selectedDate === d.fullDate;
+                return `
+                  <button type="button" onclick="app5s.setScheduleDay('${d.id}', '${d.fullDate}')" class="w-full min-w-0 py-1.5 px-0 rounded-xl transition flex flex-col items-center justify-center text-center cursor-pointer ${
+                    isSelected
+                      ? 'bg-indigo-600 text-white shadow-md font-black ring-2 ring-indigo-400 scale-[1.02]'
+                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:border-indigo-300'
+                  }">
+                    <!-- Thứ ở trên -->
+                    <span class="text-[9.5px] font-bold ${isSelected ? 'text-indigo-100' : 'text-slate-500 dark:text-slate-400'} uppercase leading-none truncate block w-full">
+                      ${d.shortLabel}
+                    </span>
+                    <!-- Ngày ở ngay dưới -->
+                    <span class="text-[10.5px] font-black leading-tight mt-0.5 ${isSelected ? 'text-white' : 'text-slate-900 dark:text-slate-100'} truncate block w-full">
+                      ${d.dateNum}
+                    </span>
+                    ${d.isToday ? `
+                      <span class="mt-0.5 px-1 py-0.2 rounded-full text-[7px] font-bold ${isSelected ? 'bg-white text-indigo-700' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'}">
+                        Nay
+                      </span>
+                    ` : ''}
+                  </button>
+                `;
+              }).join('')}
             </div>
-            <div class="flex items-center justify-between text-[10px] text-slate-400 px-1">
-              <span>Thứ 2 (12/10) &rarr; Chủ nhật (18/10)</span>
-              <span class="text-indigo-600 dark:text-indigo-400 font-bold">Chạm để đổi ngày xem lịch</span>
+
+            <!-- Thanh trạng thái ngày đang chọn trực quan -->
+            <div class="flex items-center justify-between text-[11px] bg-indigo-50/80 dark:bg-indigo-950/40 px-3 py-1.5 rounded-xl border border-indigo-100 dark:border-indigo-900/60 text-indigo-900 dark:text-indigo-200">
+              <span class="flex items-center space-x-1.5 font-bold">
+                <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-indigo-600"></i>
+                <span>Lịch làm việc: <strong class="text-indigo-700 dark:text-indigo-300 underline">${currentDayObj.name} (${currentDayObj.dateNum}/${vnDateInfo.year})</strong></span>
+              </span>
+              <span class="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">Chạm thứ để đổi lịch</span>
             </div>
           </div>
 
@@ -6425,6 +6572,14 @@ Trân trọng cảm ơn!`);
     const q = (this.searchQuery || '').trim().toLowerCase();
 
     let visibleDepts = sortedDepts;
+    const canViewAll = this.canViewAllHospitalRooms();
+    const userDeptId = this.getUserDepartmentId();
+
+    // V14 BẢO MẬT & PHÂN QUYỀN KHOA PHÒNG:
+    // Cán bộ khoa chỉ xem danh mục và buồng phòng của khoa mình
+    if (!canViewAll && userDeptId) {
+      visibleDepts = visibleDepts.filter(d => String(d.id) === String(userDeptId));
+    }
     if (this.filterDeptCategory && this.filterDeptCategory !== 'all') {
       visibleDepts = visibleDepts.filter(d => (d.category || 'clinical') === this.filterDeptCategory);
     }
@@ -6700,6 +6855,11 @@ Trân trọng cảm ơn!`);
                         <button onclick="app5s.openEditRoomModal('${room.id}')" title="Chỉnh sửa thông tin khu vực làm việc này" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
                           <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                         </button>
+                        ${(this.isAdmin() || this.canManageDeptRooms(room.department_id)) ? `
+                          <button onclick="app5s.deleteRoom('${room.id}')" title="Xóa khu vực làm việc này" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 transition">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                          </button>
+                        ` : ''}
                         <!-- Nút Chấm 5S ngay -->
                         <button onclick="app5s.quickAuditRoom('${room.id}')" title="Chấm điểm 5S khu vực này ngay" class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 hover:bg-emerald-100 transition">
                           <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
@@ -6729,8 +6889,16 @@ Trân trọng cảm ơn!`);
   }
 
   renderDepartmentsTab() {
-    const sortedDepts = this.getSortedDepartments();
-    const visibleDepts = this.getVisibleDepartments();
+    let sortedDepts = this.getSortedDepartments();
+    const canViewAll = this.canViewAllHospitalRooms();
+    const userDeptId = this.getUserDepartmentId();
+
+    // V14 BẢO MẬT & PHÂN QUYỀN KHOA PHÒNG:
+    // Cán bộ khoa chỉ xem danh mục và buồng phòng của khoa mình
+    if (!canViewAll && userDeptId) {
+      sortedDepts = sortedDepts.filter(d => String(d.id) === String(userDeptId));
+    }
+    const visibleDepts = sortedDepts;
 
     // Phân loại khối
     const paraclinicalDepts = sortedDepts.filter(d => d.category === 'paraclinical');
@@ -6739,36 +6907,54 @@ Trân trọng cảm ơn!`);
 
     return `
       <div class="p-4 space-y-4">
-        <!-- Header Khoa & Khu Vực Làm Việc -->
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-xs font-mono font-bold text-emerald-600">DANH MỤC KHU VỰC 5S</span>
-            <h2 class="text-base font-black text-slate-900 dark:text-white">
-              ${sortedDepts.length} Khoa/Phòng & ${this.data.rooms.length} Khu Vực
-            </h2>
+        <!-- Header Khoa & Khu Vực Làm Việc (V14: BỐ CỤC CÂN ĐỐI, GỌN GÀNG, CHUẨN THẨM MỸ) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-slate-200 dark:border-slate-700 shadow-2xs space-y-2">
+          <!-- Hàng 1: Tiêu đề rõ ràng + Thống kê tổng số -->
+          <div class="flex items-center justify-between gap-2 pb-1.5 border-b border-slate-100 dark:border-slate-700/60">
+            <div class="flex items-center space-x-2.5 min-w-0">
+              <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="building-2" class="w-4 h-4"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <h2 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight truncate">DANH MỤC KHOA PHÒNG & 5S</h2>
+                  <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold px-1.5 py-0.2 rounded font-mono shrink-0">${sortedDepts.length} KHOA</span>
+                </div>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate">Quản lý buồng phòng & phân loại cơ cấu y tế viện</p>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="text-xs font-black text-emerald-600 font-mono">${(this.data.rooms || []).length}</span>
+              <span class="text-[9px] text-slate-400 block font-bold">Khu vực 5S</span>
+            </div>
           </div>
-          <div class="flex items-center space-x-1.5">
-            <!-- NÚT BÁO CÁO TỔNG KẾT NGÀY & ĐÁNH GIÁ TOÀN VIỆN -->
-            <button onclick="app5s.openDailySummaryModal()" title="Báo cáo 5S cuối ngày toàn viện" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
-              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
-              <span>Báo Cáo Ngày</span>
+
+          <!-- Hàng 2: Bộ 4 nút tác vụ cân đối lưới 4 cột -->
+          <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết 5S ngày" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+              <span class="truncate">Báo Cáo</span>
             </button>
-            <!-- Nút Thêm Khoa Mới -->
-            <button onclick="app5s.openAddDeptModal()" title="Thêm Khoa / Phòng mới" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-600 transition flex items-center space-x-1">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              <span>Khoa</span>
+            ${this.isAdmin() ? `
+              <button onclick="app5s.openAddDeptModal()" title="Thêm Khoa / Phòng mới" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-1 border border-slate-200 dark:border-slate-600 transition">
+                <i data-lucide="plus" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i>
+                <span class="truncate">Thêm Khoa</span>
+              </button>
+            ` : `
+              <button onclick="app5s.openDailySummaryModal()" title="Xem bảng kiểm 5S" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-1 border border-slate-200 dark:border-slate-600 transition">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                <span class="truncate">Tiêu Chuẩn</span>
+              </button>
+            `}
+            <button onclick="app5s.openAddRoomModal()" title="Thêm Khu vực làm việc / Buồng phòng mới" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1 shadow-xs transition">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5 shrink-0"></i>
+              <span class="truncate">Thêm Vị Trí</span>
             </button>
-            <!-- Nút Thêm Khu Vực Làm Việc -->
-            <button onclick="app5s.openAddRoomModal()" title="Thêm Khu vực làm việc / Buồng phòng mới" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              <span>Khu Vực</span>
-            </button>
-            <!-- Nút Sắp xếp -->
-            <button onclick="app5s.toggleReorderMode()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 ${
+            <button onclick="app5s.toggleReorderMode()" class="py-2 px-1 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 ${
               this.isReorderMode ? 'bg-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
             }">
-              <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
-              <span>${this.isReorderMode ? 'Xong' : 'Thứ tự'}</span>
+              <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 shrink-0"></i>
+              <span class="truncate">${this.isReorderMode ? 'Xong' : 'Thứ Tự'}</span>
             </button>
           </div>
         </div>
@@ -6973,15 +7159,23 @@ Trân trọng cảm ơn!`);
   // TÌM KIẾM THỜI GIAN THỰC GIỮ NGUYÊN FOCUS
   // =========================================================================
   getFilteredStaff() {
-    const selectedDeptId = this.filterStaffDept === 'all' ? null : parseInt(this.filterStaffDept);
-    let staffList = [...this.data.staff];
-    if (selectedDeptId) {
-      staffList = staffList.filter(s => s.department_id == selectedDeptId);
+    let staffList = [...(this.data.staff || [])];
+    const canViewAll = this.canViewAllStaff();
+    const userDeptId = this.getUserDepartmentId();
+
+    // V14 PHÂN QUYỀN NHÂN SỰ:
+    // Nếu không thuộc nhóm có quyền xem toàn viện: CHỈ ĐƯỢC XEM NHÂN SỰ KHOA PHÒNG MÌNH
+    if (!canViewAll && userDeptId) {
+      staffList = staffList.filter(s => s.department_id == userDeptId);
+    } else if (this.filterStaffDept !== 'all') {
+      const selId = parseInt(this.filterStaffDept);
+      staffList = staffList.filter(s => s.department_id == selId);
     }
+
     if (this.staffSearchQuery) {
       const sq = this.staffSearchQuery.toLowerCase();
       staffList = staffList.filter(s => {
-        const text = `${s.name} ${s.code} ${s.title} ${s.role_title} ${s.username} ${s.assigned_room || ''}`.toLowerCase();
+        const text = `${s.name} ${s.code} ${s.title} ${s.role_title} ${s.username} ${s.department_name || ''} ${s.assigned_room || ''}`.toLowerCase();
         return text.includes(sq);
       });
     }
@@ -7035,10 +7229,17 @@ Trân trọng cảm ơn!`);
               </div>
             </div>
 
-            <!-- Nút Sửa nhân sự -->
-            <button onclick="app5s.openEditStaffModal('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition" title="Chỉnh sửa chức danh & phân công buồng phòng">
-              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-            </button>
+            <div class="flex items-center space-x-1">
+              <!-- Nút Sửa nhân sự -->
+              <button onclick="app5s.openEditStaffModal('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition" title="Chỉnh sửa chức danh & phân công buồng phòng">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+              </button>
+              ${(this.isAdmin() || this.canManageDeptStaff(s.department_id)) ? `
+                <button onclick="app5s.deleteStaffMember('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 transition" title="Xóa nhân sự khỏi khoa phòng">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              ` : ''}
+            </div>
           </div>
 
           <!-- Danh sách Buồng phòng / Khu vực phụ trách -->
@@ -7066,16 +7267,25 @@ Trân trọng cảm ơn!`);
 
     return `
       <div class="p-4 space-y-4">
-        <!-- Header Nhân Sự -->
+        <!-- Header Nhân Sự (V14: PHÂN QUYỀN TOÀN VIỆN VS NỘI BỘ KHOA) -->
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-xs font-mono font-bold text-emerald-600">QUẢN TRỊ TÀI KHOẢN</span>
-            <h2 class="text-base font-black text-slate-900 dark:text-white">${this.data.staff.length} Cán Bộ & Nhân Sự 5S</h2>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-xs font-mono font-bold text-emerald-600">QUẢN LÝ NHÂN SỰ</span>
+              <span class="text-[9px] ${this.canViewAllStaff() ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300' : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'} font-bold px-2 py-0.5 rounded font-mono">
+                ${this.canViewAllStaff() ? 'TOÀN VIỆN' : 'NỘI BỘ KHOA'}
+              </span>
+            </div>
+            <h2 class="text-base font-black text-slate-900 dark:text-white">
+              ${staffList.length} Cán Bộ ${this.canViewAllStaff() ? 'Toàn Viện VPI' : ((depts.find(d => d.id == this.getUserDepartmentId())?.name) || '')}
+            </h2>
           </div>
-          <button onclick="app5s.openAddAccountModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
-            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
-            <span>Thêm Tài Khoản</span>
-          </button>
+          ${(this.isAdmin() || this.isDepartmentManager()) ? `
+            <button onclick="app5s.openAddAccountModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+              <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+              <span>${this.isAdmin() ? 'Thêm Tài Khoản' : 'Thêm Nhân Viên'}</span>
+            </button>
+          ` : ''}
         </div>
 
         <!-- Banner Cơ chế phân quyền & Chức danh -->
@@ -8730,6 +8940,99 @@ Trân trọng cảm ơn!`);
   // =========================================================================
   // V9 TÍNH NĂNG 3: PHÂN QUYỀN XEM ẢNH NỘI BỘ KHOA VS TOÀN VIỆN
   // =========================================================================
+
+  // =========================================================================
+  // V14 PHÂN QUYỀN RBAC: ADMIN, LÃNH ĐẠO VIỆN, QUẢN LÝ KHOA, NHÂN VIÊN
+  // =========================================================================
+  isAdmin() {
+    const user = this.getCurrentUser();
+    if (!user) return true;
+    const code = (user.code || '').toUpperCase();
+    return code === 'BV-345' || user.role === 'admin' || user.is_admin === true;
+  }
+
+  isHospitalLeaderOrSupervisor() {
+    const user = this.getCurrentUser();
+    if (!user) return true;
+    if (this.isAdmin()) return true;
+    const code = (user.code || '').toUpperCase();
+    // Ban Giám Đốc, Trưởng ban 5S, QLCL, Giám sát
+    if (['BV-001', 'BV-002', 'BV-269', 'BV-489', 'BV-254', 'BV-596', 'BV-101', 'BV-004', 'BV-467', 'BV-523', 'BV-263'].includes(code)) {
+      return true;
+    }
+    if (user.role === 'supervisor' || user.is_supervisor === true) return true;
+    const title = (user.title || user.role_title || user.position || '').toLowerCase();
+    return title.includes('giám sát 5s') || title.includes('ban giám đốc') || title.includes('trưởng ban chỉ đạo') || title.includes('lãnh đạo viện') || title.includes('điều dưỡng trưởng bv');
+  }
+
+  isDepartmentManager() {
+    const user = this.getCurrentUser();
+    if (!user) return true;
+    if (this.isHospitalLeaderOrSupervisor()) return true;
+    const title = (user.title || user.role_title || user.position || '').toLowerCase();
+    return title.includes('trưởng khoa') || title.includes('phó trưởng khoa') || 
+           title.includes('trưởng phòng') || title.includes('phó trưởng phòng') ||
+           title.includes('điều dưỡng trưởng') || title.includes('ktv trưởng') || 
+           title.includes('hộ sinh trưởng') || title.includes('phụ trách khoa') || 
+           title.includes('phụ trách đơn nguyên') || title.includes('trưởng nhóm') ||
+           title.includes('quyền trưởng khoa');
+  }
+
+  canViewAllStaff() {
+    // Quyền xem danh sách nhân sự toàn viện: Admin, Lãnh đạo viện, Giám sát 5S VÀ Quản lý khoa phòng
+    return this.isHospitalLeaderOrSupervisor() || this.isDepartmentManager();
+  }
+
+  canViewAllHospitalRooms() {
+    // Quyền xem buồng phòng toàn viện (20 khoa, 75 phòng): CHỈ Admin, Lãnh đạo viện và Ban Giám Sát toàn viện!
+    // Quản lý cấp khoa và nhân viên khoa phòng chỉ xem phòng của khoa mình.
+    return this.isHospitalLeaderOrSupervisor();
+  }
+
+  canManageDeptStaff(deptId) {
+    if (this.isAdmin()) return true;
+    if (!this.isDepartmentManager()) return false;
+    const userDeptId = this.getUserDepartmentId();
+    return String(userDeptId) === String(deptId);
+  }
+
+  canManageDeptRooms(deptId) {
+    if (this.isAdmin() || this.isHospitalLeaderOrSupervisor()) return true;
+    if (!this.isDepartmentManager()) return false;
+    const userDeptId = this.getUserDepartmentId();
+    return String(userDeptId) === String(deptId);
+  }
+
+  deleteStaffMember(staffCode) {
+    const staff = (this.data.staff || []).find(s => s.code == staffCode || s.id == staffCode);
+    if (!staff) return;
+    if (!this.canManageDeptStaff(staff.department_id)) {
+      alert('🔒 Bạn không có quyền xóa nhân sự của khoa phòng này!');
+      return;
+    }
+    if (confirm(`Bạn có chắc muốn xóa nhân sự ${staff.name} (${staff.code}) không?`)) {
+      this.data.staff = (this.data.staff || []).filter(s => s.code != staff.code && s.id != staff.id);
+      this.saveData();
+      this.showToast(`Đã xóa nhân sự ${staff.name} (${staff.code}) thành công!`);
+      this.render();
+    }
+  }
+
+  deleteRoom(roomId) {
+    const room = (this.data.rooms || []).find(r => r.id == roomId);
+    if (!room) return;
+    if (!this.canManageDeptRooms(room.department_id)) {
+      alert('🔒 Bạn không có quyền xóa khu vực làm việc của khoa phòng này!');
+      return;
+    }
+    if (confirm(`Bạn có chắc muốn xóa khu vực ${room.name} không?`)) {
+      this.data.rooms = (this.data.rooms || []).filter(r => r.id != roomId);
+      this.saveData();
+      this.showToast(`Đã xóa khu vực ${room.name} thành công!`);
+      this.render();
+    }
+  }
+
   isUserManagerOrSupervisor() {
     const user = this.getCurrentUser();
     if (!user) return true;
