@@ -2326,9 +2326,16 @@ class App5S {
     }
   }
 
-  saveData() {
+  saveData(syncToServer = true) {
     try {
+      this.data.last_updated = Date.now();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+      if (this.syncChannel) {
+        try { this.syncChannel.postMessage({ type: 'DATA_UPDATED', timestamp: this.data.last_updated }); } catch(e) {}
+      }
+      if (syncToServer) {
+        this.pushStateToServer();
+      }
     } catch (e) {
       console.error('Lỗi lưu LocalStorage:', e);
     }
@@ -2461,6 +2468,7 @@ class App5S {
     this.updateUserInterface();
     this.updateHospitalBranding();
     this.updateNoticeBanner();
+    this.initCrossDeviceSync();
     this.render();
   }
 
@@ -2953,15 +2961,76 @@ class App5S {
     return `${year}-${month}-${day}`;
   }
 
-  getDaily5SStatus() {
-    const today = this.getTodayDateString();
+    // V19: PHÂN TÍCH TIẾN ĐỘ 5S TỪNG BUỒNG PHÒNG TRONG KHOA
+  // QUY TẮC NGHIỆM THU: 100% buồng phòng nộp ảnh mới tính là HOÀN THÀNH. Thiếu 1 buồng = CHƯA HOÀN THÀNH
+  getDepartmentRoom5SSubmissionStatus(deptId, targetDate = null) {
+    const date = targetDate || this.getTodayDateString();
+    const deptRooms = (this.data.rooms || []).filter(r => String(r.department_id) === String(deptId));
+    if (deptRooms.length === 0) {
+      return { isFullyCompleted: false, doneRooms: [], missingRooms: [], totalRooms: 0, doneCount: 0, missingCount: 0, rate: 0 };
+    }
+
+    const audits = this.data.audits || [];
+    const dateAudits = audits.filter(a => a.audit_date === date && String(a.department_id) === String(deptId));
+
+    const schedules = this.data.schedules || { rooms_schedule: [] };
+    const roomSchedules = schedules.rooms_schedule || [];
+    const dateRoomSchedules = roomSchedules.filter(rs => String(rs.department_id) === String(deptId) && rs.post_shift_5s && rs.post_shift_5s.photo);
+
+    const doneRooms = [];
+    const missingRooms = [];
+
+    deptRooms.forEach(room => {
+      const hasAudit = dateAudits.some(a => (a.room_id == room.id || a.location === room.name) && (a.photo_after || a.photo || a.status === 'approved' || a.status === 'pending'));
+      const hasSchedulePhoto = dateRoomSchedules.some(rs => rs.room_id == room.id);
+      const rs = this.getRoomSchedule(room.id);
+      const hasCurrentShiftPhoto = rs && rs.post_shift_5s && rs.post_shift_5s.photo && (rs.post_shift_5s.status === 'submitted' || rs.post_shift_5s.status === 'approved');
+
+      if (hasAudit || hasSchedulePhoto || hasCurrentShiftPhoto) {
+        doneRooms.push(room);
+      } else {
+        missingRooms.push(room);
+      }
+    });
+
+    const isFullyCompleted = (deptRooms.length > 0 && missingRooms.length === 0);
+    const rate = Math.round((doneRooms.length / deptRooms.length) * 100);
+
+    return {
+      isFullyCompleted,
+      doneRooms,
+      missingRooms,
+      totalRooms: deptRooms.length,
+      doneCount: doneRooms.length,
+      missingCount: missingRooms.length,
+      rate
+    };
+  }
+
+  getDaily5SStatus(targetDate = null) {
+    const today = targetDate || this.getTodayDateString();
     const audits = this.data.audits || [];
     const todayAudits = audits.filter(a => a.audit_date === today);
-    const completedDeptIds = new Set(todayAudits.map(a => a.department_id));
 
     const allDepts = this.getSortedDepartments();
-    const completedDepts = allDepts.filter(d => completedDeptIds.has(d.id));
-    const uncompletedDepts = allDepts.filter(d => !completedDeptIds.has(d.id));
+    const completedDepts = [];
+    const uncompletedDepts = [];
+    const inProgressDepts = [];
+    const notStartedDepts = [];
+
+    allDepts.forEach(dept => {
+      const roomStatus = this.getDepartmentRoom5SSubmissionStatus(dept.id, today);
+      if (roomStatus.isFullyCompleted) {
+        completedDepts.push(dept);
+      } else {
+        uncompletedDepts.push(dept);
+        if (roomStatus.doneCount > 0) {
+          inProgressDepts.push(dept);
+        } else {
+          notStartedDepts.push(dept);
+        }
+      }
+    });
 
     const pendingAudits = todayAudits.filter(a => a.status === 'pending');
     const approvedAudits = todayAudits.filter(a => a.status === 'approved');
@@ -2975,6 +3044,8 @@ class App5S {
       todayAudits,
       completedDepts,
       uncompletedDepts,
+      inProgressDepts,
+      notStartedDepts,
       pendingAudits,
       approvedAudits,
       rejectedAudits,
@@ -3626,7 +3697,7 @@ class App5S {
 
         <!-- V16 PHÂN QUYỀN BUỒNG PHÒNG: Quản lý khoa hoặc Admin mới được đổi trạng thái & phân công -->
         ${(() => {
-          const canManage = this.isAdmin() || this.canManageDeptRooms(room.department_id);
+          const canManage = this.isAdmin() || this.canManageDeptRooms(r.department_id);
           return `
             <div class="bg-slate-50 dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
               <div class="space-y-0.5">
@@ -5712,10 +5783,17 @@ Trân trọng cảm ơn!`);
             const canManage = this.isAdmin() || this.isUserManagerOrSupervisor();
             return `
               <div class="grid grid-cols-4 gap-1.5">
-                <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm tra & Chấm điểm 5S toàn viện" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 shadow-xs transition">
-                  <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0"></i>
-                  <span>CHẤM 5S (${stats.pendingReviewCount})</span>
-                </button>
+                ${canManage ? `
+                  <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm tra & Chấm điểm 5S toàn viện" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 shadow-xs transition">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0"></i>
+                    <span>CHẤM 5S (${stats.pendingReviewCount})</span>
+                  </button>
+                ` : `
+                  <button onclick="app5s.showReportLockedNotice('Chấm 5S')" title="Chức năng chỉ dành cho cán bộ quản lý / giám sát" class="py-2 px-1 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
+                    <i data-lucide="lock" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                    <span>Chấm 5S 🔒</span>
+                  </button>
+                `}
 
                 ${canManage ? `
                   <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết ngày" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
@@ -5938,44 +6016,58 @@ Trân trọng cảm ơn!`);
               </div>
             </div>
 
-            <!-- Khung ticker tự động chạy ngang với hiệu ứng mờ biên -->
-            <div class="relative group">
-              <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
-              <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
+            <!-- V19: PHÂN QUYỀN HIỂN THỊ KHOA: Quản lý xem toàn viện ticker, Nhân viên chỉ xem khoa mình -->
+            ${canViewAllRooms ? `
+              <div class="relative group">
+                <div class="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none"></div>
 
-              <div id="schedule-dept-ticker" class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold scroll-smooth">
-                <!-- Nút Tất cả khoa -->
-                <button onclick="app5s.setScheduleDeptFilter('all')" data-dept-pill="all" class="shrink-0 px-3 py-1.5 rounded-xl transition ${
-                  this.scheduleState.selectedDept === 'all'
-                    ? 'bg-indigo-600 text-white shadow-xs'
-                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
-                }">
-                  Tất cả khoa (${depts.length})
-                </button>
-                <!-- 20 Khoa phòng (Lần 1) -->
-                ${depts.map(d => `
-                  <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
-                    this.scheduleState.selectedDept === String(d.id)
+                <div id="schedule-dept-ticker" class="flex space-x-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-bold scroll-smooth">
+                  <!-- Nút Tất cả khoa -->
+                  <button onclick="app5s.setScheduleDeptFilter('all')" data-dept-pill="all" class="shrink-0 px-3 py-1.5 rounded-xl transition ${
+                    this.scheduleState.selectedDept === 'all'
                       ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                   }">
-                    <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
-                    <span>${d.name}</span>
+                    Tất cả khoa (${depts.length})
                   </button>
-                `).join('')}
-                <!-- 20 Khoa phòng (Lặp lại lần 2 để tạo vòng cuộn vô tận mượt mà) -->
-                ${depts.map(d => `
-                  <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
-                    this.scheduleState.selectedDept === String(d.id)
-                      ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
-                  }">
-                    <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
-                    <span>${d.name}</span>
-                  </button>
-                `).join('')}
+                  <!-- 20 Khoa phòng (Lần 1) -->
+                  ${depts.map(d => `
+                    <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                      this.scheduleState.selectedDept === String(d.id)
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                    }">
+                      <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                      <span>${d.name}</span>
+                    </button>
+                  `).join('')}
+                  <!-- 20 Khoa phòng (Lặp lại lần 2) -->
+                  ${depts.map(d => `
+                    <button onclick="app5s.setScheduleDeptFilter('${d.id}')" data-dept-pill="${d.id}" class="shrink-0 px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1 ${
+                      this.scheduleState.selectedDept === String(d.id)
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                    }">
+                      <span class="text-[9px] opacity-75 font-mono text-emerald-500">#${d.order || ''}</span>
+                      <span>${d.name}</span>
+                    </button>
+                  `).join('')}
+                </div>
               </div>
-            </div>
+            ` : `
+              <div class="bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-xl px-3 py-2 flex items-center justify-between text-xs">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="shield" class="w-4 h-4 text-indigo-600"></i>
+                  <span class="font-bold text-indigo-900 dark:text-indigo-200">
+                    Khoa phòng: <strong>${(this.data.departments || []).find(d => String(d.id) === String(userDeptId))?.name || 'Khoa Nội Bộ'}</strong>
+                  </span>
+                </div>
+                <span class="text-[10px] bg-indigo-200 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-mono font-bold px-2 py-0.5 rounded-md">
+                  ${filteredRooms.length} Vị trí làm việc
+                </span>
+              </div>
+            `}
           </div>
 
           <!-- Bộ lọc Trạng thái hoạt động & Kiểm duyệt ảnh 5S (V8) -->
@@ -6178,7 +6270,7 @@ Trân trọng cảm ơn!`);
                     ${(isWorking && s5.photo && this.canUserReviewAudits()) ? `
                       <button onclick="app5s.openReviewShiftPhotoModal(${r.id})" class="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-[11px] font-black transition flex items-center space-x-1 shadow-md">
                         <i data-lucide="award" class="w-3.5 h-3.5"></i>
-                        <span>${this.isAdmin() || this.isHospitalLeaderOrSupervisor() || this.canManageDeptRooms(room.department_id) ? (s5.status === 'approved' || s5.status === 'rejected' ? 'CHẤM LẠI 5S' : '⭐ CHẤM 5S') : 'XEM ẢNH / CẬP NHẬT'}</span>
+                        <span>${this.isAdmin() || this.isHospitalLeaderOrSupervisor() || this.canManageDeptRooms(r.department_id) ? (s5.status === 'approved' || s5.status === 'rejected' ? 'CHẤM LẠI 5S' : '⭐ CHẤM 5S') : 'XEM ẢNH / CẬP NHẬT'}</span>
                       </button>
                     ` : ''}
                   </div>
@@ -6237,8 +6329,13 @@ Trân trọng cảm ơn!`);
               </div>
             </div>
 
-            <!-- Huy hiệu vai trò chính thức -->
-            <div class="shrink-0">
+            <!-- Nút Quả Chuông Thông Báo & Huy hiệu vai trò chính thức -->
+            <div class="shrink-0 flex items-center space-x-1.5">
+              <button onclick="app5s.openNotificationsCenterModal()" title="Trung tâm thông báo 5S & Bật/Tắt chuông" class="p-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-800 relative transition flex items-center justify-center">
+                <i data-lucide="bell" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+                <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
+                <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full"></span>
+              </button>
               <span class="text-[9.5px] font-bold px-2 py-1 rounded-xl flex items-center space-x-1 ${
                 this.isAdmin() 
                   ? 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-300'
@@ -6291,16 +6388,7 @@ Trân trọng cảm ơn!`);
             </div>
             <h1 class="text-lg font-black tracking-tight leading-tight">${hosp.name}</h1>
             <p class="text-[11px] text-emerald-100 opacity-90 line-clamp-1">${hosp.slogan}</p>
-            <div class="pt-2 flex items-center justify-between border-t border-white/20 text-[10px]">
-              <div>
-                <span class="opacity-75 block text-[9px]">Trưởng Ban 5S:</span>
-                <span class="font-bold">${hosp.director}</span>
-              </div>
-              <div class="text-right">
-                <span class="opacity-75 block text-[9px]">Cán bộ Giám sát:</span>
-                <span class="font-bold">${hosp.officer}</span>
-              </div>
-            </div>
+            
           </div>
         </div>
 
@@ -6419,11 +6507,13 @@ Trân trọng cảm ơn!`);
                 Các khoa chưa nộp: ${dailyStatus.uncompletedDepts.slice(0, 5).map(d => d.name).join(', ')}${dailyStatus.uncompletedDepts.length > 5 ? '...' : ''}
               </div>
               <div class="flex items-center space-x-2 pt-1">
-                <button onclick="app5s.openReminderModal()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-xs">
-                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                  <span>Phát thông báo nhắc nhở toàn viện</span>
-                </button>
-                <button onclick="app5s.setDeptDailyFilter('uncompleted'); app5s.switchTab('departments');" class="bg-white dark:bg-slate-800 text-red-700 dark:text-red-300 border border-red-300 font-bold py-1.5 px-2.5 rounded-xl text-xs transition hover:bg-red-50">
+                ${this.canBroadcastHospitalNotice() ? `
+                  <button onclick="app5s.openReminderModal()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-xs">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                    <span>Phát thông báo nhắc nhở toàn viện</span>
+                  </button>
+                ` : ''}
+                <button onclick="app5s.setDeptDailyFilter('uncompleted'); app5s.switchTab('departments');" class="${this.canBroadcastHospitalNotice() ? '' : 'w-full'} bg-white dark:bg-slate-800 text-red-700 dark:text-red-300 border border-red-300 font-bold py-1.5 px-2.5 rounded-xl text-xs transition hover:bg-red-50">
                   <span>Xem ${dailyStatus.uncompletedDepts.length} khoa →</span>
                 </button>
               </div>
@@ -6470,68 +6560,6 @@ Trân trọng cảm ơn!`);
               </div>
             </div>
           ` : ''}
-        </div>
-
-        <!-- Thẻ Thống Kê 5S Bệnh Viện (Có thể bấm để xem chi tiết ngay) -->
-        <div class="grid grid-cols-2 gap-3">
-          <div onclick="app5s.switchTab('departments')" class="cursor-pointer bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1 hover:border-emerald-500 active:scale-[0.98] transition">
-            <div class="flex items-center justify-between text-slate-500 text-[11px]">
-              <span class="font-bold">Khoa / Phòng</span>
-              <i data-lucide="building-2" class="w-4 h-4 text-emerald-600"></i>
-            </div>
-            <div class="text-2xl font-black font-mono text-slate-800 dark:text-slate-100">${depts.length}</div>
-            <div class="text-[10px] text-emerald-600 font-bold flex items-center justify-between">
-              <span>${rooms.length} buồng phòng</span>
-              <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 px-1.5 py-0.5 rounded font-mono">Xem →</span>
-            </div>
-          </div>
-          <div onclick="app5s.switchTab('history')" class="cursor-pointer bg-white dark:bg-slate-800 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-1 hover:border-amber-500 active:scale-[0.98] transition">
-            <div class="flex items-center justify-between text-slate-500 text-[11px]">
-              <span class="font-bold">Điểm TB Toàn Viện</span>
-              <i data-lucide="award" class="w-4 h-4 text-amber-500"></i>
-            </div>
-            <div class="text-2xl font-black font-mono text-slate-800 dark:text-slate-100">${hosp.averageScore}</div>
-            <div class="text-[10px] text-emerald-600 font-bold flex items-center justify-between">
-              <span>Tuân thủ: 100%</span>
-              <span class="text-[9px] bg-amber-100 dark:bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-700 dark:text-amber-300">Lịch sử →</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Nút Hành Động Nổi Bật Mở Ngay Danh Sách 20 Khoa Phòng & 75 Buồng Phòng -->
-        <button onclick="app5s.switchTab('departments')" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-[0.98] text-white p-3.5 rounded-2xl font-bold flex items-center justify-between shadow-sm transition">
-          <div class="flex items-center space-x-2.5">
-            <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-              <i data-lucide="building-2" class="w-5 h-5 text-white"></i>
-            </div>
-            <div class="text-left">
-              <div class="text-xs font-black">Danh Mục 20 Khoa/Phòng & 75 Khu Vực Làm Việc</div>
-              <div class="text-[10px] text-emerald-100 font-normal">Chạm vào đây để xem chi tiết buồng phòng và tiêu chuẩn 5S</div>
-            </div>
-          </div>
-          <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
-        </button>
-
-
-
-        <!-- Lối Tắt Nhanh Đầy Đủ 4 Mục Chính -->
-        <div class="grid grid-cols-4 gap-2">
-          <button onclick="app5s.switchTab('schedule')" class="p-2.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-center space-y-1 hover:bg-indigo-100 transition">
-            <i data-lucide="calendar-clock" class="w-5 h-5 mx-auto text-indigo-600"></i>
-            <span class="block text-[11px] font-bold text-indigo-900 dark:text-indigo-200">Khu Vực</span>
-          </button>
-          <button onclick="app5s.switchTab('audit')" class="p-2.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-center space-y-1 hover:bg-emerald-100 transition">
-            <i data-lucide="camera" class="w-5 h-5 mx-auto text-emerald-600"></i>
-            <span class="block text-[11px] font-bold text-emerald-900 dark:text-emerald-200">Chấm 5S</span>
-          </button>
-          <button onclick="app5s.switchTab('departments')" class="p-2.5 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-center space-y-1 hover:bg-teal-100 transition">
-            <i data-lucide="building-2" class="w-5 h-5 mx-auto text-teal-600"></i>
-            <span class="block text-[11px] font-bold text-teal-900 dark:text-teal-200">Khoa Phòng</span>
-          </button>
-          <button onclick="app5s.switchTab('staff')" class="p-2.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-center space-y-1 hover:bg-blue-100 transition">
-            <i data-lucide="users" class="w-5 h-5 mx-auto text-blue-600"></i>
-            <span class="block text-[11px] font-bold text-blue-900 dark:text-blue-200">Nhân Sự</span>
-          </button>
         </div>
 
         <!-- WIDGET BÁO CÁO TỔNG KẾT & ĐÁNH GIÁ 5S CUỐI NGÀY (V8) -->
@@ -6725,32 +6753,7 @@ Trân trọng cảm ơn!`);
           </div>
         </div>
 
-        <!-- V18: WIDGET THỐNG KÊ LƯỢT TRUY CẬP TOÀN VIỆN (YÊU CẦU 14) -->
-        <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-4 shadow-md space-y-3">
-          <div class="flex items-center justify-between border-b border-white/10 pb-2">
-            <div class="flex items-center space-x-2">
-              <i data-lucide="activity" class="w-4 h-4 text-emerald-400 animate-pulse"></i>
-              <h3 class="text-xs font-black uppercase tracking-wider text-emerald-200">Lưu Lượng Truy Cập Hệ Thống 5S VPI</h3>
-            </div>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-mono font-bold">
-              Trực tiếp 24/7
-            </span>
-          </div>
-          <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="bg-white/10 rounded-2xl p-2.5">
-              <div class="text-[10px] text-slate-300 font-medium">Tổng Lượt Truy Cập</div>
-              <div class="text-base font-black font-mono text-emerald-400 mt-0.5">${(this.visitorStats?.total || 1286).toLocaleString('vi-VN')}</div>
-            </div>
-            <div class="bg-white/10 rounded-2xl p-2.5">
-              <div class="text-[10px] text-slate-300 font-medium">Lượt Xem Hôm Nay</div>
-              <div class="text-base font-black font-mono text-cyan-300 mt-0.5">${(this.visitorStats?.today || 48).toLocaleString('vi-VN')}</div>
-            </div>
-            <div class="bg-white/10 rounded-2xl p-2.5">
-              <div class="text-[10px] text-slate-300 font-medium">Quy Mô Giám Sát</div>
-              <div class="text-base font-black font-mono text-amber-300 mt-0.5">${depts.length} Khoa • 75 Vị trí</div>
-            </div>
-          </div>
-        </div>
+
         <!-- Giới thiệu 5 Tiêu chuẩn 5S Y Tế -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-3">
           <div class="flex items-center justify-between border-b pb-2">
@@ -6773,6 +6776,21 @@ Trân trọng cảm ơn!`);
         </div>
 
 
+
+        <!-- V19: WIDGET LƯU LƯỢNG TRUY CẬP HỆ THỐNG CO NHỎ Ở CUỐI TRANG -->
+        <div class="bg-slate-900/90 dark:bg-slate-950/90 text-white rounded-2xl px-3 py-2 border border-slate-700/60 shadow-xs flex items-center justify-between text-xs">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400 animate-pulse"></i>
+            <span class="font-bold text-[10.5px] text-emerald-200">Lưu lượng truy cập 5S VPI:</span>
+          </div>
+          <div class="flex items-center space-x-2.5 font-mono text-[10px]">
+            <span>Tổng: <strong class="text-emerald-400 font-black">${(this.visitorStats?.total || 1286).toLocaleString('vi-VN')}</strong></span>
+            <span class="opacity-40">•</span>
+            <span>Hôm nay: <strong class="text-cyan-300 font-black">${(this.visitorStats?.today || 48).toLocaleString('vi-VN')}</strong></span>
+            <span class="opacity-40">•</span>
+            <span class="text-amber-300 font-bold">${depts.length} Khoa • ${rooms.length} Vị trí</span>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -7466,7 +7484,7 @@ Trân trọng cảm ơn!`);
                           <span class="px-2 py-0.5 rounded-full text-[9.5px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">ĐẠT 5S</span>
                         </div>
                         <!-- V16: Sửa và Xóa khu vực làm việc CHỈ HIỂN THỊ cho Quản Lý Khoa hoặc Admin -->
-                        ${(this.isAdmin() || this.canManageDeptRooms(room.department_id)) ? `
+                        ${(this.isAdmin() || this.canManageDeptRooms(r.department_id)) ? `
                           <button onclick="app5s.openEditRoomModal('${room.id}')" title="Chỉnh sửa thông tin khu vực làm việc này" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
                             <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                           </button>
@@ -10065,7 +10083,7 @@ Trân trọng cảm ơn!`);
   deleteRoom(roomId) {
     const room = (this.data.rooms || []).find(r => r.id == roomId);
     if (!room) return;
-    if (!this.canManageDeptRooms(room.department_id)) {
+    if (!this.canManageDeptRooms(r.department_id)) {
       alert('🔒 Bạn không có quyền xóa khu vực làm việc của khoa phòng này!');
       return;
     }
@@ -10890,9 +10908,10 @@ Trân trọng cảm ơn!`);
 
           <div class="space-y-2 max-h-72 overflow-y-auto pr-1 no-scrollbar">
             ${displayedDepts.map(d => {
-              const isCompleted = completedDeptIds.has(d.id);
+              const roomStatus = this.getDepartmentRoom5SSubmissionStatus(d.id, date);
+              const isCompleted = roomStatus.isFullyCompleted;
               const deptEval = evals.find(e => e.dept_id == d.id && e.date === date) || evals.find(e => e.dept_id == d.id);
-              const deptRooms = (this.data.rooms || []).filter(r => r.department_id == d.id);
+              const deptRooms = roomStatus.totalRooms > 0 ? (this.data.rooms || []).filter(r => r.department_id == d.id) : [];
               const deptAudits = dateAudits.filter(a => a.department_id == d.id);
 
               return `
@@ -10913,14 +10932,34 @@ Trân trọng cảm ơn!`);
                       ${isCompleted 
                         ? `<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                              <i data-lucide="check" class="w-2.5 h-2.5"></i>
-                             <span>ĐÃ THỰC HIỆN (${deptAudits.length > 0 ? deptAudits.length + ' phiếu' : 'Đã nộp ảnh'})</span>
+                             <span>HOÀN THÀNH (${roomStatus.doneCount}/${roomStatus.totalRooms} phòng)</span>
                            </span>` 
                         : `<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-100 text-red-800 border border-red-300">
-                             <i data-lucide="x" class="w-2.5 h-2.5"></i>
-                             <span>CHƯA THỰC HIỆN</span>
+                             <i data-lucide="alert-triangle" class="w-2.5 h-2.5"></i>
+                             <span>CHƯA HOÀN THÀNH (${roomStatus.doneCount}/${roomStatus.totalRooms} phòng)</span>
                            </span>`
                       }
                     </div>
+                  </div>
+
+                  <!-- V19: PHÂN TÍCH CHI TIẾT TỪNG PHÒNG ĐÃ LÀM VÀ CHƯA LÀM -->
+                  <div class="bg-slate-50 dark:bg-slate-900/60 rounded-xl p-2 text-[10.5px] space-y-1 border border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                      <span class="text-emerald-700 dark:text-emerald-400 font-bold">🟢 Đã nộp ảnh 5S (${roomStatus.doneCount} vị trí):</span>
+                      <span class="text-[9.5px] text-slate-400 font-mono">${roomStatus.rate}%</span>
+                    </div>
+                    <div class="text-slate-600 dark:text-slate-300 text-[10px] pl-1">
+                      ${roomStatus.doneRooms.length > 0 ? roomStatus.doneRooms.map(r => r.name).join(', ') : '<em class="text-slate-400">Chưa có phòng nào nộp ảnh</em>'}
+                    </div>
+
+                    ${roomStatus.missingRooms.length > 0 ? `
+                      <div class="pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+                        <div class="text-red-700 dark:text-red-400 font-bold">🔴 Còn thiếu chưa nộp (${roomStatus.missingCount} vị trí):</div>
+                        <div class="text-red-800 dark:text-red-300 text-[10px] pl-1 font-medium">
+                          ${roomStatus.missingRooms.map(r => r.name).join(', ')}
+                        </div>
+                      </div>
+                    ` : ''}
                   </div>
 
                   <div class="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-700/60 text-[11px]">
@@ -11336,6 +11375,259 @@ Trân trọng cảm ơn!`);
     `);
     printWin.document.close();
   }
+
+  // =========================================================================
+  // V19 PRO: HỆ THỐNG THÔNG BÁO (CHUÔNG) & ÂM THANH Y TẾ DU DƯƠNG (WEB AUDIO API)
+  // =========================================================================
+  isSoundEnabled() {
+    try {
+      return localStorage.getItem('vpi_sound_enabled') !== 'false';
+    } catch(e) { return true; }
+  }
+
+  toggleSound() {
+    const cur = this.isSoundEnabled();
+    const next = !cur;
+    try {
+      localStorage.setItem('vpi_sound_enabled', next ? 'true' : 'false');
+    } catch(e) {}
+    this.playNotificationChime(true);
+    this.showToast(next ? '🔔 Đã BẬT âm thanh chuông thông báo!' : '🔕 Đã TẮT âm thanh chuông thông báo!');
+    this.render();
+  }
+
+  playNotificationChime(forcePlay = false) {
+    if (!forcePlay && !this.isSoundEnabled()) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+      const now = ctx.currentTime;
+      // Tone 1: E5 (659.25 Hz)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(659.25, now);
+      gain1.gain.setValueAtTime(0.18, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.35);
+
+      // Tone 2: G#5 (830.61 Hz) du dương chuẩn y tế
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(830.61, now + 0.12);
+      gain2.gain.setValueAtTime(0.22, now + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.12);
+      osc2.stop(now + 0.55);
+    } catch (err) {
+      console.warn('Audio chime notice:', err);
+    }
+  }
+
+  openNotificationsCenterModal() {
+    const soundOn = this.isSoundEnabled();
+    const notice = this.data.hospital.notice;
+    const today = this.getTodayDateString();
+    const audits = this.data.audits || [];
+    const recentAudits = audits.slice(0, 10);
+
+    const modalHtml = `
+      <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-xs">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">TRUNG TÂM THÔNG BÁO 5S VPI</h3>
+              <p class="text-[10px] text-amber-600 font-bold">Cập nhật tin tức & Chuông cảnh báo toàn viện</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- HÀNG ĐIỀU KHIỂN BẬT - TẮT CHUÔNG BÁO (YÊU CẦU 9) -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/40 p-3 rounded-2xl border border-amber-200 dark:border-amber-800 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-xl ${soundOn ? 'bg-amber-600 text-white' : 'bg-slate-300 dark:bg-slate-700 text-slate-500'} flex items-center justify-center">
+              <i data-lucide="${soundOn ? 'volume-2' : 'volume-x'}" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-xs font-black text-slate-900 dark:text-white">
+                Âm thanh chuông thông báo: <strong>${soundOn ? 'ĐANG BẬT 🔔' : 'ĐANG TẮT 🔕'}</strong>
+              </div>
+              <div class="text-[10px] text-slate-500">Chuông phát khi có thông báo nhắc nhở & khi nộp ảnh 5S</div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <button onclick="app5s.playNotificationChime(true)" title="Nghe thử âm chuông" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 rounded-xl text-[10.5px] font-bold hover:bg-amber-100 transition">
+              🔊 Nghe thử
+            </button>
+            <button onclick="app5s.toggleSound(); app5s.openNotificationsCenterModal();" class="px-3 py-1 ${soundOn ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'} rounded-xl text-[10.5px] font-bold shadow-xs transition">
+              ${soundOn ? 'Tắt Chuông' : 'Bật Chuông'}
+            </button>
+          </div>
+        </div>
+
+        <!-- THÔNG BÁO NHẮC NHỞ TOÀN VIỆN HIỆN TẠI -->
+        <div class="space-y-2">
+          <div class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+            <span>Thông báo nhắc nhở toàn viện:</span>
+            ${this.canBroadcastHospitalNotice() ? `
+              <button onclick="app5s.openReminderModal()" class="text-[10px] text-red-600 font-bold hover:underline">
+                + Phát thông báo mới
+              </button>
+            ` : ''}
+          </div>
+
+          ${notice && notice.enabled ? `
+            <div class="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 p-3 rounded-2xl space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-black uppercase text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/60 px-2 py-0.5 rounded-md">
+                  ${notice.title || 'THÔNG BÁO KHẨN'}
+                </span>
+                <span class="text-[9.5px] text-slate-400 font-mono">${notice.time || 'Hôm nay'}</span>
+              </div>
+              <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">${notice.content || ''}</p>
+              <div class="text-[9.5px] text-red-600 font-bold">Người phát: ${notice.author || 'Ban Chỉ Đạo 5S VPI'}</div>
+            </div>
+          ` : `
+            <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl text-center text-xs text-slate-400">
+              Hiện không có thông báo nhắc nhở khẩn toàn viện.
+            </div>
+          `}
+        </div>
+
+        <!-- THÔNG BÁO HOẠT ĐỘNG GỬI ẢNH 5S GẦN ĐÂY -->
+        <div class="space-y-2">
+          <div class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+            <span>Hoạt động nộp ảnh 5S gần đây:</span>
+            <span class="text-[10px] text-emerald-600 font-mono font-bold">${recentAudits.length} hoạt động</span>
+          </div>
+
+          <div class="space-y-1.5 max-h-56 overflow-y-auto no-scrollbar pr-1">
+            ${recentAudits.map(a => `
+              <div class="bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <div class="w-6 h-6 rounded-lg ${a.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center font-bold text-[10px]">
+                    <i data-lucide="${a.status === 'approved' ? 'check' : 'clock'}" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200">${a.location || 'Buồng phòng'}</div>
+                    <div class="text-[9.5px] text-slate-400">Bởi <strong>${a.evaluator_name || 'Nhân viên'}</strong> • ${a.audit_date || today}</div>
+                  </div>
+                </div>
+                <span class="text-[9.5px] px-2 py-0.5 rounded-md font-bold ${
+                  a.status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                }">
+                  ${a.status === 'approved' ? 'Đã duyệt' : 'Chờ chấm'}
+                </span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+  }
+
+  // =========================================================================
+  // V19 PRO: ĐỒNG BỘ DỮ LIỆU & AVATAR ĐA THIẾT BỊ (REAL-TIME CROSS-DEVICE SYNC)
+  // =========================================================================
+  initCrossDeviceSync() {
+    try {
+      this.syncChannel = new BroadcastChannel('vpi_5s_cross_tab_channel');
+      this.syncChannel.onmessage = (event) => {
+        if (event.data && event.data.type === 'DATA_UPDATED') {
+          this.loadData();
+          this.render();
+        }
+      };
+    } catch(e) {}
+
+    // Kéo dữ liệu từ server ngay khi mở ứng dụng
+    this.pullStateFromServer();
+
+    // Định kỳ 6 giây kiểm tra cập nhật nền
+    setInterval(() => {
+      this.pullStateFromServer();
+    }, 6000);
+
+    // Kéo dữ liệu ngay khi người dùng chuyển sang tab ứng dụng (trên Smartphone hoặc PC)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.pullStateFromServer();
+      }
+    });
+  }
+
+  async pushStateToServer() {
+    try {
+      const payload = {
+        timestamp: this.data.last_updated || Date.now(),
+        client: '5s-vpi-web-client',
+        data: this.data
+      };
+      await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      // Offline hoặc standalone static mode, bỏ qua lỗi ngầm
+    }
+  }
+
+  async pullStateFromServer(force = false) {
+    try {
+      const res = await fetch('/api/sync');
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json || !json.data) return;
+
+      const serverTime = json.timestamp || 0;
+      const localTime = this.data.last_updated || 0;
+
+      if (force || serverTime > localTime) {
+        const currentAuth = this.data.auth;
+        this.data = json.data;
+        if (currentAuth && currentAuth.isLoggedIn) {
+          const updatedStaff = (this.data.staff || []).find(s => s.code === currentAuth.currentUserId);
+          if (updatedStaff) {
+            this.data.auth = {
+              ...currentAuth,
+              isLoggedIn: true,
+              user: {
+                ...currentAuth.user,
+                avatar: updatedStaff.avatar || currentAuth.user?.avatar,
+                phone: updatedStaff.phone || currentAuth.user?.phone,
+                role: updatedStaff.role,
+                title: updatedStaff.title || updatedStaff.position
+              }
+            };
+          }
+        }
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data)); } catch(e) {}
+        this.render();
+      }
+    } catch (err) {
+      // Offline
+    }
+  }
+
 }
 
 let app5s;

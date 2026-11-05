@@ -1,6 +1,3 @@
-* {
-  font-family: 'Times New Roman', Times, 'Tinos', serif !important;
-}
 /* ==========================================================================
    5S VPI - GIAO DIỆN CHUYÊN DỤNG CHO BỆNH VIỆN VĨNH PHÚC
    Hệ Thống Quản Lý Vệ Sinh & Chụp Ảnh Báo Cáo 5S Buồng Phòng Y Tế
@@ -41,7 +38,7 @@
 }
 
 body {
-  font-family: 'Times New Roman', Times, 'Tinos', serif !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -77,51 +74,19 @@ body {
   scrollbar-width: none;
 }
 
-/* Smooth Touch Scrolling */
-#main-content-scroll {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-
-/* Mobile Frame Wrapper Simulation (Desktop / Laptop) */
+/* Mobile Frame Wrapper Simulation (Identical to RadOps CDHA) */
 .mobile-frame-mode #app-container {
   max-width: 440px;
-  margin: 16px auto;
-  border-radius: 36px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 0 10px #1e293b, 0 0 0 12px #475569;
+  margin: 20px auto;
+  border-radius: 40px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 0 12px #1e293b, 0 0 0 14px #475569;
   overflow: hidden;
   height: calc(100vh - 40px);
-  max-height: 920px;
+  max-height: 900px;
   display: flex;
   flex-direction: column;
   position: relative;
   background: var(--bg-main);
-}
-
-/* Tối ưu hóa trải nghiệm trên điện thoại thật (Màn hình <= 640px) */
-@media (max-width: 640px) {
-  #view-toggle {
-    display: none !important;
-  }
-  body {
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-  }
-  body.mobile-frame-mode #app-container,
-  #app-container {
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    max-height: none !important;
-  }
 }
 
 /* Phone Bezel Notch */
