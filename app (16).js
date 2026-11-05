@@ -2030,6 +2030,13 @@ class App5S {
 
     this.activeTab = 'overview';
     this.viewMode = 'mobile';
+    // Tự động tối ưu chế độ hiển thị trên Smartphone thật
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 1024) {
+      this.viewMode = 'full';
+      if (typeof document !== 'undefined' && document.body) {
+        document.body.classList.remove('mobile-frame-mode');
+      }
+    }
     try {
       this.viewMode = localStorage.getItem('vpi_5s_view_mode') || 'mobile';
     } catch (e) {}
@@ -2329,9 +2336,28 @@ class App5S {
   saveData(syncToServer = true) {
     try {
       this.data.last_updated = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+      } catch (quotaError) {
+        console.warn('LocalStorage Quota Exceeded. Trimming older photos in audits...', quotaError);
+        if (Array.isArray(this.data.audits) && this.data.audits.length > 25) {
+          for (let i = 25; i < this.data.audits.length; i++) {
+            if (this.data.audits[i].after_photo && this.data.audits[i].after_photo.length > 500) {
+              this.data.audits[i].after_photo_archived = true;
+              this.data.audits[i].after_photo = '';
+            }
+          }
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+          } catch (e2) {}
+        }
+      }
+
+      // Lưu song song vào IndexedDB (chống mất dữ liệu và dung lượng không giới hạn)
+      this.persistToIndexedDb(this.data);
+
       if (this.syncChannel) {
-        try { this.syncChannel.postMessage({ type: 'DATA_UPDATED', timestamp: this.data.last_updated }); } catch(e) {}
+        try { this.syncChannel.postMessage({ type: 'DATA_UPDATED', timestamp: this.data.last_updated }); } catch (e) {}
       }
       if (syncToServer) {
         this.pushStateToServer();
@@ -2469,6 +2495,7 @@ class App5S {
     this.updateHospitalBranding();
     this.updateNoticeBanner();
     this.initCrossDeviceSync();
+    this.initAsyncStorage();
     this.render();
   }
 
@@ -4430,7 +4457,7 @@ Trân trọng cảm ơn!`);
           <div class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
             <i data-lucide="headset" class="w-3.5 h-3.5"></i>
           </div>
-          <span class="uppercase tracking-tight font-black text-emerald-700 dark:text-emerald-400">HỖ TRỢ KỸ THUẬT & LIÊN HỆ HỆ THỐNG 5S VPI</span>
+          <span class="uppercase tracking-tight font-black text-emerald-700 dark:text-emerald-400">HỖ TRỢ KỸ THUẬT HỆ THỐNG 5S VPI</span>
         </div>
 
         <div class="text-xs font-black text-slate-700 dark:text-slate-200">
@@ -5329,7 +5356,7 @@ Trân trọng cảm ơn!`);
       shiftName: opt.shiftName
     });
 
-    const photoUrl = canvas.toDataURL('image/jpeg', 0.85);
+    const photoUrl = canvas.toDataURL('image/jpeg', 0.68);
 
     this.stopLiveCameraStream();
 
@@ -5386,7 +5413,7 @@ Trân trọng cảm ơn!`);
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
-        const maxDim = 1280;
+        const maxDim = 850;
         if (width > maxDim || height > maxDim) {
           if (width > height) {
             height = Math.round((height * maxDim) / width);
@@ -5414,7 +5441,7 @@ Trân trọng cảm ơn!`);
           shiftName: this.newAuditState.shift || 'Ca trực buồng phòng'
         });
 
-        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.68);
 
         this.updateShiftPhotoPreviewUI(compressedDataUrl);
         this.showToast('✅ Đã nạp và hiển thị ảnh minh chứng 5S thành công!');
@@ -6379,16 +6406,20 @@ Trân trọng cảm ơn!`);
           </div>
         </div>
 
-        <!-- Banner Bệnh viện Vĩnh Phúc VPI -->
-        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-800 p-5 text-white shadow-lg">
-          <div class="relative z-10 space-y-2">
-            <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase">
-              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-300"></i>
-              <span>5S BỆNH VIỆN CHUẨN QUỐC GIA</span>
+        <!-- Banner Bệnh viện Vĩnh Phúc VPI (V20: Tích hợp Logo Bệnh Viện) -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-800 p-4 text-white shadow-lg">
+          <div class="relative z-10 flex items-center space-x-3.5">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-1.5 shadow-md shrink-0 flex items-center justify-center border border-emerald-300/40">
+              <img src="logo-vpi-hospital.jpg" alt="Logo BV VPI" class="w-full h-full object-contain rounded-xl">
             </div>
-            <h1 class="text-lg font-black tracking-tight leading-tight">${hosp.name}</h1>
-            <p class="text-[11px] text-emerald-100 opacity-90 line-clamp-1">${hosp.slogan}</p>
-            
+            <div class="flex-1 min-w-0 space-y-1">
+              <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold text-emerald-100">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-300"></i>
+                <span>5S BỆNH VIỆN CHUẨN QUỐC GIA</span>
+              </div>
+              <h1 class="text-base sm:text-lg font-black tracking-tight leading-tight truncate">${hosp.name}</h1>
+              <p class="text-[11px] text-emerald-100 opacity-90 line-clamp-1">${hosp.slogan}</p>
+            </div>
           </div>
         </div>
 
@@ -6402,20 +6433,27 @@ Trân trọng cảm ơn!`);
           let html = '';
           if (canHospitalNotice) {
             html += `
-              <div class="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 rounded-2xl p-3.5 shadow-xs space-y-1.5 animate-pulse">
+              <div class="bg-red-50 dark:bg-gradient-to-r dark:from-red-950 dark:via-red-900 dark:to-rose-950 border-2 border-red-200 dark:border-red-500 rounded-2xl p-3.5 shadow-md space-y-2.5">
                 <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-1.5 text-red-700 dark:text-red-400 font-black text-xs">
-                    <span class="bg-red-600 text-white text-[9px] px-1.5 py-0.2 rounded font-mono">TOÀN VIỆN</span>
-                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                    <span>${hosp.notice.title}</span>
+                  <div class="flex items-center space-x-2 text-red-700 dark:text-white font-black text-xs">
+                    <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full font-mono shadow-xs border border-red-300">TOÀN VIỆN</span>
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-red-600 dark:text-amber-400 animate-bounce"></i>
+                    <span class="dark:text-white font-black text-xs sm:text-sm tracking-wide">${hosp.notice.title}</span>
                   </div>
-                  <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-red-600 hover:underline font-bold">Chỉnh sửa</button>
+                  ${this.canBroadcastHospitalNotice() ? `
+                    <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-red-600 dark:text-amber-300 hover:underline font-extrabold flex items-center space-x-1">
+                      <i data-lucide="edit-3" class="w-3 h-3"></i>
+                      <span>Sửa</span>
+                    </button>
+                  ` : ''}
                 </div>
-                <p class="text-xs text-red-900 dark:text-red-200 leading-relaxed font-medium">
+                <div class="text-xs text-red-950 dark:text-red-50 leading-relaxed font-bold dark:bg-black/35 dark:p-3 dark:rounded-xl dark:border dark:border-red-500/30">
                   ${hosp.notice.content}
-                </p>
-                <div class="text-[10px] text-red-500 text-right">
-                  Cập nhật: ${hosp.notice.updatedAt} • Tác giả: ${hosp.notice.author || 'Ban Giám Sát'}
+                </div>
+                <div class="text-[10px] text-red-600 dark:text-red-200 font-semibold text-right flex items-center justify-end space-x-2">
+                  <span>🕒 Cập nhật: ${hosp.notice.updatedAt}</span>
+                  <span>•</span>
+                  <span>Tác giả: <strong class="text-red-800 dark:text-white font-black">${hosp.notice.author || 'Ban Giám Sát 5S'}</strong></span>
                 </div>
               </div>
             `;
@@ -6423,20 +6461,25 @@ Trân trọng cảm ơn!`);
 
           if (canDeptNotice) {
             html += `
-              <div class="bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-900/60 rounded-2xl p-3.5 shadow-xs space-y-1.5">
+              <div class="bg-indigo-50 dark:bg-gradient-to-r dark:from-indigo-950 dark:via-indigo-900 dark:to-slate-900 border-2 border-indigo-200 dark:border-indigo-500 rounded-2xl p-3.5 shadow-md space-y-2.5">
                 <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-1.5 text-indigo-700 dark:text-indigo-400 font-black text-xs">
-                    <span class="bg-indigo-600 text-white text-[9px] px-1.5 py-0.2 rounded font-mono">NỘI BỘ KHOA</span>
-                    <i data-lucide="bell" class="w-4 h-4"></i>
-                    <span>${deptNotice.title}</span>
+                  <div class="flex items-center space-x-2 text-indigo-700 dark:text-white font-black text-xs">
+                    <span class="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full font-mono shadow-xs border border-indigo-300">NỘI BỘ KHOA</span>
+                    <i data-lucide="bell" class="w-4 h-4 text-indigo-600 dark:text-cyan-400"></i>
+                    <span class="dark:text-white font-black text-xs sm:text-sm tracking-wide">${deptNotice.title}</span>
                   </div>
-                  <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-indigo-600 hover:underline font-bold">Chỉnh sửa</button>
+                  <button onclick="app5s.openNoticeEditModal()" class="text-[10px] text-indigo-600 dark:text-cyan-300 hover:underline font-extrabold flex items-center space-x-1">
+                    <i data-lucide="edit-3" class="w-3 h-3"></i>
+                    <span>Sửa</span>
+                  </button>
                 </div>
-                <p class="text-xs text-indigo-900 dark:text-indigo-200 leading-relaxed font-medium">
+                <div class="text-xs text-indigo-950 dark:text-indigo-50 leading-relaxed font-bold dark:bg-black/35 dark:p-3 dark:rounded-xl dark:border dark:border-indigo-500/30">
                   ${deptNotice.content}
-                </p>
-                <div class="text-[10px] text-indigo-500 text-right">
-                  Cập nhật: ${deptNotice.updatedAt} • Tác giả: ${deptNotice.author || 'Quản lý khoa'}
+                </div>
+                <div class="text-[10px] text-indigo-600 dark:text-indigo-200 font-semibold text-right flex items-center justify-end space-x-2">
+                  <span>🕒 Cập nhật: ${deptNotice.updatedAt}</span>
+                  <span>•</span>
+                  <span>Tác giả: <strong class="text-indigo-800 dark:text-white font-black">${deptNotice.author || 'Quản lý khoa'}</strong></span>
                 </div>
               </div>
             `;
@@ -6595,14 +6638,17 @@ Trân trọng cảm ơn!`);
             </div>
           </div>
 
-          <div class="flex items-center justify-between pt-1">
-            <button onclick="app5s.openAllShiftAuditsCenterModal()" class="text-[11px] text-indigo-200 font-bold hover:text-white flex items-center space-x-1">
-              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-              <span>Trung tâm duyệt ảnh 5S hết ca &rarr;</span>
+          <div class="pt-2 border-t border-white/15 flex flex-col sm:flex-row gap-2">
+            <button onclick="app5s.openAllShiftAuditsCenterModal()" class="flex-1 py-2 px-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white rounded-xl shadow-md font-black text-xs flex items-center justify-center space-x-2 border border-emerald-300/40 transition-all transform active:scale-98">
+              <div class="w-5 h-5 rounded-lg bg-white/20 flex items-center justify-center">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-white"></i>
+              </div>
+              <span>TRUNG TÂM DUYỆT ẢNH 5S HẾT CA</span>
+              <span class="bg-white text-emerald-800 text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-xs">Duyệt</span>
             </button>
-            <button onclick="app5s.printDailyEvaluationReport()" class="text-[11px] text-indigo-200 font-bold hover:text-white flex items-center space-x-1">
+            <button onclick="app5s.printDailyEvaluationReport()" class="py-2 px-3 bg-white/15 hover:bg-white/25 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 border border-white/20 transition-all">
               <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-              <span>In bảng điểm &rarr;</span>
+              <span>In bảng điểm</span>
             </button>
           </div>
         </div>
@@ -6640,29 +6686,37 @@ Trân trọng cảm ơn!`);
                 </div>
               </div>
 
-              <!-- Thẻ cảnh báo hết ca chưa nộp 5S -->
-              ${schedStats.overdueCount > 0 ? `
-                <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-2xl p-2.5 flex items-center justify-between text-xs">
-                  <div class="flex items-center space-x-2">
-                    <i data-lucide="clock" class="w-4 h-4 text-amber-600 shrink-0 animate-bounce"></i>
-                    <div>
-                      <div class="font-bold text-amber-900 dark:text-amber-200">Có ${schedStats.overdueCount} buồng phòng hết ca chưa gửi ảnh 5S!</div>
-                      <div class="text-[10px] text-amber-700 dark:text-amber-300">Nhân viên cần chụp ảnh bàn giao ca trực</div>
-                    </div>
-                  </div>
-                  <button onclick="app5s.scheduleState.selectedStatusFilter = 'pending_5s'; app5s.switchTab('schedule');" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-[10px] font-bold shrink-0 transition">
-                    Đôn đốc ngay
-                  </button>
+              <div class="text-[10.5px] text-slate-500 dark:text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-700/60">
+                  <span>Tỷ lệ hoàn thành trực 5S: <strong class="text-emerald-600 dark:text-emerald-400 font-bold">${schedStats.complianceRate}%</strong></span>
+                  <span class="text-emerald-600 dark:text-emerald-400 font-bold flex items-center space-x-1">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                    <span>Toàn viện duy trì 5S chuẩn</span>
+                  </span>
                 </div>
-              ` : `
-                <div class="text-[10px] text-slate-500 flex items-center justify-between pt-0.5">
-                  <span>Tuân thủ 5S sau ca trực: <strong class="text-emerald-600">${schedStats.complianceRate}%</strong></span>
-                  <span class="text-emerald-600 font-bold">✓ Các ca trực đã bàn giao 5S</span>
-                </div>
-              `}
             </div>
           `;
         })()}
+
+                <!-- Giới thiệu 5 Tiêu chuẩn 5S Y Tế -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">Bộ Tiêu Chí 5S Y Tế VPI</h3>
+            <span class="text-[10px] text-emerald-600 font-bold">Chuẩn Bộ Y Tế</span>
+          </div>
+          <div class="space-y-2">
+            ${this.data.criteria.map(c => `
+              <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 flex items-start space-x-2.5">
+                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center shrink-0 font-mono">
+                  ${c.id}
+                </span>
+                <div class="text-xs">
+                  <span class="font-bold text-slate-800 dark:text-slate-200">${c.name}</span>
+                  <p class="text-[10.5px] text-slate-500 mt-0.5">${c.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
 
         <!-- V18: BẢNG HƯỚNG DẪN PHÂN LOẠI CHẤT THẢI Y TẾ TẠI NGUỒN THEO THÔNG TƯ 20/2021/TT-BYT (YÊU CẦU 2) -->
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 border border-slate-200/90 dark:border-slate-700 shadow-sm space-y-3.5">
@@ -6754,26 +6808,7 @@ Trân trọng cảm ơn!`);
         </div>
 
 
-        <!-- Giới thiệu 5 Tiêu chuẩn 5S Y Tế -->
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-2xs space-y-3">
-          <div class="flex items-center justify-between border-b pb-2">
-            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">Bộ Tiêu Chí 5S Y Tế VPI</h3>
-            <span class="text-[10px] text-emerald-600 font-bold">Chuẩn Bộ Y Tế</span>
-          </div>
-          <div class="space-y-2">
-            ${this.data.criteria.map(c => `
-              <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 flex items-start space-x-2.5">
-                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center shrink-0 font-mono">
-                  ${c.id}
-                </span>
-                <div class="text-xs">
-                  <span class="font-bold text-slate-800 dark:text-slate-200">${c.name}</span>
-                  <p class="text-[10.5px] text-slate-500 mt-0.5">${c.desc}</p>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
+
 
 
 
@@ -6787,8 +6822,6 @@ Trân trọng cảm ơn!`);
             <span>Tổng: <strong class="text-emerald-400 font-black">${(this.visitorStats?.total || 1286).toLocaleString('vi-VN')}</strong></span>
             <span class="opacity-40">•</span>
             <span>Hôm nay: <strong class="text-cyan-300 font-black">${(this.visitorStats?.today || 48).toLocaleString('vi-VN')}</strong></span>
-            <span class="opacity-40">•</span>
-            <span class="text-amber-300 font-bold">${depts.length} Khoa • ${rooms.length} Vị trí</span>
           </div>
         </div>
       </div>
@@ -7073,7 +7106,7 @@ Trân trọng cảm ơn!`);
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
-        const maxDim = 1280;
+        const maxDim = 850;
         if (width > maxDim || height > maxDim) {
           if (width > height) {
             height = Math.round((height * maxDim) / width);
@@ -7100,7 +7133,7 @@ Trân trọng cảm ơn!`);
           shiftName: this.newAuditState.shift || 'Phiếu kiểm tra 5S'
         });
 
-        const stampedUrl = canvas.toDataURL('image/jpeg', 0.85);
+        const stampedUrl = canvas.toDataURL('image/jpeg', 0.68);
         this.newAuditState.afterPhoto = stampedUrl;
         this.render();
         this.showToast('✅ Đã tải và đóng dấu ngày giờ thực tế vào ảnh thành công!');
@@ -9948,6 +9981,10 @@ Trân trọng cảm ơn!`);
     return title.includes('giám sát 5s') || title.includes('ban giám đốc') || title.includes('trưởng ban chỉ đạo') || title.includes('lãnh đạo viện') || title.includes('điều dưỡng trưởng bv');
   }
 
+  canBroadcastNotice() {
+    return this.canBroadcastHospitalNotice();
+  }
+
   canBroadcastHospitalNotice() {
     return this.isAdmin() || this.isHospitalLeaderOrSupervisor();
   }
@@ -11226,6 +11263,117 @@ Trân trọng cảm ơn!`);
     this.showToast(`✅ Đã lưu đánh giá 5S cho ${dept.name}: ${grade}!`);
   }
   // V18 PRO: XUẤT BẢN BÁO CÁO 5S IN A4 (PHÂN TÍCH ĐÃ THỰC HIỆN / CHƯA THỰC HIỆN; BỎ 100Đ; TÙY CHỈNH NGÀY & KHOA)
+
+  // =========================================================================
+  // V20 PRO: HỆ THỐNG LƯU TRỮ INDEXEDDB & CHỐNG MẤT DỮ LIỆU KHI TẢI LẠI TRANG
+  // =========================================================================
+  openIndexedDb() {
+    return new Promise((resolve) => {
+      if (!window.indexedDB) return resolve(null);
+      const req = window.indexedDB.open('vpi_5s_storage_v20', 1);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('full_state')) {
+          db.createObjectStore('full_state', { keyPath: 'key' });
+        }
+        if (!db.objectStoreNames.contains('audits')) {
+          db.createObjectStore('audits', { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+    });
+  }
+
+  async persistToIndexedDb(data) {
+    try {
+      const db = await this.openIndexedDb();
+      if (!db) return;
+      const tx = db.transaction(['full_state', 'audits'], 'readwrite');
+      const stateStore = tx.objectStore('full_state');
+      stateStore.put({ key: 'current_data', data: data, timestamp: Date.now() });
+
+      const auditStore = tx.objectStore('audits');
+      if (Array.isArray(data.audits)) {
+        data.audits.forEach(a => {
+          if (a && a.id) {
+            try { auditStore.put(a); } catch (e) {}
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('IndexedDB write error:', err);
+    }
+  }
+
+  async restoreFromIndexedDb() {
+    try {
+      const db = await this.openIndexedDb();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        const tx = db.transaction(['full_state', 'audits'], 'readonly');
+        const stateStore = tx.objectStore('full_state');
+        const req = stateStore.get('current_data');
+        req.onsuccess = () => {
+          if (req.result && req.result.data) {
+            resolve(req.result.data);
+          } else {
+            const auditStore = tx.objectStore('audits');
+            const allAuditsReq = auditStore.getAll();
+            allAuditsReq.onsuccess = () => {
+              resolve(allAuditsReq.result ? { audits: allAuditsReq.result } : null);
+            };
+            allAuditsReq.onerror = () => resolve(null);
+          }
+        };
+        req.onerror = () => resolve(null);
+      });
+    } catch (err) {
+      console.warn('IndexedDB read error:', err);
+      return null;
+    }
+  }
+
+  async initAsyncStorage() {
+    try {
+      const offlineData = await this.restoreFromIndexedDb();
+      if (offlineData) {
+        let changed = false;
+        if (Array.isArray(offlineData.audits) && offlineData.audits.length > 0) {
+          const currentAuditIds = new Set((this.data.audits || []).map(a => a.id));
+          offlineData.audits.forEach(a => {
+            if (!currentAuditIds.has(a.id)) {
+              this.data.audits.unshift(a);
+              changed = true;
+            } else {
+              const existing = this.data.audits.find(ex => ex.id === a.id);
+              if (existing && !existing.after_photo && a.after_photo) {
+                existing.after_photo = a.after_photo;
+                changed = true;
+              }
+            }
+          });
+        }
+        if (offlineData.rooms_schedule) {
+          for (const [k, v] of Object.entries(offlineData.rooms_schedule)) {
+            if (v && v.post_shift_5s && v.post_shift_5s.status === 'submitted') {
+              if (!this.data.rooms_schedule[k] || !this.data.rooms_schedule[k].post_shift_5s) {
+                if (!this.data.rooms_schedule[k]) this.data.rooms_schedule[k] = {};
+                this.data.rooms_schedule[k].post_shift_5s = v.post_shift_5s;
+                changed = true;
+              }
+            }
+          }
+        }
+        if (changed) {
+          this.render();
+        }
+      }
+    } catch (e) {
+      console.warn('Lỗi initAsyncStorage:', e);
+    }
+  }
+
   printDailyEvaluationReport(targetDate = null, targetDeptId = 'all') {
     const date = targetDate || this.getTodayDateString();
     let depts = this.getSortedDepartments();
@@ -11575,6 +11723,7 @@ Trân trọng cảm ơn!`);
   }
 
   async pushStateToServer() {
+    if (typeof window !== 'undefined' && window.location.protocol === 'file:') return;
     try {
       const payload = {
         timestamp: this.data.last_updated || Date.now(),
@@ -11592,6 +11741,7 @@ Trân trọng cảm ơn!`);
   }
 
   async pullStateFromServer(force = false) {
+    if (typeof window !== 'undefined' && window.location.protocol === 'file:') return;
     try {
       const res = await fetch('/api/sync');
       if (!res.ok) return;
@@ -11603,7 +11753,31 @@ Trân trọng cảm ơn!`);
 
       if (force || serverTime > localTime) {
         const currentAuth = this.data.auth;
+        const localAudits = this.data.audits || [];
+        const localSchedules = this.data.rooms_schedule || {};
+
         this.data = json.data;
+
+        // V20: BẢO VỆ TUYỆT ĐỐI KHÔNG BỊ MẤT ẢNH VÀ AUDIT ĐÃ GỬI TẠI MÁY CLIENT
+        if (localAudits.length > 0) {
+          const serverAuditIds = new Set((this.data.audits || []).map(a => a.id));
+          localAudits.forEach(la => {
+            if (!serverAuditIds.has(la.id)) {
+              this.data.audits.unshift(la);
+            }
+          });
+        }
+
+        if (!this.data.rooms_schedule) this.data.rooms_schedule = {};
+        for (const [k, v] of Object.entries(localSchedules)) {
+          if (v && v.post_shift_5s && v.post_shift_5s.status === 'submitted') {
+            if (!this.data.rooms_schedule[k] || !this.data.rooms_schedule[k].post_shift_5s) {
+              if (!this.data.rooms_schedule[k]) this.data.rooms_schedule[k] = {};
+              this.data.rooms_schedule[k].post_shift_5s = v.post_shift_5s;
+            }
+          }
+        }
+
         if (currentAuth && currentAuth.isLoggedIn) {
           const updatedStaff = (this.data.staff || []).find(s => s.code === currentAuth.currentUserId);
           if (updatedStaff) {
