@@ -1,0 +1,26 @@
+{
+  "name": "5S VPI",
+  "short_name": "5S VPI",
+  "description": "Ứng dụng Quản lý Vệ sinh & Chụp ảnh Báo cáo 5S Bệnh viện Đa khoa Vĩnh Phúc",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0369a1",
+  "theme_color": "#0284c7",
+  "categories": ["medical", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/static/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

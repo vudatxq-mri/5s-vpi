@@ -64,6 +64,14 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/app.css">
+
+  <script>
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 1024) {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.remove('mobile-frame-mode');
+      });
+    }
+  </script>
 </head>
 <body class="h-full bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200 mobile-frame-mode">
 
@@ -88,6 +96,13 @@
     </div>
 
     <div class="flex items-center space-x-2">
+      <!-- Nút Quả Chuông Thông Báo & Âm Báo Chuông (V19: Yêu Cầu 9) -->
+      <button onclick="app5s.openNotificationsCenterModal()" title="Trung tâm thông báo 5S VPI & Bật/Tắt chuông" class="relative bg-amber-950/80 hover:bg-amber-900 text-amber-300 font-semibold px-2.5 py-1 rounded-lg border border-amber-700/60 flex items-center space-x-1.5 transition">
+        <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-400"></i>
+        <span class="hidden sm:inline text-[11px]">Thông báo</span>
+        <span class="px-1.5 py-0.2 text-[9px] font-black font-mono rounded-full bg-red-600 text-white animate-pulse">3</span>
+      </button>
+
       <!-- Nút Hỗ trợ & Hotline 24/7 -->
       <button onclick="app5s.openContactSupportModal()" title="Thông tin liên hệ & Hỗ trợ kỹ thuật: vudatxq@gmail.com - Hotline: +84916306115" class="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 font-semibold px-2.5 py-1 rounded-lg border border-emerald-700/60 flex items-center space-x-1.5 transition">
         <i data-lucide="phone-call" class="w-3.5 h-3.5 text-emerald-400"></i>
