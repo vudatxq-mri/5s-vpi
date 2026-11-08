@@ -2959,7 +2959,25 @@ class App5S {
     return this.data.staff.find(s => s.code === auth.currentUserId || s.username === auth.currentUserId) || this.data.staff[0];
   }
 
+  purgeStaleCachesIfNeeded() {
+    const CURRENT_VERSION = 'v22_20261108';
+    try {
+      const savedVer = localStorage.getItem('vpi_5s_app_version');
+      if (savedVer !== CURRENT_VERSION) {
+        localStorage.setItem('vpi_5s_app_version', CURRENT_VERSION);
+        if ('caches' in window) {
+          caches.keys().then(keys => {
+            keys.forEach(k => {
+              if (k !== 'vpi-5s-cache-v22') caches.delete(k);
+            });
+          });
+        }
+      }
+    } catch (e) {}
+  }
+
   init() {
+    this.purgeStaleCachesIfNeeded();
     this.applyTheme();
     this.applyLocationMode();
     this.updateUserInterface();
@@ -3843,9 +3861,7 @@ class App5S {
     this.pushStateToServer();
     this.closeModal();
     this.render();
-    if (this.reviewCenterTab) {
-      setTimeout(() => this.openAllShiftAuditsCenterModal(this.reviewCenterTab, this.reviewCenterDept), 250);
-    }
+    // V20.3: Không tự mở lại Trung Tâm Chấm 5S sau khi duyệt
 
     if (result === 'pass') {
       this.showToast('✅ Đã duyệt: ĐẠT CHUẨN 5S cho khoa phòng!');
@@ -6286,25 +6302,17 @@ Trân trọng cảm ơn!`);
             return `
               <div class="grid grid-cols-4 gap-1.5">
                 ${canManage ? `
-                  <button onclick="app5s.openAllShiftAuditsCenterModal()" title="Kiểm tra & Chấm điểm 5S toàn viện" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 shadow-xs transition">
-                    <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0"></i>
-                    <span>CHẤM 5S (${stats.pendingReviewCount})</span>
-                  </button>
-                ` : `
-                  <button onclick="app5s.showReportLockedNotice('Chấm 5S')" title="Chức năng chỉ dành cho cán bộ quản lý / giám sát" class="py-2 px-1 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
-                    <i data-lucide="lock" class="w-3 h-3 text-slate-400 shrink-0"></i>
-                    <span>Chấm 5S 🔒</span>
-                  </button>
-                `}
-
-                ${canManage ? `
-                  <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết ngày" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
-                    <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
-                    <span>Báo Cáo</span>
+                  <button onclick="app5s.openDailySummaryModal()" title="Báo cáo tổng kết 5S hôm nay" class="py-2 px-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-1 shadow-xs transition">
+                    <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 shrink-0"></i>
+                    <span>Báo Cáo 5S</span>
                   </button>
                   <button onclick="app5s.openGoogleSheetSyncModal()" title="Đồng bộ Google Sheets & Xuất Excel" class="py-2 px-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>Xuất Excel</span>
+                  </button>
+                  <button onclick="app5s.printDailyEvaluationReport()" title="In bảng điểm và báo cáo 5S" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
+                    <i data-lucide="printer" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                    <span>In Báo Cáo</span>
                   </button>
                 ` : `
                   <button onclick="app5s.showReportLockedNotice('Báo Cáo')" title="Chỉ dành cho cán bộ quản lý" class="py-2 px-1 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
@@ -6314,6 +6322,10 @@ Trân trọng cảm ơn!`);
                   <button onclick="app5s.showReportLockedNotice('Xuất Excel')" title="Chỉ dành cho cán bộ quản lý" class="py-2 px-1 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
                     <i data-lucide="lock" class="w-3 h-3 text-slate-400 shrink-0"></i>
                     <span>Xuất Excel 🔒</span>
+                  </button>
+                  <button onclick="app5s.printDailyEvaluationReport()" title="In bảng điểm và báo cáo 5S" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
+                    <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
+                    <span>In Báo Cáo</span>
                   </button>
                 `}
 
@@ -6888,13 +6900,13 @@ Trân trọng cảm ơn!`);
 
         <!-- Banner Bệnh viện Vĩnh Phúc VPI (V20.1: Logo Base64 Chắc Chắn & Slogan 5S Không Cắt Chữ) -->
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-800 p-3.5 sm:p-4 text-white shadow-lg">
-          <div class="relative z-10 flex items-center space-x-3 sm:space-x-4">
-            <!-- Khung Logo Bệnh viện bo tròn, đổ bóng, viền sáng -->
-            <div class="rounded-2xl bg-white p-1.5 shadow-md shrink-0 flex items-center justify-center border-2 border-emerald-300/60 overflow-hidden" style="width: 54px; height: 54px; min-width: 54px; min-height: 54px; max-width: 54px; max-height: 54px;">
-              <img src="data:image/jpeg;base64,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" alt="Logo Bệnh viện VPI" class="w-full h-full object-contain">
+          <div style="position:relative;z-index:10;display:flex;align-items:center;gap:12px;flex-wrap:nowrap;width:100%">
+            <!-- Khung Logo Bệnh viện bo tròn, đổ bóng, viền sáng (Cố định 50px x 50px trên mọi thiết bị) -->
+            <div style="width:50px;height:50px;min-width:50px;max-width:50px;flex:0 0 50px;border-radius:12px;background:#ffffff;padding:4px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(110,231,183,0.8);box-shadow:0 2px 6px rgba(0,0,0,0.15);overflow:hidden;box-sizing:border-box">
+              <img src="data:image/jpeg;base64,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" alt="Logo Bệnh viện VPI" style="width:100%;height:100%;max-width:42px;max-height:42px;object-fit:contain;display:block">
             </div>
             <!-- Tên Viện & Slogan 5S -->
-            <div class="flex-1 min-w-0 space-y-1">
+            <div style="flex:1;min-width:0;overflow:hidden;display:flex;flex-direction:column;gap:4px">
               <div class="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[9.5px] sm:text-[10px] font-bold text-emerald-100">
                 <i data-lucide="shield-check" class="w-3 h-3 text-emerald-300"></i>
                 <span>5S BỆNH VIỆN CHUẨN QUỐC GIA</span>
@@ -7071,8 +7083,8 @@ Trân trọng cảm ơn!`);
                   <i data-lucide="hourglass" class="w-4 h-4 text-amber-600"></i>
                   <span>${dailyStatus.pendingAudits.length} ảnh 5S đang chờ Cán bộ kiểm tra đánh giá:</span>
                 </div>
-                <button onclick="app5s.openAllShiftAuditsCenterModal()" class="text-[10px] text-amber-700 dark:text-amber-400 font-bold hover:underline flex items-center space-x-1">
-                  <span>Mở Trung Tâm Duyệt 5S →</span>
+                <button onclick="app5s.openDailySummaryModal()" class="text-[10px] text-amber-700 dark:text-amber-400 font-bold hover:underline flex items-center space-x-1">
+                  <span>Xem Báo Cáo Hôm Nay →</span>
                 </button>
               </div>
               <div class="space-y-1.5">
@@ -7134,12 +7146,11 @@ Trân trọng cảm ơn!`);
           </div>
 
           <div class="pt-2 border-t border-white/15 flex flex-col sm:flex-row gap-2">
-            <button onclick="app5s.openAllShiftAuditsCenterModal()" class="flex-1 py-2 px-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white rounded-xl shadow-md font-black text-xs flex items-center justify-center space-x-2 border border-emerald-300/40 transition-all transform active:scale-98">
+            <button onclick="app5s.openDailySummaryModal()" class="flex-1 py-2 px-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white rounded-xl shadow-md font-black text-xs flex items-center justify-center space-x-2 border border-emerald-300/40 transition-all transform active:scale-98">
               <div class="w-5 h-5 rounded-lg bg-white/20 flex items-center justify-center">
-                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-white"></i>
+                <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-white"></i>
               </div>
-              <span>TRUNG TÂM DUYỆT ẢNH 5S HẾT CA</span>
-              <span class="bg-white text-emerald-800 text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-xs">Duyệt</span>
+              <span>XEM BÁO CÁO 5S CUỐI NGÀY</span>
             </button>
             <button onclick="app5s.printDailyEvaluationReport()" class="py-2 px-3 bg-white/15 hover:bg-white/25 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 border border-white/20 transition-all">
               <i data-lucide="printer" class="w-3.5 h-3.5"></i>
@@ -11245,270 +11256,13 @@ Trân trọng cảm ơn!`);
       this.showToast(`⚠️ Đã ghi nhận NHẮC LỖI 5S cho ${room.name}!`);
     }
   }
-  // V20.2 PRO: TRUNG TÂM CHẤM 5S TOÀN VIỆN (HIỂN THỊ ĐẦY ĐỦ ẢNH ĐÃ NỘP & LỌC THEO KHOA/TRẠNG THÁI)
+  // V21: Xóa hoàn toàn Trung Tâm Duyệt Ảnh 5S theo yêu cầu người dùng, chuyển hướng sang Báo Cáo 5S Cuối Ngày
   filterReviewCenter(tab = null, deptId = null) {
-    if (tab !== null) this.reviewCenterTab = tab;
-    if (deptId !== null) this.reviewCenterDept = deptId;
-    this.openAllShiftAuditsCenterModal(this.reviewCenterTab, this.reviewCenterDept);
+    this.openDailySummaryModal();
   }
 
   openAllShiftAuditsCenterModal(selectedTab = 'all', selectedDeptId = 'all') {
-    if (!this.canUserReviewAudits()) {
-      this.showToast('🔒 Truy cập bị khóa: Chỉ Ban Giám sát 5S, Trưởng/Phó khoa và Quản lý mới được vào Trung tâm Chấm 5S!');
-      return;
-    }
-    this.reviewCenterTab = selectedTab || 'all';
-    this.reviewCenterDept = selectedDeptId || 'all';
-
-    const today = this.getTodayDateString();
-    const audits = this.data.audits || [];
-    const schedules = this.data.schedules || { rooms_schedule: [] };
-    const roomSchedules = schedules.rooms_schedule || [];
-    const rooms = this.data.rooms || [];
-    const depts = this.getSortedDepartments();
-
-    const isSupervisor = this.isUserManagerOrSupervisor() || this.isAdmin();
-    const user = this.getCurrentUser();
-    const userDeptId = this.getUserDepartmentId();
-    const userDept = depts.find(d => d.id == userDeptId) || { name: 'Khoa phòng' };
-
-    // TẬP HỢP TẤT CẢ PHIẾU/ẢNH 5S ĐÃ NỘP TỪ CẢ 2 NGUỒN: audits & rooms_schedule
-    const submissionsMap = new Map();
-
-    // 1. Nguồn phiếu Audits
-    audits.forEach(a => {
-      const isMatchToday = !a.audit_date || a.audit_date === today;
-      const hasPhoto = !!(a.after_photo || a.photo);
-      const isRelevant = hasPhoto || a.status === 'pending' || a.status === 'approved' || a.status === 'rejected';
-      if (isMatchToday && isRelevant) {
-        const rm = rooms.find(r => r.id == a.room_id) || { name: a.room_name || a.location || 'Buồng phòng', code: a.room_code || 'P-00', department_id: a.department_id };
-        const dept = depts.find(d => d.id == (a.department_id || rm.department_id)) || { name: a.department_name || 'Khoa' };
-        const key = `rm_${a.room_id || rm.id}_${a.audit_date || today}`;
-        submissionsMap.set(key, {
-          id: a.id,
-          audit_id: a.id,
-          room_id: a.room_id || rm.id,
-          room_code: rm.code,
-          room_name: rm.name,
-          department_id: dept.id,
-          department_name: dept.name,
-          photo: a.after_photo || a.photo || '',
-          submitted_at: (a.audit_time || '06:00') + ' • ' + (a.audit_date || today),
-          submitted_by: a.inspector_name || a.sender_name || 'Nhân sự khoa',
-          notes: a.notes || 'Đã hoàn thành 5S',
-          status: a.status || (a.evaluation_result === 'pass' ? 'approved' : (a.evaluation_result === 'fail' ? 'rejected' : 'pending')),
-          evaluated_by: a.evaluator_name || '',
-          issue: a.issue_detected || '',
-          remedy_deadline: a.remedy_deadline || '',
-          evaluation_notes: a.evaluation_notes || ''
-        });
-      }
-    });
-
-    // 2. Nguồn lịch phòng rooms_schedule
-    roomSchedules.forEach(rs => {
-      if (rs.post_shift_5s && rs.post_shift_5s.photo && (!rs.date || rs.date === today)) {
-        const key = `rm_${rs.room_id}_${today}`;
-        const s5 = rs.post_shift_5s;
-        const rm = rooms.find(r => r.id == rs.room_id) || { name: 'Buồng phòng', code: 'P-00', department_id: rs.department_id };
-        const dept = depts.find(d => d.id == rs.department_id) || { name: 'Khoa' };
-        
-        if (!submissionsMap.has(key)) {
-          submissionsMap.set(key, {
-            id: s5.audit_id || ('RS-' + rs.room_id),
-            audit_id: s5.audit_id || null,
-            room_id: rs.room_id,
-            room_code: rm.code,
-            room_name: rm.name,
-            department_id: dept.id,
-            department_name: dept.name,
-            photo: s5.photo,
-            submitted_at: (s5.submitted_at || 'Cuối ca') + ' • ' + today,
-            submitted_by: s5.submitted_by || 'Nhân sự trực',
-            notes: s5.notes || 'Đã làm sạch sẽ, sắp xếp ngăn nắp.',
-            status: s5.status || 'pending',
-            evaluated_by: s5.evaluated_by || '',
-            issue: s5.issue || '',
-            remedy_deadline: s5.remedy_deadline || '',
-            evaluation_notes: s5.evaluation_notes || ''
-          });
-        } else {
-          const existing = submissionsMap.get(key);
-          if (!existing.photo && s5.photo) existing.photo = s5.photo;
-          if (s5.status && s5.status !== 'pending') existing.status = s5.status;
-        }
-      }
-    });
-
-    let allList = Array.from(submissionsMap.values());
-
-    // Phân quyền hiển thị:
-    // Quản lý cấp khoa nếu không có quyền giám sát toàn viện thì mặc định chỉ xem khoa mình
-    let availableDepts = depts;
-    if (!isSupervisor && userDeptId) {
-      allList = allList.filter(item => item.department_id == userDeptId);
-      availableDepts = depts.filter(d => d.id == userDeptId);
-    } else if (this.reviewCenterDept !== 'all') {
-      allList = allList.filter(item => String(item.department_id) === String(this.reviewCenterDept));
-    }
-
-    const allCount = allList.length;
-    const pendingList = allList.filter(item => item.status === 'pending' || item.status === 'submitted');
-    const approvedList = allList.filter(item => item.status === 'approved');
-    const rejectedList = allList.filter(item => item.status === 'rejected');
-
-    let displayList = allList;
-    if (this.reviewCenterTab === 'pending') displayList = pendingList;
-    else if (this.reviewCenterTab === 'approved') displayList = approvedList;
-    else if (this.reviewCenterTab === 'rejected') displayList = rejectedList;
-
-    const modalHtml = `
-      <div class="p-5 space-y-4 max-h-[88vh] overflow-y-auto no-scrollbar">
-        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
-          <div class="flex items-center space-x-2">
-            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center font-bold shadow-sm">
-              <i data-lucide="shield-check" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">
-                ${isSupervisor ? 'TRUNG TÂM CHẤM 5S TOÀN VIỆN' : 'ẢNH 5S BÀN GIAO CA - ' + (userDept.name || '').toUpperCase()}
-              </h3>
-              <p class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">
-                ${isSupervisor ? `Quyền Giám Sát: Xem & Chấm 5S cả 20 khoa phòng (${allCount} vị trí đã nộp)` : `Tài khoản nội bộ: ${userDept.name} (${allCount} vị trí)`}
-              </p>
-            </div>
-          </div>
-          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <!-- Bộ lọc Khoa/Phòng (Dành cho Quản lý & Giám sát) -->
-        ${isSupervisor ? `
-          <div class="flex items-center space-x-2 bg-slate-50 dark:bg-slate-900/60 p-2 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs">
-            <span class="text-slate-500 font-bold shrink-0 text-[11px] flex items-center space-x-1">
-              <i data-lucide="filter" class="w-3.5 h-3.5 text-indigo-600"></i>
-              <span>Lọc Khoa:</span>
-            </span>
-            <select onchange="app5s.filterReviewCenter(null, this.value)" class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option value="all" ${this.reviewCenterDept === 'all' ? 'selected' : ''}>-- Tất cả các Khoa/Phòng (${allCount} phiếu) --</option>
-              ${availableDepts.map(d => {
-                const deptCount = Array.from(submissionsMap.values()).filter(sub => sub.department_id == d.id).length;
-                return `<option value="${d.id}" ${String(this.reviewCenterDept) === String(d.id) ? 'selected' : ''}>${d.name} (${deptCount} phòng)</option>`;
-              }).join('')}
-            </select>
-          </div>
-        ` : ''}
-
-        <!-- Thanh phân loại trạng thái (Tất cả / Chờ chấm / Đạt / Cần sửa) -->
-        <div class="grid grid-cols-4 gap-1.5 text-center text-xs">
-          <button onclick="app5s.filterReviewCenter('all', null)" class="p-2 rounded-2xl font-bold transition border ${
-            this.reviewCenterTab === 'all'
-              ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
-          }">
-            <div class="text-sm font-black font-mono">${allCount}</div>
-            <div class="text-[9.5px]">Tất cả</div>
-          </button>
-
-          <button onclick="app5s.filterReviewCenter('pending', null)" class="p-2 rounded-2xl font-bold transition border ${
-            this.reviewCenterTab === 'pending'
-              ? 'bg-amber-600 text-white border-amber-600 shadow-sm'
-              : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-900/50'
-          }">
-            <div class="text-sm font-black font-mono">${pendingList.length}</div>
-            <div class="text-[9.5px]">🟡 Chờ chấm</div>
-          </button>
-
-          <button onclick="app5s.filterReviewCenter('approved', null)" class="p-2 rounded-2xl font-bold transition border ${
-            this.reviewCenterTab === 'approved'
-              ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-              : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/50'
-          }">
-            <div class="text-sm font-black font-mono">${approvedList.length}</div>
-            <div class="text-[9.5px]">🟢 Đạt chuẩn</div>
-          </button>
-
-          <button onclick="app5s.filterReviewCenter('rejected', null)" class="p-2 rounded-2xl font-bold transition border ${
-            this.reviewCenterTab === 'rejected'
-              ? 'bg-red-600 text-white border-red-600 shadow-sm'
-              : 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-900/50'
-          }">
-            <div class="text-sm font-black font-mono">${rejectedList.length}</div>
-            <div class="text-[9.5px]">🔴 Cần sửa</div>
-          </button>
-        </div>
-
-        <!-- Danh sách hiển thị ảnh & phiếu 5S -->
-        <div class="space-y-3">
-          ${displayList.length === 0 ? `
-            <div class="p-8 text-center bg-slate-50 dark:bg-slate-900 rounded-2xl text-xs text-slate-400 space-y-1">
-              <i data-lucide="check-circle" class="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto"></i>
-              <div>Không có buồng phòng nào phù hợp với bộ lọc hiện tại.</div>
-            </div>
-          ` : displayList.map(item => {
-            const isApproved = item.status === 'approved';
-            const isRejected = item.status === 'rejected';
-            const isPending = !isApproved && !isRejected;
-
-            return `
-              <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs space-y-2.5">
-                <div class="flex items-start justify-between">
-                  <div>
-                    <div class="flex items-center space-x-1.5 flex-wrap">
-                      <strong class="text-xs text-slate-900 dark:text-white">${item.room_name}</strong>
-                      <span class="text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-700 px-1.5 py-0.2 rounded text-slate-600 dark:text-slate-300">${item.room_code}</span>
-                    </div>
-                    <div class="text-[10px] text-slate-500 mt-0.5">${item.department_name} • Nộp: ${item.submitted_at}</div>
-                  </div>
-                  <div>
-                    ${isApproved ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">🟢 Đạt chuẩn</span>' :
-                      (isRejected ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-300">🔴 Cần sửa</span>' :
-                      '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 animate-pulse">🟡 Chờ chấm</span>')}
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2.5 items-center">
-                  <div class="col-span-1 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 h-22 bg-slate-100 dark:bg-slate-900 relative">
-                    ${item.photo ? `
-                      <img src="${item.photo}" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition" onclick="app5s.viewLargePhoto('${item.photo}', '${item.room_name}')">
-                      <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[8px] px-1 py-0.2 rounded backdrop-blur-xs">Ảnh 5S</span>
-                    ` : `
-                      <div class="w-full h-full flex items-center justify-center text-[10px] text-slate-400">Chưa có ảnh</div>
-                    `}
-                  </div>
-                  <div class="col-span-2 text-xs space-y-1">
-                    <div class="text-[11px] text-slate-600 dark:text-slate-300 italic">"${item.notes}"</div>
-                    <div class="text-[10px] text-slate-400">Người nộp: <strong class="text-slate-700 dark:text-slate-200">${item.submitted_by}</strong></div>
-                    ${item.evaluated_by ? `
-                      <div class="text-[10px] text-indigo-600 font-bold">Chấm bởi: ${item.evaluated_by} (${isApproved ? 'Đạt chuẩn' : 'Cần sửa'})</div>
-                    ` : ''}
-                    ${isRejected && item.issue ? `
-                      <div class="text-[10px] text-red-600 font-bold">⚠️ Lỗi: ${item.issue} (Hạn: ${item.remedy_deadline || 'Hôm nay'})</div>
-                    ` : ''}
-                  </div>
-                </div>
-
-                <div class="pt-1.5 flex items-center justify-between border-t border-slate-100 dark:border-slate-700/60">
-                  <button onclick="app5s.viewLargePhoto('${item.photo}', '${item.room_name}')" class="text-[10.5px] text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 flex items-center space-x-1">
-                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                    <span>Xem ảnh</span>
-                  </button>
-                  <button onclick="app5s.openReviewShiftPhotoModal(${item.room_id}, '${item.audit_id || ''}')" class="px-3 py-1.5 ${
-                    isSupervisor ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                  } rounded-xl text-xs font-bold transition flex items-center space-x-1 shadow-xs">
-                    <i data-lucide="${isSupervisor ? 'award' : 'camera'}" class="w-3.5 h-3.5"></i>
-                    <span>${isSupervisor ? (isApproved || isRejected ? 'Xem & Chấm lại' : '⭐ CHẤM 5S') : 'XEM ẢNH / CẬP NHẬT'}</span>
-                  </button>
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    `;
-
-    this.showModal(modalHtml);
+    this.openDailySummaryModal();
   }
 
   showReportLockedNotice(featureName) {
