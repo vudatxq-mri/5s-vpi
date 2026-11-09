@@ -2547,11 +2547,12 @@ class App5S {
     this.currentEvaluationResult = 'pass';
     this.currentEvaluationAuditId = null;
 
-    // State cho Lịch Làm Việc & Trạng Thái Buồng Phòng (V7)
+    // State cho Lịch Làm Việc & Trạng Thái Buồng Phòng (V23: Khởi tạo linh hoạt, tự động nhận diện ngày thực tế)
+    this.scheduleWeekOffset = 0;
     this.scheduleState = {
-      selectedWeek: 42,
-      selectedDay: 'Sun',
-      selectedDate: '2026-10-18',
+      selectedWeek: null,
+      selectedDay: null,
+      selectedDate: null,
       selectedShift: 'all',
       selectedDept: 'all',
       selectedStatusFilter: 'all',
@@ -2660,16 +2661,10 @@ class App5S {
       this.data.auth = { isLoggedIn: true, currentUserId: 'BV-345', locationMode: 'internal' };
     }
 
-    // ĐỒNG BỘ TUYỆT ĐỐI 20 KHOA PHÒNG & 75 KHU VỰC (Khắc phục lỗi lệch số lượng giữa máy tính và điện thoại)
+    // DANH MỤC KHOA PHÒNG (V23: Bảo toàn các khoa đã xóa hoặc thêm mới, chỉ seed khi rỗng)
     const hasLegacyStringDepts = (this.data.departments || []).some(d => typeof d.id === 'string' && isNaN(parseInt(d.id)));
-    if (!this.data.departments || !Array.isArray(this.data.departments) || this.data.departments.length < 20 || hasLegacyStringDepts) {
+    if (!this.data.departments || !Array.isArray(this.data.departments) || this.data.departments.length === 0 || hasLegacyStringDepts) {
       this.data.departments = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.departments));
-    } else {
-      DEFAULT_SEED_DATA.departments.forEach(stdDept => {
-        if (!this.data.departments.some(d => d.id === stdDept.id)) {
-          this.data.departments.push(JSON.parse(JSON.stringify(stdDept)));
-        }
-      });
     }
 
     this.data.departments.forEach((d, idx) => {
@@ -2683,16 +2678,10 @@ class App5S {
     });
     this.data.departments.sort((a, b) => (a.order || 99) - (b.order || 99));
 
-    // Đảm bảo có đầy đủ 75 buồng phòng / khu vực làm việc (loại bỏ phòng rác từ bản v4 cũ)
+    // DANH MỤC BUỒNG PHÒNG / KHU VỰC LÀM VIỆC (V23: Bảo toàn khu vực đã xóa, chỉ seed khi rỗng)
     const hasLegacyRooms = (this.data.rooms || []).some(r => typeof r.department_id === 'string' && isNaN(parseInt(r.department_id)));
-    if (!this.data.rooms || !Array.isArray(this.data.rooms) || this.data.rooms.length < 75 || hasLegacyRooms) {
+    if (!this.data.rooms || !Array.isArray(this.data.rooms) || this.data.rooms.length === 0 || hasLegacyRooms) {
       this.data.rooms = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.rooms));
-    } else {
-      DEFAULT_SEED_DATA.rooms.forEach(stdRoom => {
-        if (!this.data.rooms.some(r => r.id === stdRoom.id)) {
-          this.data.rooms.push(JSON.parse(JSON.stringify(stdRoom)));
-        }
-      });
     }
 
     this.data.rooms.forEach((r, idx) => {
@@ -2976,8 +2965,18 @@ class App5S {
     } catch (e) {}
   }
 
+  resetScheduleToToday() {
+    this.scheduleWeekOffset = 0;
+    const vnDateInfo = this.getVietnamDateInfo(0);
+    this.scheduleState.selectedDate = vnDateInfo.realTodayIso;
+    const todayMatch = (vnDateInfo.days || []).find(d => d.isToday);
+    this.scheduleState.selectedDay = todayMatch ? todayMatch.id : (vnDateInfo.days[0] ? vnDateInfo.days[0].id : 'Mon');
+    this.scheduleState.selectedWeek = vnDateInfo.weekNum;
+  }
+
   init() {
     this.purgeStaleCachesIfNeeded();
+    this.resetScheduleToToday();
     this.applyTheme();
     this.applyLocationMode();
     this.updateUserInterface();
@@ -4215,7 +4214,7 @@ class App5S {
 
         <!-- V16 PHÂN QUYỀN BUỒNG PHÒNG: Quản lý khoa hoặc Admin mới được đổi trạng thái & phân công -->
         ${(() => {
-          const canManage = this.isAdmin() || this.canManageDeptRooms(r.department_id);
+          const canManage = this.isAdmin() || this.canManageDeptRooms(room.department_id);
           return `
             <div class="bg-slate-50 dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
               <div class="space-y-0.5">
@@ -6379,8 +6378,8 @@ Trân trọng cảm ơn!`);
                       ${d.dateNum}
                     </span>
                     ${d.isToday ? `
-                      <span class="mt-0.5 px-1 py-0.2 rounded-full text-[7px] font-bold ${isSelected ? 'bg-white text-indigo-700' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'}">
-                        Nay
+                      <span class="mt-0.5 px-1.5 py-0.5 rounded-full text-[7.5px] font-black inline-flex items-center gap-0.5 ${isSelected ? 'bg-white text-emerald-800 shadow-xs' : 'bg-emerald-600 text-white shadow-xs'}">
+                        ✓ Hôm nay
                       </span>
                     ` : ''}
                   </button>
@@ -6398,31 +6397,122 @@ Trân trọng cảm ơn!`);
             </div>
           </div>
 
-          <!-- V15: BỎ CA SÁNG / CHIỀU / ĐÊM CỐ ĐỊNH - ĐỂ MỤC TÙY CHỈNH ĐỔI GIỜ LINH HOẠT -->
-          <div class="bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-2 flex-wrap">
-            <div class="flex items-center space-x-2 min-w-0">
-              <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 shadow-2xs">
-                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
-              </div>
-              <div class="min-w-0">
-                <div class="flex items-center space-x-1.5 flex-wrap">
-                  <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">Khung Giờ Ca Trực:</span>
-                  <span class="text-xs font-black text-amber-700 dark:text-amber-300 font-mono">
-                    ${this.getCurrentShiftHoursDisplay()}
-                  </span>
-                  <span class="text-[9px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-bold px-1.5 py-0.2 rounded-full border border-amber-300">
-                    Linh hoạt
-                  </span>
+          <!-- V23: HIỂN THỊ TRỰC TIẾP TOÀN BỘ CÁC KHUNG GIỜ CA LÀM VIỆC RA MÀN HÌNH -->
+          <div class="bg-white dark:bg-slate-800 rounded-3xl p-3.5 border border-slate-200/90 dark:border-slate-700 shadow-xs space-y-2.5">
+            <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-100 dark:border-slate-700/60">
+              <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0">
+                  <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
                 </div>
-                <p class="text-[9.5px] text-slate-500 dark:text-slate-400 truncate">Áp dụng thời gian làm việc & thời hạn nộp ảnh 5S buồng phòng</p>
+                <div>
+                  <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">Khung Giờ Ca Làm Việc & Bàn Giao 5S</h3>
+                  <p class="text-[10px] text-slate-500 font-medium">Quy chuẩn thời gian giao nhận ca và thời hạn nộp ảnh 5S toàn viện</p>
+                </div>
               </div>
+              <button onclick="app5s.openCustomizeShiftHoursModal()" title="Điều chỉnh giờ làm việc theo thực tế bệnh viện" class="px-2.5 py-1 rounded-xl bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900 text-amber-700 dark:text-amber-300 font-bold text-[11px] border border-amber-200 dark:border-amber-800 transition flex items-center space-x-1 cursor-pointer">
+                <i data-lucide="settings-2" class="w-3 h-3"></i>
+                <span>Cài Đặt Giờ</span>
+              </button>
             </div>
 
-            <!-- Nút Tùy Chỉnh Đổi Giờ Ca -->
-            <button onclick="app5s.openCustomizeShiftHoursModal()" title="Điều chỉnh giờ làm việc theo yêu cầu khoa phòng" class="shrink-0 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-xs transition flex items-center space-x-1.5">
-              <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
-              <span>⏰ Đổi Giờ Làm Việc</span>
-            </button>
+            <!-- 3 Khung giờ Ca Sáng - Chiều - Đêm hiển thị trực tiếp -->
+            ${(() => {
+              const nowVn = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+              const curTimeVal = nowVn.getHours() * 60 + nowVn.getMinutes();
+              const parseMin = (str) => {
+                if (!str) return 0;
+                const [h, m] = str.split(':').map(Number);
+                return (h || 0) * 60 + (m || 0);
+              };
+              const mStart = parseMin(sc.morning?.start || '07:00');
+              const mEnd = parseMin(sc.morning?.end || '11:30');
+              const aStart = parseMin(sc.afternoon?.start || '13:30');
+              const aEnd = parseMin(sc.afternoon?.end || '17:00');
+
+              let activeShiftKey = 'night';
+              if (curTimeVal >= mStart && curTimeVal < mEnd) {
+                activeShiftKey = 'morning';
+              } else if (curTimeVal >= aStart && curTimeVal < aEnd) {
+                activeShiftKey = 'afternoon';
+              } else if (curTimeVal >= mEnd && curTimeVal < aStart) {
+                activeShiftKey = 'noon_break';
+              } else {
+                activeShiftKey = 'night';
+              }
+
+              return `
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <!-- Ca Sáng -->
+                  <div class="p-2.5 rounded-2xl border transition ${activeShiftKey === 'morning' ? 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 ring-2 ring-amber-400/50' : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700'}">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="text-[11px] font-black text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                        <span>☀️</span>
+                        <span>${sc.morning?.name || 'Ca Sáng'}</span>
+                      </span>
+                      ${activeShiftKey === 'morning' ? `
+                        <span class="px-1.5 py-0.2 rounded-full text-[8px] font-bold bg-amber-500 text-white animate-pulse">
+                          Đang diễn ra
+                        </span>
+                      ` : `
+                        <span class="text-[9px] text-slate-400 font-medium">Ca 1</span>
+                      `}
+                    </div>
+                    <div class="text-base font-black text-amber-700 dark:text-amber-300 font-mono tracking-tight">
+                      ${sc.morning?.start || '07:00'} – ${sc.morning?.end || '11:30'}
+                    </div>
+                    <div class="text-[9.5px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      Kiểm tra 5S đầu ca & bàn giao trưa
+                    </div>
+                  </div>
+
+                  <!-- Ca Chiều -->
+                  <div class="p-2.5 rounded-2xl border transition ${activeShiftKey === 'afternoon' ? 'bg-cyan-50/90 dark:bg-cyan-950/40 border-cyan-300 dark:border-cyan-700 ring-2 ring-cyan-400/50' : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700'}">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="text-[11px] font-black text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                        <span>🌤️</span>
+                        <span>${sc.afternoon?.name || 'Ca Chiều'}</span>
+                      </span>
+                      ${activeShiftKey === 'afternoon' ? `
+                        <span class="px-1.5 py-0.2 rounded-full text-[8px] font-bold bg-cyan-600 text-white animate-pulse">
+                          Đang diễn ra
+                        </span>
+                      ` : `
+                        <span class="text-[9px] text-slate-400 font-medium">Ca 2</span>
+                      `}
+                    </div>
+                    <div class="text-base font-black text-cyan-700 dark:text-cyan-300 font-mono tracking-tight">
+                      ${sc.afternoon?.start || '13:30'} – ${sc.afternoon?.end || '17:00'}
+                    </div>
+                    <div class="text-[9.5px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      Bàn giao 5S hết giờ hành chính
+                    </div>
+                  </div>
+
+                  <!-- Ca Đêm -->
+                  <div class="p-2.5 rounded-2xl border transition ${activeShiftKey === 'night' ? 'bg-indigo-50/90 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700 ring-2 ring-indigo-400/50' : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700'}">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="text-[11px] font-black text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                        <span>🌙</span>
+                        <span>${sc.night?.name || 'Ca Đêm (Trực)'}</span>
+                      </span>
+                      ${activeShiftKey === 'night' ? `
+                        <span class="px-1.5 py-0.2 rounded-full text-[8px] font-bold bg-indigo-600 text-white animate-pulse">
+                          Đang trực ca
+                        </span>
+                      ` : `
+                        <span class="text-[9px] text-slate-400 font-medium">Ca 3</span>
+                      `}
+                    </div>
+                    <div class="text-base font-black text-indigo-700 dark:text-indigo-300 font-mono tracking-tight">
+                      ${sc.night?.start || '17:00'} – ${sc.night?.end || '07:00'}
+                    </div>
+                    <div class="text-[9.5px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      Duy trì 5S cấp cứu & bàn giao sáng hôm sau
+                    </div>
+                  </div>
+                </div>
+              `;
+            })()}
           </div>
         </div>
 
@@ -8023,7 +8113,7 @@ Trân trọng cảm ơn!`);
                           <span class="px-2 py-0.5 rounded-full text-[9.5px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">ĐẠT 5S</span>
                         </div>
                         <!-- V16: Sửa và Xóa khu vực làm việc CHỈ HIỂN THỊ cho Quản Lý Khoa hoặc Admin -->
-                        ${(this.isAdmin() || this.canManageDeptRooms(r.department_id)) ? `
+                        ${(this.isAdmin() || this.canManageDeptRooms(room.department_id)) ? `
                           <button onclick="app5s.openEditRoomModal('${room.id}')" title="Chỉnh sửa thông tin khu vực làm việc này" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
                             <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                           </button>
@@ -8345,28 +8435,50 @@ Trân trọng cảm ơn!`);
 
 
   deleteRoom(roomId) {
-    const room = this.data.rooms.find(r => r.id == roomId);
+    const room = (this.data.rooms || []).find(r => r.id == roomId);
     if (!room) return;
-    if (!confirm(`Anh có chắc muốn xóa khu vực làm việc "${room.name}" không?`)) return;
-    this.data.rooms = this.data.rooms.filter(r => r.id != roomId);
-    this.saveData();
-    this.render();
-    this.showToast('Đã xóa khu vực làm việc thành công!');
-  }
-
-  deleteDept(deptId) {
-    const roomsCount = this.data.rooms.filter(r => r.department_id == deptId).length;
-    if (roomsCount > 0) {
-      alert(`Không thể xóa khoa này vì đang có ${roomsCount} khu vực làm việc trực thuộc! Vui lòng xóa hoặc chuyển các khu vực sang khoa khác trước.`);
+    if (!this.isAdmin() && !this.canManageDeptRooms(room.department_id)) {
+      alert('🔒 Bạn không có quyền xóa khu vực làm việc của khoa phòng này!');
       return;
     }
-    const d = this.data.departments.find(x => x.id == deptId);
-    if (!confirm(`Anh có chắc muốn xóa khoa "${d ? d.name : ''}" không?`)) return;
-    this.data.departments = this.data.departments.filter(x => x.id != deptId);
+    if (!confirm(`Bạn có chắc muốn xóa khu vực làm việc "${room.name}" không?`)) return;
+    this.data.rooms = (this.data.rooms || []).filter(r => r.id != roomId);
+    if (this.data.schedules && this.data.schedules.rooms_schedule) {
+      delete this.data.schedules.rooms_schedule[roomId];
+    }
     this.saveData();
     this.closeModal();
     this.render();
-    this.showToast('Đã xóa khoa thành công!');
+    this.showToast(`Đã xóa khu vực làm việc "${room.name}" thành công!`);
+  }
+
+  deleteDept(deptId) {
+    if (!this.isAdmin() && !this.isUserManagerOrSupervisor()) {
+      alert('🔒 Bạn không có quyền xóa khoa/phòng!');
+      return;
+    }
+    const d = (this.data.departments || []).find(x => x.id == deptId);
+    if (!d) return;
+    const attachedRooms = (this.data.rooms || []).filter(r => r.department_id == deptId);
+    let confirmMsg = `Bạn có chắc muốn xóa khoa/phòng "${d.name}" không?`;
+    if (attachedRooms.length > 0) {
+      confirmMsg = `Khoa "${d.name}" đang có ${attachedRooms.length} khu vực làm việc trực thuộc.\nBạn có chắc chắn muốn xóa khoa này cùng toàn bộ ${attachedRooms.length} khu vực làm việc trực thuộc không?`;
+    }
+    if (!confirm(confirmMsg)) return;
+
+    // Xóa toàn bộ phòng trực thuộc khoa và lịch phân công tương ứng
+    const roomIdsToDelete = new Set(attachedRooms.map(r => r.id));
+    this.data.rooms = (this.data.rooms || []).filter(r => r.department_id != deptId);
+    if (this.data.schedules && this.data.schedules.rooms_schedule) {
+      roomIdsToDelete.forEach(id => {
+        delete this.data.schedules.rooms_schedule[id];
+      });
+    }
+    this.data.departments = (this.data.departments || []).filter(x => x.id != deptId);
+    this.saveData();
+    this.closeModal();
+    this.render();
+    this.showToast(`Đã xóa khoa "${d.name}" thành công!`);
   }
 
   // =========================================================================
@@ -10343,8 +10455,12 @@ Trân trọng cảm ơn!`);
       localStorage.setItem('vpi_5s_auth_session', JSON.stringify(this.data.auth));
     } catch(e) {}
     this.saveData(false);
+    // V23: Đặt lại ngày lịch làm việc chuẩn ngày hôm nay (khắc phục lỗi nhảy sang ngày khác)
+    this.resetScheduleToToday();
     this.render();
     this.showToast(`Chào mừng ${matched.name} đã đăng nhập!`);
+    // V23: Kéo ngay dữ liệu mới nhất toàn viện từ server khi đăng nhập
+    this.pullStateFromServer(true);
   }
   quickFillLogin(username, password) {
     const uInput = document.getElementById('login-username');
@@ -10639,20 +10755,7 @@ Trân trọng cảm ơn!`);
     }
   }
 
-  deleteRoom(roomId) {
-    const room = (this.data.rooms || []).find(r => r.id == roomId);
-    if (!room) return;
-    if (!this.canManageDeptRooms(r.department_id)) {
-      alert('🔒 Bạn không có quyền xóa khu vực làm việc của khoa phòng này!');
-      return;
-    }
-    if (confirm(`Bạn có chắc muốn xóa khu vực ${room.name} không?`)) {
-      this.data.rooms = (this.data.rooms || []).filter(r => r.id != roomId);
-      this.saveData();
-      this.showToast(`Đã xóa khu vực ${room.name} thành công!`);
-      this.render();
-    }
-  }
+
 
   isUserManagerOrSupervisor() {
     const user = this.getCurrentUser();
@@ -10977,6 +11080,23 @@ Trân trọng cảm ơn!`);
     return title.includes('giám sát') || title.includes('trưởng') || title.includes('chỉ đạo') || title.includes('kiểm duyệt') || title.includes('lãnh đạo');
   }
 
+  downloadPhoto(photoUrl, title = 'Anh_5S_VPI') {
+    if (!photoUrl) return;
+    try {
+      const cleanTitle = (title || 'Anh_5S_VPI').replace(/[^a-zA-Z0-9_À-ɏẠ-ỹ]/g, '_');
+      const filename = `${cleanTitle}_${new Date().toISOString().slice(0, 10)}.jpg`;
+      const a = document.createElement('a');
+      a.href = photoUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      this.showToast(`Đã tải ảnh minh chứng "${filename}" về máy tính!`);
+    } catch (e) {
+      window.open(photoUrl, '_blank');
+    }
+  }
+
   viewLargePhoto(photoUrl, title = 'Ảnh minh chứng 5S', deptId = null) {
     if (deptId && !this.canUserViewDeptPhotos(deptId)) {
       this.showToast('🔒 Quyền riêng tư: Bạn không thuộc khoa phòng này. Chỉ cán bộ thuộc khoa hoặc Ban Giám sát toàn viện mới được xem ảnh minh chứng!');
@@ -10984,17 +11104,30 @@ Trân trọng cảm ơn!`);
     }
     const modalHtml = `
       <div class="p-4 space-y-3 max-h-[90vh]">
-        <div class="flex items-center justify-between border-b pb-2">
-          <div class="flex items-center space-x-2">
-            <i data-lucide="image" class="w-4 h-4 text-emerald-600"></i>
-            <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100">${title}</h3>
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-2">
+          <div class="flex items-center space-x-2 min-w-0">
+            <i data-lucide="image" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+            <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">${title}</h3>
           </div>
-          <button onclick="app5s.closeModal()" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
+          <div class="flex items-center space-x-1.5 shrink-0">
+            <button onclick="app5s.downloadPhoto('${photoUrl}', '${title}')" title="Tải ảnh về máy tính" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center space-x-1 shadow-xs">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Tải về</span>
+            </button>
+            <button onclick="app5s.closeModal()" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
         </div>
         <div class="rounded-xl overflow-hidden bg-black/90 flex items-center justify-center p-1">
-          <img src="${photoUrl}" class="max-h-[75vh] w-auto max-w-full rounded-lg object-contain">
+          <img src="${photoUrl}" class="max-h-[72vh] w-auto max-w-full rounded-lg object-contain">
+        </div>
+        <div class="flex items-center justify-between pt-1 text-[11px] text-slate-500">
+          <span>🛡️ Ảnh đã đóng dấu số Watermark 5S VPI</span>
+          <button onclick="app5s.downloadPhoto('${photoUrl}', '${title}')" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline flex items-center space-x-1">
+            <i data-lucide="download" class="w-3 h-3"></i>
+            <span>Lưu file về máy tính</span>
+          </button>
         </div>
       </div>
     `;
