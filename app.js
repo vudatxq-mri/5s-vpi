@@ -3372,17 +3372,41 @@ class App5S {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (e) => {
-      const base64Url = e.target.result;
-      const previewImg = document.getElementById('profile-avatar-preview');
-      const previewInitial = document.getElementById('profile-avatar-initial');
-      if (previewImg) {
-        previewImg.src = base64Url;
-        previewImg.classList.remove('hidden');
-      }
-      if (previewInitial) {
-        previewInitial.classList.add('hidden');
-      }
-      this.pendingAvatarUrl = base64Url;
+      const rawUrl = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        // V24: Nén ảnh avatar qua Canvas kích thước chuẩn 280x280 (chống tràn bộ nhớ LocalStorage & tối ưu tốc độ)
+        const canvas = document.createElement('canvas');
+        const maxDim = 280;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressedAvatar = canvas.toDataURL('image/jpeg', 0.82);
+
+        const previewImg = document.getElementById('profile-avatar-preview');
+        const previewInitial = document.getElementById('profile-avatar-initial');
+        if (previewImg) {
+          previewImg.src = compressedAvatar;
+          previewImg.classList.remove('hidden');
+        }
+        if (previewInitial) {
+          previewInitial.classList.add('hidden');
+        }
+        this.pendingAvatarUrl = compressedAvatar;
+      };
+      img.src = rawUrl;
     };
     reader.readAsDataURL(file);
   }
@@ -5381,6 +5405,14 @@ Trân trọng cảm ơn!`);
             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
             <div>
               <strong class="font-bold">Đóng dấu ngày giờ chống gian lận:</strong> Khung hình camera tự động in chết thời gian chụp, tên buồng phòng và mã đối soát vào ảnh, ngăn ngừa dùng lại ảnh cũ.
+            </div>
+          </div>
+
+          <!-- V24: BẢO MẬT & BẢO VỆ THÔNG TIN BỆNH NHÂN (NGHỊ ĐỊNH 13/2023 & LUẬT KHÁM CHỮA BỆNH) -->
+          <div class="bg-blue-50 dark:bg-blue-950/40 p-2.5 rounded-xl border border-blue-200 dark:border-blue-800 flex items-start space-x-2 text-[10.5px] text-blue-900 dark:text-blue-200">
+            <i data-lucide="lock" class="w-4 h-4 text-blue-600 shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="font-bold">Bảo mật thông tin y tế:</strong> Chỉ chụp quang cảnh buồng bệnh, giường tủ, dụng cụ y tế và sàn nhà đã 5S sạch sẽ. Tuyệt đối không chụp cận cảnh gương mặt bệnh nhân hoặc hồ sơ bệnh án.
             </div>
           </div>
 
@@ -11904,6 +11936,28 @@ Trân trọng cảm ơn!`);
       const offlineData = await this.restoreFromIndexedDb();
       if (offlineData) {
         let changed = false;
+
+        // V24: BẢO VỆ PHỤC HỒI DỮ LIỆU KHI LOCALSTORAGE BỊ LÀM TRỐNG HOẶC TRÀN BỘ NHỚ
+        const isLocalStorageFresh = !localStorage.getItem(STORAGE_KEY);
+        if (isLocalStorageFresh) {
+          if (Array.isArray(offlineData.departments) && offlineData.departments.length > 0) {
+            this.data.departments = offlineData.departments;
+            changed = true;
+          }
+          if (Array.isArray(offlineData.rooms) && offlineData.rooms.length > 0) {
+            this.data.rooms = offlineData.rooms;
+            changed = true;
+          }
+          if (offlineData.shift_config) {
+            this.data.shift_config = offlineData.shift_config;
+            changed = true;
+          }
+          if (offlineData.hospital) {
+            this.data.hospital = offlineData.hospital;
+            changed = true;
+          }
+        }
+
         if (Array.isArray(offlineData.audits) && offlineData.audits.length > 0) {
           const currentAuditIds = new Set((this.data.audits || []).map(a => a.id));
           offlineData.audits.forEach(a => {
@@ -11920,11 +11974,13 @@ Trân trọng cảm ơn!`);
           });
         }
         if (offlineData.rooms_schedule) {
+          if (!this.data.schedules) this.data.schedules = { rooms_schedule: {} };
+          if (!this.data.schedules.rooms_schedule) this.data.schedules.rooms_schedule = {};
           for (const [k, v] of Object.entries(offlineData.rooms_schedule)) {
             if (v && v.post_shift_5s && v.post_shift_5s.status === 'submitted') {
-              if (!this.data.rooms_schedule[k] || !this.data.rooms_schedule[k].post_shift_5s) {
-                if (!this.data.rooms_schedule[k]) this.data.rooms_schedule[k] = {};
-                this.data.rooms_schedule[k].post_shift_5s = v.post_shift_5s;
+              if (!this.data.schedules.rooms_schedule[k] || !this.data.schedules.rooms_schedule[k].post_shift_5s) {
+                if (!this.data.schedules.rooms_schedule[k]) this.data.schedules.rooms_schedule[k] = {};
+                this.data.schedules.rooms_schedule[k].post_shift_5s = v.post_shift_5s;
                 changed = true;
               }
             }
@@ -12340,6 +12396,17 @@ Trân trọng cảm ơn!`);
         this.pullStateFromServer();
       }
     });
+
+    // V24: TỰ ĐỘNG BẢO VỆ DỮ LIỆU & ĐỒNG BỘ KHI KẾT NỐI MẠNG ĐƯỢC PHỤC HỒI
+    window.addEventListener('online', () => {
+      this.showToast('📶 Đã kết nối lại mạng! Đang tự động đồng bộ dữ liệu toàn viện...');
+      this.pushStateToServer();
+      this.pullStateFromServer(true);
+    });
+
+    window.addEventListener('offline', () => {
+      this.showToast('⚠️ Mất kết nối mạng. Ứng dụng đã chuyển sang chế độ Ngoại tuyến an toàn (Offline Storage).');
+    });
   }
 
   // =========================================================================
@@ -12431,6 +12498,22 @@ Trân trọng cảm ơn!`);
           }
         });
 
+        // V24: HỢP NHẤT THÔNG MINH PHÂN CÔNG BUỒNG PHÒNG & ẢNH 5S HẾT CA (Chống ghi đè mất ảnh khi offline)
+        if (this.data.schedules && this.data.schedules.rooms_schedule && json.data.schedules && json.data.schedules.rooms_schedule) {
+          const localSched = this.data.schedules.rooms_schedule;
+          const serverSched = json.data.schedules.rooms_schedule;
+          for (const [roomId, rData] of Object.entries(localSched)) {
+            if (!serverSched[roomId]) {
+              serverSched[roomId] = rData;
+            } else if (rData && rData.post_shift_5s && rData.post_shift_5s.status === 'submitted') {
+              if (!serverSched[roomId].post_shift_5s || serverSched[roomId].post_shift_5s.status !== 'submitted') {
+                serverSched[roomId].post_shift_5s = rData.post_shift_5s;
+              }
+            }
+          }
+          json.data.schedules.rooms_schedule = serverSched;
+        }
+
         this.data = json.data;
         this.data.audits = mergedAudits;
         this.data.last_updated = Math.max(serverTime, localTime, Date.now());
@@ -12439,6 +12522,8 @@ Trân trọng cảm ơn!`);
         this.data.auth = currentAuth || { isLoggedIn: false, currentUserId: null, locationMode: 'internal' };
 
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data)); } catch(e) {}
+        // V24: LƯU ĐỒNG THỜI VÀO INDEXEDDB ĐỂ SAO LƯU DỰ PHÒNG CHỐNG MẤT DỮ LIỆU
+        this.persistToIndexedDb(this.data);
         this.render();
       }
     } catch (err) {

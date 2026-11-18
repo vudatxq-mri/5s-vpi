@@ -3,7 +3,7 @@
  * Hỗ trợ cài đặt trên màn hình điện thoại & cập nhật tức thì mã nguồn mới
  */
 
-const CACHE_NAME = "vpi-5s-cache-v23_20261109";
+const CACHE_NAME = "vpi-5s-cache-v24_20261118";
 const STATIC_ASSETS = [
   "/",
   "/manifest.json",
