@@ -2501,8 +2501,10 @@ class App5S {
         document.body.classList.remove('mobile-frame-mode');
       }
     }
+    // V25 FIX: chỉ ghi đè khi người dùng đã chủ động chọn chế độ xem (trước đây luôn ép về 'mobile' kể cả trên điện thoại)
     try {
-      this.viewMode = localStorage.getItem('vpi_5s_view_mode') || 'mobile';
+      const savedViewMode = localStorage.getItem('vpi_5s_view_mode');
+      if (savedViewMode === 'mobile' || savedViewMode === 'full') this.viewMode = savedViewMode;
     } catch (e) {}
 
     this.theme = 'light';
@@ -2657,8 +2659,9 @@ class App5S {
       this.data.hospital.notice = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital.notice));
     }
 
+    // V25 SECURITY FIX: mặc định CHƯA đăng nhập (trước đây tự đăng nhập bằng tài khoản quản trị BV-345)
     if (!this.data.auth) {
-      this.data.auth = { isLoggedIn: true, currentUserId: 'BV-345', locationMode: 'internal' };
+      this.data.auth = { isLoggedIn: false, currentUserId: null, locationMode: 'internal' };
     }
 
     // DANH MỤC KHOA PHÒNG (V23: Bảo toàn các khoa đã xóa hoặc thêm mới, chỉ seed khi rỗng)
@@ -2737,7 +2740,7 @@ class App5S {
         name: name,
         full_name: name,
         username: s.username || code.toLowerCase().replace('-', ''),
-        password: s.password || '123',
+        password: s.password || '123456',
         department_id: deptId,
         role: role,
         role_level: s.role_level || role,
@@ -2751,7 +2754,7 @@ class App5S {
     });
 
     if (!this.data.auth) {
-      this.data.auth = { isLoggedIn: true, currentUserId: 'BV-345', locationMode: 'internal' };
+      this.data.auth = { isLoggedIn: false, currentUserId: null, locationMode: 'internal' };
     }
 
     // Chuẩn hóa CSDL Đánh giá 5S Khoa/Phòng Toàn Viện (V8)
@@ -2945,11 +2948,34 @@ class App5S {
   getCurrentUser() {
     const auth = this.data.auth;
     if (!auth || !auth.isLoggedIn) return null;
-    return this.data.staff.find(s => s.code === auth.currentUserId || s.username === auth.currentUserId) || this.data.staff[0];
+    const found = this.data.staff.find(s => s.code === auth.currentUserId || s.username === auth.currentUserId);
+    if (found) return found;
+    // V25 SECURITY FIX: trước đây trả về staff[0] (Tổng Giám đốc - quyền cao nhất) khi không tìm thấy tài khoản.
+    // Nay trả về hồ sơ khách không có quyền quản trị.
+    return { id: 0, code: auth.currentUserId || '', name: 'Tài khoản không tồn tại', title: 'Khách', role_title: 'Khách', role: 'guest', role_level: 'guest', department_id: null, can_review: false, assigned_rooms: [] };
+  }
+
+  // V25: Đăng xuất phiên nếu tài khoản đã bị xóa khỏi danh sách nhân sự
+  validateSession() {
+    const auth = this.data && this.data.auth;
+    if (!auth || !auth.isLoggedIn) return;
+    const exists = (this.data.staff || []).some(s => s.code === auth.currentUserId || s.username === auth.currentUserId);
+    if (!exists) {
+      this.data.auth = { isLoggedIn: false, currentUserId: null, locationMode: auth.locationMode || 'internal' };
+      try { localStorage.removeItem('vpi_5s_auth_session'); } catch (e) {}
+    }
   }
 
   purgeStaleCachesIfNeeded() {
-    const CURRENT_VERSION = 'v22_20261108';
+    // V25: Xóa mật khẩu dạng chữ thường từng được lưu bởi tính năng "Ghi nhớ đăng nhập" ở bản cũ
+    try {
+      const savedAuth = JSON.parse(localStorage.getItem('vpi_5s_saved_auth') || 'null');
+      if (savedAuth && 'password' in savedAuth) {
+        delete savedAuth.password;
+        localStorage.setItem('vpi_5s_saved_auth', JSON.stringify(savedAuth));
+      }
+    } catch (e) {}
+    const CURRENT_VERSION = 'v25_20261120';
     try {
       const savedVer = localStorage.getItem('vpi_5s_app_version');
       if (savedVer !== CURRENT_VERSION) {
@@ -2957,7 +2983,7 @@ class App5S {
         if ('caches' in window) {
           caches.keys().then(keys => {
             keys.forEach(k => {
-              if (k !== 'vpi-5s-cache-v22') caches.delete(k);
+              if (k !== 'vpi-5s-cache-v25_20261120') caches.delete(k);
             });
           });
         }
@@ -2976,6 +3002,7 @@ class App5S {
 
   init() {
     this.purgeStaleCachesIfNeeded();
+    this.validateSession();
     this.resetScheduleToToday();
     this.applyTheme();
     this.applyLocationMode();
@@ -4180,11 +4207,6 @@ class App5S {
 
   setScheduleWeek(week) {
     this.scheduleState.selectedWeek = parseInt(week);
-    this.render();
-  }
-
-  setScheduleDay(day) {
-    this.scheduleState.selectedDay = day;
     this.render();
   }
 
@@ -5850,6 +5872,14 @@ Trân trọng cảm ơn!`);
     const video = document.getElementById('live-camera-feed');
     let width = (video && video.videoWidth) || 1280;
     let height = (video && video.videoHeight) || 720;
+    // V25 PERF: thu nhỏ ảnh camera về tối đa 1024px (trước đây giữ nguyên độ phân giải camera 1080p-4K
+    // => mỗi ảnh 0,5-2MB base64, làm đầy bộ nhớ 5MB của trình duyệt chỉ sau vài ảnh và tự xóa ảnh cũ)
+    const MAX_PHOTO_DIM = 1024;
+    if (width > MAX_PHOTO_DIM || height > MAX_PHOTO_DIM) {
+      const ratio = Math.min(MAX_PHOTO_DIM / width, MAX_PHOTO_DIM / height);
+      width = Math.round(width * ratio);
+      height = Math.round(height * ratio);
+    }
 
     const canvas = document.createElement('canvas');
     canvas.width = width;
@@ -8554,8 +8584,11 @@ Trân trọng cảm ơn!`);
       `;
     }
 
-    return staffList.map(s => {
-      const dept = depts.find(d => d.id == s.department_id) || { name: 'Chưa phân khoa' };
+    // V25 PERF: phân trang danh sách nhân sự (trước đây render cùng lúc 526 thẻ ~19.000 phần tử DOM, rất chậm trên điện thoại)
+    const limit = this.staffListLimit || 40;
+    const deptMap = new Map(depts.map(d => [String(d.id), d]));
+    const listHtml = staffList.slice(0, limit).map(s => {
+      const dept = deptMap.get(String(s.department_id)) || { name: 'Chưa phân khoa' };
       const isOnline = true;
       const isAdmin = s.role === 'admin';
       const isManager = s.role === 'manager';
@@ -8621,6 +8654,24 @@ Trân trọng cảm ơn!`);
         </div>
       `;
     }).join('');
+
+    const remaining = staffList.length - limit;
+    const moreBtn = remaining > 0 ? `
+      <button type="button" onclick="app5s.showMoreStaff()" class="w-full py-2.5 rounded-2xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
+        Xem thêm ${Math.min(remaining, 40)} nhân sự (còn ${remaining} / tổng ${staffList.length})
+      </button>` : '';
+    return listHtml + moreBtn;
+  }
+
+  showMoreStaff() {
+    this.staffListLimit = (this.staffListLimit || 40) + 40;
+    const listContainer = document.getElementById('staff-list-container');
+    if (listContainer) {
+      listContainer.innerHTML = this.renderStaffListHtml();
+      if (window.lucide) window.lucide.createIcons({ root: listContainer });
+    } else {
+      this.render();
+    }
   }
 
   renderStaffTab() {
@@ -8740,6 +8791,7 @@ Trân trọng cảm ơn!`);
 
   onStaffSearchInput(val) {
     this.staffSearchQuery = val;
+    this.staffListLimit = 40;
     const listContainer = document.getElementById('staff-list-container');
     if (listContainer) {
       listContainer.innerHTML = this.renderStaffListHtml();
@@ -8751,6 +8803,7 @@ Trân trọng cảm ơn!`);
 
   setStaffDeptFilter(deptId) {
     this.filterStaffDept = deptId;
+    this.staffListLimit = 40;
     this.render();
   }
 
@@ -10313,8 +10366,12 @@ Trân trọng cảm ơn!`);
       alert('Mật khẩu hiện tại không đúng!');
       return;
     }
-    if (!newPass || newPass.length < 3) {
-      alert('Mật khẩu mới phải có ít nhất 3 ký tự!');
+    if (!newPass || newPass.length < 6) {
+      alert('Mật khẩu mới phải có ít nhất 6 ký tự!');
+      return;
+    }
+    if (['123456', '123', '12345678', '000000', '111111'].includes(newPass) || newPass === current) {
+      alert('Mật khẩu mới quá dễ đoán hoặc trùng mật khẩu cũ. Vui lòng chọn mật khẩu khác!');
       return;
     }
     if (newPass !== confirm) {
@@ -10343,8 +10400,8 @@ Trân trọng cảm ơn!`);
           const pInput = document.getElementById('login-password');
           const rBox = document.getElementById('login-remember-me');
           if (uInput && !uInput.value) uInput.value = saved.username;
-          if (pInput && !pInput.value) pInput.value = saved.password || '';
           if (rBox) rBox.checked = true;
+          if (pInput) pInput.focus();
         }
       } catch (e) {}
     }, 100);
@@ -10383,7 +10440,6 @@ Trân trọng cảm ơn!`);
             <div>
               <div class="flex items-center justify-between mb-1">
                 <label class="block font-bold text-slate-700 dark:text-slate-300">Mật khẩu *</label>
-                <span class="text-[10.5px] text-emerald-600 font-bold">Mặc định ban đầu: 123456</span>
               </div>
               <div class="relative">
                 <i data-lucide="lock" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
@@ -10451,7 +10507,9 @@ Trân trọng cảm ơn!`);
       const sCodeClean = sCode.replace(/-/g, '');
       const sUser = (s.username || '').toLowerCase();
       const sUserClean = sUser.replace(/-/g, '');
-      const passMatch = String(s.password || '123456') === p || (p === '123456') || (p === '123');
+      // V25 SECURITY FIX: chỉ chấp nhận đúng mật khẩu của tài khoản.
+      // Trước đây mọi tài khoản (kể cả Admin) đều đăng nhập được bằng '123456' hoặc '123'.
+      const passMatch = String(s.password || '123456') === p;
       return (sCode === u || sCodeClean === cleanU || sUser === u || sUserClean === cleanU) && passMatch;
     });
 
@@ -10459,9 +10517,9 @@ Trân trọng cảm ơn!`);
     const rememberMe = document.getElementById('login-remember-me')?.checked;
     if (rememberMe && matched) {
       try {
+        // V25 SECURITY FIX: chỉ ghi nhớ Mã NV, KHÔNG lưu mật khẩu dạng chữ thường trên thiết bị
         localStorage.setItem('vpi_5s_saved_auth', JSON.stringify({
           username: matched.code,
-          password: p,
           remember: true
         }));
       } catch (e) {}
@@ -10491,6 +10549,13 @@ Trân trọng cảm ơn!`);
     this.resetScheduleToToday();
     this.render();
     this.showToast(`Chào mừng ${matched.name} đã đăng nhập!`);
+    // V25: Bắt buộc đổi mật khẩu mặc định ngay lần đăng nhập đầu
+    if (String(matched.password || '123456') === '123456') {
+      setTimeout(() => {
+        this.openChangePasswordModal();
+        this.showToast('🔐 Bạn đang dùng mật khẩu mặc định. Vui lòng đổi mật khẩu để bảo vệ tài khoản!');
+      }, 400);
+    }
     // V23: Kéo ngay dữ liệu mới nhất toàn viện từ server khi đăng nhập
     this.pullStateFromServer(true);
   }
@@ -10550,6 +10615,10 @@ Trân trọng cảm ơn!`);
   closeModal() {
     const modalContainer = document.getElementById('modal-container');
     if (modalContainer) modalContainer.innerHTML = '';
+    if (this.pendingSyncRender) {
+      this.pendingSyncRender = false;
+      setTimeout(() => this.render(), 0);
+    }
   }
 
 
@@ -12385,15 +12454,20 @@ Trân trọng cảm ơn!`);
     // Kéo dữ liệu từ server ngay khi mở ứng dụng
     this.pullStateFromServer();
 
-    // Định kỳ 6 giây kiểm tra cập nhật nền
-    setInterval(() => {
-      this.pullStateFromServer();
-    }, 6000);
+    // V25 PERF: Đồng bộ nền thông minh thay cho setInterval 6 giây cố định
+    // - Tạm dừng khi app chạy nền / màn hình tắt (tiết kiệm pin & 4G)
+    // - Giãn dần chu kỳ (exponential backoff) khi máy chủ lỗi / không tồn tại, tối đa 5 phút
+    this.syncBaseDelay = 10000;
+    this.syncFailCount = 0;
+    this.scheduleNextPull();
 
     // Kéo dữ liệu ngay khi người dùng chuyển sang tab ứng dụng (trên Smartphone hoặc PC)
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
-        this.pullStateFromServer();
+        this.pullStateFromServer().finally(() => this.scheduleNextPull());
+      } else if (this.syncTimer) {
+        clearTimeout(this.syncTimer);
+        this.syncTimer = null;
       }
     });
 
@@ -12412,6 +12486,24 @@ Trân trọng cảm ơn!`);
   // =========================================================================
   // V20.2 PRO: ĐỒNG BỘ DỮ LIỆU LIÊN THIẾT BỊ (MÁY TÍNH & ĐIỆN THOẠI) REAL-TIME
   // =========================================================================
+  scheduleNextPull() {
+    if (this.syncTimer) clearTimeout(this.syncTimer);
+    if (document.visibilityState === 'hidden') { this.syncTimer = null; return; }
+    const delay = Math.min(this.syncBaseDelay * Math.pow(2, this.syncFailCount || 0), 300000);
+    this.syncTimer = setTimeout(async () => {
+      await this.pullStateFromServer();
+      this.scheduleNextPull();
+    }, delay);
+  }
+
+  // V25: Không render lại toàn màn hình khi người dùng đang nhập liệu / mở hộp thoại (tránh mất chữ đang gõ, mất ảnh chưa gửi)
+  isUserBusy() {
+    const modal = document.getElementById('modal-container');
+    if (modal && modal.children.length > 0) return true;
+    const a = document.activeElement;
+    return !!(a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.tagName === 'SELECT'));
+  }
+
   getSyncApiUrl() {
     if (typeof window !== 'undefined' && window.location.protocol === 'file:') {
       return 'http://127.0.0.1:8000/api/sync';
@@ -12455,10 +12547,11 @@ Trân trọng cảm ơn!`);
   async pullStateFromServer(force = false) {
     try {
       const url = this.getSyncApiUrl();
-      const res = await fetch(url);
-      if (!res.ok) return;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) { this.syncFailCount = Math.min((this.syncFailCount || 0) + 1, 5); return; }
       const json = await res.json();
-      if (!json || !json.data) return;
+      if (!json || !json.data) { this.syncFailCount = Math.min((this.syncFailCount || 0) + 1, 5); return; }
+      this.syncFailCount = 0;
 
       let serverTime = json.timestamp || 0;
       if (serverTime > 0 && serverTime < 1e11) {
@@ -12524,10 +12617,16 @@ Trân trọng cảm ơn!`);
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data)); } catch(e) {}
         // V24: LƯU ĐỒNG THỜI VÀO INDEXEDDB ĐỂ SAO LƯU DỰ PHÒNG CHỐNG MẤT DỮ LIỆU
         this.persistToIndexedDb(this.data);
-        this.render();
+        this.validateSession();
+        if (force || !this.isUserBusy()) {
+          this.render();
+        } else {
+          this.pendingSyncRender = true;
+        }
       }
     } catch (err) {
       // Offline
+      this.syncFailCount = Math.min((this.syncFailCount || 0) + 1, 5);
     }
   }
 }
