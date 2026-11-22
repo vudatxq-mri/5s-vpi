@@ -383,6 +383,11 @@ def check_op(u, op, existing, rooms_cache, password_updates):
                 return True, None, ''
             return False, None, 'Không có quyền xóa phiếu này'
         d = dict(d)
+        # Người gửi phiếu do máy chủ ghi nhận (không tin dữ liệu từ máy khách)
+        if existing is None:
+            d['sender_code'] = u['code']
+        else:
+            d['sender_code'] = existing.get('sender_code') or d.get('sender_code')
         if can_review(u):
             return True, d, ''
         if existing is None:

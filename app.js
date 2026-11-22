@@ -3769,6 +3769,7 @@ Trân trọng cảm ơn!`);
     };
 
     if (!this.data.audits) this.data.audits = [];
+    newAudit.sender_code = (this.getCurrentUser() || {}).code || '';
     this.data.audits.unshift(newAudit);
 
     // Cập nhật trạng thái 5S ca trực của phòng
@@ -5595,6 +5596,7 @@ Trân trọng cảm ơn!`);
     };
 
     if (!this.data.audits || !Array.isArray(this.data.audits)) this.data.audits = [];
+    newAudit.sender_code = (this.getCurrentUser() || {}).code || '';
     this.data.audits.unshift(newAudit);
     this.saveData();
     this.showToast('Đã lưu thành công phiếu kiểm tra 5S!');
