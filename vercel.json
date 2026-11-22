@@ -1,5 +1,17 @@
 {
+  "functions": {
+    "api/*.py": {
+      "maxDuration": 15,
+      "includeFiles": "api/_core.py"
+    }
+  },
   "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
     {
       "source": "/(.*)\\.(png|jpg|jpeg|webp|svg|ico)",
       "headers": [

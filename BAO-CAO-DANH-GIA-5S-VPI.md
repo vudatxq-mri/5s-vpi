@@ -41,7 +41,46 @@ và kiểm thử bản sửa trên máy (localhost). Bản gốc lưu trong thư
 7. **Tailwind CDN dùng cho production** (~400 KB, biên dịch CSS lúc chạy, chậm trên máy yếu) → nên build CSS tĩnh.
 8. `user-scalable=no` chặn phóng to chữ (khó cho người lớn tuổi); app.js 906 KB một file, 280 KB là dữ liệu khởi tạo.
 
-## C. Cách triển khai bản V25
+## C. Phân quyền DUYỆT ẢNH 5S theo "DANH SÁCH TOÀN VIỆN VPI.xlsx" (bản V26 — 22/11/2026)
 
-Chép các file trong thư mục này (trừ `original/`, `.claude/`, file báo cáo) đè lên mã nguồn dự án Vercel rồi deploy.
-Lưu ý: nếu mã nguồn gốc của anh/chị khác bản đang chạy, hãy so sánh với `original/` trước khi chép đè.
+- Nguồn: cột F "Duyệt ảnh 5S". Kết quả trong app: **1 Admin (BV-345) + 31 người "Được duyệt" + 494 người chỉ gửi ảnh** = 526 tài khoản.
+- 31 mã được duyệt: BV-001, 002, 004, 026, 042, 121A, 157, 196, 202, 243, 245, 254, 269, 289, 305, 306, 308, 326,
+  342, 386, 428, 467, 468, 489, 525, 568, 596, 658, 725, 747, 754.
+- Trước đây quyền duyệt được suy ra từ chữ "trưởng / giám sát / chỉ đạo…" trong chức danh và một danh sách mã cố định,
+  nên **22 người ngoài danh sách** vẫn duyệt được (VD: BV-280 Trưởng khoa CĐHA, BV-115, BV-007, BV-279, BV-076, BV-332,
+  BV-543, BV-476, BV-338, BV-389, BV-377, BV-101, BV-523, BV-263, BV-059, BV-491, BV-780, BV-343/344/660 Giặt là…).
+  Nay họ **chỉ được gửi ảnh**. Nếu cần, Admin bật lại từng người.
+- 6 tài khoản có trong app nhưng không có trong Excel (BV-059, BV-204, BV-116A, BV-530, BV-708, BV-764) → chỉ gửi ảnh.
+- Admin bật/tắt quyền duyệt từng người: Nhân sự → Sửa → ô "✅ Được phép DUYỆT ẢNH 5S". Thẻ nhân sự hiện nhãn
+  "✅ Duyệt ảnh" / "📷 Chỉ gửi ảnh".
+- Danh sách áp dụng 1 lần trên mỗi máy (khóa `REVIEW_POLICY.version` đầu app.js). Muốn áp lại danh sách Excel mới:
+  sửa `REVIEWER_CODES` và đổi `version`.
+- Sửa kèm lỗi nghiêm trọng: Sửa nhân sự có vai trò "supervisor" rồi Lưu → bị đổi thành **Admin** (ô chọn rơi về mục đầu).
+  Chỉ Admin mới đổi được vai trò / quyền duyệt; trưởng khoa không còn tự gán Admin cho người khác.
+- Hạn chế: do chưa có máy chủ đồng bộ, việc Admin bật/tắt quyền chỉ có hiệu lực trên máy Admin; danh sách Excel thì có
+  hiệu lực trên mọi máy vì nằm trong app.js.
+
+## D. Máy chủ đồng bộ & đăng nhập (bản V27 — 22/11/2026) — giải quyết mục B1, B2, B4
+
+- **Backend:** Vercel Functions (Python, thư mục `api/`) + Supabase (CSDL Postgres + kho ảnh `photos`).
+  - `POST /api/login` — kiểm tra mật khẩu trên máy chủ (mã hóa PBKDF2), khóa 5 phút sau 5 lần sai, trả mã phiên 30 ngày.
+  - `GET/POST /api/sync` — chỉ tải phần thay đổi; máy chủ **tự kiểm tra quyền** từng thay đổi (người chỉ gửi ảnh
+    không thể tự duyệt, tự nâng quyền, xóa phiếu đã duyệt…).
+  - `POST /api/password` — đổi mật khẩu có hiệu lực mọi máy (các máy khác phải đăng nhập lại).
+  - `POST /api/upload` — ảnh được tải lên kho ảnh, dữ liệu chỉ lưu đường link (không còn base64 nặng).
+- **app.js:** bỏ 526 hồ sơ nhân sự + mật khẩu + 12 phiếu demo khỏi mã nguồn công khai (906 KB → ~650 KB). Danh sách
+  chỉ tải về sau khi đăng nhập. Mất mạng vẫn chụp/nộp được: thay đổi nằm trong hàng đợi, tự gửi khi có mạng.
+- Mật khẩu ban đầu của mọi tài khoản: `123456`, bắt buộc đổi ở lần đăng nhập đầu. Quyền duyệt theo mục C, Admin
+  thay đổi trên app → có hiệu lực mọi máy.
+- Bỏ tính năng "chuyển tài khoản không cần mật khẩu".
+
+## E. Cách triển khai bản V27
+
+1. Supabase → SQL Editor → chạy `supabase/schema.sql` (hiện 3 dòng "OK").
+2. Dán Secret key vào `.env.local` (KHÔNG gửi qua chat, KHÔNG đưa lên GitHub) → chạy `python tools/seed_supabase.py`
+   để nạp khoa phòng, buồng phòng, 526 nhân sự.
+3. Vercel → Project → Settings → Environment Variables: thêm `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `APP_SECRET`,
+   `RETENTION_DAYS` (giá trị như trong `.env.local`).
+4. Đưa mã nguồn lên GitHub (repo nên để **Private**); `.gitignore`/`.vercelignore` đã loại `.env.local`, `original/`,
+   `tools/`. Vercel tự deploy.
+5. Mở https://5s-vpi.vercel.app/api/health → `"ok": true, "staff_records": 526`.

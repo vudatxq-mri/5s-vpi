@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Service Worker cho 5S VPI Mobile PWA
  * Hỗ trợ cài đặt trên màn hình điện thoại & cập nhật tức thì mã nguồn mới
  *
@@ -9,10 +9,10 @@
  *  - Khi mất mạng, API trả về mã 503 (trước đây trả 200 khiến app tưởng đã đồng bộ thành công)
  */
 
-const CACHE_NAME = "vpi-5s-cache-v25_20261120";
+const CACHE_NAME = "vpi-5s-cache-v27_20261122";
 const STATIC_ASSETS = [
   "/",
-  "/app.js?v=20261120_v25",
+  "/app.js?v=20261122_v27",
   "/style.css?v=20261120_v25",
   "/css/app.css?v=20261120_v25",
   "/manifest.json",
