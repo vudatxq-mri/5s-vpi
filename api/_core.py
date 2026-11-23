@@ -37,6 +37,35 @@ PHOTO_BUCKET = 'photos'
 
 ADMIN_CODES = {'BV-345'}
 
+ALLOWED_COLLECTIONS = {'departments', 'rooms', 'staff', 'audits', 'department_evaluations',
+                       'admin_messages', 'rooms_schedule', 'singleton'}
+SAFE_KEY = re.compile(r'^[A-Za-z0-9_.:|\-]{1,120}$')
+
+# Chống chèn mã độc (XSS): app hiển thị bằng innerHTML & onclick="...('giá trị')",
+# nên mọi chuỗi người dùng nhập được thay ký tự nguy hiểm bằng ký tự trông tương tự.
+_XSS_MAP = str.maketrans({'<': '‹', '>': '›', '"': '”', "'": '’', '`': '’', '\\': '/'})
+_ENTITY = re.compile(r'&(?=#|[A-Za-z]{2,8};)')
+
+
+def clean_text(s):
+    return _ENTITY.sub('＆', s.translate(_XSS_MAP))
+
+
+def sanitize(v, depth=0):
+    if depth > 12:
+        return None
+    if isinstance(v, str):
+        if v.startswith('data:image/'):
+            return v if re.match(r'^data:image/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$', v) else ''
+        if v.lower().startswith('javascript:'):
+            return ''
+        return clean_text(v)
+    if isinstance(v, list):
+        return [sanitize(x, depth + 1) for x in v]
+    if isinstance(v, dict):
+        return {clean_text(str(k))[:80]: sanitize(x, depth + 1) for k, x in v.items()}
+    return v
+
 # Bản ghi theo ngày (lọc theo RETENTION_DAYS khi tải đầy đủ)
 DATED_FIELDS = {
     'audits': 'audit_date',
@@ -474,6 +503,8 @@ def apply_ops(u, ops):
         k = str(op['k'])[:200]
         if c == 'staff':
             k = norm_code(k)
+        if not SAFE_KEY.match(k) or c not in ALLOWED_COLLECTIONS:
+            continue
         clean.append({'c': c, 'k': k, 'd': op.get('d')})
 
     # Lấy bản ghi hiện có theo từng collection
@@ -489,6 +520,8 @@ def apply_ops(u, ops):
     for op in clean:
         ex = existing.get(op['c'], {}).get(op['k'])
         ok, data, reason = check_op(u, op, ex, rooms_cache, password_updates)
+        if ok and data is not None:
+            data = keep_private_fields(op['c'], sanitize(data), ex)
         if not ok:
             rejected.append({'c': op['c'], 'k': op['k'], 'reason': reason})
             continue
@@ -530,14 +563,53 @@ def set_password(code, pw, must_change, bump):
 # Tải dữ liệu
 # ---------------------------------------------------------------------------
 def _fmt(rows):
-    return [{'c': r['collection'], 'k': r['key'], 'd': r['data'], 'x': bool(r['deleted'])} for r in rows]
+    return [{'c': r['collection'], 'k': r['key'], 'd': r['data'], 'x': bool(r['deleted']), 'v': r.get('version')}
+            for r in rows]
+
+
+PRIVATE_STAFF_FIELDS = ('birth_date', 'phone', 'email', 'address', 'id_number')
+
+
+def _can_see_message(u, d):
+    return is_admin(u) or is_leader(u) or norm_code((d or {}).get('sender_code')) == norm_code(u.get('code'))
+
+
+def view_for(u, result):
+    """Bảo vệ dữ liệu cá nhân (NĐ 13/2023): mỗi người chỉ tải phần mình được xem."""
+    me = norm_code(u.get('code'))
+    out = []
+    for r in result['records']:
+        d = r.get('d')
+        if r['c'] == 'admin_messages' and d is not None and not _can_see_message(u, d):
+            continue
+        if r['c'] == 'staff' and isinstance(d, dict) and not is_admin(u) and norm_code(r['k']) != me:
+            d = dict(d)
+            d.pop('birth_date', None)
+            for f in ('email', 'address', 'id_number'):
+                d.pop(f, None)
+            if not (is_leader(u) or (is_manager(u) and same_dept(u.get('department_id'), d.get('department_id')))):
+                d.pop('phone', None)
+            r = dict(r, d=d)
+        out.append(r)
+    result['records'] = out
+    return result
+
+
+def keep_private_fields(collection, data, existing):
+    """Máy khách không nhận các trường riêng tư => khi họ sửa hồ sơ, giữ nguyên giá trị cũ trên máy chủ."""
+    if collection != 'staff' or not isinstance(data, dict) or not isinstance(existing, dict):
+        return data
+    for f in PRIVATE_STAFF_FIELDS:
+        if f not in data and f in existing:
+            data[f] = existing[f]
+    return data
 
 
 def pull(since):
     version = current_version()
     if since and since > 0:
         rows = rest('GET', 'records', {
-            'select': 'collection,key,data,deleted', 'version': 'gt.%d' % since,
+            'select': 'collection,key,data,deleted,version', 'version': 'gt.%d' % since,
             'order': 'version', 'limit': str(PAGE + 1)})
         if rows is not None and len(rows) <= PAGE:
             return {'version': version, 'full': False, 'records': _fmt(rows)}
@@ -549,7 +621,7 @@ def pull(since):
     out, offset = [], 0
     while True:
         rows = rest('GET', 'records', {
-            'select': 'collection,key,data,deleted', 'deleted': 'eq.false',
+            'select': 'collection,key,data,deleted,version', 'deleted': 'eq.false',
             'or': '(rec_date.is.null,rec_date.gte.%s)' % cutoff,
             'order': 'collection,key', 'limit': str(PAGE), 'offset': str(offset)})
         out.extend(rows or [])

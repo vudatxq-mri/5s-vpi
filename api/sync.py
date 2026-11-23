@@ -14,13 +14,13 @@ import _core as core  # noqa: E402
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         def go():
-            core.authenticate(self.headers)
+            user = core.authenticate(self.headers)
             qs = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
             try:
                 since = int((qs.get('since') or ['0'])[0])
             except ValueError:
                 since = 0
-            return 200, core.pull(since)
+            return 200, core.view_for(user, core.pull(since))
         core.run(self, go)
 
     def do_POST(self):

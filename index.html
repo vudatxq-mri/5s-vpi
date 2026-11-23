@@ -16,8 +16,11 @@
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- V28 BẢO MẬT: chỉ cho phép tải mã & ảnh từ nguồn tin cậy (chặn mã độc chèn từ ngoài) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://ibbmhskkhqeefsyrlptg.supabase.co; media-src 'self' blob:; connect-src 'self' https://ibbmhskkhqeefsyrlptg.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+
+  <!-- Tailwind CSS CDN (V28: cố định phiên bản, tránh tự động nhận mã mới không kiểm soát) -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -101,7 +104,7 @@
       <button onclick="app5s.openNotificationsCenterModal()" title="Trung tâm thông báo 5S VPI & Bật/Tắt chuông" class="relative bg-amber-950/80 hover:bg-amber-900 text-amber-300 font-semibold px-2.5 py-1 rounded-lg border border-amber-700/60 flex items-center space-x-1.5 transition">
         <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-400"></i>
         <span class="hidden sm:inline text-[11px]">Thông báo</span>
-        <span class="px-1.5 py-0.2 text-[9px] font-black font-mono rounded-full bg-red-600 text-white animate-pulse">3</span>
+        <span id="notif-count" class="hidden px-1.5 py-0.2 text-[9px] font-black font-mono rounded-full bg-red-600 text-white animate-pulse"></span>
       </button>
 
       <!-- Nút Hỗ trợ & Hotline 24/7 -->
@@ -297,6 +300,6 @@
   <div id="modal-container"></div>
 
   <!-- Main JavaScript App -->
-  <script src="app.js?v=20261122_v27"></script>
+  <script src="app.js?v=20261123_v28"></script>
 </body>
 </html>

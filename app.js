@@ -40,6 +40,7 @@ const REVIEW_POLICY = {
 const TOKEN_KEY = 'vpi_5s_token_v27';
 const SYNC_VERSION_KEY = 'vpi_5s_sync_version_v27';
 const OUTBOX_KEY = 'vpi_5s_outbox_v27';
+const SEEN_KEY = 'vpi_5s_seen_versions_v28';
 const SYNC_COLLECTIONS = {
   departments: { get: d => d.departments, set: (d, v) => { d.departments = v; }, key: r => (r && r.id !== undefined && r.id !== null) ? String(r.id) : '' },
   rooms: { get: d => d.rooms, set: (d, v) => { d.rooms = v; }, key: r => (r && r.id !== undefined && r.id !== null) ? String(r.id) : '' },
@@ -85,12 +86,13 @@ const DEFAULT_SEED_DATA = {
     supervisionCycle: 'Tháng 10/2026 (Kiểm tra hằng ngày)',
     complianceRate: 100,
     averageScore: 98.5,
+    // V28: bỏ "THÔNG BÁO KHẨN ... kiểm tra lúc 09h00 sáng nay" (tin cũ 16/10 hiện mãi mỗi ngày)
     notice: {
-      enabled: true,
-      type: 'danger',
-      title: 'THÔNG BÁO KHẨN: KIỂM TRA ĐỘT XUẤT 5S TOÀN VIỆN',
-      content: 'Ban Giám đốc & Đoàn phúc tra Sở Y tế kiểm tra thực hành 5S tại tất cả các buồng bệnh, buồng thủ thuật lúc 09h00 sáng nay. Yêu cầu các Trưởng khoa, Điều dưỡng trưởng rà soát sàng lọc, sắp xếp trang thiết bị và khử khuẩn buồng phòng sạch sẽ ngay đầu giờ.',
-      updatedAt: '2026-10-16 07:30'
+      enabled: false,
+      type: 'info',
+      title: '',
+      content: '',
+      updatedAt: ''
     }
   },
   departments: [{"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu", "order": 1, "category": "paraclinical"}, {"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "order": 2, "category": "clinical"}, {"id": 11, "code": "ICU", "name": "Khoa Hồi sức tích cực & Chống độc", "head_nurse": "ĐD. Nguyễn Thị Thanh Nga", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.116", "color": "#dc2626", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục", "order": 3, "category": "clinical"}, {"id": 12, "code": "PTGM", "name": "Khoa Phẫu thuật - Gây mê hồi sức", "head_nurse": "ĐD. Nguyễn Văn Thắng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.117", "color": "#0284c7", "icon": "fa-syringe", "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản", "order": 4, "category": "clinical"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân", "order": 5, "category": "clinical"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương", "order": 6, "category": "clinical"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa", "order": 7, "category": "clinical"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa", "order": 8, "category": "clinical"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng", "order": 9, "category": "clinical"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT - Phục hồi chức năng", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "BSCKI. Trần Văn Thái", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-spa", "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu", "order": 10, "category": "clinical"}, {"id": 13, "code": "LCK", "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)", "head_nurse": "ĐD. Vũ Thị Loan", "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường", "phone": "0211.386.129", "color": "#8b5cf6", "icon": "fa-eye", "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình", "order": 11, "category": "clinical"}, {"id": 14, "code": "TDCN", "name": "Khoa Thăm dò chức năng & Nội soi", "head_nurse": "KTV. Lê Thùy Linh", "doctor_in_charge": "BS. Lê Quang Huy", "phone": "0211.386.131", "color": "#14b8a6", "icon": "fa-wave-square", "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp", "order": 12, "category": "paraclinical"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học", "order": 13, "category": "paraclinical"}, {"id": 15, "code": "KD", "name": "Khoa Dược", "head_nurse": "DS. Nguyễn Bích Ngọc", "doctor_in_charge": "DS CKI. Hoàng Thị Lan", "phone": "0211.386.133", "color": "#10b981", "icon": "fa-pills", "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế", "order": 14, "category": "paraclinical"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện", "order": 15, "category": "paraclinical"}, {"id": 16, "code": "QLCL", "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "head_nurse": "ĐD. Nguyễn Thu Trang", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.100", "color": "#6366f1", "icon": "fa-award", "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV", "order": 16, "category": "functional"}, {"id": 17, "code": "KHTH", "name": "Phòng Kế hoạch tổng hợp & CNTT", "head_nurse": "ĐD. Hoàng Hải Yến", "doctor_in_charge": "BSCKI. Trần Đức Thắng", "phone": "0211.386.102", "color": "#3b82f6", "icon": "fa-clipboard-list", "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS", "order": 17, "category": "functional"}, {"id": 18, "code": "PDD", "name": "Phòng Điều dưỡng", "head_nurse": "ThS. ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "phone": "0211.386.103", "color": "#06b6d4", "icon": "fa-user-nurse", "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S", "order": 18, "category": "functional"}, {"id": 19, "code": "HCQT", "name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "head_nurse": "CN. Đặng Thị Loan", "doctor_in_charge": "ThS. Nguyễn Văn Hùng", "phone": "0211.386.105", "color": "#64748b", "icon": "fa-building", "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan", "order": 19, "category": "functional"}, {"id": 20, "code": "TCKT", "name": "Phòng Tài chính - Kế toán", "head_nurse": "KTV. Lê Thu Thảo", "doctor_in_charge": "ThS. Vũ Thị Mai", "phone": "0211.386.106", "color": "#f59e0b", "icon": "fa-file-invoice-dollar", "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị", "order": 20, "category": "functional"}],
@@ -143,11 +145,7 @@ const DEFAULT_SEED_DATA = {
     locationMode: 'internal'
   },
   audits: [],
-  securityLogs: [
-    { time: '2026-10-16 07:15:20', ip: '192.168.1.105', user: 'KTV. Vũ Bá Đạt', action: 'Đăng nhập hệ thống (Nội viện Wi-Fi)', status: 'success' },
-    { time: '2026-10-16 07:22:11', ip: '113.160.224.45', user: 'ThS. BSCKII. Phạm Quỳnh Hưng', action: 'Truy cập ngoại viện an toàn qua Cloudflare HTTPS', status: 'success' },
-    { time: '2026-10-16 07:30:00', ip: '192.168.1.105', user: 'Ban Chỉ đạo 5S', action: 'Phát Bảng tin Thông báo khẩn cấp toàn viện', status: 'success' }
-  ]
+  securityLogs: [] // V28: bỏ nhật ký truy cập giả
 };
 
 class App5S {
@@ -284,6 +282,17 @@ class App5S {
     if (!this.data.hospital) {
       this.data.hospital = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.hospital));
     }
+    // V28: tắt "thông báo khẩn" mẫu cũ (16/10/2026) còn lưu trên máy từ bản trước
+    try {
+      const n = this.data.hospital && this.data.hospital.notice;
+      if (n && (n.updatedAt === '2026-10-16 07:30' || /09h00 sáng nay/.test(n.content || ''))) {
+        this.data.hospital.notice = { enabled: false, type: 'info', title: '', content: '', updatedAt: '' };
+      }
+      if (Array.isArray(this.data.securityLogs)) {
+        this.data.securityLogs = this.data.securityLogs.filter(l => l && l.time && !String(l.time).startsWith('2026-10-16'));
+      }
+    } catch (e) {}
+
     // CẤU HÌNH KHUNG GIỜ CA LÀM VIỆC TÙY CHỈNH (V13)
     if (!this.data.shift_config) {
       this.data.shift_config = {
@@ -294,7 +303,8 @@ class App5S {
     }
 
     // ĐỒNG BỘ 526 TÀI KHOẢN TOÀN VIỆN THEO MÃ NV
-    if (!this.data.staff || !Array.isArray(this.data.staff) || this.data.staff.length < 50) {
+    // V28: danh sách nhân sự lấy từ máy chủ - không xóa khi danh sách còn ít (VD: vừa đăng nhập, chưa tải xong)
+    if (!this.data.staff || !Array.isArray(this.data.staff)) {
       this.data.staff = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA.staff));
     } else {
       const existingCodes = new Set(this.data.staff.map(s => (s.code || '').toUpperCase()));
@@ -683,7 +693,7 @@ class App5S {
         localStorage.setItem('vpi_5s_saved_auth', JSON.stringify(savedAuth));
       }
     } catch (e) {}
-    const CURRENT_VERSION = 'v27_20261122';
+    const CURRENT_VERSION = 'v28_20261123';
     try {
       const savedVer = localStorage.getItem('vpi_5s_app_version');
       if (savedVer !== CURRENT_VERSION) {
@@ -691,7 +701,7 @@ class App5S {
         if ('caches' in window) {
           caches.keys().then(keys => {
             keys.forEach(k => {
-              if (k !== 'vpi-5s-cache-v27_20261122') caches.delete(k);
+              if (k !== 'vpi-5s-cache-v28_20261123') caches.delete(k);
             });
           });
         }
@@ -824,9 +834,19 @@ class App5S {
     const nameEl = document.getElementById('user-name');
     const roleEl = document.getElementById('user-role');
     const topUserDisplay = document.getElementById('top-user-display');
-    const visitorEl = document.getElementById('top-visitor-count');
-    if (visitorEl && this.visitorStats) {
-      visitorEl.innerText = `${(this.visitorStats.total || 1286).toLocaleString('vi-VN')} lượt xem`;
+    const visitorBadge = document.getElementById('top-visitor-badge');
+    if (visitorBadge) visitorBadge.remove(); // V28: bỏ số lượt xem giả
+    // V28: số trên quả chuông = số liệu thật (trước đây luôn hiện "3")
+    const notifEl = document.getElementById('notif-count');
+    if (notifEl) {
+      let n = 0;
+      if (user && this.canReview5S()) {
+        n = (this.data.audits || []).filter(a => a && (a.status === 'pending' || !a.status)).length;
+      } else if (user) {
+        n = (this.data.admin_messages || []).filter(m => m && m.sender_code === user.code && m.reply && !m.read_by_user).length;
+      }
+      notifEl.textContent = n > 99 ? '99+' : String(n);
+      notifEl.classList.toggle('hidden', n === 0);
     }
 
     if (user) {
@@ -840,8 +860,13 @@ class App5S {
   }
 
   switchTab(tabName) {
+    const changedTab = this.activeTab !== tabName;
     this.activeTab = tabName;
-    this.render();
+    // V28 FIX: sang tab khác thì mở từ đầu trang (trước đây giữ vị trí cuộn của tab cũ)
+    this.render(!changedTab);
+    if (changedTab) {
+      try { window.scrollTo(0, 0); } catch (e) {}
+    }
   }
 
   render(preserveScroll = true) {
@@ -3054,7 +3079,7 @@ Trân trọng cảm ơn!`);
     this.showModal(modalHtml);
   }
 
-  sendForgotPasswordRequest() {
+  async sendForgotPasswordRequest() {
     const code = document.getElementById('forgot-staff-code')?.value.trim();
     const name = document.getElementById('forgot-staff-name')?.value.trim();
     const dept = document.getElementById('forgot-staff-dept')?.value.trim();
@@ -3065,6 +3090,22 @@ Trân trọng cảm ơn!`);
       return;
     }
 
+    // V28: gửi thẳng lên máy chủ (người quên mật khẩu chưa đăng nhập nên không đồng bộ được)
+    try {
+      const r = await fetch(this.apiUrl('forgot'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store',
+        body: JSON.stringify({ code, name, dept, phone })
+      });
+      const j = await r.json().catch(() => null);
+      if (!r.ok) { alert((j && j.error) || 'Không gửi được yêu cầu. Vui lòng gọi Hotline.'); return; }
+      this.closeModal();
+      this.showToast('✅ ' + ((j && j.message) || 'Đã gửi yêu cầu tới Admin.'));
+    } catch (e) {
+      alert('Không kết nối được máy chủ. Vui lòng kiểm tra mạng hoặc gọi Hotline.');
+    }
+  }
+
+  _legacySendForgotPasswordRequest(code, name, dept, phone) {
     const newMsg = {
       id: Date.now(),
       date: new Date().toLocaleString('vi-VN'),
@@ -3165,21 +3206,12 @@ Trân trọng cảm ơn!`);
             ${this.renderShiftPhotoPreviewHtml(this.currentShiftPhoto)}
           </div>
 
-          <!-- Nút chọn ảnh mẫu minh chứng nhanh -->
-          <div class="pt-1 space-y-1">
-            <div class="text-[10px] text-slate-500 font-semibold">Chọn nhanh ảnh mẫu minh chứng VPI:</div>
-            <div class="flex flex-wrap gap-1.5">
-              <button type="button" onclick="app5s.fillDemoAuditPhoto('ct')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 CT 128 Dãy</button>
-              <button type="button" onclick="app5s.fillDemoAuditPhoto('emergency')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Cấp cứu</button>
-              <button type="button" onclick="app5s.fillDemoAuditPhoto('clinic')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Khám bệnh</button>
-              <button type="button" onclick="app5s.fillDemoAuditPhoto('icu')" class="px-2 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-amber-100 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-medium border border-slate-200 dark:border-slate-600 transition">📸 Hồi sức ICU</button>
-            </div>
-          </div>
+          <!-- V28: bỏ nút "ảnh mẫu minh chứng" (cho phép nộp ảnh giả thay ảnh chụp thật) -->
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Ghi chú tình trạng buồng phòng bàn giao:</label>
-          <textarea id="shift-5s-notes" rows="2" placeholder="Ví dụ: Đã lau khử khuẩn bề mặt máy móc, khay thuốc niêm phong, sàn nhà sạch sẽ khô ráo..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">${(rs.post_shift_5s && rs.post_shift_5s.notes) || 'Đã vệ sinh sạch sẽ, khử khuẩn bề mặt và sắp xếp ngăn nắp buồng phòng trước khi kết thúc ca.'}</textarea>
+          <textarea id="shift-5s-notes" rows="2" placeholder="Ví dụ: Đã lau khử khuẩn bề mặt máy móc, khay thuốc niêm phong, sàn nhà sạch sẽ khô ráo..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">${(rs.post_shift_5s && rs.post_shift_5s.notes) || ''}</textarea>
         </div>
 
         <button onclick="app5s.submitEndShift5S(${roomId})" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-2xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
@@ -3757,9 +3789,10 @@ Trân trọng cảm ơn!`);
       sender_name: assignedNames,
       sender_role: 'Nhân sự ca trực',
       sender_code: user.code,
-      score_seiri: 20, score_seiton: 20, score_seiso: 20, score_seiketsu: 19, score_shitsuke: 19,
-      total_score: 98,
-      rating: 'Xuất sắc',
+      // V28: không gán sẵn điểm "98 - Xuất sắc" khi chưa được chấm
+      score_seiri: null, score_seiton: null, score_seiso: null, score_seiketsu: null, score_shitsuke: null,
+      total_score: null,
+      rating: 'Chờ chấm',
       notes: notes,
       after_photo: photoInput,
       status: 'pending', // Chờ cán bộ giám sát kiểm tra và phê duyệt
@@ -5194,18 +5227,7 @@ Trân trọng cảm ơn!`);
 
 
 
-        <!-- V19: WIDGET LƯU LƯỢNG TRUY CẬP HỆ THỐNG CO NHỎ Ở CUỐI TRANG -->
-        <div class="bg-slate-900/90 dark:bg-slate-950/90 text-white rounded-2xl px-3 py-2 border border-slate-700/60 shadow-xs flex items-center justify-between text-xs">
-          <div class="flex items-center space-x-2">
-            <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400 animate-pulse"></i>
-            <span class="font-bold text-[10.5px] text-emerald-200">Lưu lượng truy cập 5S VPI:</span>
-          </div>
-          <div class="flex items-center space-x-2.5 font-mono text-[10px]">
-            <span>Tổng: <strong class="text-emerald-400 font-black">${(this.visitorStats?.total || 1286).toLocaleString('vi-VN')}</strong></span>
-            <span class="opacity-40">•</span>
-            <span>Hôm nay: <strong class="text-cyan-300 font-black">${(this.visitorStats?.today || 48).toLocaleString('vi-VN')}</strong></span>
-          </div>
-        </div>
+        <!-- V28: bỏ widget "lưu lượng truy cập" (số liệu giả 1.286 / 48, chỉ đếm trên từng máy) -->
       </div>
     `;
   }
@@ -9472,7 +9494,7 @@ Trân trọng cảm ơn!`);
                         <div class="flex items-center space-x-1.5">
                           <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${
                             deptEval.result === 'pass' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
-                          }">${deptEval.score || 95}đ • ${deptEval.grade || 'Xuất sắc'}</span>
+                          }">${deptEval.score != null && deptEval.score !== '' ? deptEval.score + 'đ' : '—'} • ${deptEval.grade || (deptEval.result === 'fail' ? 'Cần cải tiến' : 'Đạt')}</span>
                           <span class="text-[10px] text-slate-500">Bởi ${deptEval.evaluator_name || 'Cán bộ 5S'}</span>
                         </div>
                       ` : `
@@ -10196,7 +10218,7 @@ Trân trọng cảm ơn!`);
                 <span class="text-[10px] font-black uppercase text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/60 px-2 py-0.5 rounded-md">
                   ${notice.title || 'THÔNG BÁO KHẨN'}
                 </span>
-                <span class="text-[9.5px] text-slate-400 font-mono">${notice.time || 'Hôm nay'}</span>
+                <span class="text-[9.5px] text-slate-400 font-mono">${notice.time || notice.updatedAt || ''}</span>
               </div>
               <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">${notice.content || ''}</p>
               <div class="text-[9.5px] text-red-600 font-bold">Người phát: ${notice.author || 'Ban Chỉ Đạo 5S VPI'}</div>
@@ -10249,12 +10271,20 @@ Trân trọng cảm ơn!`);
     try {
       this.syncChannel = new BroadcastChannel('vpi_5s_cross_tab_channel');
       this.syncChannel.onmessage = (event) => {
+        // V28: tab khác vừa lưu => chờ tab đó gửi lên máy chủ rồi tải phần thay đổi
+        // (trước đây vẽ lại toàn màn hình ngay mỗi lần tab khác lưu, và loadData() không có tác dụng)
         if (event.data && event.data.type === 'DATA_UPDATED') {
-          this.loadData();
-          this.render();
+          clearTimeout(this.crossTabPullTimer);
+          this.crossTabPullTimer = setTimeout(() => this.pullStateFromServer(), 3000);
         }
       };
     } catch(e) {}
+
+    // V28: ghi nhận lúc người dùng đang cuộn / chạm để không vẽ lại màn hình giữa chừng
+    const markInteraction = () => { this.lastInteractionAt = Date.now(); };
+    ['scroll', 'touchstart', 'touchmove', 'wheel', 'pointerdown'].forEach(ev => {
+      document.addEventListener(ev, markInteraction, { capture: true, passive: true });
+    });
 
     // Kéo dữ liệu từ server ngay khi mở ứng dụng
     this.pullStateFromServer();
@@ -10297,12 +10327,19 @@ Trân trọng cảm ơn!`);
     const delay = Math.min(this.syncBaseDelay * Math.pow(2, this.syncFailCount || 0), 300000);
     this.syncTimer = setTimeout(async () => {
       await this.pullStateFromServer();
+      // Dữ liệu mới đến lúc người dùng đang thao tác => cập nhật khi rảnh tay
+      if (this.pendingSyncRender && !this.isUserBusy()) {
+        this.pendingSyncRender = false;
+        this.render();
+      }
       this.scheduleNextPull();
     }, delay);
   }
 
   // V25: Không render lại toàn màn hình khi người dùng đang nhập liệu / mở hộp thoại (tránh mất chữ đang gõ, mất ảnh chưa gửi)
+  // V28: ... hoặc đang cuộn / chạm màn hình trong 5 giây gần nhất
   isUserBusy() {
+    if (this.lastInteractionAt && Date.now() - this.lastInteractionAt < 5000) return true;
     const modal = document.getElementById('modal-container');
     if (modal && modal.children.length > 0) return true;
     const a = document.activeElement;
@@ -10578,6 +10615,39 @@ Trân trọng cảm ơn!`);
     this.data.review_policy_version = REVIEW_POLICY.version; // quyền đã do máy chủ quản lý
   }
 
+  canonicalJson(v) {
+    if (Array.isArray(v)) return '[' + v.map(x => this.canonicalJson(x)).join(',') + ']';
+    if (v && typeof v === 'object') {
+      return '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + this.canonicalJson(v[k])).join(',') + '}';
+    }
+    return JSON.stringify(v === undefined ? null : v);
+  }
+
+  filterNewRecords(res) {
+    const records = Array.isArray(res.records) ? res.records : [];
+    if (!this.seenVersions) {
+      try { this.seenVersions = JSON.parse(localStorage.getItem(SEEN_KEY) || '{}') || {}; } catch (e) { this.seenVersions = {}; }
+    }
+    const seen = this.seenVersions;
+    let out = records;
+    if (!res.full) {
+      out = records.filter(r => {
+        const id = r.c + '\u0001' + r.k;
+        if (r.v && seen[id] === r.v) return false;
+        const cur = this.syncSnapshot ? this.syncSnapshot.get(id) : undefined;
+        if (r.x) return cur !== undefined;
+        if (cur === undefined) return true;
+        try { return this.canonicalJson(JSON.parse(cur)) !== this.canonicalJson(r.d); } catch (e) { return true; }
+      });
+    }
+    // Ghi nhớ phiên bản đã nhận (chỉ giữ vùng gần đây cho gọn)
+    records.forEach(r => { if (r.v) seen[r.c + '\u0001' + r.k] = r.v; });
+    const floor = (res.version || 0) - 300;
+    Object.keys(seen).forEach(id => { if (seen[id] < floor) delete seen[id]; });
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); } catch (e) {}
+    return out;
+  }
+
   async pullStateFromServer(force = false) {
     if (!this.authToken) return false;
     try {
@@ -10590,7 +10660,10 @@ Trân trọng cảm ơn!`);
       const res = await this.apiFetch('sync?since=' + since);
       if (!res) return false;
       this.syncFailCount = 0;
-      const changed = res.full || (Array.isArray(res.records) && res.records.length > 0);
+      // V28 FIX: bỏ các bản ghi đã nhận ở lần trước (vùng chồng lấn an toàn) hoặc giống hệt dữ liệu trên máy
+      // => KHÔNG vẽ lại màn hình mỗi 10 giây (nguyên nhân lỗi nhảy trang / tải lại ảnh liên tục)
+      res.records = this.filterNewRecords(res);
+      const changed = res.full || res.records.length > 0;
       if (changed) {
         this.applyServerRecords(res);
         this.normalizeData();
