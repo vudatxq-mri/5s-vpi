@@ -68,6 +68,22 @@ def config_ok():
     return missing
 
 
+def config_invalid():
+    """Phát hiện giá trị dán sai (ký tự che '•', dấu tiếng Việt, dấu nháy...)."""
+    bad = []
+    for n in ('SUPABASE_URL', 'SUPABASE_SECRET_KEY'):
+        v = env(n) or ''
+        if not v.isascii() or any(ch in v for ch in ' "\'<>'):
+            bad.append(n + ' (có ký tự không hợp lệ - có thể đã sao chép khóa đang bị che "•••")')
+    key = env('SUPABASE_SECRET_KEY') or ''
+    if key.startswith('sb_publishable_'):
+        bad.append('SUPABASE_SECRET_KEY (đang là Publishable key, cần Secret key sb_secret_...)')
+    url = env('SUPABASE_URL') or ''
+    if url and not url.startswith('https://'):
+        bad.append('SUPABASE_URL (phải bắt đầu bằng https://)')
+    return bad
+
+
 # ---------------------------------------------------------------------------
 # Supabase REST (PostgREST + Storage)
 # ---------------------------------------------------------------------------
@@ -598,9 +614,12 @@ def run(handler, fn):
         missing = config_ok()
         if missing:
             raise ApiError(500, 'Máy chủ chưa cấu hình biến môi trường: ' + ', '.join(missing))
+        invalid = config_invalid()
+        if invalid:
+            raise ApiError(500, 'Biến môi trường sai: ' + '; '.join(invalid))
         status, obj = fn()
         send_json(handler, status, obj)
     except ApiError as e:
         send_json(handler, e.status, {'error': e.message})
     except Exception as e:  # pragma: no cover
-        send_json(handler, 500, {'error': 'Lỗi máy chủ: %s' % type(e).__name__})
+        send_json(handler, 500, {'error': 'Lỗi máy chủ: %s: %s' % (type(e).__name__, str(e)[:200])})
