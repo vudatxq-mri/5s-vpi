@@ -14,7 +14,22 @@
   if (typeof App5S === 'undefined') return;
   const P = App5S.prototype;
 
-  const AREA_CATALOG_VERSION = 'sheet-20261125';
+  // V29e: 'b' = xóa hẳn 8 khoa/phòng cũ không có trong Google Sheet + thêm phòng Hội đồng quản trị, Ban giám đốc
+  const AREA_CATALOG_VERSION = 'sheet-20261125b';
+  const BOARD_DEPTS = [
+    { id: 27, code: 'HDQT', name: 'Hội đồng quản trị', head_nurse: '', doctor_in_charge: '', phone: '', color: '#b45309', icon: 'fa-landmark', description: 'Hội đồng quản trị bệnh viện (không có khu vực 5S)', order: 19, category: 'board', in_5s: false },
+    { id: 28, code: 'BGD', name: 'Ban giám đốc', head_nurse: '', doctor_in_charge: '', phone: '', color: '#4f46e5', icon: 'fa-user-tie', description: 'Ban giám đốc bệnh viện (không có khu vực 5S)', order: 20, category: 'board', in_5s: false }
+  ];
+  const BOARD_DEPT_GROUP = { 27: 'hdqt', 28: 'bgd' };
+  const BOARD_GROUP_DEPT = { hdqt: 27, bgd: 28 };
+  // Khoa/phòng cũ không có trong Google Sheet => xóa; nhân sự được chuyển sang khoa/phòng gần nhất (Admin chọn lại được)
+  const OLD_DEPT_SUGGEST = { 11: 1, 12: 4, 6: 2, 13: 2, 14: 26, 10: 16, 17: 24, 18: 16 };
+  if (typeof DEFAULT_SEED_DATA !== 'undefined' && Array.isArray(DEFAULT_SEED_DATA.departments)) {
+    DEFAULT_SEED_DATA.departments = DEFAULT_SEED_DATA.departments.filter(d => !(Number(d.id) in OLD_DEPT_SUGGEST));
+    BOARD_DEPTS.forEach(b => {
+      if (!DEFAULT_SEED_DATA.departments.some(d => String(d.id) === String(b.id))) DEFAULT_SEED_DATA.departments.push(JSON.parse(JSON.stringify(b)));
+    });
+  }
   // Màu trạng thái (bảng màu trạng thái cố định: tốt / cảnh báo / nghiêm trọng + xám trung tính)
   const STATUS = {
     approved: { color: '#0ca30c', label: 'Đạt', icon: '✓' },
@@ -45,8 +60,80 @@
     return this.isAdmin() && ((this.data.hospital || {}).area_catalog_version !== AREA_CATALOG_VERSION);
   };
 
-  // silent = true: gọi từ quy trình "Xóa dữ liệu & triển khai mới" (đã xác nhận ở bước trước)
-  P.applyAreaCatalog = function (silent = false) {
+  // Nhắc Admin áp dụng danh sách mới (hiện ở tab Khoa Phòng, Nhân sự, Thống kê)
+  P.catalogBannerHtml = function () {
+    if (!this.isRootAdmin() || !this.needsAreaCatalogUpdate()) return '';
+    const old = this.getOldDepartments();
+    const nStaff = old.reduce((n, o) => n + o.staff.length, 0);
+    return `
+      <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs flex items-center justify-between gap-2">
+        <span class="text-amber-900 dark:text-amber-200"><strong>Danh sách khoa/phòng & khu vực 5S mới chưa áp dụng</strong> (18 khoa/phòng, 57 vị trí theo Google Sheet; thêm phòng Hội đồng quản trị, Ban giám đốc).${old.length ? ` Còn ${old.length} khoa/phòng cũ${nStaff ? ` với ${nStaff} nhân sự cần chuyển` : ''}.` : ''}</span>
+        <button onclick="app5s.applyAreaCatalog()" class="shrink-0 px-3 py-1.5 rounded-xl bg-amber-600 text-white font-black">Áp dụng</button>
+      </div>`;
+  };
+  const withBanner = (name) => {
+    const orig = P[name];
+    if (typeof orig !== 'function') return;
+    P[name] = function () {
+      const html = orig.apply(this, arguments);
+      const b = this.catalogBannerHtml();
+      return b ? String(html).replace('<div class="p-4 space-y-4">', `<div class="p-4 space-y-4">${b}`) : html;
+    };
+  };
+  withBanner('renderStaffTab');
+  withBanner('renderDepartmentsTab');
+
+  P.boardGroupOfDept = function (deptId) { return BOARD_DEPT_GROUP[Number(deptId)] || ''; };
+
+  // Khoa/phòng cũ (không có trong Google Sheet, không phải HĐQT / Ban giám đốc) và số nhân sự đang thuộc các khoa đó
+  P.getOldDepartments = function () {
+    const seedDepts = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.departments) || [];
+    const keep = new Set(seedDepts.map(d => String(d.id)));
+    return (this.data.departments || []).filter(d => !keep.has(String(d.id))).map(d => ({
+      dept: d, staff: (this.data.staff || []).filter(s => String(s.department_id) === String(d.id))
+    }));
+  };
+
+  // Bước chọn khoa/phòng mới cho nhân sự đang thuộc khoa/phòng cũ (trước khi xóa khoa cũ)
+  P.openDeptMigrationModal = function () {
+    if (!this.isAdmin()) return;
+    const old = this.getOldDepartments();
+    const targets = ((typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.departments) || []).slice().sort((a, b) => (a.order || 99) - (b.order || 99));
+    const opt = (sel) => targets.map(t => `<option value="${t.id}" ${String(t.id) === String(sel) ? 'selected' : ''}>${esc(t.name)}</option>`).join('');
+    this.showModal(`
+      <div class="p-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar text-xs">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2.5">
+          <div>
+            <h3 class="text-sm font-black text-slate-900 dark:text-white">CẬP NHẬT DANH SÁCH KHOA / PHÒNG THEO GOOGLE SHEET</h3>
+            <p class="text-[11px] text-slate-500">Xóa ${old.length} khoa/phòng cũ • thêm phòng Hội đồng quản trị, Ban giám đốc</p>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200">
+          Nhân sự đang thuộc khoa/phòng cũ sẽ được <strong>chuyển sang khoa/phòng chọn dưới đây</strong> (không mất tài khoản). Sau này vẫn sửa từng người được ở tab Nhân sự.
+        </div>
+        <div class="space-y-1.5">
+          ${old.map(o => `
+            <div class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 space-y-1">
+              <div class="flex items-center justify-between gap-2"><strong class="text-slate-900 dark:text-white line-through decoration-red-500">${esc(o.dept.name)}</strong><span class="shrink-0 text-[10px] text-slate-500">${o.staff.length} nhân sự</span></div>
+              ${o.staff.length ? `<label class="flex items-center gap-2"><span class="shrink-0 text-slate-500">Chuyển sang:</span>
+                <select data-old-dept="${o.dept.id}" class="dept-migrate-sel flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-1.5 font-bold">${opt(OLD_DEPT_SUGGEST[Number(o.dept.id)] || 19)}</select></label>` : '<div class="text-[10px] text-slate-400">Không có nhân sự – xóa luôn</div>'}
+            </div>`).join('')}
+        </div>
+        <button onclick="app5s.confirmDeptMigration()" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black">ÁP DỤNG DANH SÁCH MỚI</button>
+      </div>`);
+  };
+
+  P.confirmDeptMigration = function () {
+    const mapping = {};
+    document.querySelectorAll('.dept-migrate-sel').forEach(el => { mapping[el.getAttribute('data-old-dept')] = Number(el.value); });
+    this.closeModal();
+    this.applyAreaCatalog(true, mapping);
+    this.showToast('✅ Đã cập nhật danh sách khoa/phòng theo Google Sheet và chuyển nhân sự. Đang gửi lên máy chủ...');
+  };
+
+  // silent = true: gọi từ quy trình "Xóa dữ liệu & triển khai mới" hoặc sau bước chọn chuyển nhân sự
+  P.applyAreaCatalog = function (silent = false, deptMapping = null) {
     if (!this.isAdmin()) { this.showToast('🔒 Chỉ Admin được áp dụng danh mục khu vực.'); return false; }
     const seedRooms = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.rooms) || [];
     const seedDepts = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.departments) || [];
@@ -54,7 +141,14 @@
     const inSheet = seedDepts.filter(d => d.in_5s !== false);
     const seedIds = new Set(seedRooms.map(r => String(r.id)));
     const oldRooms = (this.data.rooms || []).filter(r => !seedIds.has(String(r.id)));
-    if (!silent && !confirm(`Áp dụng danh mục khu vực 5S toàn viện mới?\n\n• ${inSheet.length} khoa/phòng, ${seedRooms.length} vị trí làm việc 5S (theo Google Sheet ngày 25/11/2026)\n• XÓA HẲN ${oldRooms.length} vị trí làm việc cũ không có trong danh sách\n• Khoa/phòng không có trong danh sách vẫn giữ nhân sự, chỉ ẩn khỏi danh mục 5S\n\nThay đổi áp dụng cho mọi máy.`)) return false;
+    const oldDepts = this.getOldDepartments();
+    if (!silent && oldDepts.some(o => o.staff.length)) { this.openDeptMigrationModal(); return false; }
+    if (!silent && !confirm(`Áp dụng danh sách khu vực 5S toàn viện mới?\n\n• ${inSheet.length} khoa/phòng, ${seedRooms.length} vị trí làm việc 5S (theo Google Sheet)\n• Thêm phòng Hội đồng quản trị và Ban giám đốc\n• XÓA HẲN ${oldDepts.length} khoa/phòng cũ và ${oldRooms.length} vị trí làm việc cũ\n\nThay đổi áp dụng cho mọi máy.`)) return false;
+    // Chuyển nhân sự khỏi khoa/phòng cũ
+    oldDepts.forEach(o => {
+      const to = (deptMapping && deptMapping[String(o.dept.id)]) || OLD_DEPT_SUGGEST[Number(o.dept.id)] || 19;
+      o.staff.forEach(s => { s.prev_department = o.dept.name; s.department_id = to; });
+    });
 
     // V29: xóa hẳn vị trí cũ (không lưu trữ)
     this.data.archived_rooms = [];
@@ -85,13 +179,16 @@
         byId.set(String(nd.id), nd);
       }
     });
-    (this.data.departments || []).forEach(d => { if (!seedIdSet.has(String(d.id))) d.in_5s = false; });
+    // V29e: xóa hẳn khoa/phòng cũ khỏi danh sách (tab Khoa phòng, Nhân sự, ô chọn khoa/phòng làm việc)
+    this.data.departments = (this.data.departments || []).filter(d => seedIdSet.has(String(d.id)));
+    this.data.departments.sort((a, b) => (a.order || 99) - (b.order || 99));
+    if (this.filterStaffDept && this.filterStaffDept !== 'all' && !seedIdSet.has(String(this.filterStaffDept))) this.filterStaffDept = 'all';
 
     if (!this.data.hospital) this.data.hospital = {};
     this.data.hospital.area_catalog_version = AREA_CATALOG_VERSION;
     this.saveData();
     this.render();
-    if (!silent) this.showToast(`✅ Đã áp dụng ${seedRooms.length} vị trí 5S của ${inSheet.length} khoa/phòng, xóa ${oldRooms.length} vị trí cũ. Đang gửi lên máy chủ...`);
+    if (!silent) this.showToast(`✅ Đã áp dụng ${seedRooms.length} vị trí 5S của ${inSheet.length} khoa/phòng, xóa ${oldDepts.length} khoa/phòng cũ, ${oldRooms.length} vị trí cũ. Đang gửi lên máy chủ...`);
     return true;
   };
 
@@ -660,11 +757,7 @@
           </div>
         </div>
 
-        ${this.isRootAdmin() && this.needsAreaCatalogUpdate() ? `
-          <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs flex items-center justify-between gap-2">
-            <span class="text-amber-900 dark:text-amber-200"><strong>Danh mục khu vực 5S mới</strong> (18 khoa/phòng, 57 vị trí theo Google Sheet) chưa được áp dụng lên máy chủ. Bấm "Áp dụng" để xóa vị trí cũ, hoặc "Xóa dữ liệu & triển khai mới" để làm lại từ đầu.</span>
-            <button onclick="app5s.applyAreaCatalog()" class="shrink-0 px-3 py-1.5 rounded-xl bg-amber-600 text-white font-black">Áp dụng</button>
-          </div>` : ''}
+        ${this.catalogBannerHtml()}
         ${this.isRootAdmin() ? `
           <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-slate-800 text-[11px]">
             <span class="text-slate-500">${this.data.data_reset && this.data.data_reset.at ? `Lần xóa dữ liệu gần nhất: <strong class="text-slate-700 dark:text-slate-200">${esc(this.data.data_reset.at)}</strong>` : 'Admin: xóa toàn bộ dữ liệu 5S cũ để triển khai mới'}</span>
@@ -1470,13 +1563,18 @@
     if (titleInput) titleInput.value = parts[1] || 'Cán bộ 5S';
     const customTitle = document.getElementById(prefix + '-custom-role-title');
     if (customTitle && parts.length >= 3) customTitle.value = parts[1] || '';
-    const groupSel = document.getElementById(prefix + '-group');
-    if (groupSel && parts.length >= 3) groupSel.value = parts[2] === '-' ? '' : parts[2];
+    // Chức danh HĐQT / Ban giám đốc => tự chọn phòng "Hội đồng quản trị" / "Ban giám đốc" ở ô Khoa/phòng làm việc
+    const deptSel = document.getElementById(prefix + '-dept');
+    if (deptSel && parts.length >= 3 && BOARD_GROUP_DEPT[parts[2]]) deptSel.value = String(BOARD_GROUP_DEPT[parts[2]]);
   };
 
+  // Thành viên HĐQT / Ban giám đốc: thuộc phòng HĐQT / BGĐ (hoặc được đánh dấu nhóm lãnh đạo từ bản trước)
+  P.leaderGroupOf = function (s) {
+    if (!s) return '';
+    return BOARD_DEPT_GROUP[Number(s.department_id)] || (s.leader_group === 'hdqt' || s.leader_group === 'bgd' ? s.leader_group : '');
+  };
   P.isBoardMember = function (u) {
-    const user = u || this.getCurrentUser();
-    return !!(user && (user.leader_group === 'hdqt' || user.leader_group === 'bgd'));
+    return !!this.leaderGroupOf(u || this.getCurrentUser());
   };
 
   // Phó khoa / phó phòng: nhập ở hồ sơ khoa (không giới hạn) + nhân sự có chức danh "Phó ..." của khoa
@@ -1502,7 +1600,7 @@
       return i < 0 ? 99 : i;
     };
     const blocks = Object.entries(LEADER_GROUPS).map(([key, label]) => {
-      let list = (this.data.staff || []).filter(s => s && s.leader_group === key);
+      let list = (this.data.staff || []).filter(s => s && this.leaderGroupOf(s) === key);
       const total = list.length;
       if (q) list = list.filter(s => `${s.name} ${s.code} ${s.role_title || ''} ${s.title || ''}`.toLowerCase().includes(q));
       if (q && !list.length) return '';
@@ -1511,7 +1609,7 @@
         <div class="bg-white dark:bg-slate-800 rounded-2xl border ${key === 'hdqt' ? 'border-amber-300 dark:border-amber-800' : 'border-indigo-300 dark:border-indigo-800'} p-3 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black ${key === 'hdqt' ? 'text-amber-800 dark:text-amber-300' : 'text-indigo-800 dark:text-indigo-300'}">${key === 'hdqt' ? '🏛️' : '👔'} ${label.toUpperCase()} (${total})</span>
-            ${admin ? `<span class="text-[10px] text-slate-400">Thêm: tạo / sửa tài khoản → chọn chức danh nhóm này</span>` : ''}
+            ${admin ? `<span class="text-[10px] text-slate-400">Thêm: tạo / sửa tài khoản → Khoa/phòng làm việc: ${label}</span>` : ''}
           </div>
           ${list.length ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">${list.map(s => `
             <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
@@ -1520,7 +1618,7 @@
                 <div class="text-[10px] text-slate-500 truncate">${esc(s.role_title || s.title || '')} • <span class="font-mono">${esc(s.code)}</span></div>
               </div>
               ${admin ? `<button onclick="app5s.openEditStaffModal('${jsq(s.code)}')" title="Sửa" class="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-emerald-600"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>` : ''}
-            </div>`).join('')}</div>` : `<div class="text-[11px] text-slate-400">Chưa có thành viên.${admin ? ' Vào sửa tài khoản, chọn chức danh trong nhóm "' + label + '".' : ''}</div>`}
+            </div>`).join('')}</div>` : `<div class="text-[11px] text-slate-400">Chưa có thành viên.${admin ? ' Vào sửa tài khoản, chọn Khoa/phòng làm việc là "' + label + '".' : ''}</div>`}
         </div>`;
     }).join('');
     return blocks ? `<div class="space-y-2">${blocks}</div>` : '';

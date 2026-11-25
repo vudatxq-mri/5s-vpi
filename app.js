@@ -99,7 +99,7 @@ const DEFAULT_SEED_DATA = {
       updatedAt: ''
     }
   },
-  departments: [{"id":8,"code":"KCDHA","name":"Khoa Chẩn đoán hình ảnh","head_nurse":"KTV. Nguyễn Đức Tuấn","doctor_in_charge":"BSCKI. Phạm Quang Nam","phone":"0211.386.130","color":"#6366f1","icon":"fa-x-ray","description":"Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu","order":1,"category":"paraclinical","in_5s":true},{"id":2,"code":"KKB","name":"Khoa Khám bệnh","head_nurse":"ĐD. Hoàng Bích Thủy","doctor_in_charge":"BSCKI. Vũ Đình Khiêm","phone":"0211.386.101","color":"#0ea5e9","icon":"fa-stethoscope","description":"Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân","order":2,"category":"clinical","in_5s":true},{"id":9,"code":"KXN","name":"Khoa Xét nghiệm","head_nurse":"KTV. Đỗ Thị Thu Hường","doctor_in_charge":"BSCKI. Vũ Đức Hải","phone":"0211.386.132","color":"#8b5cf6","icon":"fa-vial-virus","description":"Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học","order":3,"category":"paraclinical","in_5s":true},{"id":4,"code":"KNG","name":"Khoa Ngoại Tổng hợp","head_nurse":"ĐD. Bùi Văn Hùng","doctor_in_charge":"BSCKII. Nguyễn Văn Toàn","phone":"0211.386.120","color":"#10b981","icon":"fa-user-doctor","description":"Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương","order":4,"category":"clinical","in_5s":true},{"id":7,"code":"KNHI","name":"Khoa Nhi","head_nurse":"ĐD. Đỗ Thị Hiền","doctor_in_charge":"ThS.BS. Đặng Hồng Phúc","phone":"0211.386.128","color":"#eab308","icon":"fa-children","description":"Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng","order":5,"category":"clinical","in_5s":true},{"id":5,"code":"KNT","name":"Khoa Nội Tổng hợp","head_nurse":"ĐD. Trần Phương Dung","doctor_in_charge":"BSCKI. Mai Thị Hảo","phone":"0211.386.122","color":"#06b6d4","icon":"fa-notes-medical","description":"Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa","order":6,"category":"clinical","in_5s":true},{"id":3,"code":"YHCTPHCN","name":"Khoa YHCT - PHCN","head_nurse":"ĐD. Phạm Thị Lý","doctor_in_charge":"BSCKI. Trần Văn Thái","phone":"0211.386.118","color":"#f59e0b","icon":"fa-spa","description":"Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu","order":7,"category":"clinical","in_5s":true},{"id":15,"code":"KD","name":"Khoa Dược","head_nurse":"DS. Nguyễn Bích Ngọc","doctor_in_charge":"DS CKI. Hoàng Thị Lan","phone":"0211.386.133","color":"#10b981","icon":"fa-pills","description":"Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế","order":8,"category":"paraclinical","in_5s":true},{"id":1,"code":"KCC","name":"Phòng Cấp cứu","head_nurse":"ĐD. Trần Thị Lan Hương","doctor_in_charge":"ThS. BSCKII. Phạm Quỳnh Hưng","phone":"0211.386.115","color":"#ef4444","icon":"fa-ambulance","description":"Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng","order":9,"category":"clinical","in_5s":true},{"id":21,"code":"HDKH","name":"Bộ phận HDKH","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":10,"category":"functional","in_5s":true},{"id":22,"code":"KDBH","name":"Phòng Kinh doanh Bảo hiểm","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":11,"category":"functional","in_5s":true},{"id":23,"code":"MKT","name":"Phòng Marketing","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":12,"category":"functional","in_5s":true},{"id":20,"code":"TCKT","name":"Phòng Tài chính - Kế toán (TCKT)","head_nurse":"KTV. Lê Thu Thảo","doctor_in_charge":"ThS. Vũ Thị Mai","phone":"0211.386.106","color":"#f59e0b","icon":"fa-file-invoice-dollar","description":"Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị","order":13,"category":"functional","in_5s":true},{"id":16,"code":"QLCL","name":"Phòng Quản lý chất lượng (QLCL)","head_nurse":"ĐD. Nguyễn Thu Trang","doctor_in_charge":"ThS. BSCKII. Phạm Quỳnh Hưng","phone":"0211.386.100","color":"#6366f1","icon":"fa-award","description":"Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV","order":14,"category":"functional","in_5s":true},{"id":19,"code":"HCQT","name":"Phòng Hành chính - Nhân sự (HCNS)","head_nurse":"CN. Đặng Thị Loan","doctor_in_charge":"ThS. Nguyễn Văn Hùng","phone":"0211.386.105","color":"#64748b","icon":"fa-building","description":"Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan","order":15,"category":"functional","in_5s":true},{"id":24,"code":"KHVH","name":"Phòng KHVH","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":16,"category":"functional","in_5s":true},{"id":25,"code":"N3T","name":"Nhà 3 tầng","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":17,"category":"functional","in_5s":true},{"id":26,"code":"TTTH","name":"Trung tâm Tiêu hóa","head_nurse":"","doctor_in_charge":"","phone":"","color":"#6366f1","icon":"fa-building","description":"","order":18,"category":"paraclinical","in_5s":true},{"id":11,"code":"ICU","name":"Khoa Hồi sức tích cực \u0026 Chống độc","head_nurse":"ĐD. Nguyễn Thị Thanh Nga","doctor_in_charge":"ThS.BS. Đinh Công Trí","phone":"0211.386.116","color":"#dc2626","icon":"fa-heart-pulse","description":"Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục","order":19,"category":"clinical","in_5s":false},{"id":12,"code":"PTGM","name":"Khoa Phẫu thuật - Gây mê hồi sức","head_nurse":"ĐD. Nguyễn Văn Thắng","doctor_in_charge":"BSCKII. Lê Tuấn Anh","phone":"0211.386.117","color":"#0284c7","icon":"fa-syringe","description":"Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản","order":20,"category":"clinical","in_5s":false},{"id":6,"code":"KSN","name":"Khoa Phụ Sản","head_nurse":"Hộ sinh. Lê Thị Thúy Hằng","doctor_in_charge":"BSCKII. Nguyễn Thị Hồng","phone":"0211.386.125","color":"#ec4899","icon":"fa-baby","description":"Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa","order":21,"category":"clinical","in_5s":false},{"id":13,"code":"LCK","name":"Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)","head_nurse":"ĐD. Vũ Thị Loan","doctor_in_charge":"BSCKI. Đỗ Mạnh Cường","phone":"0211.386.129","color":"#8b5cf6","icon":"fa-eye","description":"Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình","order":22,"category":"clinical","in_5s":false},{"id":14,"code":"TDCN","name":"Khoa Thăm dò chức năng \u0026 Nội soi","head_nurse":"KTV. Lê Thùy Linh","doctor_in_charge":"BS. Lê Quang Huy","phone":"0211.386.131","color":"#14b8a6","icon":"fa-wave-square","description":"Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp","order":23,"category":"paraclinical","in_5s":false},{"id":10,"code":"KKSNK","name":"Khoa Kiểm soát Nhiễm khuẩn","head_nurse":"ĐD. Trịnh Thị Thu Trang","doctor_in_charge":"BSCKI. Hoàng Trọng Nghĩa","phone":"0211.386.135","color":"#14b8a6","icon":"fa-shield-virus","description":"Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện","order":24,"category":"paraclinical","in_5s":false},{"id":17,"code":"KHTH","name":"Phòng Kế hoạch tổng hợp \u0026 CNTT","head_nurse":"ĐD. Hoàng Hải Yến","doctor_in_charge":"BSCKI. Trần Đức Thắng","phone":"0211.386.102","color":"#3b82f6","icon":"fa-clipboard-list","description":"Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS","order":25,"category":"functional","in_5s":false},{"id":18,"code":"PDD","name":"Phòng Điều dưỡng","head_nurse":"ThS. ĐD. Trần Thị Lan Hương","doctor_in_charge":"ThS. ĐD. Trần Thị Lan Hương","phone":"0211.386.103","color":"#06b6d4","icon":"fa-user-nurse","description":"Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S","order":26,"category":"functional","in_5s":false}],
+  departments: [{"id":8,"code":"KCDHA","name":"Khoa Chẩn đoán hình ảnh","head_nurse":"KTV. Nguyễn Đức Tuấn","doctor_in_charge":"BSCKI. Phạm Quang Nam","phone":"0211.386.130","color":"#6366f1","icon":"fa-x-ray","description":"Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu","order":1,"category":"paraclinical","in_5s":true},{"id":2,"code":"KKB","name":"Khoa Khám bệnh","head_nurse":"ĐD. Hoàng Bích Thủy","doctor_in_charge":"BSCKI. Vũ Đình Khiêm","phone":"0211.386.101","color":"#0ea5e9","icon":"fa-stethoscope","description":"Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân","order":2,"category":"clinical","in_5s":true},{"id":9,"code":"KXN","name":"Khoa Xét nghiệm","head_nurse":"KTV. Đỗ Thị Thu Hường","doctor_in_charge":"BSCKI. Vũ Đức Hải","phone":"0211.386.132","color":"#8b5cf6","icon":"fa-vial-virus","description":"Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học","order":3,"category":"paraclinical","in_5s":true},{"id":4,"code":"KNG","name":"Khoa Ngoại Tổng hợp","head_nurse":"ĐD. Bùi Văn Hùng","doctor_in_charge":"BSCKII. Nguyễn Văn Toàn","phone":"0211.386.120","color":"#10b981","icon":"fa-user-doctor","description":"Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương","order":4,"category":"clinical","in_5s":true},{"id":7,"code":"KNHI","name":"Khoa Nhi","head_nurse":"ĐD. Đỗ Thị Hiền","doctor_in_charge":"ThS.BS. Đặng Hồng Phúc","phone":"0211.386.128","color":"#eab308","icon":"fa-children","description":"Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng","order":5,"category":"clinical","in_5s":true},{"id":5,"code":"KNT","name":"Khoa Nội Tổng hợp","head_nurse":"ĐD. Trần Phương Dung","doctor_in_charge":"BSCKI. Mai Thị Hảo","phone":"0211.386.122","color":"#06b6d4","icon":"fa-notes-medical","description":"Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa","order":6,"category":"clinical","in_5s":true},{"id":3,"code":"YHCTPHCN","name":"Khoa YHCT - PHCN","head_nurse":"ĐD. Phạm Thị Lý","doctor_in_charge":"BSCKI. Trần Văn Thái","phone":"0211.386.118","color":"#f59e0b","icon":"fa-spa","description":"Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu","order":7,"category":"clinical","in_5s":true},{"id":15,"code":"KD","name":"Khoa Dược","head_nurse":"DS. Nguyễn Bích Ngọc","doctor_in_charge":"DS CKI. Hoàng Thị Lan","phone":"0211.386.133","color":"#10b981","icon":"fa-pills","description":"Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế","order":8,"category":"paraclinical","in_5s":true},{"id":1,"code":"KCC","name":"Phòng Cấp cứu","head_nurse":"ĐD. Trần Thị Lan Hương","doctor_in_charge":"ThS. BSCKII. Phạm Quỳnh Hưng","phone":"0211.386.115","color":"#ef4444","icon":"fa-ambulance","description":"Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng","order":9,"category":"clinical","in_5s":true},{"id":21,"code":"HDKH","name":"Bộ phận HDKH","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":10,"category":"functional","in_5s":true},{"id":22,"code":"KDBH","name":"Phòng Kinh doanh Bảo hiểm","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":11,"category":"functional","in_5s":true},{"id":23,"code":"MKT","name":"Phòng Marketing","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":12,"category":"functional","in_5s":true},{"id":20,"code":"TCKT","name":"Phòng Tài chính - Kế toán (TCKT)","head_nurse":"KTV. Lê Thu Thảo","doctor_in_charge":"ThS. Vũ Thị Mai","phone":"0211.386.106","color":"#f59e0b","icon":"fa-file-invoice-dollar","description":"Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị","order":13,"category":"functional","in_5s":true},{"id":16,"code":"QLCL","name":"Phòng Quản lý chất lượng (QLCL)","head_nurse":"ĐD. Nguyễn Thu Trang","doctor_in_charge":"ThS. BSCKII. Phạm Quỳnh Hưng","phone":"0211.386.100","color":"#6366f1","icon":"fa-award","description":"Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV","order":14,"category":"functional","in_5s":true},{"id":19,"code":"HCQT","name":"Phòng Hành chính - Nhân sự (HCNS)","head_nurse":"CN. Đặng Thị Loan","doctor_in_charge":"ThS. Nguyễn Văn Hùng","phone":"0211.386.105","color":"#64748b","icon":"fa-building","description":"Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan","order":15,"category":"functional","in_5s":true},{"id":24,"code":"KHVH","name":"Phòng KHVH","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":16,"category":"functional","in_5s":true},{"id":25,"code":"N3T","name":"Nhà 3 tầng","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":17,"category":"functional","in_5s":true},{"id":26,"code":"TTTH","name":"Trung tâm Tiêu hóa","head_nurse":"","doctor_in_charge":"","phone":"","color":"#6366f1","icon":"fa-building","description":"","order":18,"category":"paraclinical","in_5s":true},{"id":11,"code":"ICU","name":"Khoa Hồi sức tích cực \u0026 Chống độc","head_nurse":"ĐD. Nguyễn Thị Thanh Nga","doctor_in_charge":"ThS.BS. Đinh Công Trí","phone":"0211.386.116","color":"#dc2626","icon":"fa-heart-pulse","description":"Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục","order":19,"category":"clinical","in_5s":false},{"id":14,"code":"TDCN","name":"Khoa Thăm dò chức năng \u0026 Nội soi","head_nurse":"KTV. Lê Thùy Linh","doctor_in_charge":"BS. Lê Quang Huy","phone":"0211.386.131","color":"#14b8a6","icon":"fa-wave-square","description":"Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp","order":23,"category":"paraclinical","in_5s":false},{"id":17,"code":"KHTH","name":"Phòng Kế hoạch tổng hợp \u0026 CNTT","head_nurse":"ĐD. Hoàng Hải Yến","doctor_in_charge":"BSCKI. Trần Đức Thắng","phone":"0211.386.102","color":"#3b82f6","icon":"fa-clipboard-list","description":"Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS","order":25,"category":"functional","in_5s":false}],
   rooms: [{"id":101,"department_id":8,"code":"KCDHA-01","name":"Phòng chụp MRI","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":102,"department_id":8,"code":"KCDHA-02","name":"Phòng chụp CT-Scanner","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":103,"department_id":8,"code":"KCDHA-03","name":"Phòng chụp X-quang","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":104,"department_id":8,"code":"KCDHA-04","name":"Phòng chụp Mamo (vú)","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":105,"department_id":8,"code":"KCDHA-05","name":"Phòng Đo loãng xương","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":5,"created_at":"2026-11-25"},{"id":106,"department_id":8,"code":"KCDHA-06","name":"Phòng siêu âm 110","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":6,"created_at":"2026-11-25"},{"id":107,"department_id":8,"code":"KCDHA-07","name":"Phòng siêu âm 215","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":7,"created_at":"2026-11-25"},{"id":108,"department_id":8,"code":"KCDHA-08","name":"Phòng siêu âm 216","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":8,"created_at":"2026-11-25"},{"id":109,"department_id":8,"code":"KCDHA-09","name":"Phòng siêu âm 217","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":9,"created_at":"2026-11-25"},{"id":110,"department_id":8,"code":"KCDHA-10","name":"Phòng siêu âm 218","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":10,"created_at":"2026-11-25"},{"id":111,"department_id":2,"code":"KKB-01","name":"Phòng khám 101","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":112,"department_id":2,"code":"KKB-02","name":"Phòng khám 102","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":113,"department_id":2,"code":"KKB-03","name":"Phòng khám 103","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":114,"department_id":2,"code":"KKB-04","name":"Phòng khám 104","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":115,"department_id":2,"code":"KKB-05","name":"Phòng khám 105","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":5,"created_at":"2026-11-25"},{"id":116,"department_id":2,"code":"KKB-06","name":"Phòng khám 106","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":6,"created_at":"2026-11-25"},{"id":117,"department_id":2,"code":"KKB-07","name":"Phòng khám 201","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":7,"created_at":"2026-11-25"},{"id":118,"department_id":2,"code":"KKB-08","name":"Phòng khám 202","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":8,"created_at":"2026-11-25"},{"id":119,"department_id":2,"code":"KKB-09","name":"Phòng khám 203","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":9,"created_at":"2026-11-25"},{"id":120,"department_id":2,"code":"KKB-10","name":"Phòng khám 204","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":10,"created_at":"2026-11-25"},{"id":121,"department_id":2,"code":"KKB-11","name":"Phòng khám 205","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":11,"created_at":"2026-11-25"},{"id":122,"department_id":2,"code":"KKB-12","name":"Phòng điện tim","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":12,"created_at":"2026-11-25"},{"id":123,"department_id":2,"code":"KKB-13","name":"Phòng Tai mũi họng","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":13,"created_at":"2026-11-25"},{"id":124,"department_id":2,"code":"KKB-14","name":"Phòng khám Sản","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":14,"created_at":"2026-11-25"},{"id":125,"department_id":2,"code":"KKB-15","name":"Phòng Răng hàm mặt","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":15,"created_at":"2026-11-25"},{"id":126,"department_id":9,"code":"KXN-01","name":"Phòng lấy mẫu","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":127,"department_id":9,"code":"KXN-02","name":"Phòng vi sinh","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":128,"department_id":9,"code":"KXN-03","name":"Phòng hóa sinh","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":129,"department_id":9,"code":"KXN-04","name":"Phòng nghỉ nhân viên","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":130,"department_id":4,"code":"KNG-01","name":"Phòng giao ban khoa","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":131,"department_id":4,"code":"KNG-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":132,"department_id":7,"code":"KNHI-01","name":"Phòng giao ban khoa","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":133,"department_id":7,"code":"KNHI-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":134,"department_id":7,"code":"KNHI-03","name":"Phòng nghỉ nhân viên","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":135,"department_id":5,"code":"KNT-01","name":"Phòng giao ban khoa","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":136,"department_id":5,"code":"KNT-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":137,"department_id":5,"code":"KNT-03","name":"Phòng nghỉ nhân viên","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":138,"department_id":5,"code":"KNT-04","name":"Buồng tiêm","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":139,"department_id":3,"code":"YHCTPHCN-01","name":"Khu hành chính","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":140,"department_id":3,"code":"YHCTPHCN-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":141,"department_id":3,"code":"YHCTPHCN-03","name":"Khu điều trị","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":142,"department_id":3,"code":"YHCTPHCN-04","name":"Buồng tiêm","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":143,"department_id":15,"code":"KD-01","name":"Quầy dược","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":144,"department_id":1,"code":"KCC-01","name":"Khu vực giường, cáng Cấp cứu","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":145,"department_id":21,"code":"HDKH-01","name":"Khu vực làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":146,"department_id":22,"code":"KDBH-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":147,"department_id":23,"code":"MKT-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":148,"department_id":20,"code":"TCKT-01","name":"Quầy lễ tân","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":149,"department_id":20,"code":"TCKT-02","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":150,"department_id":16,"code":"QLCL-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":151,"department_id":19,"code":"HCNS-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":152,"department_id":19,"code":"HCNS-02","name":"Căng tin - nhà bếp","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":153,"department_id":19,"code":"HCNS-03","name":"Phòng Bảo vệ","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":154,"department_id":24,"code":"KHVH-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":155,"department_id":25,"code":"N3T-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":156,"department_id":26,"code":"TTTH-01","name":"Phòng Rửa máy nội soi","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":157,"department_id":26,"code":"TTTH-02","name":"Phòng tư vấn","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"}],
   staff: [], // V27: danh sách nhân sự KHÔNG còn nằm trong mã nguồn công khai - tải từ máy chủ sau khi đăng nhập
   schedules: {
@@ -819,7 +819,7 @@ class App5S {
         localStorage.setItem('vpi_5s_saved_auth', JSON.stringify(savedAuth));
       }
     } catch (e) {}
-    const CURRENT_VERSION = 'v29c_20261125';
+    const CURRENT_VERSION = 'v29e_20261125';
     try {
       const savedVer = localStorage.getItem('vpi_5s_app_version');
       if (savedVer !== CURRENT_VERSION) {
@@ -827,7 +827,7 @@ class App5S {
         if ('caches' in window) {
           caches.keys().then(keys => {
             keys.forEach(k => {
-              if (k !== 'vpi-5s-cache-v29c_20261125') caches.delete(k);
+              if (k !== 'vpi-5s-cache-v29e_20261125') caches.delete(k);
             });
           });
         }
@@ -1053,6 +1053,7 @@ class App5S {
         tabContent = this.renderSettingsTab();
         break;
       case 'stats':
+        if (!this.canUseReports()) { this.activeTab = 'schedule'; tabContent = this.renderScheduleTab(); break; }
         tabContent = this.renderStatsTab();
         break;
       default:
@@ -1121,11 +1122,11 @@ class App5S {
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
       { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' },
       { id: 'stats', name: 'Thống kê', icon: 'bar-chart-3' }
-    ];
+    ].filter(t => t.id !== 'stats' || this.canUseReports());
 
     return `
       <nav id="bottom-nav" class="sticky bottom-0 left-0 right-0 w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700 py-1.5 px-1.5 z-40 shadow-lg">
-        <div class="grid grid-cols-6 gap-1">
+        <div class="grid ${tabs.length === 6 ? 'grid-cols-6' : 'grid-cols-5'} gap-1">
           ${tabs.map(t => {
             const isActive = this.activeTab === t.id;
             return `
@@ -1162,10 +1163,10 @@ class App5S {
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
       { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' },
       { id: 'stats', name: 'Thống kê', icon: 'bar-chart-3' }
-    ];
+    ].filter(t => t.id !== 'stats' || this.canUseReports()); // V29d: tài khoản thường không có tab Thống kê / báo cáo
 
     vpiMorphHtml(navContainer, `
-      <div class="grid grid-cols-6 gap-1 w-full">
+      <div class="grid ${tabs.length === 6 ? 'grid-cols-6' : 'grid-cols-5'} gap-1 w-full">
         ${tabs.map(t => {
           const isActive = this.activeTab === t.id;
           return `
@@ -4275,7 +4276,8 @@ Trân trọng cảm ơn!`);
 
           <!-- V17: Bộ 4 nút hành động có phân quyền Báo Cáo & Xuất Excel (Khóa tài khoản thường) -->
           ${(() => {
-            const canManage = this.isAdmin() || this.isUserManagerOrSupervisor();
+            const canManage = this.canUseReports();
+            if (!canManage) return ''; // V29d: tài khoản thường không thấy Báo cáo / Excel / In (đã có nút Cá nhân ở trên)
             return `
               <div class="grid grid-cols-4 gap-1.5">
                 ${canManage ? `
@@ -5220,7 +5222,7 @@ Trân trọng cảm ơn!`);
             </div>
           </div>
 
-          <div class="pt-2 border-t border-white/15 flex flex-col sm:flex-row gap-2">
+          ${this.canUseReports() ? `<div class="pt-2 border-t border-white/15 flex flex-col sm:flex-row gap-2">
             <button onclick="app5s.openDailySummaryModal()" class="flex-1 py-2 px-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white rounded-xl shadow-md font-black text-xs flex items-center justify-center space-x-2 border border-emerald-300/40 transition-all transform active:scale-98">
               <div class="w-5 h-5 rounded-lg bg-white/20 flex items-center justify-center">
                 <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-white"></i>
@@ -5231,7 +5233,7 @@ Trân trọng cảm ơn!`);
               <i data-lucide="printer" class="w-3.5 h-3.5"></i>
               <span>In báo cáo</span>
             </button>
-          </div>
+          </div>` : ''}
         </div>
 
         <!-- WIDGET THỐNG KÊ TRẠNG THÁI HOẠT ĐỘNG BUỒNG PHÒNG HÔM NAY -->
@@ -5934,9 +5936,14 @@ Trân trọng cảm ơn!`);
               <!-- Khối Trái: Thông tin Nhân sự & Hotline -->
               <div class="bg-white/80 dark:bg-slate-800/80 p-2.5 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-1 text-slate-600 dark:text-slate-300">
                 <div class="flex items-center space-x-1.5">
-                  <span class="text-slate-400 shrink-0">👨‍⚕️ Trưởng khoa:</span>
+                  <span class="text-slate-400 shrink-0">👨‍⚕️ ${d.category === 'functional' ? 'Trưởng phòng' : 'Trưởng khoa'}:</span>
                   <strong class="text-slate-800 dark:text-slate-100 truncate">${d.doctor_in_charge || 'Chưa cập nhật'}</strong>
                 </div>
+                ${(() => { const dp = this.getDeptDeputies ? this.getDeptDeputies(d) : []; return dp.length ? `
+                <div class="flex items-start space-x-1.5">
+                  <span class="text-slate-400 shrink-0">👥 ${d.category === 'functional' ? 'Phó phòng' : 'Phó khoa'} (${dp.length}):</span>
+                  <strong class="text-slate-800 dark:text-slate-100">${dp.join(', ')}</strong>
+                </div>` : ''; })()}
                 <div class="flex items-center space-x-1.5">
                   <span class="text-slate-400 shrink-0">👩‍⚕️ ĐD/KTV Trưởng:</span>
                   <strong class="text-slate-800 dark:text-slate-100 truncate">${d.head_nurse || 'Chưa cập nhật'}</strong>
@@ -6458,7 +6465,10 @@ Trân trọng cảm ơn!`);
   // TÌM KIẾM THỜI GIAN THỰC GIỮ NGUYÊN FOCUS
   // =========================================================================
   getFilteredStaff() {
+    // V29d: Hội đồng quản trị & Ban giám đốc hiển thị thành danh sách riêng ở đầu tab Nhân sự
+    // (chỉ khi xem "Tất cả"; chọn phòng HĐQT / Ban giám đốc ở dải khoa phòng vẫn liệt kê bình thường)
     let staffList = [...(this.data.staff || [])];
+    if (this.filterStaffDept === 'all' && this.isBoardMember) staffList = staffList.filter(s => !this.isBoardMember(s));
     const canViewAll = this.canViewAllStaff();
     const userDeptId = this.getUserDepartmentId();
 
@@ -6706,6 +6716,9 @@ Trân trọng cảm ơn!`);
           </div>
         </div>
 
+        <!-- V29d: DANH SÁCH RIÊNG HỘI ĐỒNG QUẢN TRỊ & BAN GIÁM ĐỐC -->
+        ${this.renderLeadershipGroupsHtml ? this.renderLeadershipGroupsHtml() : ''}
+
         <!-- Danh Sách Cán Bộ & Nhân Viên -->
         <div id="staff-list-container" class="space-y-3">
           ${this.renderStaffListHtml()}
@@ -6813,10 +6826,10 @@ Trân trọng cảm ơn!`);
             <span class="text-xs font-mono font-bold text-emerald-600">LỊCH SỬ & BIÊN BẢN 5S CÁC NGÀY</span>
             <h2 class="text-base font-black text-slate-900 dark:text-white">Lịch Sử Chụp & Chấm 5S (${filteredAudits.length})</h2>
           </div>
-          <button onclick="app5s.openCustomPrintModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1.5">
+          ${this.canUseReports() ? `<button onclick="app5s.openCustomPrintModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1.5">
             <i data-lucide="printer" class="w-3.5 h-3.5"></i>
             <span>In Báo Cáo</span>
-          </button>
+          </button>` : ''}
         </div>
 
         <!-- BỘ CHỌN NGÀY & KHOA PHÒNG (YÊU CẦU 6 & 9) -->
@@ -7151,13 +7164,20 @@ Trân trọng cảm ơn!`);
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Trưởng Khoa / Phụ trách</label>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Trưởng Khoa / Trưởng Phòng</label>
               <input type="text" id="edit-dept-doctor" value="${dept.doctor_in_charge || ''}" placeholder="Ví dụ: ThS. BSCKII. Phạm Quỳnh Hưng" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
             </div>
             <div>
               <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Điều dưỡng trưởng / KTV Trưởng</label>
               <input type="text" id="edit-dept-nurse" value="${dept.head_nurse || ''}" placeholder="Ví dụ: ĐD. Trần Thị Lan Hương" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">
             </div>
+          </div>
+
+          <!-- V29d: một khoa / phòng có thể có 2 hoặc nhiều Phó khoa / Phó phòng -->
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phó Khoa / Phó Phòng <span class="font-normal text-slate-400">(mỗi người một dòng, không giới hạn số lượng)</span></label>
+            <textarea id="edit-dept-deputies" rows="2" placeholder="Ví dụ:&#10;BSCKI. Nguyễn Văn A&#10;ThS. Trần Thị B" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white">${(Array.isArray(dept.deputies) ? dept.deputies : []).join('\n')}</textarea>
+            <p class="text-[10px] text-slate-400 mt-0.5">Nhân sự có chức danh "Phó Trưởng Khoa / Phó Trưởng Phòng" trong tab Nhân sự cũng tự hiện ở đây.</p>
           </div>
 
           <div>
@@ -7209,6 +7229,11 @@ Trân trọng cảm ơn!`);
     dept.head_nurse = nurse;
     dept.phone = phone;
     dept.description = desc;
+    const depEl = document.getElementById('edit-dept-deputies');
+    if (depEl) {
+      const list = depEl.value.split(/[\n;]+/).map(x => x.trim()).filter(Boolean);
+      if (list.length) dept.deputies = Array.from(new Set(list)); else delete dept.deputies;
+    }
 
     this.data.departments.sort((a, b) => (a.order || 99) - (b.order || 99));
 
@@ -7604,31 +7629,7 @@ Trân trọng cảm ơn!`);
               <optgroup label="✅ Cán bộ Duyệt ảnh 5S (theo danh sách toàn viện)">
                 <option value="supervisor|${(s.role_title || s.title || 'Cán bộ Duyệt ảnh 5S').replace(/"/g, '&quot;')}" ${s.role === 'supervisor' ? 'selected' : ''}>✅ Cán bộ Duyệt ảnh 5S (giữ chức danh hiện tại)</option>
               </optgroup>
-              <optgroup label="🌟 Lãnh Đạo & Ban Chỉ Đạo 5S (Toàn quyền Admin)">
-                <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc" ${s.role === 'admin' && (s.role_title || '').includes('Trưởng Ban') ? 'selected' : ''}>👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
-                <option value="admin|Cán bộ Giám sát 5S Toàn Viện" ${s.role === 'admin' && (s.role_title || '').includes('Giám sát') ? 'selected' : ''}>🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL</option>
-              </optgroup>
-              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt & Phân công)">
-                <option value="manager|BSCKII - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('BSCKII') ? 'selected' : ''}>👨‍⚕️ BSCKII - Trưởng Khoa</option>
-                <option value="manager|BSCKI - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('BSCKI') ? 'selected' : ''}>👨‍⚕️ BSCKI - Trưởng Khoa</option>
-                <option value="manager|ThS. Bác sĩ - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('ThS. Bác sĩ') ? 'selected' : ''}>👨‍⚕️ ThS. Bác sĩ - Trưởng Khoa</option>
-                <option value="manager|Điều dưỡng Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('Điều dưỡng Trưởng') ? 'selected' : ''}>👩‍⚕️ Điều dưỡng Trưởng Khoa</option>
-                <option value="manager|Kỹ thuật viên Trưởng" ${s.role === 'manager' && (s.role_title || '').includes('Kỹ thuật viên Trưởng') ? 'selected' : ''}>👨‍⚕️ Kỹ thuật viên Trưởng</option>
-                <option value="manager|Hộ sinh Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('Hộ sinh Trưởng') ? 'selected' : ''}>👩‍⚕️ Hộ sinh Trưởng Khoa</option>
-                <option value="manager|Trưởng Phòng Chức Năng" ${s.role === 'manager' && (s.role_title || '').includes('Trưởng Phòng') ? 'selected' : ''}>🏢 Trưởng Phòng Chức Năng</option>
-              </optgroup>
-              <optgroup label="🏥 Cán Bộ Chuyên Môn & Nhân Viên 5S (Thực hành 5S)">
-                <option value="staff|Bác sĩ Điều trị" ${s.role === 'staff' && (s.role_title || '').includes('Bác sĩ Điều trị') ? 'selected' : ''}>👨‍⚕️ Bác sĩ Điều trị</option>
-                <option value="staff|Điều dưỡng viên" ${s.role === 'staff' && (s.role_title || '').includes('Điều dưỡng viên') ? 'selected' : ''}>👩‍⚕️ Điều dưỡng viên</option>
-                <option value="staff|Kỹ thuật viên CĐHA" ${s.role === 'staff' && (s.role_title || '').includes('CĐHA') ? 'selected' : ''}>⚡ Kỹ thuật viên CĐHA</option>
-                <option value="staff|Kỹ thuật viên Xét nghiệm" ${s.role === 'staff' && (s.role_title || '').includes('Xét nghiệm') ? 'selected' : ''}>🔬 Kỹ thuật viên Xét nghiệm</option>
-                <option value="staff|Dược sĩ / Quản lý kho dược" ${s.role === 'staff' && (s.role_title || '').includes('Dược sĩ') ? 'selected' : ''}>💊 Dược sĩ / Quản lý kho dược</option>
-                <option value="staff|Hộ sinh viên" ${s.role === 'staff' && (s.role_title || '').includes('Hộ sinh viên') ? 'selected' : ''}>👶 Hộ sinh viên</option>
-                <option value="staff|Hộ lý / Nhân viên vệ sinh" ${s.role === 'staff' && (s.role_title || '').includes('Hộ lý') ? 'selected' : ''}>🧹 Hộ lý / Nhân viên vệ sinh khử khuẩn</option>
-                <option value="staff|Kỹ sư / Nhân viên CNTT - Kỹ thuật" ${s.role === 'staff' && (s.role_title || '').includes('CNTT') ? 'selected' : ''}>💻 Kỹ sư / Nhân viên CNTT - Kỹ thuật</option>
-                <option value="staff|Nhân viên Hành chính / Kế toán" ${s.role === 'staff' && (s.role_title || '').includes('Hành chính') ? 'selected' : ''}>📑 Nhân viên Hành chính / Kế toán</option>
-                <option value="staff|Cán bộ / Nhân viên 5S" ${s.role === 'staff' && (s.role_title || '').includes('Nhân viên 5S') ? 'selected' : ''}>✨ Cán bộ / Nhân viên 5S</option>
-              </optgroup>
+              ${this.roleOptionsHtml(s)}
               <optgroup label="✏️ Tùy Chỉnh Linh Hoạt">
                 <option value="custom|custom">✏️ [Tùy Chỉnh Tên Vai Trò / Cấp Bậc Riêng...]</option>
               </optgroup>
@@ -7836,6 +7837,11 @@ Trân trọng cảm ơn!`);
     if (isAdminEditor && canReviewBox) {
       s.can_review = role === 'admin' ? true : !!canReviewBox.checked;
     }
+    // V29e: nhóm lãnh đạo theo phòng làm việc (phòng Hội đồng quản trị / Ban giám đốc) - chỉ Admin sửa
+    if (isAdminEditor && this.boardGroupOfDept) {
+      const g = this.boardGroupOfDept(deptId);
+      if (g) s.leader_group = g; else delete s.leader_group;
+    }
     s.notes = notes;
     if (dob) s.dob = dob;
     if (phone) s.phone = phone;
@@ -7894,31 +7900,7 @@ Trân trọng cảm ơn!`);
               🛡️ Vai Trò Phân Quyền & Chức Danh 5S *
             </label>
             <select id="modal-acc-role" onchange="app5s.onRoleSelectChange(this.value, 'modal-acc')" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl p-2.5 font-bold text-xs text-slate-900 dark:text-white">
-              <optgroup label="🌟 Lãnh Đạo & Ban Chỉ Đạo 5S (Toàn quyền Admin)">
-                <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc">👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
-                <option value="admin|Cán bộ Giám sát 5S Toàn Viện">🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL</option>
-              </optgroup>
-              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt & Phân công)">
-                <option value="manager|BSCKII - Trưởng Khoa">👨‍⚕️ BSCKII - Trưởng Khoa</option>
-                <option value="manager|BSCKI - Trưởng Khoa">👨‍⚕️ BSCKI - Trưởng Khoa</option>
-                <option value="manager|ThS. Bác sĩ - Trưởng Khoa">👨‍⚕️ ThS. Bác sĩ - Trưởng Khoa</option>
-                <option value="manager|Điều dưỡng Trưởng Khoa">👩‍⚕️ Điều dưỡng Trưởng Khoa</option>
-                <option value="manager|Kỹ thuật viên Trưởng">👨‍⚕️ Kỹ thuật viên Trưởng</option>
-                <option value="manager|Hộ sinh Trưởng Khoa">👩‍⚕️ Hộ sinh Trưởng Khoa</option>
-                <option value="manager|Trưởng Phòng Chức Năng">🏢 Trưởng Phòng Chức Năng</option>
-              </optgroup>
-              <optgroup label="🏥 Cán Bộ Chuyên Môn & Nhân Viên 5S (Thực hành 5S)">
-                <option value="staff|Bác sĩ Điều trị">👨‍⚕️ Bác sĩ Điều trị</option>
-                <option value="staff|Điều dưỡng viên" selected>👩‍⚕️ Điều dưỡng viên</option>
-                <option value="staff|Kỹ thuật viên CĐHA">⚡ Kỹ thuật viên CĐHA</option>
-                <option value="staff|Kỹ thuật viên Xét nghiệm">🔬 Kỹ thuật viên Xét nghiệm</option>
-                <option value="staff|Dược sĩ / Quản lý kho dược">💊 Dược sĩ / Quản lý kho dược</option>
-                <option value="staff|Hộ sinh viên">👶 Hộ sinh viên</option>
-                <option value="staff|Hộ lý / Nhân viên vệ sinh">🧹 Hộ lý / Nhân viên vệ sinh khử khuẩn</option>
-                <option value="staff|Kỹ sư / Nhân viên CNTT - Kỹ thuật">💻 Kỹ sư / Nhân viên CNTT - Kỹ thuật</option>
-                <option value="staff|Nhân viên Hành chính / Kế toán">📑 Nhân viên Hành chính / Kế toán</option>
-                <option value="staff|Cán bộ / Nhân viên 5S">✨ Cán bộ / Nhân viên 5S</option>
-              </optgroup>
+              ${this.roleOptionsHtml(null)}
             </select>
           </div>
 
@@ -8021,6 +8003,9 @@ Trân trọng cảm ơn!`);
       is_admin: role === 'admin',
       can_review: newCanReview
     };
+    // V29d: nhóm lãnh đạo (Hội đồng quản trị / Ban giám đốc)
+    const g = isAdminCreator && this.boardGroupOfDept ? this.boardGroupOfDept(deptId) : '';
+    if (g) newStaff.leader_group = g;
 
     this.data.staff.push(newStaff);
     this.saveData();
@@ -8926,6 +8911,14 @@ Trân trọng cảm ơn!`);
   }
 
 
+
+  // V29d: Báo cáo 5S / Xuất Excel / In báo cáo / Thống kê: chỉ lãnh đạo khoa phòng, người duyệt 5S, Ban giám đốc, Admin.
+  // Tài khoản thường (chỉ gửi ảnh 5S) không thấy và không dùng được.
+  canUseReports() {
+    const user = this.getCurrentUser();
+    if (!user) return false;
+    return this.isAdmin() || this.canReview5S() || this.isDepartmentManager();
+  }
 
   isUserManagerOrSupervisor() {
     // V25: hàm này quyết định hiển thị nút CHẤM 5S / DUYỆT ẢNH => dùng đúng quyền duyệt

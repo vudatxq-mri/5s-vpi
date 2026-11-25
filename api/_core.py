@@ -80,6 +80,7 @@ PROTECTED_STAFF_FIELDS = ('code', 'staff_code', 'role', 'role_level', 'is_admin'
                           'area_scope',     # V29: khu vực được giao (chỉ Admin sửa)
                           'leader_group')   # V29d: Hội đồng quản trị / Ban giám đốc (chỉ Admin sửa)
 BOARD_GROUPS = ('hdqt', 'bgd')
+BOARD_DEPT_IDS = ('27', '28')   # V29e: phòng "Hội đồng quản trị" (27), "Ban giám đốc" (28)
 REVIEW_STATUSES = ('approved', 'rejected')
 
 
@@ -851,7 +852,7 @@ def _parse_day(s):
 
 def report_rows(u, date_from, date_to):
     # V29d: báo cáo chỉ dành cho lãnh đạo khoa phòng, người duyệt 5S, Ban giám đốc, Admin
-    board = u.get('leader_group') in BOARD_GROUPS
+    board = u.get('leader_group') in BOARD_GROUPS or str(u.get('department_id')) in BOARD_DEPT_IDS
     if not (is_manager(u) or can_review(u) or board):
         raise ApiError(403, 'Báo cáo 5S chỉ dành cho lãnh đạo khoa phòng và người duyệt 5S')
     d1, d2 = _parse_day(date_from), _parse_day(date_to)

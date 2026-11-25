@@ -116,6 +116,10 @@ và kiểm thử bản sửa trên máy (localhost). Bản gốc lưu trong thư
   kèm tự nhận nhân sự có chức danh "Phó ...".
 - **HĐQT / Ban giám đốc** (V29d): trường `staff.leader_group` (`hdqt` | `bgd`, chỉ Admin sửa, máy chủ bảo vệ); tab Nhân sự hiện
   2 danh sách riêng ở đầu; thành viên được xem báo cáo toàn viện.
+- **Danh sách khoa/phòng** (V29e): xóa hẳn 8 khoa/phòng cũ không có trong Google Sheet (ICU, PT-GMHS, Phụ Sản, LCK, TDCN, KSNK,
+  KHTH, Điều dưỡng); thêm phòng **Hội đồng quản trị** (id 27) và **Ban giám đốc** (id 28), không có khu vực 5S. Admin chính bấm
+  "Áp dụng" (Khoa Phòng / Nhân sự / Thống kê) → chọn khoa/phòng mới cho nhân sự đang thuộc khoa cũ (`prev_department` ghi lại tên cũ).
+  Chọn Khoa/phòng làm việc = HĐQT / Ban giám đốc ⇒ tự vào danh sách riêng ở tab Nhân sự và được xem báo cáo toàn viện.
 - **Quyền** (V29d): "Xóa dữ liệu & triển khai mới" chỉ tài khoản Admin chính (`ADMIN_CODES`), kể cả máy chủ. Báo cáo 5S / Xuất Excel /
   In báo cáo / tab Thống kê chỉ cho lãnh đạo khoa phòng, người duyệt 5S, HĐQT/BGĐ, Admin; tài khoản thường bị ẩn và máy chủ từ chối `/api/report`.
 - **Phân quyền khu vực** (`staff.area_scope = {all, rooms[]}`, chỉ Admin sửa, máy chủ kiểm tra): Thống kê → "Phân quyền khu vực"
