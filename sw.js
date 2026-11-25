@@ -9,10 +9,11 @@
  *  - Khi mất mạng, API trả về mã 503 (trước đây trả 200 khiến app tưởng đã đồng bộ thành công)
  */
 
-const CACHE_NAME = "vpi-5s-cache-v28_20261123";
+const CACHE_NAME = "vpi-5s-cache-v29_20261125";
 const STATIC_ASSETS = [
   "/",
-  "/app.js?v=20261123_v28",
+  "/app.js?v=20261125_v29",
+  "/app-v29.js?v=20261125_v29",
   "/style.css?v=20261120_v25",
   "/css/app.css?v=20261120_v25",
   "/manifest.json",

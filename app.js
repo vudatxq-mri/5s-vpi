@@ -59,6 +59,8 @@ const SYNC_SINGLETONS = {
   hospital: { get: d => d.hospital, set: (d, v) => { d.hospital = v; } },
   shift_config: { get: d => d.shift_config, set: (d, v) => { d.shift_config = v; } },
   criteria: { get: d => d.criteria, set: (d, v) => { d.criteria = v; } },
+  // V29: khu vực cũ đã thay bằng danh mục mới (giữ tên để xem lại lịch sử)
+  archived_rooms: { get: d => d.archived_rooms, set: (d, v) => { d.archived_rooms = v; } },
   schedules_meta: {
     get: d => { if (!d.schedules) return undefined; const { rooms_schedule, ...rest } = d.schedules; return rest; },
     set: (d, v) => { const rs = (d.schedules && d.schedules.rooms_schedule) || []; d.schedules = Object.assign({}, v || {}, { rooms_schedule: rs }); }
@@ -95,8 +97,8 @@ const DEFAULT_SEED_DATA = {
       updatedAt: ''
     }
   },
-  departments: [{"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu", "order": 1, "category": "paraclinical"}, {"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "order": 2, "category": "clinical"}, {"id": 11, "code": "ICU", "name": "Khoa Hồi sức tích cực & Chống độc", "head_nurse": "ĐD. Nguyễn Thị Thanh Nga", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.116", "color": "#dc2626", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục", "order": 3, "category": "clinical"}, {"id": 12, "code": "PTGM", "name": "Khoa Phẫu thuật - Gây mê hồi sức", "head_nurse": "ĐD. Nguyễn Văn Thắng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.117", "color": "#0284c7", "icon": "fa-syringe", "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản", "order": 4, "category": "clinical"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân", "order": 5, "category": "clinical"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương", "order": 6, "category": "clinical"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa", "order": 7, "category": "clinical"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa", "order": 8, "category": "clinical"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng", "order": 9, "category": "clinical"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT - Phục hồi chức năng", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "BSCKI. Trần Văn Thái", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-spa", "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu", "order": 10, "category": "clinical"}, {"id": 13, "code": "LCK", "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)", "head_nurse": "ĐD. Vũ Thị Loan", "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường", "phone": "0211.386.129", "color": "#8b5cf6", "icon": "fa-eye", "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình", "order": 11, "category": "clinical"}, {"id": 14, "code": "TDCN", "name": "Khoa Thăm dò chức năng & Nội soi", "head_nurse": "KTV. Lê Thùy Linh", "doctor_in_charge": "BS. Lê Quang Huy", "phone": "0211.386.131", "color": "#14b8a6", "icon": "fa-wave-square", "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp", "order": 12, "category": "paraclinical"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học", "order": 13, "category": "paraclinical"}, {"id": 15, "code": "KD", "name": "Khoa Dược", "head_nurse": "DS. Nguyễn Bích Ngọc", "doctor_in_charge": "DS CKI. Hoàng Thị Lan", "phone": "0211.386.133", "color": "#10b981", "icon": "fa-pills", "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế", "order": 14, "category": "paraclinical"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện", "order": 15, "category": "paraclinical"}, {"id": 16, "code": "QLCL", "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "head_nurse": "ĐD. Nguyễn Thu Trang", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.100", "color": "#6366f1", "icon": "fa-award", "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV", "order": 16, "category": "functional"}, {"id": 17, "code": "KHTH", "name": "Phòng Kế hoạch tổng hợp & CNTT", "head_nurse": "ĐD. Hoàng Hải Yến", "doctor_in_charge": "BSCKI. Trần Đức Thắng", "phone": "0211.386.102", "color": "#3b82f6", "icon": "fa-clipboard-list", "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS", "order": 17, "category": "functional"}, {"id": 18, "code": "PDD", "name": "Phòng Điều dưỡng", "head_nurse": "ThS. ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "phone": "0211.386.103", "color": "#06b6d4", "icon": "fa-user-nurse", "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S", "order": 18, "category": "functional"}, {"id": 19, "code": "HCQT", "name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "head_nurse": "CN. Đặng Thị Loan", "doctor_in_charge": "ThS. Nguyễn Văn Hùng", "phone": "0211.386.105", "color": "#64748b", "icon": "fa-building", "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan", "order": 19, "category": "functional"}, {"id": 20, "code": "TCKT", "name": "Phòng Tài chính - Kế toán", "head_nurse": "KTV. Lê Thu Thảo", "doctor_in_charge": "ThS. Vũ Thị Mai", "phone": "0211.386.106", "color": "#f59e0b", "icon": "fa-file-invoice-dollar", "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị", "order": 20, "category": "functional"}],
-  rooms: [{"id": 34, "department_id": 8, "code": "XQ-01", "name": "Phòng Chụp X-quang Kỹ thuật số DR", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Chung", "target_score": 95.0, "status": "active", "order": 1}, {"id": 32, "department_id": 8, "code": "CT-01", "name": "Phòng Chụp Cắt lớp vi tính 128 dãy (CT-Scanner)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đức Tuấn", "target_score": 98.0, "status": "active", "order": 2}, {"id": 33, "department_id": 8, "code": "MRI-01", "name": "Phòng Chụp Cộng hưởng từ 1.5 Tesla (MRI)", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Công Bằng", "target_score": 98.0, "status": "active", "order": 3}, {"id": 35, "department_id": 8, "code": "SA-01", "name": "Phòng Siêu âm Màu 4D & Doppler tim mạch (P.104)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "BS. Phạm Quang Nam", "target_score": 95.0, "status": "active", "order": 4}, {"id": 50, "department_id": 8, "code": "PACS-01", "name": "Phòng Đọc & Hội chẩn kết quả CĐHA - PACS", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Vũ Bá Đạt", "target_score": 95.0, "status": "active", "order": 5}, {"id": 51, "department_id": 8, "code": "KHO-CDHA", "name": "Kho Vật tư tiêu hao & Lưu trữ hồ sơ phim CĐHA", "room_type": "Kho lưu trữ", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Tuấn", "target_score": 90.0, "status": "active", "order": 6}, {"id": 1, "department_id": 1, "code": "KCC-P01", "name": "Phòng Tiếp nhận & Phân loại bệnh cấp cứu", "room_type": "Phòng tiếp đón", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Lê Văn Minh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 2, "department_id": 1, "code": "KCC-P02", "name": "Phòng Hồi sức Cấp cứu ban đầu & Chấn thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 2}, {"id": 3, "department_id": 1, "code": "KCC-P03", "name": "Phòng Lưu bệnh Cấp cứu (Phòng 101)", "room_type": "Phòng bệnh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Phạm Thị Mai", "target_score": 90.0, "status": "active", "order": 3}, {"id": 4, "department_id": 1, "code": "KCC-P04", "name": "Phòng Tiểu phẫu - Băng bó vết thương", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà A", "person_in_charge": "ĐD. Hoàng Hải Yến", "target_score": 92.0, "status": "active", "order": 4}, {"id": 5, "department_id": 1, "code": "KCC-P05", "name": "Kho Thuốc & Dịch truyền Cấp cứu", "room_type": "Kho dược", "floor": "Tầng 1 - Nhà A", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 5}, {"id": 6, "department_id": 1, "code": "KCC-P06", "name": "Khu Vệ sinh Cấp cứu & Khử khuẩn rác thải", "room_type": "Khu vệ sinh", "floor": "Tầng 1 - Nhà A", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 90.0, "status": "active", "order": 6}, {"id": 46, "department_id": 11, "code": "ICU-01", "name": "Buồng Bệnh nhân nặng Hồi sức 1", "room_type": "Phòng điều trị tích cực", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 98.0, "status": "active", "order": 1}, {"id": 47, "department_id": 11, "code": "ICU-02", "name": "Buồng Bệnh nhân Thở máy & Lọc máu liên tục", "room_type": "Phòng hồi sức", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Mai", "target_score": 98.0, "status": "active", "order": 2}, {"id": 48, "department_id": 11, "code": "ICU-03", "name": "Phòng Thao tác & Thủ thuật ICU", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ThS.BS. Đinh Công Trí", "target_score": 95.0, "status": "active", "order": 3}, {"id": 49, "department_id": 11, "code": "ICU-04", "name": "Phòng Trực cấp cứu & Giao ban ICU", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thanh Nga", "target_score": 92.0, "status": "active", "order": 4}, {"id": 52, "department_id": 11, "code": "ICU-05", "name": "Buồng Cách ly áp lực âm ICU", "room_type": "Phòng cách ly", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Phan Anh Tuấn", "target_score": 95.0, "status": "active", "order": 5}, {"id": 53, "department_id": 12, "code": "PTGM-01", "name": "Phòng Mổ số 1 - Phẫu thuật Ngoại tổng quát", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Lê Tuấn Anh", "target_score": 99.0, "status": "active", "order": 1}, {"id": 54, "department_id": 12, "code": "PTGM-02", "name": "Phòng Mổ số 2 - Phẫu thuật Sản khoa & Mổ lấy thai", "room_type": "Phòng phẫu thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "BSCKII. Nguyễn Thị Hồng", "target_score": 99.0, "status": "active", "order": 2}, {"id": 55, "department_id": 12, "code": "PTGM-03", "name": "Phòng Hồi tỉnh & Theo dõi sau phẫu thuật", "room_type": "Phòng hồi tỉnh", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 96.0, "status": "active", "order": 3}, {"id": 56, "department_id": 12, "code": "PTGM-04", "name": "Khu Rửa tay phẫu thuật viên & Thay đồ vô khuẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 4}, {"id": 57, "department_id": 12, "code": "PTGM-05", "name": "Kho Vật tư phòng mổ & Đồ vải tiệt trùng", "room_type": "Kho vô trùng", "floor": "Tầng 3 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 7, "department_id": 2, "code": "KKB-P01", "name": "Sảnh Tiếp đón, Hướng dẫn & Lấy số tự động", "room_type": "Sảnh chờ", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 92.0, "status": "active", "order": 1}, {"id": 8, "department_id": 2, "code": "KKB-P02", "name": "Phòng Khám Nội tổng quát (P.101)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BSCKI. Vũ Đình Khiêm", "target_score": 92.0, "status": "active", "order": 2}, {"id": 9, "department_id": 2, "code": "KKB-P03", "name": "Phòng Khám Ngoại - Chấn thương (P.102)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Đỗ Mạnh Cường", "target_score": 92.0, "status": "active", "order": 3}, {"id": 10, "department_id": 2, "code": "KKB-P04", "name": "Phòng Khám Nhi & Tiêm chủng (P.103)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà B", "person_in_charge": "BS. Trần Thảo Vy", "target_score": 92.0, "status": "active", "order": 4}, {"id": 11, "department_id": 2, "code": "KKB-P05", "name": "Phòng Lấy mẫu máu & Bệnh phẩm tập trung", "room_type": "Phòng thủ thuật", "floor": "Tầng 1 - Nhà B", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 5}, {"id": 58, "department_id": 2, "code": "KKB-P06", "name": "Quầy Thu viện phí & Giám định BHYT", "room_type": "Quầy giao dịch", "floor": "Tầng 1 - Nhà B", "person_in_charge": "ĐD. Hoàng Bích Thủy", "target_score": 90.0, "status": "active", "order": 6}, {"id": 16, "department_id": 4, "code": "KNG-P01", "name": "Buồng Hậu phẫu Ngoại 201", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Trần Kim Oanh", "target_score": 92.0, "status": "active", "order": 1}, {"id": 17, "department_id": 4, "code": "KNG-P02", "name": "Buồng Bệnh Tiền phẫu 202", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Nguyễn Văn Thắng", "target_score": 90.0, "status": "active", "order": 2}, {"id": 18, "department_id": 4, "code": "KNG-P03", "name": "Phòng Thay băng - Rửa vết thương & Cắt chỉ", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà C", "person_in_charge": "ĐD. Bùi Văn Hùng", "target_score": 95.0, "status": "active", "order": 3}, {"id": 19, "department_id": 4, "code": "KNG-P04", "name": "Phòng Trực Bác sĩ & Giao ban khoa Ngoại", "room_type": "Phòng giao ban", "floor": "Tầng 2 - Nhà C", "person_in_charge": "BSCKII. Nguyễn Văn Toàn", "target_score": 90.0, "status": "active", "order": 4}, {"id": 20, "department_id": 5, "code": "KNT-P01", "name": "Buồng Bệnh Nội Tim Mạch (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Dương Thị Hằng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 21, "department_id": 5, "code": "KNT-P02", "name": "Buồng Bệnh Nội Tiết - Tiểu đường (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Ngô Thị Yến", "target_score": 90.0, "status": "active", "order": 2}, {"id": 22, "department_id": 5, "code": "KNT-P03", "name": "Phòng Tiêm, Phát thuốc & Trực Điều dưỡng", "room_type": "Phòng trực", "floor": "Tầng 3 - Nhà C", "person_in_charge": "ĐD. Trần Phương Dung", "target_score": 95.0, "status": "active", "order": 3}, {"id": 23, "department_id": 5, "code": "KNT-P04", "name": "Khu Vệ sinh buồng bệnh nhân Tầng 3", "room_type": "Khu vệ sinh", "floor": "Tầng 3 - Nhà C", "person_in_charge": "Hộ lý. Phạm Thị Chắt", "target_score": 90.0, "status": "active", "order": 4}, {"id": 24, "department_id": 6, "code": "KSN-P01", "name": "Phòng Chờ đẻ & Theo dõi tim thai", "room_type": "Phòng chuyên khoa", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Vũ Thị Loan", "target_score": 95.0, "status": "active", "order": 1}, {"id": 25, "department_id": 6, "code": "KSN-P02", "name": "Phòng Đẻ thường số 1 (Vô khuẩn)", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Lê Thị Thúy Hằng", "target_score": 98.0, "status": "active", "order": 2}, {"id": 26, "department_id": 6, "code": "KSN-P03", "name": "Buồng Chăm sóc Mẹ và Bé sau sinh (P.205)", "room_type": "Phòng bệnh", "floor": "Tầng 2 - Nhà B", "person_in_charge": "ĐD. Trần Hồng Nhung", "target_score": 92.0, "status": "active", "order": 3}, {"id": 27, "department_id": 6, "code": "KSN-P04", "name": "Phòng Tắm Bé & Tiêm chủng sơ sinh", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà B", "person_in_charge": "HS. Nguyễn Thị Thêu", "target_score": 95.0, "status": "active", "order": 4}, {"id": 28, "department_id": 7, "code": "KNHI-P01", "name": "Đơn nguyên Sơ sinh (Lồng ấp & Chiếu đèn)", "room_type": "Phòng đặc biệt", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Đỗ Thị Hiền", "target_score": 98.0, "status": "active", "order": 1}, {"id": 29, "department_id": 7, "code": "KNHI-P02", "name": "Buồng Bệnh Nhi Hô hấp (P.301)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Nguyễn Thị Thủy", "target_score": 92.0, "status": "active", "order": 2}, {"id": 30, "department_id": 7, "code": "KNHI-P03", "name": "Buồng Bệnh Nhi Tiêu hóa (P.302)", "room_type": "Phòng bệnh", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Mai Thị Trang", "target_score": 90.0, "status": "active", "order": 3}, {"id": 31, "department_id": 7, "code": "KNHI-P04", "name": "Khu Vui chơi giải trí & Vận động bệnh nhi", "room_type": "Khu công cộng", "floor": "Tầng 3 - Nhà B", "person_in_charge": "ĐD. Trần Thu Hà", "target_score": 90.0, "status": "active", "order": 4}, {"id": 59, "department_id": 3, "code": "YHCT-01", "name": "Phòng Khám & Bắt mạch YHCT", "room_type": "Phòng khám", "floor": "Tầng 4 - Nhà C", "person_in_charge": "BSCKI. Trần Văn Thái", "target_score": 92.0, "status": "active", "order": 1}, {"id": 60, "department_id": 3, "code": "YHCT-02", "name": "Phòng Châm cứu & Xoa bóp bấm huyệt", "room_type": "Phòng thủ thuật", "floor": "Tầng 4 - Nhà C", "person_in_charge": "ĐD. Phạm Thị Lý", "target_score": 95.0, "status": "active", "order": 2}, {"id": 61, "department_id": 3, "code": "YHCT-03", "name": "Phòng Vật lý trị liệu & Vận động phục hồi", "room_type": "Phòng tập", "floor": "Tầng 4 - Nhà C", "person_in_charge": "KTV. Lê Văn Tuấn", "target_score": 92.0, "status": "active", "order": 3}, {"id": 62, "department_id": 3, "code": "YHCT-04", "name": "Phòng Sắc thuốc & Bảo quản dược liệu YHCT", "room_type": "Khu chế biến", "floor": "Tầng 4 - Nhà C", "person_in_charge": "DS. Hoàng Thị Mai", "target_score": 90.0, "status": "active", "order": 4}, {"id": 63, "department_id": 13, "code": "LCK-01", "name": "Phòng Khám & Điều trị Răng Hàm Mặt", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BSCKI. Đỗ Mạnh Cường", "target_score": 95.0, "status": "active", "order": 1}, {"id": 64, "department_id": 13, "code": "LCK-02", "name": "Phòng Khám & Nội soi Tai Mũi Họng", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Nguyễn Văn Hùng", "target_score": 95.0, "status": "active", "order": 2}, {"id": 65, "department_id": 13, "code": "LCK-03", "name": "Phòng Khám Mắt & Đo thị lực khúc xạ", "room_type": "Phòng khám", "floor": "Tầng 2 - Nhà B", "person_in_charge": "BS. Vũ Thị Loan", "target_score": 92.0, "status": "active", "order": 3}, {"id": 66, "department_id": 14, "code": "TDCN-01", "name": "Phòng Nội soi Tiêu hóa dạ dày - đại tràng", "room_type": "Phòng thủ thuật", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "BS. Lê Quang Huy", "target_score": 98.0, "status": "active", "order": 1}, {"id": 67, "department_id": 14, "code": "TDCN-02", "name": "Phòng Điện tim & Điện não đồ vi tính", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thùy Linh", "target_score": 95.0, "status": "active", "order": 2}, {"id": 68, "department_id": 14, "code": "TDCN-03", "name": "Phòng Đo chức năng hô hấp & Lưu huyết não", "room_type": "Phòng máy", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Thu Hà", "target_score": 92.0, "status": "active", "order": 3}, {"id": 36, "department_id": 9, "code": "KXN-P01", "name": "Phòng Xét nghiệm Huyết học & Truyền máu", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Đỗ Thị Thu Hường", "target_score": 98.0, "status": "active", "order": 1}, {"id": 37, "department_id": 9, "code": "KXN-P02", "name": "Phòng Xét nghiệm Sinh hóa - Miễn dịch tự động", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Nguyễn Đình Khải", "target_score": 98.0, "status": "active", "order": 2}, {"id": 38, "department_id": 9, "code": "KXN-P03", "name": "Phòng Vi sinh - Ký sinh trùng & Nuôi cấy", "room_type": "Phòng xét nghiệm", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Phạm Thị Hạnh", "target_score": 95.0, "status": "active", "order": 3}, {"id": 39, "department_id": 9, "code": "KXN-P04", "name": "Kho Hóa chất xét nghiệm & Lưu mẫu bệnh phẩm", "room_type": "Kho lưu trữ", "floor": "Tầng 2 - Nhà Kỹ thuật", "person_in_charge": "KTV. Lê Thu Thảo", "target_score": 95.0, "status": "active", "order": 4}, {"id": 69, "department_id": 15, "code": "KD-01", "name": "Kho Thuốc chẵn Nội trú & Dịch truyền", "room_type": "Kho thuốc", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS CKI. Hoàng Thị Lan", "target_score": 98.0, "status": "active", "order": 1}, {"id": 70, "department_id": 15, "code": "KD-02", "name": "Kho Thuốc Cấp phát Ngoại trú BHYT", "room_type": "Kho cấp phát", "floor": "Tầng 1 - Nhà B", "person_in_charge": "DS. Nguyễn Bích Ngọc", "target_score": 95.0, "status": "active", "order": 2}, {"id": 71, "department_id": 15, "code": "KD-03", "name": "Kho Hóa chất sát khuẩn & Vật tư y tế tiêu hao", "room_type": "Kho vật tư", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Trần Văn Nam", "target_score": 95.0, "status": "active", "order": 3}, {"id": 72, "department_id": 15, "code": "KD-04", "name": "Phòng Pha chế & Bảo quản lạnh Vắc xin/Thuốc đặc biệt", "room_type": "Phòng chuyên môn", "floor": "Tầng 1 - Nhà Kho Dược", "person_in_charge": "DS. Lê Thị Mai", "target_score": 98.0, "status": "active", "order": 4}, {"id": 40, "department_id": 10, "code": "KKSNK-P01", "name": "Khu Tiếp nhận & Rửa dụng cụ y tế bẩn", "room_type": "Khu kỹ thuật", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Trịnh Thị Thu Trang", "target_score": 95.0, "status": "active", "order": 1}, {"id": 41, "department_id": 10, "code": "KKSNK-P02", "name": "Khu Đóng gói & Nồi hấp Tiệt trùng nhiệt độ cao", "room_type": "Khu tiệt trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "KTV. Nguyễn Văn Đạt", "target_score": 98.0, "status": "active", "order": 2}, {"id": 42, "department_id": 10, "code": "KKSNK-P03", "name": "Kho Dụng cụ Phẫu thuật Vô khuẩn thành phẩm", "room_type": "Kho vô trùng", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "ĐD. Lê Thị Nga", "target_score": 99.0, "status": "active", "order": 3}, {"id": 43, "department_id": 10, "code": "KKSNK-P04", "name": "Khu Giặt là & Khử khuẩn đồ vải bệnh viện", "room_type": "Khu giặt là", "floor": "Tầng 1 - Nhà Giặt hấp", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 92.0, "status": "active", "order": 4}, {"id": 73, "department_id": 10, "code": "KKSNK-P05", "name": "Khu Phân loại & Lưu trữ tạm thời rác thải y tế", "room_type": "Khu rác thải", "floor": "Khuôn viên phía sau Nhà Giặt", "person_in_charge": "Hộ lý. Vũ Thị Hoa", "target_score": 95.0, "status": "active", "order": 5}, {"id": 74, "department_id": 16, "code": "QLCL-01", "name": "Văn phòng Thường trực Ban Chỉ đạo 5S Toàn Viện", "room_type": "Văn phòng", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "target_score": 98.0, "status": "active", "order": 1}, {"id": 75, "department_id": 16, "code": "QLCL-02", "name": "Phòng Lưu trữ Hồ sơ 83 Tiêu chí & Minh chứng 5S", "room_type": "Phòng hồ sơ", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "ĐD. Nguyễn Thu Trang", "target_score": 95.0, "status": "active", "order": 2}, {"id": 76, "department_id": 17, "code": "KHTH-01", "name": "Văn phòng Kế hoạch tổng hợp & Phòng Giao ban Viện", "room_type": "Phòng giao ban", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "BSCKI. Trần Đức Thắng", "target_score": 95.0, "status": "active", "order": 1}, {"id": 77, "department_id": 17, "code": "KHTH-02", "name": "Phòng Máy chủ Trung tâm & Quản trị mạng HIS/PACS", "room_type": "Phòng server", "floor": "Tầng 4 - Nhà Điều hành", "person_in_charge": "KS. Nguyễn Hoàng Nam", "target_score": 98.0, "status": "active", "order": 2}, {"id": 78, "department_id": 18, "code": "PDD-01", "name": "Văn phòng Điều dưỡng trưởng bệnh viện & Đào tạo 5S", "room_type": "Văn phòng", "floor": "Tầng 3 - Nhà Điều hành", "person_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "target_score": 95.0, "status": "active", "order": 1}, {"id": 79, "department_id": 19, "code": "HCQT-01", "name": "Bộ phận Văn thư - Lưu trữ & Tiếp nhận công văn", "room_type": "Văn thư", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Nguyễn Văn Hùng", "target_score": 92.0, "status": "active", "order": 1}, {"id": 80, "department_id": 19, "code": "HCQT-02", "name": "Kho Vật tư văn phòng phẩm & Thiết bị hành chính", "room_type": "Kho hành chính", "floor": "Tầng 1 - Nhà Điều hành", "person_in_charge": "CN. Đặng Thị Loan", "target_score": 90.0, "status": "active", "order": 2}, {"id": 81, "department_id": 20, "code": "TCKT-01", "name": "Phòng Kế toán tổng hợp & Quản trị tài sản viện", "room_type": "Văn phòng", "floor": "Tầng 2 - Nhà Điều hành", "person_in_charge": "ThS. Vũ Thị Mai", "target_score": 95.0, "status": "active", "order": 1}, {"id": 82, "department_id": 8, "code": "XQ-02", "name": "Phòng Chụp X-quang Kỹ thuật số DR 02", "room_type": "Phòng máy", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Trần Văn Chung", "target_score": 95.0, "status": "active", "order": 7}, {"id": 83, "department_id": 8, "code": "SA-02", "name": "Phòng Siêu âm Tổng quát & Can thiệp (P.105)", "room_type": "Phòng khám", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "BS. Nguyễn Văn Dũng", "target_score": 96.0, "status": "active", "order": 8}, {"id": 84, "department_id": 8, "code": "DSA-01", "name": "Phòng Chụp & Can thiệp tim mạch số hóa xóa nền (DSA)", "room_type": "Phòng can thiệp", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "KTV. Vũ Bá Đạt", "target_score": 98.0, "status": "active", "order": 9}, {"id": 85, "department_id": 8, "code": "HC-CDHA", "name": "Khu Tiếp đón bệnh nhân & Hành chính CĐHA", "room_type": "Khu tiếp đón", "floor": "Tầng 1 - Nhà Kỹ thuật", "person_in_charge": "ĐD. Hoàng Thị Mai", "target_score": 92.0, "status": "active", "order": 10}],
+  departments: [{"id":8,"code":"KCDHA","name":"Khoa Chẩn đoán hình ảnh","head_nurse":"KTV. Nguyễn Đức Tuấn","doctor_in_charge":"BSCKI. Phạm Quang Nam","phone":"0211.386.130","color":"#6366f1","icon":"fa-x-ray","description":"Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu","order":1,"category":"paraclinical","in_5s":true},{"id":2,"code":"KKB","name":"Khoa Khám bệnh","head_nurse":"ĐD. Hoàng Bích Thủy","doctor_in_charge":"BSCKI. Vũ Đình Khiêm","phone":"0211.386.101","color":"#0ea5e9","icon":"fa-stethoscope","description":"Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân","order":2,"category":"clinical","in_5s":true},{"id":9,"code":"KXN","name":"Khoa Xét nghiệm","head_nurse":"KTV. Đỗ Thị Thu Hường","doctor_in_charge":"BSCKI. Vũ Đức Hải","phone":"0211.386.132","color":"#8b5cf6","icon":"fa-vial-virus","description":"Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học","order":3,"category":"paraclinical","in_5s":true},{"id":4,"code":"KNG","name":"Khoa Ngoại Tổng hợp","head_nurse":"ĐD. Bùi Văn Hùng","doctor_in_charge":"BSCKII. Nguyễn Văn Toàn","phone":"0211.386.120","color":"#10b981","icon":"fa-user-doctor","description":"Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương","order":4,"category":"clinical","in_5s":true},{"id":7,"code":"KNHI","name":"Khoa Nhi","head_nurse":"ĐD. Đỗ Thị Hiền","doctor_in_charge":"ThS.BS. Đặng Hồng Phúc","phone":"0211.386.128","color":"#eab308","icon":"fa-children","description":"Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng","order":5,"category":"clinical","in_5s":true},{"id":5,"code":"KNT","name":"Khoa Nội Tổng hợp","head_nurse":"ĐD. Trần Phương Dung","doctor_in_charge":"BSCKI. Mai Thị Hảo","phone":"0211.386.122","color":"#06b6d4","icon":"fa-notes-medical","description":"Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa","order":6,"category":"clinical","in_5s":true},{"id":3,"code":"YHCTPHCN","name":"Khoa YHCT - PHCN","head_nurse":"ĐD. Phạm Thị Lý","doctor_in_charge":"BSCKI. Trần Văn Thái","phone":"0211.386.118","color":"#f59e0b","icon":"fa-spa","description":"Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu","order":7,"category":"clinical","in_5s":true},{"id":15,"code":"KD","name":"Khoa Dược","head_nurse":"DS. Nguyễn Bích Ngọc","doctor_in_charge":"DS CKI. Hoàng Thị Lan","phone":"0211.386.133","color":"#10b981","icon":"fa-pills","description":"Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế","order":8,"category":"paraclinical","in_5s":true},{"id":1,"code":"KCC","name":"Phòng Cấp cứu","head_nurse":"ĐD. Trần Thị Lan Hương","doctor_in_charge":"ThS. BSCKII. Phạm Quỳnh Hưng","phone":"0211.386.115","color":"#ef4444","icon":"fa-ambulance","description":"Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng","order":9,"category":"clinical","in_5s":true},{"id":21,"code":"HDKH","name":"Bộ phận HDKH","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":10,"category":"functional","in_5s":true},{"id":22,"code":"KDBH","name":"Phòng Kinh doanh Bảo hiểm","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":11,"category":"functional","in_5s":true},{"id":23,"code":"MKT","name":"Phòng Marketing","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":12,"category":"functional","in_5s":true},{"id":20,"code":"TCKT","name":"Phòng Tài chính - Kế toán (TCKT)","head_nurse":"KTV. Lê Thu Thảo","doctor_in_charge":"ThS. Vũ Thị Mai","phone":"0211.386.106","color":"#f59e0b","icon":"fa-file-invoice-dollar","description":"Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị","order":13,"category":"functional","in_5s":true},{"id":16,"code":"QLCL","name":"Phòng Quản lý chất lượng (QLCL)","head_nurse":"ĐD. Nguyễn Thu Trang","doctor_in_charge":"ThS. BSCKII. Phạm Quỳnh Hưng","phone":"0211.386.100","color":"#6366f1","icon":"fa-award","description":"Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV","order":14,"category":"functional","in_5s":true},{"id":19,"code":"HCQT","name":"Phòng Hành chính - Nhân sự (HCNS)","head_nurse":"CN. Đặng Thị Loan","doctor_in_charge":"ThS. Nguyễn Văn Hùng","phone":"0211.386.105","color":"#64748b","icon":"fa-building","description":"Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan","order":15,"category":"functional","in_5s":true},{"id":24,"code":"KHVH","name":"Phòng KHVH","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":16,"category":"functional","in_5s":true},{"id":25,"code":"N3T","name":"Nhà 3 tầng","head_nurse":"","doctor_in_charge":"","phone":"","color":"#64748b","icon":"fa-building","description":"","order":17,"category":"functional","in_5s":true},{"id":26,"code":"TTTH","name":"Trung tâm Tiêu hóa","head_nurse":"","doctor_in_charge":"","phone":"","color":"#6366f1","icon":"fa-building","description":"","order":18,"category":"paraclinical","in_5s":true},{"id":11,"code":"ICU","name":"Khoa Hồi sức tích cực \u0026 Chống độc","head_nurse":"ĐD. Nguyễn Thị Thanh Nga","doctor_in_charge":"ThS.BS. Đinh Công Trí","phone":"0211.386.116","color":"#dc2626","icon":"fa-heart-pulse","description":"Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục","order":19,"category":"clinical","in_5s":false},{"id":12,"code":"PTGM","name":"Khoa Phẫu thuật - Gây mê hồi sức","head_nurse":"ĐD. Nguyễn Văn Thắng","doctor_in_charge":"BSCKII. Lê Tuấn Anh","phone":"0211.386.117","color":"#0284c7","icon":"fa-syringe","description":"Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản","order":20,"category":"clinical","in_5s":false},{"id":6,"code":"KSN","name":"Khoa Phụ Sản","head_nurse":"Hộ sinh. Lê Thị Thúy Hằng","doctor_in_charge":"BSCKII. Nguyễn Thị Hồng","phone":"0211.386.125","color":"#ec4899","icon":"fa-baby","description":"Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa","order":21,"category":"clinical","in_5s":false},{"id":13,"code":"LCK","name":"Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)","head_nurse":"ĐD. Vũ Thị Loan","doctor_in_charge":"BSCKI. Đỗ Mạnh Cường","phone":"0211.386.129","color":"#8b5cf6","icon":"fa-eye","description":"Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình","order":22,"category":"clinical","in_5s":false},{"id":14,"code":"TDCN","name":"Khoa Thăm dò chức năng \u0026 Nội soi","head_nurse":"KTV. Lê Thùy Linh","doctor_in_charge":"BS. Lê Quang Huy","phone":"0211.386.131","color":"#14b8a6","icon":"fa-wave-square","description":"Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp","order":23,"category":"paraclinical","in_5s":false},{"id":10,"code":"KKSNK","name":"Khoa Kiểm soát Nhiễm khuẩn","head_nurse":"ĐD. Trịnh Thị Thu Trang","doctor_in_charge":"BSCKI. Hoàng Trọng Nghĩa","phone":"0211.386.135","color":"#14b8a6","icon":"fa-shield-virus","description":"Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện","order":24,"category":"paraclinical","in_5s":false},{"id":17,"code":"KHTH","name":"Phòng Kế hoạch tổng hợp \u0026 CNTT","head_nurse":"ĐD. Hoàng Hải Yến","doctor_in_charge":"BSCKI. Trần Đức Thắng","phone":"0211.386.102","color":"#3b82f6","icon":"fa-clipboard-list","description":"Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS","order":25,"category":"functional","in_5s":false},{"id":18,"code":"PDD","name":"Phòng Điều dưỡng","head_nurse":"ThS. ĐD. Trần Thị Lan Hương","doctor_in_charge":"ThS. ĐD. Trần Thị Lan Hương","phone":"0211.386.103","color":"#06b6d4","icon":"fa-user-nurse","description":"Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S","order":26,"category":"functional","in_5s":false}],
+  rooms: [{"id":101,"department_id":8,"code":"KCDHA-01","name":"Phòng chụp MRI","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":102,"department_id":8,"code":"KCDHA-02","name":"Phòng chụp CT-Scanner","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":103,"department_id":8,"code":"KCDHA-03","name":"Phòng chụp X-quang","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":104,"department_id":8,"code":"KCDHA-04","name":"Phòng chụp Mamo (vú)","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":105,"department_id":8,"code":"KCDHA-05","name":"Phòng Đo loãng xương","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":5,"created_at":"2026-11-25"},{"id":106,"department_id":8,"code":"KCDHA-06","name":"Phòng siêu âm 110","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":6,"created_at":"2026-11-25"},{"id":107,"department_id":8,"code":"KCDHA-07","name":"Phòng siêu âm 215","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":7,"created_at":"2026-11-25"},{"id":108,"department_id":8,"code":"KCDHA-08","name":"Phòng siêu âm 216","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":8,"created_at":"2026-11-25"},{"id":109,"department_id":8,"code":"KCDHA-09","name":"Phòng siêu âm 217","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":9,"created_at":"2026-11-25"},{"id":110,"department_id":8,"code":"KCDHA-10","name":"Phòng siêu âm 218","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":10,"created_at":"2026-11-25"},{"id":111,"department_id":2,"code":"KKB-01","name":"Phòng khám 101","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":112,"department_id":2,"code":"KKB-02","name":"Phòng khám 102","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":113,"department_id":2,"code":"KKB-03","name":"Phòng khám 103","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":114,"department_id":2,"code":"KKB-04","name":"Phòng khám 104","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":115,"department_id":2,"code":"KKB-05","name":"Phòng khám 105","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":5,"created_at":"2026-11-25"},{"id":116,"department_id":2,"code":"KKB-06","name":"Phòng khám 106","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":6,"created_at":"2026-11-25"},{"id":117,"department_id":2,"code":"KKB-07","name":"Phòng khám 201","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":7,"created_at":"2026-11-25"},{"id":118,"department_id":2,"code":"KKB-08","name":"Phòng khám 202","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":8,"created_at":"2026-11-25"},{"id":119,"department_id":2,"code":"KKB-09","name":"Phòng khám 203","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":9,"created_at":"2026-11-25"},{"id":120,"department_id":2,"code":"KKB-10","name":"Phòng khám 204","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":10,"created_at":"2026-11-25"},{"id":121,"department_id":2,"code":"KKB-11","name":"Phòng khám 205","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":11,"created_at":"2026-11-25"},{"id":122,"department_id":2,"code":"KKB-12","name":"Phòng điện tim","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":12,"created_at":"2026-11-25"},{"id":123,"department_id":2,"code":"KKB-13","name":"Phòng Tai mũi họng","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":13,"created_at":"2026-11-25"},{"id":124,"department_id":2,"code":"KKB-14","name":"Phòng khám Sản","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":14,"created_at":"2026-11-25"},{"id":125,"department_id":2,"code":"KKB-15","name":"Phòng Răng hàm mặt","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":15,"created_at":"2026-11-25"},{"id":126,"department_id":9,"code":"KXN-01","name":"Phòng lấy mẫu","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":127,"department_id":9,"code":"KXN-02","name":"Phòng vi sinh","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":128,"department_id":9,"code":"KXN-03","name":"Phòng hóa sinh","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":129,"department_id":9,"code":"KXN-04","name":"Phòng nghỉ nhân viên","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":130,"department_id":4,"code":"KNG-01","name":"Phòng giao ban khoa","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":131,"department_id":4,"code":"KNG-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":132,"department_id":7,"code":"KNHI-01","name":"Phòng giao ban khoa","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":133,"department_id":7,"code":"KNHI-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":134,"department_id":7,"code":"KNHI-03","name":"Phòng nghỉ nhân viên","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":135,"department_id":5,"code":"KNT-01","name":"Phòng giao ban khoa","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":136,"department_id":5,"code":"KNT-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":137,"department_id":5,"code":"KNT-03","name":"Phòng nghỉ nhân viên","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":138,"department_id":5,"code":"KNT-04","name":"Buồng tiêm","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":139,"department_id":3,"code":"YHCTPHCN-01","name":"Khu hành chính","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":140,"department_id":3,"code":"YHCTPHCN-02","name":"Bàn quầy","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":141,"department_id":3,"code":"YHCTPHCN-03","name":"Khu điều trị","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":142,"department_id":3,"code":"YHCTPHCN-04","name":"Buồng tiêm","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":4,"created_at":"2026-11-25"},{"id":143,"department_id":15,"code":"KD-01","name":"Quầy dược","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":144,"department_id":1,"code":"KCC-01","name":"Khu vực giường, cáng Cấp cứu","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":145,"department_id":21,"code":"HDKH-01","name":"Khu vực làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":146,"department_id":22,"code":"KDBH-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":147,"department_id":23,"code":"MKT-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":148,"department_id":20,"code":"TCKT-01","name":"Quầy lễ tân","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":149,"department_id":20,"code":"TCKT-02","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":150,"department_id":16,"code":"QLCL-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":151,"department_id":19,"code":"HCNS-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":152,"department_id":19,"code":"HCNS-02","name":"Căng tin - nhà bếp","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"},{"id":153,"department_id":19,"code":"HCNS-03","name":"Phòng Bảo vệ","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":3,"created_at":"2026-11-25"},{"id":154,"department_id":24,"code":"KHVH-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":155,"department_id":25,"code":"N3T-01","name":"Văn phòng làm việc","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":156,"department_id":26,"code":"TTTH-01","name":"Phòng Rửa máy nội soi","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":1,"created_at":"2026-11-25"},{"id":157,"department_id":26,"code":"TTTH-02","name":"Phòng tư vấn","room_type":"Khu vực 5S","floor":"","person_in_charge":"","status":"active","order":2,"created_at":"2026-11-25"}],
   staff: [], // V27: danh sách nhân sự KHÔNG còn nằm trong mã nguồn công khai - tải từ máy chủ sau khi đăng nhập
   schedules: {
   "current_week": 42,
@@ -147,6 +149,128 @@ const DEFAULT_SEED_DATA = {
   audits: [],
   securityLogs: [] // V28: bỏ nhật ký truy cập giả
 };
+
+// =========================================================================
+// V29: CẬP NHẬT GIAO DIỆN TẠI CHỖ (DOM MORPH)
+// Trước đây mỗi lần lưu, app thay toàn bộ innerHTML => ảnh tải lại, biểu tượng nháy, hộp thoại chạy lại hiệu ứng mở,
+// khung cuộn bị dựng lại => người dùng thấy như "app đang tải lại". Nay so sánh cây giao diện mới với cây đang hiển thị
+// và chỉ sửa phần khác biệt: phần tử giữ nguyên, ảnh không tải lại, vị trí cuộn & ô đang gõ được giữ.
+// =========================================================================
+function vpiIconName(el) {
+  if (!el || el.nodeType !== 1) return '';
+  const n = el.getAttribute('data-lucide');
+  if (n) return n;
+  if (el.tagName.toLowerCase() === 'svg' && el.classList) {
+    for (const c of el.classList) {
+      if (c.startsWith('lucide-')) return c.slice(7);
+    }
+  }
+  return '';
+}
+
+function vpiSyncAttributes(fromEl, toEl) {
+  // toEl: phần tử đang hiển thị; fromEl: phần tử mới
+  const keep = new Set();
+  for (const a of Array.from(fromEl.attributes)) {
+    keep.add(a.name);
+    if (toEl.getAttribute(a.name) !== a.value) toEl.setAttribute(a.name, a.value);
+  }
+  for (const a of Array.from(toEl.attributes)) {
+    if (!keep.has(a.name)) toEl.removeAttribute(a.name);
+  }
+}
+
+function vpiSameNode(a, b) {
+  if (a.nodeType !== b.nodeType) return false;
+  if (a.nodeType !== 1) return true;
+  const ta = a.tagName.toLowerCase();
+  const tb = b.tagName.toLowerCase();
+  // Biểu tượng lucide: <i data-lucide="x"> trong mã mới tương ứng với <svg> đã được vẽ trên màn hình
+  if (ta === 'svg' && tb === 'i') {
+    const n = b.getAttribute('data-lucide');
+    return !!n && vpiIconName(a) === n;
+  }
+  if (ta !== tb) return false;
+  if (a.id || b.id) return a.id === b.id;
+  return true;
+}
+
+function vpiMorphNode(cur, next) {
+  if (cur.nodeType === 3 || cur.nodeType === 8) {
+    if (cur.nodeValue !== next.nodeValue) cur.nodeValue = next.nodeValue;
+    return;
+  }
+  const tag = cur.tagName.toLowerCase();
+  if (tag === 'svg' && next.tagName.toLowerCase() === 'i') {
+    // Giữ biểu tượng đã vẽ, chỉ cập nhật lớp CSS (màu, kích thước)
+    const name = next.getAttribute('data-lucide');
+    const cls = `lucide lucide-${name} ${next.getAttribute('class') || ''}`.trim();
+    if (cur.getAttribute('class') !== cls) cur.setAttribute('class', cls);
+    return;
+  }
+  vpiSyncAttributes(next, cur);
+  if (tag === 'input') {
+    const type = (cur.getAttribute('type') || 'text').toLowerCase();
+    if (type === 'checkbox' || type === 'radio') {
+      cur.checked = next.hasAttribute('checked');
+    } else if (type !== 'file' && document.activeElement !== cur) {
+      const v = next.getAttribute('value') || '';
+      if (cur.value !== v) cur.value = v;
+    }
+    return;
+  }
+  if (tag === 'textarea') {
+    if (document.activeElement !== cur && cur.value !== next.value) cur.value = next.value;
+    return;
+  }
+  if (tag === 'video' || tag === 'canvas' || tag === 'iframe') return;
+  vpiMorphChildren(cur, next);
+  if (tag === 'select' && document.activeElement !== cur) {
+    if (cur.selectedIndex !== next.selectedIndex) cur.selectedIndex = next.selectedIndex;
+  }
+}
+
+function vpiMorphChildren(curParent, nextParent) {
+  const nextKids = Array.from(nextParent.childNodes);
+  let curKid = curParent.firstChild;
+  for (const nk of nextKids) {
+    // Tìm phần tử có cùng id ở phía sau (danh sách bị chèn / xóa phần tử ở giữa)
+    if (curKid && nk.nodeType === 1 && nk.id && !(curKid.nodeType === 1 && curKid.id === nk.id)) {
+      let probe = curKid.nextSibling;
+      while (probe && !(probe.nodeType === 1 && probe.id === nk.id)) probe = probe.nextSibling;
+      if (probe) curParent.insertBefore(probe, curKid);
+    }
+    if (curKid && vpiSameNode(curKid, nk)) {
+      vpiMorphNode(curKid, nk);
+      curKid = curKid.nextSibling;
+    } else {
+      const fresh = document.importNode(nk, true);
+      curParent.insertBefore(fresh, curKid);
+    }
+  }
+  while (curKid) {
+    const nxt = curKid.nextSibling;
+    curParent.removeChild(curKid);
+    curKid = nxt;
+  }
+}
+
+function vpiMorphHtml(container, html) {
+  if (!container) return;
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html;
+  if (!container.firstChild) {
+    container.appendChild(tpl.content);
+    return;
+  }
+  vpiMorphChildren(container, tpl.content);
+}
+
+// Chỉ vẽ biểu tượng còn thiếu (không vẽ lại toàn bộ biểu tượng trên màn hình)
+function vpiRefreshIcons() {
+  if (!window.lucide) return;
+  if (document.querySelector('i[data-lucide]')) window.lucide.createIcons();
+}
 
 class App5S {
   constructor() {
@@ -365,7 +489,7 @@ class App5S {
     this.data.rooms.forEach((r, idx) => {
       if (typeof r.order !== 'number') r.order = idx + 1;
       if (!r.department_id) r.department_id = 8;
-      if (!r.floor) r.floor = 'Tầng 1';
+      if (r.floor === undefined || r.floor === null) r.floor = ''; // V29: không tự gán "Tầng 1"
       if (!r.target_score) r.target_score = 95.0;
     });
 
@@ -543,7 +667,7 @@ class App5S {
   }
 
   resetToVpiStandard() {
-    if (!confirm('Khôi phục toàn bộ danh mục 20 Khoa/Phòng và 75 Khu vực làm việc chuẩn Bệnh viện Vĩnh Phúc VPI?')) return;
+    if (!confirm('Khôi phục danh mục khu vực 5S chuẩn (18 khoa/phòng, 57 vị trí làm việc 5S) trên máy này?')) return;
     // Xóa sạch toàn bộ cache phiên bản cũ trên thiết bị này
     ['vpi_5s_data_v1', 'vpi_5s_data_v2', 'vpi_5s_data_v3_rbac', 'vpi_5s_data_v4_enhanced', 'vpi_5s_data_v5_grouped', 'vpi_5s_data_v5_final', 'vpi_5s_data_v6_evaluation', STORAGE_KEY].forEach(k => {
       try { localStorage.removeItem(k); } catch (e) {}
@@ -693,7 +817,7 @@ class App5S {
         localStorage.setItem('vpi_5s_saved_auth', JSON.stringify(savedAuth));
       }
     } catch (e) {}
-    const CURRENT_VERSION = 'v28_20261123';
+    const CURRENT_VERSION = 'v29_20261125';
     try {
       const savedVer = localStorage.getItem('vpi_5s_app_version');
       if (savedVer !== CURRENT_VERSION) {
@@ -701,7 +825,7 @@ class App5S {
         if ('caches' in window) {
           caches.keys().then(keys => {
             keys.forEach(k => {
-              if (k !== 'vpi-5s-cache-v28_20261123') caches.delete(k);
+              if (k !== 'vpi-5s-cache-v29_20261125') caches.delete(k);
             });
           });
         }
@@ -926,18 +1050,23 @@ class App5S {
       case 'settings':
         tabContent = this.renderSettingsTab();
         break;
+      case 'stats':
+        tabContent = this.renderStatsTab();
+        break;
       default:
         tabContent = this.renderOverviewTab();
     }
 
     // CẤU TRÚC CUỘN MƯỢT MÀ CHO MOBILE & THANH TAB CỐ ĐỊNH Ở ĐÁY MÀN HÌNH
-    container.innerHTML = `
+    // V29: chỉ cập nhật phần giao diện thay đổi (không dựng lại toàn màn hình)
+    // => sau khi thêm / sửa / xóa, màn hình đứng yên đúng vị trí, ảnh không tải lại, không nháy "loading"
+    vpiMorphHtml(container, `
       <main id="main-content-scroll" class="flex-1 overflow-y-auto pb-28 px-1 pt-1 no-scrollbar">
         ${tabContent}
         ${this.renderAppFooterHtml()}
       </main>
       ${this.renderBottomNavigationHtml()}
-    `;
+    `);
 
     this.updateUserInterface();
     this.updateHospitalBranding();
@@ -948,6 +1077,8 @@ class App5S {
     const newScrollEl = document.getElementById('main-content-scroll');
     if (newScrollEl && preserveScroll && savedScrollTop > 0) {
       newScrollEl.scrollTop = savedScrollTop;
+    } else if (newScrollEl && !preserveScroll) {
+      newScrollEl.scrollTop = 0; // V29: khung cuộn được giữ lại khi cập nhật => sang tab khác phải tự về đầu trang
     }
     if (preserveScroll && savedWindowY > 0) {
       window.scrollTo(0, savedWindowY);
@@ -972,7 +1103,7 @@ class App5S {
       setTimeout(() => this.initStaffDeptTicker(), 50);
     }
 
-    if (window.lucide) window.lucide.createIcons();
+    vpiRefreshIcons();
   }
 
   renderBottomNavigationHtml() {
@@ -986,12 +1117,13 @@ class App5S {
       { id: 'schedule', name: 'Khu vực 5S', icon: 'check-square' },
       { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
-      { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' }
+      { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' },
+      { id: 'stats', name: 'Thống kê', icon: 'bar-chart-3' }
     ];
 
     return `
       <nav id="bottom-nav" class="sticky bottom-0 left-0 right-0 w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700 py-1.5 px-1.5 z-40 shadow-lg">
-        <div class="grid grid-cols-5 gap-1">
+        <div class="grid grid-cols-6 gap-1">
           ${tabs.map(t => {
             const isActive = this.activeTab === t.id;
             return `
@@ -1021,16 +1153,17 @@ class App5S {
     }
     navContainer.classList.remove('hidden');
 
-    const tabs = [
+    const tabs = [ // V29: thêm tab Thống kê
       { id: 'overview', name: 'Tổng quan', icon: 'layout-grid' },
       { id: 'schedule', name: 'Khu vực 5S', icon: 'check-square' },
       { id: 'departments', name: 'Khoa Phòng', icon: 'building-2' },
       { id: 'staff', name: 'Nhân sự', icon: 'users' },
-      { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' }
+      { id: 'history', name: 'Lịch sử', icon: 'clipboard-check' },
+      { id: 'stats', name: 'Thống kê', icon: 'bar-chart-3' }
     ];
 
-    navContainer.innerHTML = `
-      <div class="grid grid-cols-5 gap-1 w-full">
+    vpiMorphHtml(navContainer, `
+      <div class="grid grid-cols-6 gap-1 w-full">
         ${tabs.map(t => {
           const isActive = this.activeTab === t.id;
           return `
@@ -1045,7 +1178,7 @@ class App5S {
           `;
         }).join('')}
       </div>
-    `;
+    `);
   }
 
 
@@ -1528,10 +1661,7 @@ class App5S {
                 <option value="Trong ngày hôm nay" ${audit.remedy_deadline === 'Trong ngày hôm nay' ? 'selected' : ''}>Trong ngày hôm nay</option>
               </select>
             </div>
-            <div>
-              <label class="block text-[11px] font-bold text-red-800 dark:text-red-300 mb-1">Điểm đánh giá lại (0 - 70đ)</label>
-              <input type="number" id="eval-score-input" min="0" max="70" value="${audit.total_score && audit.total_score < 70 ? audit.total_score : 65}" class="w-full bg-white dark:bg-slate-900 border border-red-300 dark:border-red-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100 font-mono font-bold">
-            </div>
+            <!-- V29: bỏ chấm điểm số 5S (chỉ còn kết luận ĐẠT / KHÔNG ĐẠT) -->
           </div>
         </div>
 
@@ -1615,7 +1745,6 @@ class App5S {
     const notesInput = document.getElementById('eval-notes-input');
     const issueInput = document.getElementById('eval-issue-input');
     const deadlineSelect = document.getElementById('eval-deadline-select');
-    const scoreInput = document.getElementById('eval-score-input');
 
     const evalNotes = notesInput ? notesInput.value.trim() : '';
     const issueText = issueInput ? issueInput.value.trim() : '';
@@ -1638,14 +1767,9 @@ class App5S {
     audit.issue_detected = (result === 'fail' ? issueText : '');
     audit.remedy_deadline = (result === 'fail' ? deadlineText : '');
 
-    if (result === 'fail') {
-      const newScore = scoreInput ? parseInt(scoreInput.value) : 65;
-      audit.total_score = isNaN(newScore) ? 65 : newScore;
-      audit.rating = 'Cần cải tiến';
-    } else {
-      if (!audit.total_score || audit.total_score < 80) audit.total_score = 96;
-      audit.rating = 'Xuất sắc';
-    }
+    // V29: bỏ chấm điểm số => chỉ ghi kết luận Đạt / Không đạt
+    audit.total_score = null;
+    audit.rating = (result === 'fail') ? 'Không đạt' : 'Đạt';
 
     this.saveData();
     this.pushStateToServer();
@@ -1764,7 +1888,8 @@ class App5S {
     const idleCount = totalRooms - workingCount;
     const workingRate = Math.round((workingCount / totalRooms) * 100);
 
-    const completed5s = working.filter(rs => rs.post_shift_5s && (rs.post_shift_5s.status === 'submitted' || rs.post_shift_5s.status === 'approved'));
+    // V29: chỉ tính đã thực hiện khi ảnh đã lên máy chủ thành công
+    const completed5s = working.filter(rs => this.isShiftDone(rs));
     const overdue5s = working.filter(rs => rs.post_shift_5s && rs.post_shift_5s.status === 'overdue');
     const pending5s = working.filter(rs => !rs.post_shift_5s || rs.post_shift_5s.status === 'pending');
 
@@ -2198,7 +2323,6 @@ class App5S {
           title: role,
           role_title: role,
           department_id: room.department_id,
-  departments: [{"id": 8, "code": "KCDHA", "name": "Khoa Chẩn đoán Hình ảnh", "head_nurse": "KTV. Nguyễn Đức Tuấn", "doctor_in_charge": "BSCKI. Phạm Quang Nam", "phone": "0211.386.130", "color": "#6366f1", "icon": "fa-x-ray", "description": "Chụp X-quang, Cắt lớp vi tính (CT), MRI, Siêu âm màu", "order": 1, "category": "paraclinical"}, {"id": 1, "code": "KCC", "name": "Khoa Cấp cứu", "head_nurse": "ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.115", "color": "#ef4444", "icon": "fa-ambulance", "description": "Tiếp nhận cấp cứu 24/7, xử lý khẩn cấp bệnh nhân nặng", "order": 2, "category": "clinical"}, {"id": 11, "code": "ICU", "name": "Khoa Hồi sức tích cực & Chống độc", "head_nurse": "ĐD. Nguyễn Thị Thanh Nga", "doctor_in_charge": "ThS.BS. Đinh Công Trí", "phone": "0211.386.116", "color": "#dc2626", "icon": "fa-heart-pulse", "description": "Điều trị chuyên sâu bệnh nhân hồi sức, thở máy, lọc máu liên tục", "order": 3, "category": "clinical"}, {"id": 12, "code": "PTGM", "name": "Khoa Phẫu thuật - Gây mê hồi sức", "head_nurse": "ĐD. Nguyễn Văn Thắng", "doctor_in_charge": "BSCKII. Lê Tuấn Anh", "phone": "0211.386.117", "color": "#0284c7", "icon": "fa-syringe", "description": "Khu phẫu thuật vô khuẩn, gây mê hồi tỉnh, phẫu thuật ngoại sản", "order": 4, "category": "clinical"}, {"id": 2, "code": "KKB", "name": "Khoa Khám bệnh", "head_nurse": "ĐD. Hoàng Bích Thủy", "doctor_in_charge": "BSCKI. Vũ Đình Khiêm", "phone": "0211.386.101", "color": "#0ea5e9", "icon": "fa-stethoscope", "description": "Khám bệnh ngoại trú, tư vấn và phân luồng bệnh nhân", "order": 5, "category": "clinical"}, {"id": 4, "code": "KNG", "name": "Khoa Ngoại Tổng hợp", "head_nurse": "ĐD. Bùi Văn Hùng", "doctor_in_charge": "BSCKII. Nguyễn Văn Toàn", "phone": "0211.386.120", "color": "#10b981", "icon": "fa-user-doctor", "description": "Phẫu thuật điều trị các bệnh lý tiêu hóa, gan mật, chấn thương", "order": 6, "category": "clinical"}, {"id": 5, "code": "KNT", "name": "Khoa Nội Tổng hợp", "head_nurse": "ĐD. Trần Phương Dung", "doctor_in_charge": "BSCKI. Mai Thị Hảo", "phone": "0211.386.122", "color": "#06b6d4", "icon": "fa-notes-medical", "description": "Khám và điều trị nội trú tim mạch, hô hấp, nội tiết, tiêu hóa", "order": 7, "category": "clinical"}, {"id": 6, "code": "KSN", "name": "Khoa Phụ Sản", "head_nurse": "Hộ sinh. Lê Thị Thúy Hằng", "doctor_in_charge": "BSCKII. Nguyễn Thị Hồng", "phone": "0211.386.125", "color": "#ec4899", "icon": "fa-baby", "description": "Chăm sóc thai phụ, đỡ đẻ thường, mổ lấy thai và điều trị phụ khoa", "order": 8, "category": "clinical"}, {"id": 7, "code": "KNHI", "name": "Khoa Nhi", "head_nurse": "ĐD. Đỗ Thị Hiền", "doctor_in_charge": "ThS.BS. Đặng Hồng Phúc", "phone": "0211.386.128", "color": "#eab308", "icon": "fa-children", "description": "Khám và điều trị toàn diện bệnh lý sơ sinh, trẻ nhỏ và dinh dưỡng", "order": 9, "category": "clinical"}, {"id": 3, "code": "YHCTPHCN", "name": "Khoa YHCT - Phục hồi chức năng", "head_nurse": "ĐD. Phạm Thị Lý", "doctor_in_charge": "BSCKI. Trần Văn Thái", "phone": "0211.386.118", "color": "#f59e0b", "icon": "fa-spa", "description": "Châm cứu, xoa bóp bấm huyệt, phục hồi chức năng và vật lý trị liệu", "order": 10, "category": "clinical"}, {"id": 13, "code": "LCK", "name": "Khoa Liên Chuyên Khoa (Mắt - TMH - RHM)", "head_nurse": "ĐD. Vũ Thị Loan", "doctor_in_charge": "BSCKI. Đỗ Mạnh Cường", "phone": "0211.386.129", "color": "#8b5cf6", "icon": "fa-eye", "description": "Khám chữa bệnh Răng Hàm Mặt, Tai Mũi Họng, Mắt và phẫu thuật tạo hình", "order": 11, "category": "clinical"}, {"id": 14, "code": "TDCN", "name": "Khoa Thăm dò chức năng & Nội soi", "head_nurse": "KTV. Lê Thùy Linh", "doctor_in_charge": "BS. Lê Quang Huy", "phone": "0211.386.131", "color": "#14b8a6", "icon": "fa-wave-square", "description": "Nội soi tiêu hóa, điện tim, điện não đồ, đo chức năng hô hấp", "order": 12, "category": "paraclinical"}, {"id": 9, "code": "KXN", "name": "Khoa Xét nghiệm", "head_nurse": "KTV. Đỗ Thị Thu Hường", "doctor_in_charge": "BSCKI. Vũ Đức Hải", "phone": "0211.386.132", "color": "#8b5cf6", "icon": "fa-vial-virus", "description": "Huyết học, Sinh hóa, Miễn dịch, Vi sinh đạt chuẩn an toàn sinh học", "order": 13, "category": "paraclinical"}, {"id": 15, "code": "KD", "name": "Khoa Dược", "head_nurse": "DS. Nguyễn Bích Ngọc", "doctor_in_charge": "DS CKI. Hoàng Thị Lan", "phone": "0211.386.133", "color": "#10b981", "icon": "fa-pills", "description": "Quản lý kho thuốc, cấp phát dược phẩm, hóa chất và vật tư y tế", "order": 14, "category": "paraclinical"}, {"id": 10, "code": "KKSNK", "name": "Khoa Kiểm soát Nhiễm khuẩn", "head_nurse": "ĐD. Trịnh Thị Thu Trang", "doctor_in_charge": "BSCKI. Hoàng Trọng Nghĩa", "phone": "0211.386.135", "color": "#14b8a6", "icon": "fa-shield-virus", "description": "Tiệt khuẩn dụng cụ y tế, giặt là đồ vải, giám sát vệ sinh 5S bệnh viện", "order": 15, "category": "paraclinical"}, {"id": 16, "code": "QLCL", "name": "Phòng Quản lý chất lượng & Ban Chỉ đạo 5S", "head_nurse": "ĐD. Nguyễn Thu Trang", "doctor_in_charge": "ThS. BSCKII. Phạm Quỳnh Hưng", "phone": "0211.386.100", "color": "#6366f1", "icon": "fa-award", "description": "Thường trực Ban Chỉ đạo 5S, đánh giá Bộ 83 Tiêu chí chất lượng BV", "order": 16, "category": "functional"}, {"id": 17, "code": "KHTH", "name": "Phòng Kế hoạch tổng hợp & CNTT", "head_nurse": "ĐD. Hoàng Hải Yến", "doctor_in_charge": "BSCKI. Trần Đức Thắng", "phone": "0211.386.102", "color": "#3b82f6", "icon": "fa-clipboard-list", "description": "Kế hoạch chuyên môn, chỉ đạo tuyến, quản trị hệ thống HIS/PACS", "order": 17, "category": "functional"}, {"id": 18, "code": "PDD", "name": "Phòng Điều dưỡng", "head_nurse": "ThS. ĐD. Trần Thị Lan Hương", "doctor_in_charge": "ThS. ĐD. Trần Thị Lan Hương", "phone": "0211.386.103", "color": "#06b6d4", "icon": "fa-user-nurse", "description": "Quản lý chăm sóc người bệnh, kiểm tra quy trình kỹ thuật điều dưỡng và 5S", "order": 18, "category": "functional"}, {"id": 19, "code": "HCQT", "name": "Phòng Tổ chức cán bộ & Hành chính quản trị", "head_nurse": "CN. Đặng Thị Loan", "doctor_in_charge": "ThS. Nguyễn Văn Hùng", "phone": "0211.386.105", "color": "#64748b", "icon": "fa-building", "description": "Văn thư, tiếp dân, quản trị cơ sở vật chất, bảo vệ và khuôn viên cảnh quan", "order": 19, "category": "functional"}, {"id": 20, "code": "TCKT", "name": "Phòng Tài chính - Kế toán", "head_nurse": "KTV. Lê Thu Thảo", "doctor_in_charge": "ThS. Vũ Thị Mai", "phone": "0211.386.106", "color": "#f59e0b", "icon": "fa-file-invoice-dollar", "description": "Quản lý thu chi viện phí, thanh toán BHYT, quản trị tài sản và trang thiết bị", "order": 20, "category": "functional"}],
           can_review: false,
           is_supervisor: false,
           role: 'staff'
@@ -2436,7 +2560,7 @@ class App5S {
           </div>
           <div class="text-base font-black">Tác giả: Vũ Đạt</div>
           <p class="text-xs text-emerald-100 opacity-90 leading-relaxed">
-            Phần mềm Giám sát 5S Y tế, Bàn giao Buồng phòng & Chấm điểm 5S Chuẩn Quốc gia Bệnh viện Vĩnh Phúc VPI.
+            Phần mềm Giám sát 5S Y tế, Bàn giao Buồng phòng & Duyệt 5S Đạt / Không đạt Bệnh viện Vĩnh Phúc VPI.
           </p>
         </div>
 
@@ -3137,15 +3261,18 @@ Trân trọng cảm ơn!`);
     const assignedStaff = rs.staff_assigned || [];
     const staffNames = assignedStaff.map(s => s.name).join(', ') || 'Cán bộ ca trực';
 
+    // V29: ảnh chỉ lấy từ lần chụp camera cho ĐÚNG phòng này (trước đây lấy lại ảnh vừa chụp ở phòng khác => nộp nhầm/nộp hộ)
+    if (this.currentShiftPhotoRoomId != roomId) {
+      this.currentShiftPhoto = '';
+      this.currentShiftPhotoRoomId = roomId;
+    }
     this.currentShiftRoomId = roomId;
-    this.currentShiftPhoto = (rs.post_shift_5s && rs.post_shift_5s.photo) || this.newAuditState.afterPhoto || '';
+    this.currentShiftPhoto = this.currentShiftPhoto || '';
 
     const modalHtml = `
       <div class="p-5 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar">
-        <!-- Input File ẩn cho Camera trực tiếp -->
+        <!-- V29: chỉ chụp trực tiếp bằng camera, KHÔNG còn chọn ảnh có sẵn trong máy -->
         <input type="file" id="shift-camera-input" accept="image/*" capture="environment" onchange="app5s.handleShiftPhotoSelected(event)" class="hidden">
-        <!-- Input File ẩn cho Chọn ảnh từ thư viện máy -->
-        <input type="file" id="shift-file-input" accept="image/*" onchange="app5s.handleShiftPhotoSelected(event)" class="hidden">
 
         <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
           <div class="flex items-center space-x-2">
@@ -3234,10 +3361,6 @@ Trân trọng cảm ơn!`);
               <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
               <span class="text-[10px]">Chụp lại</span>
             </button>
-            <button type="button" onclick="app5s.triggerFileUpload()" title="Chọn ảnh khác từ máy" class="px-2 py-1 bg-white/95 hover:bg-white text-slate-800 rounded-xl shadow text-xs font-bold flex items-center space-x-1">
-              <i data-lucide="folder-open" class="w-3.5 h-3.5 text-indigo-600"></i>
-              <span class="text-[10px]">Tải lại</span>
-            </button>
             <button type="button" onclick="app5s.clearShiftPhoto()" title="Xóa ảnh" class="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow text-xs">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
@@ -3255,17 +3378,13 @@ Trân trọng cảm ơn!`);
             <i data-lucide="camera" class="w-6 h-6"></i>
           </div>
           <div>
-            <div class="text-xs font-bold text-amber-900 dark:text-amber-200">Bấm để Chụp ảnh hoặc Tải ảnh bàn giao lên</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">Yêu cầu chụp rõ mặt bàn máy, sàn phòng và vị trí sắp xếp vật tư 5S</div>
+            <div class="text-xs font-bold text-amber-900 dark:text-amber-200">Bấm để chụp ảnh bàn giao bằng camera</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Chỉ nhận ảnh chụp trực tiếp tại chỗ (không chọn ảnh có sẵn trong máy). Chụp rõ mặt bàn, sàn phòng và vị trí sắp xếp vật tư.</div>
           </div>
-          <div class="grid grid-cols-2 gap-2 pt-1">
+          <div class="pt-1">
             <button type="button" onclick="app5s.triggerCameraCapture()" class="w-full py-2.5 px-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition">
               <i data-lucide="camera" class="w-4 h-4"></i>
               <span>📸 Chụp ảnh Camera</span>
-            </button>
-            <button type="button" onclick="app5s.triggerFileUpload()" class="w-full py-2.5 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-2xs transition">
-              <i data-lucide="image" class="w-4 h-4 text-slate-500"></i>
-              <span>📁 Tải ảnh từ máy</span>
             </button>
           </div>
         </div>
@@ -3523,9 +3642,10 @@ Trân trọng cảm ơn!`);
             <span>CHỤP ẢNH & ĐÓNG DẤU NGÀY GIỜ</span>
           </button>
 
-          <button type="button" onclick="app5s.fallbackToNativeCamera()" title="Dùng camera hệ thống" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex flex-col items-center justify-center text-[10px] font-bold">
-            <i data-lucide="folder-open" class="w-4 h-4 mb-0.5 text-slate-300"></i>
-            <span>Tải ảnh</span>
+          <!-- V29: bỏ nút "Tải ảnh" (cho phép chọn ảnh cũ trong máy). Máy không mở được camera trong app => dùng camera hệ thống -->
+          <button type="button" onclick="app5s.fallbackToNativeCamera()" title="Mở camera của điện thoại" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex flex-col items-center justify-center text-[10px] font-bold">
+            <i data-lucide="smartphone" class="w-4 h-4 mb-0.5 text-slate-300"></i>
+            <span>Cam máy</span>
           </button>
         </div>
       </div>
@@ -3610,16 +3730,25 @@ Trân trọng cảm ơn!`);
   fallbackToNativeCamera() {
     const opt = this.liveCameraOptions || {};
     this.stopLiveCameraStream();
+    // V29: chỉ mở camera của máy (capture), không mở thư viện ảnh
     if (opt.target === 'audit') {
-      const fileInput = document.getElementById('audit-file-input') || document.getElementById('audit-camera-input');
-      if (fileInput) fileInput.click();
+      const camInput = document.getElementById('audit-camera-input');
+      if (camInput) camInput.click();
     } else {
       if (opt.roomId) this.openEndShift5SModal(opt.roomId);
       setTimeout(() => {
-        const camInput = document.getElementById('shift-camera-input') || document.getElementById('shift-file-input');
+        const camInput = document.getElementById('shift-camera-input');
         if (camInput) camInput.click();
       }, 100);
     }
+  }
+
+  // V29: ảnh từ camera hệ thống phải vừa được chụp (chặn chọn ảnh cũ trong thư viện ảnh trên máy không hỗ trợ "capture")
+  isFreshCameraFile(file) {
+    const MAX_AGE_MS = 3 * 60 * 1000;
+    if (!file || !/^image\/(jpeg|jpg|png|webp|heic|heif)$/i.test(file.type || 'image/jpeg')) return false;
+    const age = Date.now() - (file.lastModified || 0);
+    return age >= -60 * 1000 && age <= MAX_AGE_MS;
   }
 
   captureFromLiveCamera() {
@@ -3635,24 +3764,17 @@ Trân trọng cảm ơn!`);
       height = Math.round(height * ratio);
     }
 
+    // V29: camera chưa có hình => KHÔNG tạo ảnh (trước đây tạo ảnh nền chữ "ảnh minh chứng" giả và vẫn nộp được)
+    if (!video || !video.videoWidth) {
+      this.showToast('⚠️ Camera chưa sẵn sàng. Cho phép quyền camera hoặc bấm "Cam máy" để chụp bằng camera điện thoại.');
+      return;
+    }
+
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
-
-    if (video && video.videoWidth) {
-      ctx.drawImage(video, 0, 0, width, height);
-    } else {
-      const grad = ctx.createLinearGradient(0, 0, width, height);
-      grad.addColorStop(0, '#0f172a');
-      grad.addColorStop(1, '#064e3b');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 24px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('ẢNH CHỤP MINH CHỨNG 5S BUỒNG PHÒNG THỰC TẾ', width / 2, height / 2);
-    }
+    ctx.drawImage(video, 0, 0, width, height);
 
     const opt = this.liveCameraOptions || {};
     this.stamp5SWatermark(canvas, {
@@ -3673,6 +3795,8 @@ Trân trọng cảm ơn!`);
       this.showToast('✅ Đã chụp và đóng dấu ngày giờ thực tế vào ảnh thành công!');
     } else {
       this.currentShiftPhoto = photoUrl;
+      this.currentShiftPhotoRoomId = opt.roomId;
+      this.currentShiftPhotoTakenAt = new Date().toISOString();
       this.newAuditState.afterPhoto = photoUrl;
       this.openEndShift5SModal(opt.roomId);
       setTimeout(() => {
@@ -3687,9 +3811,9 @@ Trân trọng cảm ơn!`);
   }
 
 
+  // V29: bỏ chức năng tải ảnh có sẵn từ máy => chuyển sang chụp camera
   triggerFileUpload() {
-    const fileInput = document.getElementById('shift-file-input');
-    if (fileInput) fileInput.click();
+    this.triggerCameraCapture();
   }
 
   updateShiftPhotoPreviewUI(photoUrl) {
@@ -3710,6 +3834,12 @@ Trân trọng cảm ơn!`);
   handleShiftPhotoSelected(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
+    try { event.target.value = ''; } catch (e) {}
+    if (!this.isFreshCameraFile(file)) {
+      this.showToast('⛔ Chỉ nhận ảnh vừa chụp bằng camera (trong 3 phút). Ảnh có sẵn trong máy không được dùng làm minh chứng 5S.');
+      return;
+    }
+    const shiftRoomIdForPhoto = this.currentShiftRoomId;
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -3749,8 +3879,10 @@ Trân trọng cảm ơn!`);
 
         const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.68);
 
+        this.currentShiftPhotoRoomId = shiftRoomIdForPhoto;
+        this.currentShiftPhotoTakenAt = new Date().toISOString();
         this.updateShiftPhotoPreviewUI(compressedDataUrl);
-        this.showToast('✅ Đã nạp và hiển thị ảnh minh chứng 5S thành công!');
+        this.showToast('✅ Đã chụp và đóng dấu ngày giờ vào ảnh minh chứng 5S!');
       };
       img.src = evt.target.result;
     };
@@ -3758,13 +3890,19 @@ Trân trọng cảm ơn!`);
   }
 
   submitEndShift5S(roomId, optionalPhoto = null, optionalNotes = null) {
-    const rs = this.getRoomSchedule(roomId);
-    const photoInput = optionalPhoto || this.currentShiftPhoto || this.newAuditState.afterPhoto;
+    // V29: luôn ghi nhận cho NGÀY HÔM NAY (trước đây ghi theo ngày đang chọn trên lịch => nộp bù được cho ngày cũ)
+    const today = this.getTodayDateString();
+    const rs = this.getRoomSchedule(roomId, today);
+    const photoInput = optionalPhoto || (this.currentShiftPhotoRoomId == roomId ? this.currentShiftPhoto : '');
     const notesInput = document.getElementById('shift-5s-notes');
     const notes = optionalNotes || (notesInput ? notesInput.value.trim() : 'Đã dọn dẹp vệ sinh và khử khuẩn buồng phòng sau ca trực.');
 
     if (!photoInput) {
-      this.showToast('⚠️ Vui lòng chụp ảnh hoặc chọn ảnh minh chứng 5S trước khi gửi bàn giao ca!');
+      this.showToast('⚠️ Vui lòng chụp ảnh minh chứng 5S bằng camera trước khi gửi bàn giao ca!');
+      return;
+    }
+    if (rs.post_shift_5s && rs.post_shift_5s.status === 'approved' && !this.canReviewRoom(roomId)) {
+      this.showToast('ℹ️ Khu vực này đã được duyệt ĐẠT hôm nay, không cần nộp lại.');
       return;
     }
 
@@ -3806,22 +3944,40 @@ Trân trọng cảm ơn!`);
     this.data.audits.unshift(newAudit);
 
     // Cập nhật trạng thái 5S ca trực của phòng
+    // V29: ảnh chưa lên máy chủ (photo còn là "data:") thì báo cáo tính là CHƯA THỰC HIỆN, chỉ tính khi tải ảnh thành công
     delete rs._auto;
     rs.post_shift_5s = {
       status: 'submitted',
       photo: photoInput,
       submitted_at: currentTime,
-      submitted_by: assignedNames,
+      submitted_by: user.name,
+      submitted_by_code: user.code,
+      staff_on_duty: assignedNames,
+      taken_at: this.currentShiftPhotoTakenAt || new Date().toISOString(),
       audit_id: newAudit.id,
       notes: notes
     };
 
     this.currentShiftPhoto = null;
+    this.currentShiftPhotoRoomId = null;
+    this.currentShiftPhotoTakenAt = null;
     this.newAuditState.afterPhoto = null;
     this.saveData();
     this.closeModal();
     this.render();
-    this.showToast(`✅ Đã nộp ảnh 5S bàn giao ca cho ${room.name}!`);
+    this.showToast(navigator.onLine === false
+      ? `📶 Đã lưu ảnh ${room.name} trên máy. Ảnh CHƯA được ghi nhận cho tới khi gửi được lên máy chủ (cần có mạng).`
+      : `⏳ Đang gửi ảnh 5S của ${room.name} lên máy chủ...`);
+  }
+
+  // V29: ảnh 5S chỉ được tính là "đã thực hiện" khi đã tải lên kho ảnh máy chủ thành công
+  isPhotoUploaded(photo) {
+    return typeof photo === 'string' && /^https?:\/\//i.test(photo);
+  }
+
+  isShiftDone(rs) {
+    const p = rs && rs.post_shift_5s;
+    return !!(p && ['submitted', 'approved', 'rejected'].includes(p.status) && this.isPhotoUploaded(p.photo));
   }
 
 
@@ -3937,17 +4093,18 @@ Trân trọng cảm ơn!`);
     const roomSchedules = schedules.rooms_schedule || [];
 
     let csv = `\uFEFFBÁO CÁO HOẠT ĐỘNG VÀ 5S BUỒNG PHÒNG TOÀN VIỆN VPI - NGÀY ${targetDate}\n`;
-    csv += 'STT,Ngày Báo Cáo,Mã Khoa,Tên Khoa/Phòng,Mã Phòng,Tên Buồng Phòng,Tầng,Trạng Thái Hoạt Động,Nhân Sự Trực Ca,Tình Trạng 5S Hết Ca,Giờ Nộp 5S,Điểm Đánh Giá\n';
+    csv += 'STT,Ngày Báo Cáo,Mã Khoa,Tên Khoa/Phòng,Mã Phòng,Tên Buồng Phòng,Tầng,Trạng Thái Hoạt Động,Nhân Sự Trực Ca,Tình Trạng 5S Hết Ca,Giờ Nộp 5S,Kết Quả Duyệt\n';
 
     rooms.forEach((r, idx) => {
       const d = depts.find(dept => dept.id == r.department_id) || { code: '', name: '' };
       const rs = this.getRoomSchedule(r.id);
       const isWorkingStr = rs.is_working ? 'Đang làm việc' : 'Không làm việc';
       const staffNames = (rs.staff_assigned || []).map(s => `${s.name} (${s.role})`).join('; ') || 'Chưa phân công';
-      const s5Status = rs.post_shift_5s ? (rs.post_shift_5s.status === 'submitted' ? 'Đã nộp 5S' : (rs.post_shift_5s.status === 'overdue' ? 'Quá hạn chưa nộp' : 'Chờ nộp')) : 'Chưa nộp';
+      const s5Status = !rs.is_working ? 'Không làm việc' : (this.isShiftDone(rs) ? 'Đã thực hiện' : 'Chưa thực hiện');
       const s5Time = rs.post_shift_5s ? (rs.post_shift_5s.submitted_at || '') : '';
 
-      const auditScore = rs.post_shift_5s && rs.post_shift_5s.score ? `${rs.post_shift_5s.score} đ` : 'Chưa chấm';
+      const st = rs.post_shift_5s && this.isShiftDone(rs) ? rs.post_shift_5s.status : '';
+      const auditScore = st === 'approved' ? 'Đạt' : (st === 'rejected' ? 'Không đạt' : (st ? 'Chờ duyệt' : ''));
       csv += `"${idx + 1}","${targetDate}","${d.code}","${d.name}","${r.code || ''}","${r.name}","${r.floor || ''}","${isWorkingStr}","${staffNames}","${s5Status}","${s5Time}","${auditScore}"\n`;
     });
 
@@ -4057,12 +4214,12 @@ Trân trọng cảm ơn!`);
     } else if (statusFilter === 'pending_5s') {
       filteredRooms = filteredRooms.filter(r => {
         const rs = this.getRoomSchedule(r.id);
-        return rs.is_working && (!rs.post_shift_5s || rs.post_shift_5s.status === 'overdue' || rs.post_shift_5s.status === 'pending');
+        return rs.is_working && !this.isShiftDone(rs);
       });
     } else if (statusFilter === 'completed_5s') {
       filteredRooms = filteredRooms.filter(r => {
         const rs = this.getRoomSchedule(r.id);
-        return rs.is_working && rs.post_shift_5s && (rs.post_shift_5s.status === 'submitted' || rs.post_shift_5s.status === 'approved');
+        return rs.is_working && this.isShiftDone(rs);
       });
     } else if (statusFilter === 'pending_review') {
       filteredRooms = filteredRooms.filter(r => {
@@ -4128,7 +4285,7 @@ Trân trọng cảm ơn!`);
                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>Xuất Excel</span>
                   </button>
-                  <button onclick="app5s.printDailyEvaluationReport()" title="In bảng điểm và báo cáo 5S" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
+                  <button onclick="app5s.printDailyEvaluationReport()" title="In báo cáo 5S" class="py-2 px-1 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 shadow-xs transition">
                     <i data-lucide="printer" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
                     <span>In Báo Cáo</span>
                   </button>
@@ -4141,7 +4298,7 @@ Trân trọng cảm ơn!`);
                     <i data-lucide="lock" class="w-3 h-3 text-slate-400 shrink-0"></i>
                     <span>Xuất Excel 🔒</span>
                   </button>
-                  <button onclick="app5s.printDailyEvaluationReport()" title="In bảng điểm và báo cáo 5S" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
+                  <button onclick="app5s.printDailyEvaluationReport()" title="In báo cáo 5S" class="py-2 px-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-[10.5px] flex items-center justify-center space-x-0.5 border border-slate-200 dark:border-slate-700 transition">
                     <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
                     <span>In Báo Cáo</span>
                   </button>
@@ -4551,8 +4708,10 @@ Trân trọng cảm ơn!`);
             const isWorking = rs.is_working;
             const staffList = rs.staff_assigned || [];
             const s5 = rs.post_shift_5s || { status: 'pending' };
-            const isS5Done = (s5.status === 'submitted' || s5.status === 'approved');
-            const isS5Overdue = isWorking && (s5.status === 'overdue' || s5.status === 'pending');
+            // V29: chỉ "ĐÃ NỘP" khi ảnh đã lên máy chủ; ảnh còn trên máy => "chưa ghi nhận"
+            const isS5Done = this.isShiftDone(rs);
+            const isS5Uploading = !isS5Done && !!s5.photo && ['submitted', 'approved', 'rejected'].includes(s5.status);
+            const isS5Overdue = isWorking && !isS5Done;
 
             return `
               <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border ${
@@ -4568,7 +4727,7 @@ Trân trọng cảm ơn!`);
                       <span class="text-[9px] font-mono px-1.5 py-0.2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded font-bold">${r.code || 'P-00'}</span>
                     </div>
                     <div class="text-[10px] text-slate-500">
-                      <strong>${dept.name}</strong> • ${r.floor || 'Tầng 1'}
+                      <strong>${dept.name}</strong>${r.floor ? ' • ' + r.floor : ''}
                     </div>
                   </div>
 
@@ -4590,12 +4749,17 @@ Trân trọng cảm ơn!`);
                           <i data-lucide="check" class="w-2.5 h-2.5"></i>
                           <span>ĐÃ NỘP 5S (${s5.submitted_at || 'Ca sáng'})</span>
                         </span>
+                      ` : (isS5Uploading ? `
+                        <span class="inline-flex items-center space-x-1 text-[9px] font-bold text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-950 px-1.5 py-0.5 rounded border border-red-300">
+                          <i data-lucide="cloud-off" class="w-2.5 h-2.5 text-red-600"></i>
+                          <span>ẢNH CHƯA GỬI ĐƯỢC - CHƯA GHI NHẬN</span>
+                        </span>
                       ` : `
                         <span class="inline-flex items-center space-x-1 text-[9px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 px-1.5 py-0.5 rounded border border-amber-300 animate-pulse">
                           <i data-lucide="alert-circle" class="w-2.5 h-2.5 text-amber-600"></i>
-                          <span>HẾT GIỜ: CHƯA NỘP 5S</span>
+                          <span>CHƯA THỰC HIỆN 5S</span>
                         </span>
-                      `
+                      `)
                     ) : ''}
                   </div>
                 </div>
@@ -4653,7 +4817,7 @@ Trân trọng cảm ơn!`);
                             <div class="text-[11px] text-slate-600 dark:text-slate-300 italic line-clamp-2">"${s5.notes || 'Đã làm sạch sẽ, sắp xếp ngăn nắp.'}"</div>
                             <div class="text-[10px] text-slate-400">Nộp bởi: <strong>${s5.submitted_by || 'Nhân sự ca trực'}</strong></div>
                             ${s5.evaluated_by ? `
-                              <div class="text-[10px] text-indigo-600 font-bold">Người duyệt: ${s5.evaluated_by} (${s5.score || 98}đ)</div>
+                              <div class="text-[10px] text-indigo-600 font-bold">Người duyệt: ${s5.evaluated_by} (${s5.status === 'approved' ? 'Đạt' : (s5.status === 'rejected' ? 'Không đạt' : 'Chờ duyệt')})</div>
                             ` : ''}
                           </div>
                         </div>
@@ -5063,7 +5227,7 @@ Trân trọng cảm ơn!`);
             </button>
             <button onclick="app5s.printDailyEvaluationReport()" class="py-2 px-3 bg-white/15 hover:bg-white/25 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 border border-white/20 transition-all">
               <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-              <span>In bảng điểm</span>
+              <span>In báo cáo</span>
             </button>
           </div>
         </div>
@@ -5376,7 +5540,6 @@ Trân trọng cảm ơn!`);
 
             <!-- Input file ẩn cho tab Chấm 5S -->
             <input type="file" id="audit-camera-input" accept="image/*" capture="environment" onchange="app5s.onAfterPhotoSelected(event)" class="hidden">
-            <input type="file" id="audit-file-input" accept="image/*" onchange="app5s.onAfterPhotoSelected(event)" class="hidden">
 
             <div id="after-photo-preview" class="relative border-2 border-dashed border-emerald-300 dark:border-emerald-700/80 rounded-2xl p-3 text-center bg-emerald-50/40 dark:bg-emerald-950/20 transition">
               ${this.newAuditState.afterPhoto ? `
@@ -5402,17 +5565,13 @@ Trân trọng cảm ơn!`);
                     <i data-lucide="camera" class="w-6 h-6"></i>
                   </div>
                   <div>
-                    <div class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Chụp ảnh hoặc Tải ảnh kiểm tra 5S</div>
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Khung hình in chết thông tin ngày giờ, khoa phòng và cán bộ chấm</div>
+                    <div class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Chụp ảnh kiểm tra 5S bằng camera</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Khung hình in chết thông tin ngày giờ, khoa phòng và cán bộ kiểm tra</div>
                   </div>
-                  <div class="grid grid-cols-2 gap-2 max-w-sm mx-auto pt-1">
-                    <button type="button" onclick="app5s.openLiveCameraModal({ target: 'audit' })" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition">
+                  <div class="max-w-sm mx-auto pt-1">
+                    <button type="button" onclick="app5s.openLiveCameraModal({ target: 'audit' })" class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition">
                       <i data-lucide="camera" class="w-4 h-4"></i>
                       <span>📸 Chụp Camera</span>
-                    </button>
-                    <button type="button" onclick="document.getElementById('audit-file-input').click()" class="py-2.5 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-2xs transition">
-                      <i data-lucide="folder-open" class="w-4 h-4 text-indigo-500"></i>
-                      <span>📁 Tải ảnh máy</span>
                     </button>
                   </div>
                 </div>
@@ -5502,6 +5661,11 @@ Trân trọng cảm ơn!`);
   onAfterPhotoSelected(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
+    try { e.target.value = ''; } catch (err) {}
+    if (!this.isFreshCameraFile(file)) {
+      this.showToast('⛔ Chỉ nhận ảnh vừa chụp bằng camera (trong 3 phút). Ảnh có sẵn trong máy không được dùng làm minh chứng 5S.');
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -5829,11 +5993,11 @@ Trân trọng cảm ơn!`);
                   </div>
                   ${(() => {
                     const deptEval = (this.data.department_evaluations || []).find(e => e.dept_id == d.id);
-                    if (deptEval && deptEval.score) {
+                    if (deptEval && (deptEval.result || deptEval.grade)) {
                       return `
-                        <span class="inline-flex items-center space-x-1 font-bold text-indigo-700 dark:text-indigo-400">
-                          <i data-lucide="award" class="w-3 h-3 text-indigo-600"></i>
-                          <span>5S Khoa: ${deptEval.score}đ (${deptEval.grade || 'Đạt'})</span>
+                        <span class="inline-flex items-center space-x-1 font-bold ${deptEval.result === 'fail' ? 'text-red-700 dark:text-red-400' : 'text-indigo-700 dark:text-indigo-400'}">
+                          <i data-lucide="award" class="w-3 h-3"></i>
+                          <span>5S Khoa: ${deptEval.result === 'fail' ? 'Không đạt' : 'Đạt'} (${deptEval.date || ''})</span>
                         </span>
                       `;
                     } else {
@@ -5932,7 +6096,7 @@ Trân trọng cảm ơn!`);
                         ` : ''}
                         <!-- Nút Chấm 5S ngay -->
                         ${this.canAudit5S() ? `
-                          <button onclick="app5s.quickAuditRoom('${room.id}')" title="Chấm điểm 5S khu vực này ngay" class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 hover:bg-emerald-100 transition">
+                          <button onclick="app5s.quickAuditRoom('${room.id}')" title="Xem / duyệt 5S khu vực này" class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 hover:bg-emerald-100 transition">
                             <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
                           </button>
                         ` : ''}
@@ -6230,16 +6394,12 @@ Trân trọng cảm ơn!`);
     this.render();
   }
 
+  // V29: bỏ màn hình chấm điểm => mở thẳng hộp thoại xem / duyệt Đạt - Không đạt của khu vực hôm nay
   quickAuditRoom(roomId) {
     const room = this.data.rooms.find(r => r.id == roomId);
     if (!room) return;
-    this.newAuditState.deptId = room.department_id;
-    this.newAuditState.roomId = room.id;
-    this.switchTab('audit');
-    setTimeout(() => {
-      const sel = document.getElementById('audit-room-select');
-      if (sel) sel.value = String(roomId);
-    }, 50);
+    this.scheduleState.selectedDate = this.getTodayDateString();
+    this.openReviewShiftPhotoModal(room.id);
   }
 
 
@@ -7435,7 +7595,7 @@ Trân trọng cảm ơn!`);
                 <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc" ${s.role === 'admin' && (s.role_title || '').includes('Trưởng Ban') ? 'selected' : ''}>👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
                 <option value="admin|Cán bộ Giám sát 5S Toàn Viện" ${s.role === 'admin' && (s.role_title || '').includes('Giám sát') ? 'selected' : ''}>🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL</option>
               </optgroup>
-              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt điểm & Phân công)">
+              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt & Phân công)">
                 <option value="manager|BSCKII - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('BSCKII') ? 'selected' : ''}>👨‍⚕️ BSCKII - Trưởng Khoa</option>
                 <option value="manager|BSCKI - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('BSCKI') ? 'selected' : ''}>👨‍⚕️ BSCKI - Trưởng Khoa</option>
                 <option value="manager|ThS. Bác sĩ - Trưởng Khoa" ${s.role === 'manager' && (s.role_title || '').includes('ThS. Bác sĩ') ? 'selected' : ''}>👨‍⚕️ ThS. Bác sĩ - Trưởng Khoa</option>
@@ -7467,6 +7627,11 @@ Trân trọng cảm ơn!`);
               <input type="checkbox" id="edit-staff-can-review" ${s.can_review ? 'checked' : ''} class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
               <span class="text-xs font-bold text-slate-800 dark:text-slate-100">✅ Được phép DUYỆT ẢNH 5S <span class="font-normal text-slate-500">(bỏ chọn = chỉ được gửi ảnh)</span></span>
             </label>
+            <!-- V29: thêm / bớt khu vực được giao duyệt, quản lý, phụ trách -->
+            <button type="button" onclick="app5s.openAreaScopeModal('${s.code}')" class="w-full p-2.5 rounded-xl border border-indigo-300 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-200 text-xs font-bold flex items-center justify-between">
+              <span>📍 Phân quyền khu vực 5S: <span class="font-normal">${this.describeAreaScope(s)}</span></span>
+              <span>Sửa ›</span>
+            </button>
             ` : `
             <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300">
               Quyền duyệt ảnh 5S: <strong>${s.can_review ? '✅ Được duyệt' : '📷 Chỉ gửi ảnh'}</strong> (chỉ Admin được thay đổi vai trò & quyền duyệt)
@@ -7715,7 +7880,7 @@ Trân trọng cảm ơn!`);
                 <option value="admin|Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc">👑 Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc</option>
                 <option value="admin|Cán bộ Giám sát 5S Toàn Viện">🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL</option>
               </optgroup>
-              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt điểm & Phân công)">
+              <optgroup label="🏢 Quản Lý Cấp Khoa / Phòng (Duyệt & Phân công)">
                 <option value="manager|BSCKII - Trưởng Khoa">👨‍⚕️ BSCKII - Trưởng Khoa</option>
                 <option value="manager|BSCKI - Trưởng Khoa">👨‍⚕️ BSCKI - Trưởng Khoa</option>
                 <option value="manager|ThS. Bác sĩ - Trưởng Khoa">👨‍⚕️ ThS. Bác sĩ - Trưởng Khoa</option>
@@ -8442,17 +8607,29 @@ Trân trọng cảm ơn!`);
     }, 2800);
   }
 
-  showModal(htmlContent) {
+  showModal(htmlContent, options = {}) {
     const modalContainer = document.getElementById('modal-container');
     if (!modalContainer) return;
-    modalContainer.innerHTML = `
+    const html = `
       <div class="fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-xs">
-        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl ${options.wide ? 'max-w-3xl' : 'max-w-md'} w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
           ${htmlContent}
         </div>
       </div>
     `;
-    if (window.lucide) window.lucide.createIcons();
+    // V29: đang mở đúng hộp thoại này (VD: Tùy chỉnh ca & nhân sự vừa thêm/bớt người) => chỉ cập nhật phần thay đổi,
+    // giữ nguyên vị trí cuộn bên trong, không chạy lại hiệu ứng mở => không còn cảm giác "app tải lại"
+    const tmp = document.createElement('template');
+    tmp.innerHTML = htmlContent;
+    const titleOf = (root) => { const h = root && root.querySelector('h3'); return h ? h.textContent.trim() : ''; };
+    const newTitle = titleOf(tmp.content);
+    const sameModal = modalContainer.children.length > 0 && newTitle && titleOf(modalContainer) === newTitle;
+    if (sameModal) {
+      vpiMorphHtml(modalContainer, html);
+    } else {
+      modalContainer.innerHTML = html;
+    }
+    vpiRefreshIcons();
   }
 
   closeModal() {
@@ -8558,6 +8735,43 @@ Trân trọng cảm ơn!`);
     return user.can_review === true;
   }
 
+  // =========================================================================
+  // V29: PHÂN QUYỀN THEO KHU VỰC (area_scope = { all: bool, rooms: [id...] }) - chỉ Admin sửa
+  // - Admin / Ban chỉ đạo: toàn viện
+  // - Người duyệt ảnh: duyệt các khu vực được giao (chưa giao riêng => toàn viện như trước)
+  // - Lãnh đạo khoa / ĐD trưởng: quản lý khu vực được giao (chưa giao => các khu vực của khoa mình)
+  // - Nhân viên phụ trách: các khu vực mình phụ trách 5S
+  // =========================================================================
+  getAreaScope(user = null) {
+    const u = user || this.getCurrentUser();
+    if (!u) return { all: false, rooms: new Set(), custom: false };
+    const isAdm = REVIEW_POLICY.ADMIN_CODES.includes(String(u.code || '').toUpperCase()) || u.role === 'admin' || u.is_admin === true;
+    const isLeader = isAdm || ((u.role === 'supervisor' || u.is_supervisor === true) && u.can_review === true);
+    if (isLeader) return { all: true, rooms: new Set(), custom: false };
+    const sc = u.area_scope;
+    if (sc && typeof sc === 'object' && (sc.all === true || Array.isArray(sc.rooms))) {
+      return { all: sc.all === true, rooms: new Set((sc.rooms || []).map(x => String(x))), custom: true };
+    }
+    if (u.can_review === true) return { all: true, rooms: new Set(), custom: false };
+    const isMgr = u.role === 'manager' || u.role_level === 'manager';
+    if (isMgr && u.department_id != null) {
+      const ids = (this.data.rooms || []).filter(r => String(r.department_id) === String(u.department_id)).map(r => String(r.id));
+      return { all: false, rooms: new Set(ids), custom: false };
+    }
+    return { all: false, rooms: new Set(), custom: false };
+  }
+
+  isRoomInScope(roomId, user = null) {
+    const sc = this.getAreaScope(user);
+    return sc.all || sc.rooms.has(String(roomId));
+  }
+
+  canReviewRoom(roomId) {
+    if (this.isAdmin()) return true;
+    if (!this.canReview5S()) return false;
+    return this.isRoomInScope(roomId);
+  }
+
   isHospitalLeaderOrSupervisor() {
     const user = this.getCurrentUser();
     if (!user) return false;
@@ -8602,10 +8816,10 @@ Trân trọng cảm ơn!`);
               <span>🔒 CHỨC NĂNG ĐÃ ĐƯỢC PHÂN QUYỀN RIÊNG</span>
             </span>
             <h2 class="text-base font-black text-slate-900 dark:text-white">
-              CHẤM ĐIỂM 5S CHỈ MỞ CHO CÁN BỘ ĐƯỢC PHÂN QUYỀN
+              DUYỆT 5S CHỈ MỞ CHO CÁN BỘ ĐƯỢC PHÂN QUYỀN
             </h2>
             <p class="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto leading-relaxed">
-              Theo quy định phân cấp Bệnh viện VPI, tính năng <strong>Chấm điểm & Đánh giá 5S</strong> buồng phòng chỉ dành riêng cho: <strong>Admin, Ban Chỉ Đạo 5S, Cán Bộ Giám Sát Toàn Viện và Quản Lý Cấp Khoa Phòng</strong> (Trưởng/Phó khoa, Điều dưỡng trưởng, KTV trưởng, Hộ sinh trưởng...). Tài khoản cán bộ nhân viên thường không được mở quyền tự chấm điểm.
+              Theo quy định phân cấp Bệnh viện VPI, tính năng <strong>Duyệt & Đánh giá 5S (Đạt / Không đạt)</strong> buồng phòng chỉ dành riêng cho: <strong>Admin, Ban Chỉ Đạo 5S, Cán Bộ Giám Sát Toàn Viện và Quản Lý Cấp Khoa Phòng</strong> (Trưởng/Phó khoa, Điều dưỡng trưởng, KTV trưởng, Hộ sinh trưởng...). Tài khoản cán bộ nhân viên thường không được mở quyền tự duyệt.
             </p>
           </div>
 
@@ -8723,7 +8937,8 @@ Trân trọng cảm ơn!`);
   canUserViewRoomPhotos(roomId) {
     const room = (this.data.rooms || []).find(r => r.id == roomId);
     if (!room) return false;
-    return this.canUserViewDeptPhotos(room.department_id);
+    // V29: được giao khu vực (duyệt / quản lý / phụ trách) thì xem được ảnh khu vực đó
+    return this.canUserViewDeptPhotos(room.department_id) || this.isRoomInScope(roomId);
   }
 
   // =========================================================================
@@ -9067,7 +9282,8 @@ Trân trọng cảm ơn!`);
     const staffNames = (rs.staff_assigned || []).map(s => s.name).join(', ') || s5.submitted_by || 'Cán bộ ca trực';
     const photo = s5.photo || (this.data.audits || []).find(a => a.room_id == roomId)?.after_photo || '';
 
-    const canAudit = this.isUserManagerOrSupervisor();
+    // V29: chỉ người được giao khu vực này mới thấy khối duyệt
+    const canAudit = this.canReviewRoom(roomId);
     this.currentEvaluationAuditId = auditId || s5.audit_id || null;
     const existingAudit = (this.data.audits || []).find(a => (auditId && a.id == auditId) || (a.room_id == roomId && (!a.audit_date || a.audit_date === this.getTodayDateString())));
     if (existingAudit) {
@@ -9249,8 +9465,15 @@ Trân trọng cảm ơn!`);
   }
 
   submitReviewShiftPhoto(roomId) {
-    if (!this.canReview5S()) {
-      alert('🔒 Tài khoản của bạn chỉ được GỬI ảnh 5S, không có quyền DUYỆT ảnh. Liên hệ Admin nếu cần cấp quyền.');
+    if (!this.canReviewRoom(roomId)) {
+      alert(this.canReview5S()
+        ? '🔒 Khu vực này không nằm trong danh sách khu vực bạn được giao duyệt. Liên hệ Admin để bổ sung.'
+        : '🔒 Tài khoản của bạn chỉ được GỬI ảnh 5S, không có quyền DUYỆT ảnh. Liên hệ Admin nếu cần cấp quyền.');
+      return;
+    }
+    const rsCheck = this.getRoomSchedule(roomId);
+    if (!this.isShiftDone(rsCheck)) {
+      alert('⚠️ Ảnh của khu vực này chưa được gửi lên máy chủ (hoặc chưa có ảnh). Chưa thể duyệt.');
       return;
     }
     const rs = this.getRoomSchedule(roomId);
@@ -9429,7 +9652,7 @@ Trân trọng cảm ơn!`);
         <div class="space-y-2.5">
           <div class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
             <span>Danh sách kiểm tra & Đánh giá từng khoa:</span>
-            <span class="text-[10px] text-slate-400 font-normal">Chạm "Đánh giá Khoa" để chấm điểm</span>
+            <span class="text-[10px] text-slate-400 font-normal">Chạm "Đánh giá Khoa" để kết luận Đạt / Không đạt</span>
           </div>
 
           <div class="space-y-2 max-h-72 overflow-y-auto pr-1 no-scrollbar">
@@ -9494,11 +9717,11 @@ Trân trọng cảm ơn!`);
                         <div class="flex items-center space-x-1.5">
                           <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${
                             deptEval.result === 'pass' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
-                          }">${deptEval.score != null && deptEval.score !== '' ? deptEval.score + 'đ' : '—'} • ${deptEval.grade || (deptEval.result === 'fail' ? 'Cần cải tiến' : 'Đạt')}</span>
+                          }">${deptEval.result === 'fail' ? 'KHÔNG ĐẠT' : 'ĐẠT'}</span>
                           <span class="text-[10px] text-slate-500">Bởi ${deptEval.evaluator_name || 'Cán bộ 5S'}</span>
                         </div>
                       ` : `
-                        <span class="text-[10px] text-slate-400 italic">Chưa có phiếu chấm điểm khoa hôm nay</span>
+                        <span class="text-[10px] text-slate-400 italic">Chưa có đánh giá khoa hôm nay</span>
                       `}
                     </div>
 
@@ -9524,7 +9747,7 @@ Trân trọng cảm ơn!`);
           <div class="grid grid-cols-2 gap-2">
             <button onclick="app5s.printDailyEvaluationReport('${date}')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl shadow-xs transition flex items-center justify-center space-x-1.5 text-xs">
               <i data-lucide="printer" class="w-4 h-4"></i>
-              <span>IN BẢNG ĐIỂM TOÀN VIỆN</span>
+              <span>IN BÁO CÁO TOÀN VIỆN</span>
             </button>
             <button onclick="app5s.broadcastDaily5SReminder()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition flex items-center justify-center space-x-1.5 text-xs">
               <i data-lucide="volume-2" class="w-4 h-4"></i>
@@ -9559,7 +9782,7 @@ Trân trọng cảm ơn!`);
     this.currentDeptEvalTarget = {
       deptId: deptId,
       date: date,
-      result: deptEval ? (deptEval.result || (deptEval.score >= 70 ? 'pass' : 'fail')) : 'pass'
+      result: deptEval ? (deptEval.result || 'pass') : 'pass'
     };
 
     const modalHtml = `
@@ -9734,7 +9957,6 @@ Trân trọng cảm ơn!`);
       evaluator_name: user.name,
       evaluator_code: user.code,
       evaluator_role: user.title || user.role_title || 'Cán bộ Giám sát 5S',
-      score: result === 'pass' ? 100 : 0,
       grade: grade,
       result: result,
       issues: issueText ? issueText.split(/[;\n\r]+/).map(x => x.trim()).filter(Boolean) : [],
@@ -10487,7 +10709,9 @@ Trân trọng cảm ơn!`);
   async uploadPendingPhotos() {
     const urls = new Set();
     this.outbox.forEach(op => { if (op.d && op.c !== 'singleton') this.collectDataUrls(op.d, urls); });
+    this.lastUploadedPhotoCount = 0;
     for (const dataUrl of urls) {
+      this.lastUploadedPhotoCount++;
       const res = await this.apiFetch('upload', { method: 'POST', body: JSON.stringify({ dataUrl }) });
       const url = res && res.url;
       if (!url) throw new Error('Tải ảnh thất bại');
@@ -10506,8 +10730,19 @@ Trân trọng cảm ơn!`);
     if (!this.outbox.length) return;
     this.flushing = true;
     this.flushPromise = (async () => {
+      let hadPhotos = false;
       try {
-        await this.uploadPendingPhotos();
+        try {
+          await this.uploadPendingPhotos();
+        } catch (upErr) {
+          // V29: báo rõ ảnh CHƯA được ghi nhận (trước đây lỗi im lặng nhưng màn hình vẫn hiện "đã nộp")
+          if (!this.uploadErrorShownAt || Date.now() - this.uploadErrorShownAt > 60000) {
+            this.uploadErrorShownAt = Date.now();
+            this.showToast('⚠️ Gửi ảnh 5S lên máy chủ chưa thành công. Khu vực vẫn tính CHƯA THỰC HIỆN; app sẽ tự gửi lại khi có mạng.');
+          }
+          throw upErr;
+        }
+        hadPhotos = (this.lastUploadedPhotoCount || 0) > 0;
         while (this.outbox.length) {
           const batch = this.outbox.slice(0, 150);
           const res = await this.apiFetch('sync', { method: 'POST', body: JSON.stringify({ ops: batch }) });
@@ -10522,6 +10757,10 @@ Trân trọng cảm ơn!`);
           }
         }
         this.syncFailCount = 0;
+        if (hadPhotos) {
+          this.showToast('✅ Đã gửi ảnh 5S lên máy chủ — khu vực được ghi nhận ĐÃ THỰC HIỆN.');
+          if (!this.isUserBusy()) this.render(); else this.pendingSyncRender = true;
+        }
       } catch (e) {
         this.syncFailCount = Math.min((this.syncFailCount || 0) + 1, 5);
       } finally {

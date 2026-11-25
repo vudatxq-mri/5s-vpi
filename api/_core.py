@@ -76,7 +76,8 @@ REVIEW_FIELDS_AUDIT = (
     'status', 'evaluation_result', 'evaluator_name', 'evaluator_code', 'evaluator_role',
     'evaluation_date', 'evaluation_time', 'evaluation_notes', 'issue_detected', 'remedy_deadline',
 )
-PROTECTED_STAFF_FIELDS = ('code', 'staff_code', 'role', 'role_level', 'is_admin', 'is_supervisor', 'can_review')
+PROTECTED_STAFF_FIELDS = ('code', 'staff_code', 'role', 'role_level', 'is_admin', 'is_supervisor', 'can_review',
+                          'area_scope')  # V29: khu vực được giao (chỉ Admin sửa)
 REVIEW_STATUSES = ('approved', 'rejected')
 
 
@@ -300,6 +301,35 @@ def same_dept(a, b):
     return a is not None and b is not None and str(a) == str(b)
 
 
+def area_in_scope(u, room_id, rooms_cache=None):
+    """V29: khu vực có nằm trong phạm vi được giao của người dùng không (giống getAreaScope ở app.js)."""
+    if is_leader(u):
+        return True
+    sc = u.get('area_scope')
+    if isinstance(sc, dict) and (sc.get('all') is True or isinstance(sc.get('rooms'), list)):
+        if sc.get('all') is True:
+            return True
+        return str(room_id) in {str(x) for x in (sc.get('rooms') or [])}
+    if u.get('can_review') is True:
+        return True  # chưa giao riêng => toàn viện như trước V29
+    if is_manager(u):
+        return same_dept(_room_dept(room_id, rooms_cache if rooms_cache is not None else {}), u.get('department_id'))
+    return False
+
+
+def can_review_room(u, room_id, rooms_cache=None):
+    return is_admin(u) or (can_review(u) and area_in_scope(u, room_id, rooms_cache))
+
+
+def vn_today():
+    return (_dt.datetime.utcnow() + _dt.timedelta(hours=7)).date().isoformat()
+
+
+def is_storage_url(v):
+    base = (env('SUPABASE_URL') or '').rstrip('/')
+    return isinstance(v, str) and bool(base) and v.startswith(base + '/storage/v1/object/public/' + PHOTO_BUCKET + '/')
+
+
 def authenticate(headers):
     """Trả về hồ sơ nhân sự của người gọi API, hoặc ném ApiError 401."""
     auth = headers.get('Authorization') or headers.get('authorization') or ''
@@ -434,6 +464,16 @@ def check_op(u, op, existing, rooms_cache, password_updates):
         else:
             d['sender_code'] = existing.get('sender_code') or d.get('sender_code')
         if can_review(u):
+            # V29: người duyệt chỉ được ghi kết quả duyệt cho khu vực được giao
+            if not can_review_room(u, d.get('room_id'), rooms_cache):
+                if existing is None:
+                    for f in REVIEW_FIELDS_AUDIT:
+                        d[f] = '' if f != 'evaluation_result' else None
+                    d['status'] = 'pending'
+                else:
+                    for f in REVIEW_FIELDS_AUDIT:
+                        if f in existing:
+                            d[f] = existing[f]
             return True, d, ''
         if existing is None:
             d['status'] = 'pending'
@@ -458,15 +498,38 @@ def check_op(u, op, existing, rooms_cache, password_updates):
         # Bản ghi trống (không ảnh, không có dấu "xóa có chủ đích") không được ghi đè ảnh đã nộp từ máy khác
         if ex_post and ex_post.get('photo') and not (in_post or {}).get('photo') and not (in_post or {}).get('cleared_by'):
             d['post_shift_5s'] = ex_post
-        if not can_review(u):
-            old_post = (existing or {}).get('post_shift_5s') or None
-            new_post = d.get('post_shift_5s') or None
-            old_st = (old_post or {}).get('status')
-            new_st = (new_post or {}).get('status')
-            # Người không có quyền duyệt: không được tự đặt kết quả duyệt, không được ghi đè ảnh đã ĐẠT.
+        room_id = d.get('room_id')
+        old_post = (existing or {}).get('post_shift_5s') or None
+        new_post = d.get('post_shift_5s') or None
+        old_st = (old_post or {}).get('status')
+        new_st = (new_post or {}).get('status')
+        photo_changed = bool(new_post) and (new_post or {}).get('photo') != (old_post or {}).get('photo')
+        # V29: ảnh mới phải là ảnh ĐÃ tải lên kho ảnh (không nhận ảnh base64 / link ngoài). Trước đây lỗi tải ảnh
+        # vẫn ghi nhận "đã nộp" cho ngày làm việc.
+        if photo_changed and new_post.get('photo') and not is_storage_url(new_post.get('photo')):
+            return False, None, 'Ảnh chưa tải lên kho ảnh máy chủ, chưa ghi nhận'
+        if not can_review_room(u, room_id, rooms_cache):
+            # Người không có quyền duyệt khu vực này: không được tự đặt kết quả duyệt, không được ghi đè ảnh đã ĐẠT.
             # (Ảnh bị KHÔNG ĐẠT thì được chụp gửi lại.)
-            if new_st in REVIEW_STATUSES or old_st == 'approved':
+            if new_st in REVIEW_STATUSES and new_st != old_st:
                 d['post_shift_5s'] = old_post
+            elif old_st == 'approved':
+                d['post_shift_5s'] = old_post
+            elif photo_changed and str(d.get('date') or '')[:10] != vn_today():
+                # V29: chỉ được nộp ảnh cho NGÀY HÔM NAY (chặn nộp bù cho ngày cũ)
+                return False, None, 'Chỉ được nộp ảnh 5S cho ngày hôm nay'
+        post = d.get('post_shift_5s')
+        if isinstance(post, dict) and post.get('photo') and post.get('photo') != (old_post or {}).get('photo'):
+            post = dict(post)
+            post['server_at'] = (_dt.datetime.utcnow() + _dt.timedelta(hours=7)).strftime('%Y-%m-%d %H:%M')
+            post['submitted_by_code'] = u['code']  # người nộp do máy chủ ghi nhận
+            d['post_shift_5s'] = post
+        elif isinstance(post, dict) and old_post and old_post.get('server_at'):
+            post = dict(post)
+            post['server_at'] = old_post.get('server_at')
+            if old_post.get('submitted_by_code'):
+                post['submitted_by_code'] = old_post.get('submitted_by_code')
+            d['post_shift_5s'] = post
         return True, d, ''
 
     if c == 'department_evaluations':
@@ -629,6 +692,60 @@ def pull(since):
             break
         offset += PAGE
     return {'version': version, 'full': True, 'records': _fmt(out)}
+
+
+# ---------------------------------------------------------------------------
+# V29: Dữ liệu báo cáo theo khoảng ngày (thống kê thực hiện / chưa thực hiện, thi đua cuối năm,
+# cá nhân vi phạm). Không giới hạn RETENTION_DAYS; chỉ trả trường cần cho thống kê (không trả ảnh).
+# ---------------------------------------------------------------------------
+REPORT_MAX_DAYS = 400
+
+
+def _parse_day(s):
+    try:
+        return _dt.date.fromisoformat(str(s)[:10])
+    except Exception:
+        return None
+
+
+def report_rows(u, date_from, date_to):
+    d1, d2 = _parse_day(date_from), _parse_day(date_to)
+    if not d1 or not d2 or d2 < d1:
+        raise ApiError(400, 'Khoảng ngày không hợp lệ')
+    if (d2 - d1).days > REPORT_MAX_DAYS:
+        raise ApiError(400, 'Khoảng ngày tối đa %d ngày' % REPORT_MAX_DAYS)
+    rows, offset = [], 0
+    while True:
+        part = rest('GET', 'records', {
+            'select': 'key,data', 'collection': 'eq.rooms_schedule', 'deleted': 'eq.false',
+            'and': '(rec_date.gte.%s,rec_date.lte.%s)' % (d1.isoformat(), d2.isoformat()),
+            'order': 'key', 'limit': str(PAGE), 'offset': str(offset)})
+        rows.extend(part or [])
+        if not part or len(part) < PAGE:
+            break
+        offset += PAGE
+    leader = is_leader(u)
+    rooms_cache = {}
+    out = []
+    for r in rows:
+        d = r.get('data') or {}
+        room_id = d.get('room_id')
+        if not leader:
+            # Người không thuộc Ban chỉ đạo: chỉ xem khu vực của khoa mình hoặc khu vực được giao
+            if not (area_in_scope(u, room_id, rooms_cache)
+                    or same_dept(_room_dept(room_id, rooms_cache), u.get('department_id'))):
+                continue
+        p = d.get('post_shift_5s') or {}
+        out.append({
+            'r': room_id, 'd': str(d.get('date') or '')[:10], 'w': d.get('is_working') is not False,
+            's': p.get('status') or '', 'u': is_storage_url(p.get('photo')),
+            'b': p.get('submitted_by') or '', 'bc': p.get('submitted_by_code') or '',
+            't': p.get('submitted_at') or '', 'sa': p.get('server_at') or '',
+            'ev': p.get('evaluated_by') or '', 'is': p.get('issue') or '',
+            'st': [{'code': x.get('code') or '', 'name': x.get('name') or '', 'role': x.get('role') or ''}
+                   for x in (d.get('staff_assigned') or []) if isinstance(x, dict)],
+        })
+    return {'from': d1.isoformat(), 'to': d2.isoformat(), 'today': vn_today(), 'rows': out}
 
 
 # ---------------------------------------------------------------------------
