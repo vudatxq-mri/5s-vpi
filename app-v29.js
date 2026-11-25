@@ -45,24 +45,32 @@
     return this.isAdmin() && ((this.data.hospital || {}).area_catalog_version !== AREA_CATALOG_VERSION);
   };
 
-  P.applyAreaCatalog = function () {
-    if (!this.isAdmin()) { this.showToast('🔒 Chỉ Admin được áp dụng danh mục khu vực.'); return; }
+  // silent = true: gọi từ quy trình "Xóa dữ liệu & triển khai mới" (đã xác nhận ở bước trước)
+  P.applyAreaCatalog = function (silent = false) {
+    if (!this.isAdmin()) { this.showToast('🔒 Chỉ Admin được áp dụng danh mục khu vực.'); return false; }
     const seedRooms = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.rooms) || [];
     const seedDepts = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.departments) || [];
-    if (!seedRooms.length) return;
+    if (!seedRooms.length) return false;
     const inSheet = seedDepts.filter(d => d.in_5s !== false);
-    if (!confirm(`Áp dụng danh mục khu vực 5S toàn viện mới?\n\n• ${inSheet.length} khoa/phòng, ${seedRooms.length} vị trí làm việc 5S (theo Google Sheet ngày 25/11/2026)\n• ${(this.data.rooms || []).length} khu vực cũ được chuyển vào lưu trữ (vẫn xem lại được lịch sử)\n• Khoa/phòng không có trong danh sách vẫn giữ nhân sự, chỉ ẩn khỏi danh mục 5S\n\nThay đổi áp dụng cho mọi máy.`)) return;
-
     const seedIds = new Set(seedRooms.map(r => String(r.id)));
-    const archived = Array.isArray(this.data.archived_rooms) ? this.data.archived_rooms.slice() : [];
-    const archivedIds = new Set(archived.map(r => String(r.id)));
-    (this.data.rooms || []).forEach(r => {
-      if (!seedIds.has(String(r.id)) && !archivedIds.has(String(r.id))) {
-        archived.push({ id: r.id, department_id: r.department_id, code: r.code || '', name: r.name, archived_at: this.getTodayDateString() });
+    const oldRooms = (this.data.rooms || []).filter(r => !seedIds.has(String(r.id)));
+    if (!silent && !confirm(`Áp dụng danh mục khu vực 5S toàn viện mới?\n\n• ${inSheet.length} khoa/phòng, ${seedRooms.length} vị trí làm việc 5S (theo Google Sheet ngày 25/11/2026)\n• XÓA HẲN ${oldRooms.length} vị trí làm việc cũ không có trong danh sách\n• Khoa/phòng không có trong danh sách vẫn giữ nhân sự, chỉ ẩn khỏi danh mục 5S\n\nThay đổi áp dụng cho mọi máy.`)) return false;
+
+    // V29: xóa hẳn vị trí cũ (không lưu trữ)
+    this.data.archived_rooms = [];
+    this.data.rooms = JSON.parse(JSON.stringify(seedRooms));
+    // Bỏ các vị trí cũ khỏi phân quyền khu vực / danh sách phụ trách của nhân sự
+    const oldNames = new Set(oldRooms.map(r => String(r.name || '').trim()));
+    (this.data.staff || []).forEach(s => {
+      if (s.area_scope && Array.isArray(s.area_scope.rooms)) {
+        const kept = s.area_scope.rooms.filter(id => seedIds.has(String(id)));
+        if (kept.length !== s.area_scope.rooms.length) s.area_scope = Object.assign({}, s.area_scope, { rooms: kept });
+      }
+      if (Array.isArray(s.assigned_rooms) && s.assigned_rooms.some(n => oldNames.has(String(n).trim()))) {
+        s.assigned_rooms = s.assigned_rooms.filter(n => !oldNames.has(String(n).trim()));
+        s.assigned_room = s.assigned_rooms.join(', ');
       }
     });
-    this.data.archived_rooms = archived;
-    this.data.rooms = JSON.parse(JSON.stringify(seedRooms));
 
     const byId = new Map((this.data.departments || []).map(d => [String(d.id), d]));
     const seedIdSet = new Set(seedDepts.map(d => String(d.id)));
@@ -83,7 +91,111 @@
     this.data.hospital.area_catalog_version = AREA_CATALOG_VERSION;
     this.saveData();
     this.render();
-    this.showToast(`✅ Đã áp dụng ${seedRooms.length} vị trí 5S của ${inSheet.length} khoa/phòng. Đang gửi lên máy chủ...`);
+    if (!silent) this.showToast(`✅ Đã áp dụng ${seedRooms.length} vị trí 5S của ${inSheet.length} khoa/phòng, xóa ${oldRooms.length} vị trí cũ. Đang gửi lên máy chủ...`);
+    return true;
+  };
+
+  // =========================================================================
+  // 1b. XÓA TOÀN BỘ DỮ LIỆU 5S ĐỂ TRIỂN KHAI MỚI (Admin)
+  // =========================================================================
+  const RESET_SEEN_KEY = 'vpi_5s_reset_seen_v29';
+  const RESET_COLLS = ['audits', 'rooms_schedule', 'department_evaluations'];
+
+  P.clearLocal5SData = function () {
+    this.data.audits = [];
+    if (!this.data.schedules) this.data.schedules = {};
+    this.data.schedules.rooms_schedule = [];
+    this.data.department_evaluations = [];
+    this.outbox = (this.outbox || []).filter(op => !RESET_COLLS.includes(op.c));
+    this.persistOutbox();
+    this.statsCache = null;
+    this.currentShiftPhoto = null;
+    this.currentShiftPhotoRoomId = null;
+  };
+
+  // Máy khác: nhận mốc xóa mới từ máy chủ => bỏ dữ liệu 5S cũ đang chờ gửi, tải lại toàn bộ từ máy chủ
+  // (không xóa thẳng dữ liệu trên máy: lần tải đầy đủ đã là dữ liệu sau khi xóa, có thể có ảnh mới nộp)
+  P.handleDataResetMarker = function (isFullPull) {
+    const at = this.data.data_reset && this.data.data_reset.at;
+    if (!at) return;
+    let seen = null;
+    try { seen = localStorage.getItem(RESET_SEEN_KEY); } catch (e) {}
+    if (seen === at) return;
+    this.outbox = (this.outbox || []).filter(op => !RESET_COLLS.includes(op.c));
+    this.persistOutbox();
+    this.statsCache = null;
+    this.currentShiftPhoto = null;
+    this.currentShiftPhotoRoomId = null;
+    try { localStorage.setItem(RESET_SEEN_KEY, at); } catch (e) {}
+    if (!isFullPull) setTimeout(() => this.pullStateFromServer(true), 0);
+    if (seen) this.showToast('ℹ️ Dữ liệu 5S đã được Admin xóa để triển khai mới. Ứng dụng đã làm mới dữ liệu trên máy này.');
+  };
+
+  P.openReset5SModal = function () {
+    if (!this.isAdmin()) { this.showToast('🔒 Chỉ Admin được xóa dữ liệu 5S.'); return; }
+    const nAud = (this.data.audits || []).length;
+    const nRs = ((this.data.schedules && this.data.schedules.rooms_schedule) || []).filter(r => !r._auto).length;
+    const seedRooms = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.rooms) || [];
+    const seedIds = new Set(seedRooms.map(r => String(r.id)));
+    const nOld = (this.data.rooms || []).filter(r => !seedIds.has(String(r.id))).length;
+    this.showModal(`
+      <div class="p-5 space-y-3 text-xs">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2.5">
+          <h3 class="text-sm font-black text-red-700 dark:text-red-400">XÓA TOÀN BỘ DỮ LIỆU 5S – TRIỂN KHAI MỚI</h3>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="p-3 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 space-y-1">
+          <div class="font-black">Sẽ XÓA VĨNH VIỄN trên máy chủ và mọi điện thoại (không khôi phục được):</div>
+          <div>• Toàn bộ ảnh 5S đã nộp và ảnh trong kho ảnh</div>
+          <div>• Toàn bộ phiếu 5S, kết quả duyệt Đạt / Không đạt, đánh giá khoa (máy này đang có ${nAud} phiếu, ${nRs} lượt khu vực)</div>
+          <div>• Phân công nhân sự theo ca tại các khu vực, lịch sử vi phạm, số liệu thống kê</div>
+          <div>• ${nOld} vị trí làm việc cũ (thay bằng ${seedRooms.length} vị trí theo danh sách toàn viện)</div>
+        </div>
+        <div class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200">
+          <strong>Giữ nguyên:</strong> tài khoản, mật khẩu, nhân sự, quyền duyệt, phân quyền khu vực, khoa phòng, cấu hình ca, hộp thư.
+        </div>
+        <label class="block">
+          <span class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Gõ chính xác <span class="font-mono text-red-600">XOA DU LIEU 5S</span> để xác nhận:</span>
+          <input id="reset-5s-confirm" type="text" autocomplete="off" class="w-full bg-slate-50 dark:bg-slate-900 border border-red-300 dark:border-red-800 rounded-xl p-2.5 font-mono font-bold">
+        </label>
+        <button id="reset-5s-btn" onclick="app5s.runReset5S()" class="w-full py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black">XÓA DỮ LIỆU & TRIỂN KHAI MỚI</button>
+        <p class="text-[10px] text-slate-400">Cần có mạng. Nên thực hiện ngoài giờ làm việc và báo trước cho các khoa.</p>
+      </div>
+    `);
+  };
+
+  P.runReset5S = async function () {
+    if (!this.isAdmin()) return;
+    const input = document.getElementById('reset-5s-confirm');
+    const confirmText = input ? input.value.trim() : '';
+    if (confirmText !== 'XOA DU LIEU 5S') { this.showToast('⚠️ Gõ đúng "XOA DU LIEU 5S" để xác nhận.'); if (input) input.focus(); return; }
+    if (!this.authToken) { this.showToast('⚠️ Cần đăng nhập và có mạng để xóa dữ liệu trên máy chủ.'); return; }
+    const btn = document.getElementById('reset-5s-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Đang xóa dữ liệu trên máy chủ...'; }
+    try {
+      // Gửi hết thay đổi khác (nhân sự, cấu hình...) trước, bỏ dữ liệu 5S đang chờ gửi
+      this.outbox = (this.outbox || []).filter(op => !RESET_COLLS.includes(op.c));
+      this.persistOutbox();
+      await this.flushOutbox();
+      const res = await this.apiFetch('reset', { method: 'POST', body: JSON.stringify({ confirm: 'XOA DU LIEU 5S' }) });
+      this.data.data_reset = { at: res.at, by: res.by, counts: res.counts, photos_deleted: res.photos_deleted, photos_partial: res.photos_partial };
+      try { localStorage.setItem(RESET_SEEN_KEY, res.at); } catch (e) {}
+      this.clearLocal5SData();
+      this.syncSnapshot = this.buildSyncSnapshot(this.data); // dữ liệu đã xóa trên máy chủ => không gửi lệnh xóa từng bản ghi
+      this.applyAreaCatalog(true);                            // xóa vị trí cũ, áp dụng danh mục mới
+      await this.flushOutbox();
+      await this.pullStateFromServer(true);
+      this.closeModal();
+      this.render();
+      const c = res.counts || {};
+      this.showToast(`✅ Đã xóa ${c.audits || 0} phiếu, ${c.rooms_schedule || 0} lượt khu vực, ${c.department_evaluations || 0} đánh giá khoa, ${res.photos_deleted || 0} ảnh. Sẵn sàng triển khai mới.`);
+      if (res.photos_partial) {
+        setTimeout(() => alert('Kho ảnh còn ảnh chưa xóa hết do giới hạn thời gian máy chủ. Mở lại chức năng này và bấm xóa thêm lần nữa để xóa nốt ảnh.'), 500);
+      }
+    } catch (err) {
+      if (btn) { btn.disabled = false; btn.textContent = 'XÓA DỮ LIỆU & TRIỂN KHAI MỚI'; }
+      alert('Chưa xóa được dữ liệu: ' + ((err && err.message) || 'lỗi không xác định') + '\nKiểm tra mạng / quyền Admin rồi thử lại.');
+    }
   };
 
   P.findRoomAny = function (roomId) {
@@ -542,8 +654,13 @@
 
         ${this.needsAreaCatalogUpdate() ? `
           <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs flex items-center justify-between gap-2">
-            <span class="text-amber-900 dark:text-amber-200"><strong>Danh mục khu vực 5S mới</strong> (18 khoa/phòng, 57 vị trí theo Google Sheet) chưa được áp dụng lên máy chủ.</span>
+            <span class="text-amber-900 dark:text-amber-200"><strong>Danh mục khu vực 5S mới</strong> (18 khoa/phòng, 57 vị trí theo Google Sheet) chưa được áp dụng lên máy chủ. Bấm "Áp dụng" để xóa vị trí cũ, hoặc "Xóa dữ liệu & triển khai mới" để làm lại từ đầu.</span>
             <button onclick="app5s.applyAreaCatalog()" class="shrink-0 px-3 py-1.5 rounded-xl bg-amber-600 text-white font-black">Áp dụng</button>
+          </div>` : ''}
+        ${this.isAdmin() ? `
+          <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-slate-800 text-[11px]">
+            <span class="text-slate-500">${this.data.data_reset && this.data.data_reset.at ? `Lần xóa dữ liệu gần nhất: <strong class="text-slate-700 dark:text-slate-200">${esc(this.data.data_reset.at)}</strong>` : 'Admin: xóa toàn bộ dữ liệu 5S cũ để triển khai mới'}</span>
+            <button onclick="app5s.openReset5SModal()" class="shrink-0 px-2.5 py-1.5 rounded-xl border border-red-300 text-red-700 dark:text-red-300 font-bold flex items-center space-x-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i><span>Xóa dữ liệu & triển khai mới</span></button>
           </div>` : ''}
 
         <div class="flex gap-1.5">

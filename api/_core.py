@@ -385,6 +385,8 @@ def check_op(u, op, existing, rooms_cache, password_updates):
         return False, None, 'Dữ liệu không hợp lệ'
 
     if c == 'singleton':
+        if k == 'data_reset':
+            return False, None, 'Mốc xóa dữ liệu chỉ do máy chủ ghi'
         if k in ('hospital', 'criteria'):
             return (True, d, '') if is_leader(u) else (False, None, 'Chỉ Ban chỉ đạo được sửa cấu hình bệnh viện')
         if k in ('shift_config', 'schedules_meta'):
@@ -553,11 +555,16 @@ def check_op(u, op, existing, rooms_cache, password_updates):
     return (True, d, '') if is_leader(u) else (False, None, 'Không có quyền')
 
 
-def apply_ops(u, ops):
+def apply_ops(u, ops, client_reset=None):
     if not isinstance(ops, list):
         raise ApiError(400, 'ops phải là danh sách')
     if len(ops) > MAX_OPS_PER_PUSH:
         raise ApiError(413, 'Quá nhiều thay đổi trong 1 lần gửi')
+    # V29: sau khi Admin xóa toàn bộ dữ liệu 5S, máy nào chưa nhận mốc xóa mới thì không được gửi lại dữ liệu 5S cũ
+    stale_reset = False
+    if any(isinstance(op, dict) and op.get('c') in RESET_COLLECTIONS for op in ops):
+        marker = get_record('singleton', 'data_reset') or {}
+        stale_reset = bool(marker.get('at')) and marker.get('at') != client_reset
     clean = []
     for op in ops:
         if not isinstance(op, dict) or not op.get('c') or op.get('k') in (None, ''):
@@ -581,6 +588,10 @@ def apply_ops(u, ops):
     rows, rejected = [], []
     now_code = norm_code(u['code'])
     for op in clean:
+        if stale_reset and op['c'] in RESET_COLLECTIONS:
+            rejected.append({'c': op['c'], 'k': op['k'],
+                             'reason': 'Dữ liệu 5S đã được xóa để triển khai mới, ứng dụng đang tải lại dữ liệu'})
+            continue
         ex = existing.get(op['c'], {}).get(op['k'])
         ok, data, reason = check_op(u, op, ex, rooms_cache, password_updates)
         if ok and data is not None:
@@ -609,6 +620,80 @@ def apply_ops(u, ops):
         set_password(code, pw, must_change=True, bump=True)
 
     return {'applied': len(rows), 'rejected': rejected}
+
+
+# ---------------------------------------------------------------------------
+# V29: XÓA TOÀN BỘ DỮ LIỆU 5S ĐỂ TRIỂN KHAI MỚI (chỉ Admin)
+# - Đánh dấu xóa mọi phiếu 5S, lịch / ảnh bàn giao khu vực, đánh giá khoa (máy khác tự xóa theo khi đồng bộ)
+# - Xóa ảnh trong kho ảnh
+# - Ghi mốc xóa (singleton data_reset): máy chưa nhận mốc mới không gửi lại được dữ liệu cũ
+# Giữ nguyên: nhân sự, tài khoản / mật khẩu, khoa phòng, khu vực, cấu hình, hộp thư.
+# ---------------------------------------------------------------------------
+RESET_COLLECTIONS = ('audits', 'rooms_schedule', 'department_evaluations')
+RESET_CONFIRM = 'XOA DU LIEU 5S'
+
+
+def _storage_list(prefix):
+    url = '%s/storage/v1/object/list/%s' % (env('SUPABASE_URL').rstrip('/'), PHOTO_BUCKET)
+    out, offset = [], 0
+    while True:
+        items = _request('POST', url, {'prefix': prefix, 'limit': 1000, 'offset': offset,
+                                       'sortBy': {'column': 'name', 'order': 'asc'}},
+                         _sb_headers({'Content-Type': 'application/json'})) or []
+        out.extend(items)
+        if len(items) < 1000:
+            return out
+        offset += 1000
+
+
+def delete_all_photos(deadline):
+    """Xóa toàn bộ ảnh trong kho (thư mục yyyy/mm/dd). Trả về (số ảnh đã xóa, còn sót do hết thời gian)."""
+    files, stack = [], ['']
+    while stack:
+        if time.time() > deadline:
+            return len(files), True
+        prefix = stack.pop()
+        for it in _storage_list(prefix):
+            path = (prefix + '/' + it['name']) if prefix else it['name']
+            if it.get('id') is None:
+                stack.append(path)        # thư mục con
+            else:
+                files.append(path)
+    url = '%s/storage/v1/object/%s' % (env('SUPABASE_URL').rstrip('/'), PHOTO_BUCKET)
+    deleted = 0
+    for i in range(0, len(files), 500):
+        if time.time() > deadline:
+            return deleted, True
+        _request('DELETE', url, {'prefixes': files[i:i + 500]}, _sb_headers({'Content-Type': 'application/json'}))
+        deleted += len(files[i:i + 500])
+    return deleted, False
+
+
+def reset_5s_data(u, confirm):
+    if not is_admin(u):
+        raise ApiError(403, 'Chỉ Admin được xóa toàn bộ dữ liệu 5S')
+    if confirm != RESET_CONFIRM:
+        raise ApiError(400, 'Thiếu xác nhận xóa dữ liệu')
+    started = time.time()
+    counts = {}
+    for c in RESET_COLLECTIONS:
+        rows = rest('PATCH', 'records', {'collection': 'eq.' + c, 'deleted': 'eq.false', 'select': 'key'},
+                    {'deleted': True, 'data': None, 'updated_by': 'RESET'}, prefer='return=representation')
+        counts[c] = len(rows or [])
+    now = (_dt.datetime.utcnow() + _dt.timedelta(hours=7)).strftime('%Y-%m-%d %H:%M:%S')
+    marker = {'at': now, 'by': u['code'], 'counts': counts}
+    try:
+        photos, partial = delete_all_photos(started + 11)
+    except ApiError as e:
+        photos, partial = 0, True
+        marker['photo_error'] = e.message[:200]
+    marker['photos_deleted'] = photos
+    marker['photos_partial'] = partial
+    rest('POST', 'records', {'on_conflict': 'collection,key'}, [{
+        'collection': 'singleton', 'key': 'data_reset', 'data': marker, 'deleted': False,
+        'rec_date': None, 'updated_by': norm_code(u['code'])}], prefer='resolution=merge-duplicates,return=minimal')
+    marker['version'] = current_version()
+    return marker
 
 
 def set_password(code, pw, must_change, bump):

@@ -61,6 +61,8 @@ const SYNC_SINGLETONS = {
   criteria: { get: d => d.criteria, set: (d, v) => { d.criteria = v; } },
   // V29: khu vực cũ đã thay bằng danh mục mới (giữ tên để xem lại lịch sử)
   archived_rooms: { get: d => d.archived_rooms, set: (d, v) => { d.archived_rooms = v; } },
+  // V29: mốc "xóa toàn bộ dữ liệu 5S để triển khai mới" (chỉ máy chủ ghi)
+  data_reset: { get: d => d.data_reset, set: (d, v) => { d.data_reset = v; } },
   schedules_meta: {
     get: d => { if (!d.schedules) return undefined; const { rooms_schedule, ...rest } = d.schedules; return rest; },
     set: (d, v) => { const rs = (d.schedules && d.schedules.rooms_schedule) || []; d.schedules = Object.assign({}, v || {}, { rooms_schedule: rs }); }
@@ -78,8 +80,8 @@ const DEFAULT_SEED_DATA = {
     address: 'Lạc Ý, Định Trung, TP. Vĩnh Yên, Tỉnh Vĩnh Phúc',
     hotline: '+84916306115',
     supportEmail: 'vudatxq@gmail.com',
-    author: 'Vũ Đạt',
-    copyright: 'Tác giả: Vũ Đạt',
+    author: 'Vũ Đạt, Bệnh viện Vĩnh Phúc VPI',
+    copyright: 'Phát triển bởi Vũ Đạt, Bệnh viện Vĩnh Phúc VPI',
     director: 'ThS. BSCKII. Phạm Quỳnh Hưng',
     directorTitle: 'Trưởng ban Chỉ đạo 5S Bệnh viện',
     officer: 'KTV. Vũ Bá Đạt',
@@ -446,8 +448,8 @@ class App5S {
 
     this.data.hospital.hotline = '+84916306115';
     this.data.hospital.supportEmail = 'vudatxq@gmail.com';
-    this.data.hospital.author = 'Vũ Đạt';
-    this.data.hospital.copyright = 'Tác giả: Vũ Đạt';
+    this.data.hospital.author = 'Vũ Đạt, Bệnh viện Vĩnh Phúc VPI';
+    this.data.hospital.copyright = 'Phát triển bởi Vũ Đạt, Bệnh viện Vĩnh Phúc VPI';
 
     if (!this.data.admin_messages || !Array.isArray(this.data.admin_messages)) {
       this.data.admin_messages = []; // V27: bỏ tin nhắn mẫu
@@ -817,7 +819,7 @@ class App5S {
         localStorage.setItem('vpi_5s_saved_auth', JSON.stringify(savedAuth));
       }
     } catch (e) {}
-    const CURRENT_VERSION = 'v29_20261125';
+    const CURRENT_VERSION = 'v29b_20261125';
     try {
       const savedVer = localStorage.getItem('vpi_5s_app_version');
       if (savedVer !== CURRENT_VERSION) {
@@ -825,7 +827,7 @@ class App5S {
         if ('caches' in window) {
           caches.keys().then(keys => {
             keys.forEach(k => {
-              if (k !== 'vpi-5s-cache-v29_20261125') caches.delete(k);
+              if (k !== 'vpi-5s-cache-v29b_20261125') caches.delete(k);
             });
           });
         }
@@ -2556,9 +2558,9 @@ class App5S {
         <div class="bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-900 rounded-3xl p-5 text-white space-y-2 shadow-lg">
           <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold tracking-wider uppercase">
             <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-300"></i>
-            <span>BẢN QUYỀN TÁC GIẢ CHÍNH THỨC</span>
+            <span>THÔNG TIN PHÁT TRIỂN PHẦN MỀM</span>
           </div>
-          <div class="text-base font-black">Tác giả: Vũ Đạt</div>
+          <div class="text-base font-black">Phát triển bởi Vũ Đạt, Bệnh viện Vĩnh Phúc VPI</div>
           <p class="text-xs text-emerald-100 opacity-90 leading-relaxed">
             Phần mềm Giám sát 5S Y tế, Bàn giao Buồng phòng & Duyệt 5S Đạt / Không đạt Bệnh viện Vĩnh Phúc VPI.
           </p>
@@ -2626,7 +2628,7 @@ class App5S {
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-              <span>Tác giả: <strong class="text-emerald-700 dark:text-emerald-400">Vũ Đạt</strong></span>
+              <span>Phát triển bởi <strong class="text-emerald-700 dark:text-emerald-400">Vũ Đạt, Bệnh viện Vĩnh Phúc VPI</strong></span>
             </span>
             <span class="text-[10px] bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full">Admin 5S</span>
           </div>
@@ -2867,7 +2869,7 @@ Trân trọng cảm ơn!`);
         </div>
 
         <div class="text-xs font-black text-slate-700 dark:text-slate-200">
-          Tác giả: <strong class="text-emerald-600 dark:text-emerald-400">Vũ Đạt</strong>
+          Phát triển bởi <strong class="text-emerald-600 dark:text-emerald-400">Vũ Đạt, Bệnh viện Vĩnh Phúc VPI</strong>
         </div>
 
         <div class="text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 pt-1 border-t border-slate-100 dark:border-slate-700/60">
@@ -7047,12 +7049,12 @@ Trân trọng cảm ơn!`);
               <h3 class="text-xs font-bold uppercase tracking-wider text-white">Bản Quyền & Hỗ Trợ Kỹ Thuật</h3>
             </div>
             <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">
-              Bản quyền Vũ Đạt
+              Phát triển bởi Vũ Đạt
             </span>
           </div>
           <div class="space-y-1.5 text-xs text-slate-200">
-            <div>Tác giả phần mềm: <strong class="text-white font-bold">Vũ Đạt</strong></div>
-            <div>Bản quyền: <strong class="text-emerald-300 font-black">Tác giả: Vũ Đạt</strong></div>
+            <div>Phát triển bởi: <strong class="text-white font-bold">Vũ Đạt, Bệnh viện Vĩnh Phúc VPI</strong></div>
+            <div>Đơn vị: <strong class="text-emerald-300 font-black">Bệnh viện Vĩnh Phúc VPI</strong></div>
             <div>Email hỗ trợ: <a href="mailto:vudatxq@gmail.com" class="text-indigo-300 hover:underline font-mono font-bold">vudatxq@gmail.com</a></div>
             <div>Hotline trực tiếp: <a href="tel:+84916306115" class="text-emerald-300 hover:underline font-mono font-bold">+84916306115</a></div>
           </div>
@@ -8436,7 +8438,7 @@ Trân trọng cảm ơn!`);
           <!-- THÔNG TIN HỖ TRỢ & BẢN QUYỀN (TÁC GIẢ: VŨ ĐẠT) -->
           <div class="pt-3 border-t border-slate-200 dark:border-slate-700 text-center space-y-1">
             <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-              Tác giả: <strong class="text-slate-800 dark:text-slate-200">Vũ Đạt</strong> • Hotline: <a href="tel:0916306115" class="text-emerald-600 font-bold hover:underline">+84916306115</a>
+              Phát triển bởi <strong class="text-slate-800 dark:text-slate-200">Vũ Đạt, Bệnh viện Vĩnh Phúc VPI</strong> • Hotline: <a href="tel:0916306115" class="text-emerald-600 font-bold hover:underline">+84916306115</a>
             </div>
             <div class="text-[9.5px] text-slate-400">
               Email: <span class="font-mono text-slate-500">vudatxq@gmail.com</span> • Bệnh viện VPI
@@ -10745,7 +10747,8 @@ Trân trọng cảm ơn!`);
         hadPhotos = (this.lastUploadedPhotoCount || 0) > 0;
         while (this.outbox.length) {
           const batch = this.outbox.slice(0, 150);
-          const res = await this.apiFetch('sync', { method: 'POST', body: JSON.stringify({ ops: batch }) });
+          const resetAt = (this.data.data_reset && this.data.data_reset.at) || null;
+          const res = await this.apiFetch('sync', { method: 'POST', body: JSON.stringify({ ops: batch, reset_at: resetAt }) });
           // Gỡ các thay đổi đã gửi (giữ thay đổi mới phát sinh trong lúc gửi)
           const sent = new Set(batch);
           this.outbox = this.outbox.filter(o => !sent.has(o));
@@ -10906,6 +10909,7 @@ Trân trọng cảm ơn!`);
       if (changed) {
         this.applyServerRecords(res);
         this.normalizeData();
+        if (typeof this.handleDataResetMarker === 'function') this.handleDataResetMarker(!!res.full);
         this.syncSnapshot = this.buildSyncSnapshot(this.data);
         // Admin/Ban chỉ đạo: tự đưa cấu hình bệnh viện lên máy chủ nếu máy chủ chưa có
         if (res.full && this.missingSingletons && this.missingSingletons.length && this.isHospitalLeaderOrSupervisor()) {

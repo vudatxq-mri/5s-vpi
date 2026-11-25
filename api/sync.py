@@ -27,7 +27,7 @@ class handler(BaseHTTPRequestHandler):
         def go():
             user = core.authenticate(self.headers)
             body = core.read_json(self)
-            result = core.apply_ops(user, body.get('ops') or [])
+            result = core.apply_ops(user, body.get('ops') or [], body.get('reset_at'))
             result['version'] = core.current_version()
             return 200, result
         core.run(self, go)
