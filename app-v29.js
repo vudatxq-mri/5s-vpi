@@ -132,7 +132,7 @@
   };
 
   P.openReset5SModal = function () {
-    if (!this.isAdmin()) { this.showToast('🔒 Chỉ Admin được xóa dữ liệu 5S.'); return; }
+    if (!this.isRootAdmin()) { this.showToast('🔒 Chỉ tài khoản Admin được xóa dữ liệu 5S.'); return; }
     const nAud = (this.data.audits || []).length;
     const nRs = ((this.data.schedules && this.data.schedules.rooms_schedule) || []).filter(r => !r._auto).length;
     const seedRooms = (typeof DEFAULT_SEED_DATA !== 'undefined' && DEFAULT_SEED_DATA.rooms) || [];
@@ -165,7 +165,7 @@
   };
 
   P.runReset5S = async function () {
-    if (!this.isAdmin()) return;
+    if (!this.isRootAdmin()) return;
     const input = document.getElementById('reset-5s-confirm');
     const confirmText = input ? input.value.trim() : '';
     if (confirmText !== 'XOA DU LIEU 5S') { this.showToast('⚠️ Gõ đúng "XOA DU LIEU 5S" để xác nhận.'); if (input) input.focus(); return; }
@@ -660,12 +660,12 @@
           </div>
         </div>
 
-        ${this.needsAreaCatalogUpdate() ? `
+        ${this.isRootAdmin() && this.needsAreaCatalogUpdate() ? `
           <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs flex items-center justify-between gap-2">
             <span class="text-amber-900 dark:text-amber-200"><strong>Danh mục khu vực 5S mới</strong> (18 khoa/phòng, 57 vị trí theo Google Sheet) chưa được áp dụng lên máy chủ. Bấm "Áp dụng" để xóa vị trí cũ, hoặc "Xóa dữ liệu & triển khai mới" để làm lại từ đầu.</span>
             <button onclick="app5s.applyAreaCatalog()" class="shrink-0 px-3 py-1.5 rounded-xl bg-amber-600 text-white font-black">Áp dụng</button>
           </div>` : ''}
-        ${this.isAdmin() ? `
+        ${this.isRootAdmin() ? `
           <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-slate-800 text-[11px]">
             <span class="text-slate-500">${this.data.data_reset && this.data.data_reset.at ? `Lần xóa dữ liệu gần nhất: <strong class="text-slate-700 dark:text-slate-200">${esc(this.data.data_reset.at)}</strong>` : 'Admin: xóa toàn bộ dữ liệu 5S cũ để triển khai mới'}</span>
             <button onclick="app5s.openReset5SModal()" class="shrink-0 px-2.5 py-1.5 rounded-xl border border-red-300 text-red-700 dark:text-red-300 font-bold flex items-center space-x-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i><span>Xóa dữ liệu & triển khai mới</span></button>
@@ -691,7 +691,6 @@
           </div>
           <div class="flex flex-wrap items-center gap-1.5">
             ${preset('today', 'Hôm nay')}${preset('yesterday', 'Hôm qua')}${preset('7d', '7 ngày')}${preset('month', 'Tháng này')}${preset('quarter', 'Quý này')}${preset('year', 'Năm nay')}
-            <span class="ml-auto text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">Tính đủ 7 ngày/tuần (cả Chủ nhật)</span>
           </div>
           <div class="text-[10px] text-slate-400">
             ${data.loading && data.rows ? 'Đang cập nhật số liệu mới nhất... • ' : ''}${data.source === 'local' ? '⚠️ Đang dùng số liệu lưu trên máy (tối đa 90 ngày gần nhất)' + (data.error ? ' - máy chủ: ' + esc(data.error) : '') : 'Số liệu từ máy chủ'} • Chỉ tính "đã thực hiện" khi ảnh chụp đã lên máy chủ • Ngày hôm nay chưa nộp không tính vi phạm.
@@ -1406,6 +1405,169 @@
       try { history.replaceState(null, '', location.pathname); } catch (e) {}
     }
     setTimeout(() => this.checkInboxNotifications(), 2500);
+  };
+
+  // =========================================================================
+  // 7. V29d: CHỨC DANH, HỘI ĐỒNG QUẢN TRỊ / BAN GIÁM ĐỐC, PHÓ KHOA / PHÓ PHÒNG, QUYỀN BÁO CÁO
+  // =========================================================================
+  // Giá trị option: "vai_trò|chức_danh|nhóm_lãnh_đạo". Vai trò quyết định quyền:
+  //  admin = toàn quyền; supervisor = lãnh đạo viện (bật "Được duyệt" để xem/duyệt toàn viện);
+  //  manager = lãnh đạo khoa/phòng (phân công, báo cáo khoa mình); staff = chỉ gửi ảnh 5S.
+  const ROLE_CATALOG = [
+    { label: '🏛️ Hội đồng quản trị', group: 'hdqt', items: [
+      ['supervisor', 'Chủ tịch Hội đồng quản trị'], ['supervisor', 'Phó Chủ tịch Hội đồng quản trị'],
+      ['supervisor', 'Thành viên Hội đồng quản trị'], ['supervisor', 'Thư ký Hội đồng quản trị']] },
+    { label: '👔 Ban giám đốc', group: 'bgd', items: [
+      ['supervisor', 'Giám đốc'], ['supervisor', 'Phó Giám đốc'], ['supervisor', 'Phó Giám đốc chuyên môn'],
+      ['supervisor', 'Phó Giám đốc hành chính'], ['supervisor', 'Trợ lý Giám đốc']] },
+    { label: '🌟 Ban Chỉ Đạo 5S (toàn quyền Admin)', items: [
+      ['admin', 'Trưởng Ban Chỉ Đạo 5S / Ban Giám Đốc', '👑 Trưởng Ban Chỉ Đạo 5S'], ['admin', 'Cán bộ Giám sát 5S Toàn Viện', '🔍 Cán bộ Giám sát 5S Toàn Viện & QLCL']] },
+    { label: '🩺 Lãnh đạo Khoa chuyên môn', items: [
+      ['manager', 'Trưởng Khoa'], ['manager', 'Phó Trưởng Khoa'], ['manager', 'BSCKII - Trưởng Khoa'], ['manager', 'BSCKI - Trưởng Khoa'],
+      ['manager', 'ThS. Bác sĩ - Trưởng Khoa'], ['manager', 'BSCKII - Phó Trưởng Khoa'], ['manager', 'BSCKI - Phó Trưởng Khoa'],
+      ['manager', 'Điều dưỡng Trưởng Khoa'], ['manager', 'Kỹ thuật viên Trưởng'], ['manager', 'Hộ sinh Trưởng Khoa']] },
+    { label: '🏢 Lãnh đạo Phòng chức năng', items: [
+      ['manager', 'Trưởng Phòng'], ['manager', 'Phó Trưởng Phòng'], ['manager', 'Kế toán trưởng'],
+      ['manager', 'Phó Kế toán trưởng'], ['manager', 'Phó Phòng phụ trách'], ['manager', 'Tổ trưởng / Trưởng bộ phận'],
+      ['manager', 'Trưởng Phòng Chức Năng']] },
+    { label: '📑 Nhân viên Phòng chức năng', items: [
+      ['staff', 'Chuyên viên'], ['staff', 'Kế toán viên'], ['staff', 'Thủ quỹ'], ['staff', 'Thủ kho'],
+      ['staff', 'Nhân viên Hành chính / Kế toán'], ['staff', 'Nhân viên Kế hoạch tổng hợp'], ['staff', 'Nhân viên Tổ chức - Nhân sự'],
+      ['staff', 'Nhân viên Vật tư - Thiết bị y tế'], ['staff', 'Nhân viên Chăm sóc khách hàng'], ['staff', 'Kỹ sư / Nhân viên CNTT - Kỹ thuật'],
+      ['staff', 'Lái xe'], ['staff', 'Bảo vệ']] },
+    { label: '🏥 Cán bộ chuyên môn & Nhân viên 5S', items: [
+      ['staff', 'Bác sĩ Điều trị'], ['staff', 'Điều dưỡng viên'], ['staff', 'Kỹ thuật viên CĐHA'], ['staff', 'Kỹ thuật viên Xét nghiệm'],
+      ['staff', 'Dược sĩ / Quản lý kho dược'], ['staff', 'Hộ sinh viên'], ['staff', 'Hộ lý / Nhân viên vệ sinh', '🧹 Hộ lý / Nhân viên vệ sinh khử khuẩn'],
+      ['staff', 'Cán bộ / Nhân viên 5S']] }
+  ];
+  const LEADER_GROUPS = { hdqt: 'Hội đồng quản trị', bgd: 'Ban giám đốc' };
+
+  P.roleOptionsHtml = function (s) {
+    const isNew = !s;
+    return ROLE_CATALOG.map(g => `<optgroup label="${esc(g.label)}">${g.items.map(([role, title, label]) => {
+      const sel = isNew ? (title === 'Điều dưỡng viên') : (s.role === role && (s.role_title || s.title) === title);
+      return `<option value="${esc(role + '|' + title + '|' + (g.group || '-'))}" ${sel ? 'selected' : ''}>${esc(label || title)}</option>`;
+    }).join('')}</optgroup>`).join('');
+  };
+
+  P.leaderGroupSelectHtml = function (prefix, current) {
+    return `
+      <label class="block p-2.5 rounded-xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 space-y-1">
+        <span class="block text-[11px] font-bold text-amber-900 dark:text-amber-200">🏛️ Thuộc danh sách lãnh đạo (hiện riêng ở tab Nhân sự):</span>
+        <select id="${prefix}-group" class="w-full bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-lg p-2 text-xs font-bold text-slate-900 dark:text-white">
+          <option value="" ${!current ? 'selected' : ''}>Không (nhân sự khoa / phòng)</option>
+          <option value="hdqt" ${current === 'hdqt' ? 'selected' : ''}>Hội đồng quản trị</option>
+          <option value="bgd" ${current === 'bgd' ? 'selected' : ''}>Ban giám đốc</option>
+        </select>
+      </label>`;
+  };
+
+  // Chọn chức danh trong danh mục => tự điền chức danh và nhóm lãnh đạo
+  P.onRoleSelectChange = function (val, prefix) {
+    if (!val) return;
+    const parts = val.split('|');
+    const titleInput = document.getElementById(prefix + '-title');
+    if (titleInput) titleInput.value = parts[1] || 'Cán bộ 5S';
+    const customTitle = document.getElementById(prefix + '-custom-role-title');
+    if (customTitle && parts.length >= 3) customTitle.value = parts[1] || '';
+    const groupSel = document.getElementById(prefix + '-group');
+    if (groupSel && parts.length >= 3) groupSel.value = parts[2] === '-' ? '' : parts[2];
+  };
+
+  P.isBoardMember = function (u) {
+    const user = u || this.getCurrentUser();
+    return !!(user && (user.leader_group === 'hdqt' || user.leader_group === 'bgd'));
+  };
+
+  // Phó khoa / phó phòng: nhập ở hồ sơ khoa (không giới hạn) + nhân sự có chức danh "Phó ..." của khoa
+  P.getDeptDeputies = function (d) {
+    if (!d) return [];
+    const out = [];
+    const add = (n) => { const v = String(n || '').trim(); if (v && !out.some(x => x.toLowerCase() === v.toLowerCase())) out.push(v); };
+    (Array.isArray(d.deputies) ? d.deputies : []).forEach(add);
+    (this.data.staff || []).forEach(s => {
+      if (!s || String(s.department_id) !== String(d.id) || this.isBoardMember(s)) return;
+      const t = String(s.role_title || s.title || '');
+      if (/(^|\s|-)Phó (Trưởng )?(Khoa|Phòng)\b|Phó Kế toán trưởng|Phó Phòng/i.test(t)) add(s.name);
+    });
+    return out;
+  };
+
+  P.renderLeadershipGroupsHtml = function () {
+    const q = String(this.staffSearchQuery || '').trim().toLowerCase();
+    const admin = this.isAdmin();
+    const order = (t) => {
+      const ranks = ['Chủ tịch', 'Phó Chủ tịch', 'Thành viên', 'Thư ký', 'Giám đốc', 'Phó Giám đốc', 'Trợ lý'];
+      const i = ranks.findIndex(r => String(t || '').startsWith(r));
+      return i < 0 ? 99 : i;
+    };
+    const blocks = Object.entries(LEADER_GROUPS).map(([key, label]) => {
+      let list = (this.data.staff || []).filter(s => s && s.leader_group === key);
+      const total = list.length;
+      if (q) list = list.filter(s => `${s.name} ${s.code} ${s.role_title || ''} ${s.title || ''}`.toLowerCase().includes(q));
+      if (q && !list.length) return '';
+      list.sort((a, b) => order(a.role_title || a.title) - order(b.role_title || b.title) || String(a.name).localeCompare(String(b.name), 'vi'));
+      return `
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border ${key === 'hdqt' ? 'border-amber-300 dark:border-amber-800' : 'border-indigo-300 dark:border-indigo-800'} p-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black ${key === 'hdqt' ? 'text-amber-800 dark:text-amber-300' : 'text-indigo-800 dark:text-indigo-300'}">${key === 'hdqt' ? '🏛️' : '👔'} ${label.toUpperCase()} (${total})</span>
+            ${admin ? `<span class="text-[10px] text-slate-400">Thêm: tạo / sửa tài khoản → chọn chức danh nhóm này</span>` : ''}
+          </div>
+          ${list.length ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">${list.map(s => `
+            <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-slate-900 dark:text-white truncate">${esc(s.name)}</div>
+                <div class="text-[10px] text-slate-500 truncate">${esc(s.role_title || s.title || '')} • <span class="font-mono">${esc(s.code)}</span></div>
+              </div>
+              ${admin ? `<button onclick="app5s.openEditStaffModal('${jsq(s.code)}')" title="Sửa" class="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-emerald-600"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>` : ''}
+            </div>`).join('')}</div>` : `<div class="text-[11px] text-slate-400">Chưa có thành viên.${admin ? ' Vào sửa tài khoản, chọn chức danh trong nhóm "' + label + '".' : ''}</div>`}
+        </div>`;
+    }).join('');
+    return blocks ? `<div class="space-y-2">${blocks}</div>` : '';
+  };
+
+  // Admin chính (tài khoản quản trị gốc) - dùng cho thao tác không hoàn tác như xóa toàn bộ dữ liệu 5S
+  P.isRootAdmin = function () {
+    const u = this.getCurrentUser();
+    const codes = (typeof REVIEW_POLICY !== 'undefined' && REVIEW_POLICY.ADMIN_CODES) || ['BV-345'];
+    return !!(u && codes.includes(normCode(u.code)));
+  };
+
+  // Báo cáo / Excel / In / Thống kê: lãnh đạo khoa phòng, người duyệt 5S, HĐQT / Ban giám đốc, Admin
+  const origCanUseReports = P.canUseReports;
+  P.canUseReports = function () {
+    return !!(origCanUseReports && origCanUseReports.call(this)) || this.isBoardMember();
+  };
+  const origStatsAccess = P.statsAccess;
+  P.statsAccess = function () {
+    const a = origStatsAccess.call(this);
+    if (this.isBoardMember()) { a.leader = true; a.seeViolations = true; }
+    return a;
+  };
+  const guardReport = (name, label) => {
+    const orig = P[name];
+    if (typeof orig !== 'function') return;
+    P[name] = function () {
+      if (!this.canUseReports()) { this.showToast(`🔒 ${label} chỉ dành cho lãnh đạo khoa phòng và tài khoản duyệt 5S.`); return; }
+      return orig.apply(this, arguments);
+    };
+  };
+  [['openDailySummaryModal', 'Báo cáo 5S'], ['openGoogleSheetSyncModal', 'Xuất Excel'], ['exportScheduleToExcel', 'Xuất Excel'],
+   ['saveGoogleSheetUrl', 'Xuất Excel'], ['printDailyEvaluationReport', 'In báo cáo'], ['openCustomPrintModal', 'In báo cáo'],
+   ['executeCustomPrint', 'In báo cáo'], ['exportStatsCsv', 'Xuất Excel'], ['printStats', 'In báo cáo']
+  ].forEach(([n, l]) => guardReport(n, l));
+  const origRenderStats = P.renderStatsTab;
+  P.renderStatsTab = function () {
+    if (!this.canUseReports()) return '<div class="p-6 text-center text-xs text-slate-400">🔒 Báo cáo 5S chỉ dành cho lãnh đạo khoa phòng và tài khoản duyệt 5S.</div>';
+    return origRenderStats.apply(this, arguments);
+  };
+
+  const origUpdateUI2 = P.updateUserInterface;
+  P.updateUserInterface = function () {
+    const r = origUpdateUI2.apply(this, arguments);
+    const btn = document.getElementById('header-print-btn');
+    if (btn) btn.style.display = this.canUseReports() ? '' : 'none';
+    return r;
   };
 
   const startWatcher = () => { if (window.app5s && window.app5s.initInboxWatcher) window.app5s.initInboxWatcher(); else setTimeout(startWatcher, 500); };

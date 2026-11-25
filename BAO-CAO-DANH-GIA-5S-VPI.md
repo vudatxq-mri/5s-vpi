@@ -110,6 +110,14 @@ và kiểm thử bản sửa trên máy (localhost). Bản gốc lưu trong thư
   Mở hộp thư => tin được đánh dấu `admin_read` trên mọi máy của Admin. Giới hạn: khi app đã đóng hẳn / điện thoại khóa lâu,
   tin mới chỉ báo khi mở lại app (chưa có Web Push).
 - **Thống kê** (V29c): bỏ "Không tính Chủ nhật" (5S làm cả 7 ngày); bộ lọc Tất cả / Đã thực hiện / Chưa thực hiện kèm số lượng.
+- **Chức danh** (V29d): danh mục chung cho Thêm/Sửa tài khoản: Hội đồng quản trị, Ban giám đốc, Ban chỉ đạo 5S, lãnh đạo khoa
+  (Trưởng/Phó Trưởng khoa...), lãnh đạo phòng chức năng (Trưởng phòng, Phó Trưởng phòng, Kế toán trưởng, Phó Kế toán trưởng...),
+  nhân viên phòng chức năng (Chuyên viên, Kế toán viên, Thủ quỹ...). Khoa/phòng nhập được nhiều Phó khoa/Phó phòng (`departments.deputies`),
+  kèm tự nhận nhân sự có chức danh "Phó ...".
+- **HĐQT / Ban giám đốc** (V29d): trường `staff.leader_group` (`hdqt` | `bgd`, chỉ Admin sửa, máy chủ bảo vệ); tab Nhân sự hiện
+  2 danh sách riêng ở đầu; thành viên được xem báo cáo toàn viện.
+- **Quyền** (V29d): "Xóa dữ liệu & triển khai mới" chỉ tài khoản Admin chính (`ADMIN_CODES`), kể cả máy chủ. Báo cáo 5S / Xuất Excel /
+  In báo cáo / tab Thống kê chỉ cho lãnh đạo khoa phòng, người duyệt 5S, HĐQT/BGĐ, Admin; tài khoản thường bị ẩn và máy chủ từ chối `/api/report`.
 - **Phân quyền khu vực** (`staff.area_scope = {all, rooms[]}`, chỉ Admin sửa, máy chủ kiểm tra): Thống kê → "Phân quyền khu vực"
   hoặc Nhân sự → Sửa → "📍 Phân quyền khu vực 5S". Mặc định: người duyệt = toàn viện; lãnh đạo khoa = khu vực khoa mình.
 - **Bỏ tải ảnh từ máy**: chỉ chụp camera; camera hệ thống chỉ nhận ảnh chụp trong 3 phút; camera lỗi không tạo ảnh giả.

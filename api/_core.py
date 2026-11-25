@@ -77,7 +77,9 @@ REVIEW_FIELDS_AUDIT = (
     'evaluation_date', 'evaluation_time', 'evaluation_notes', 'issue_detected', 'remedy_deadline',
 )
 PROTECTED_STAFF_FIELDS = ('code', 'staff_code', 'role', 'role_level', 'is_admin', 'is_supervisor', 'can_review',
-                          'area_scope')  # V29: khu vực được giao (chỉ Admin sửa)
+                          'area_scope',     # V29: khu vực được giao (chỉ Admin sửa)
+                          'leader_group')   # V29d: Hội đồng quản trị / Ban giám đốc (chỉ Admin sửa)
+BOARD_GROUPS = ('hdqt', 'bgd')
 REVIEW_STATUSES = ('approved', 'rejected')
 
 
@@ -672,8 +674,9 @@ def delete_all_photos(deadline):
 
 
 def reset_5s_data(u, confirm):
-    if not is_admin(u):
-        raise ApiError(403, 'Chỉ Admin được xóa toàn bộ dữ liệu 5S')
+    # V29d: chỉ tài khoản Admin chính (ADMIN_CODES), không cấp cho tài khoản được gán vai trò admin
+    if norm_code(u.get('code')) not in ADMIN_CODES:
+        raise ApiError(403, 'Chỉ tài khoản Admin được xóa toàn bộ dữ liệu 5S')
     if confirm != RESET_CONFIRM:
         raise ApiError(400, 'Thiếu xác nhận xóa dữ liệu')
     started = time.time()
@@ -847,6 +850,10 @@ def _parse_day(s):
 
 
 def report_rows(u, date_from, date_to):
+    # V29d: báo cáo chỉ dành cho lãnh đạo khoa phòng, người duyệt 5S, Ban giám đốc, Admin
+    board = u.get('leader_group') in BOARD_GROUPS
+    if not (is_manager(u) or can_review(u) or board):
+        raise ApiError(403, 'Báo cáo 5S chỉ dành cho lãnh đạo khoa phòng và người duyệt 5S')
     d1, d2 = _parse_day(date_from), _parse_day(date_to)
     if not d1 or not d2 or d2 < d1:
         raise ApiError(400, 'Khoảng ngày không hợp lệ')
@@ -862,7 +869,7 @@ def report_rows(u, date_from, date_to):
         if not part or len(part) < PAGE:
             break
         offset += PAGE
-    leader = is_leader(u)
+    leader = is_leader(u) or board
     rooms_cache = {}
     out = []
     for r in rows:
