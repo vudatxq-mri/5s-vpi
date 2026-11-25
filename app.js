@@ -819,7 +819,7 @@ class App5S {
         localStorage.setItem('vpi_5s_saved_auth', JSON.stringify(savedAuth));
       }
     } catch (e) {}
-    const CURRENT_VERSION = 'v29b_20261125';
+    const CURRENT_VERSION = 'v29c_20261125';
     try {
       const savedVer = localStorage.getItem('vpi_5s_app_version');
       if (savedVer !== CURRENT_VERSION) {
@@ -827,7 +827,7 @@ class App5S {
         if ('caches' in window) {
           caches.keys().then(keys => {
             keys.forEach(k => {
-              if (k !== 'vpi-5s-cache-v29b_20261125') caches.delete(k);
+              if (k !== 'vpi-5s-cache-v29c_20261125') caches.delete(k);
             });
           });
         }
@@ -3145,7 +3145,7 @@ Trân trọng cảm ơn!`);
         <div class="flex items-center justify-between border-b pb-3">
           <div class="flex items-center space-x-2">
             <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-              <i data-lucide="key-round" class="w-5 h-5"></i>
+              <i data-lucide="key" class="w-5 h-5"></i>
             </div>
             <div>
               <h3 class="text-sm font-black text-slate-900 dark:text-white">QUÊN MẬT KHẨU ĐĂNG NHẬP</h3>
@@ -6539,6 +6539,10 @@ Trân trọng cảm ơn!`);
             <div class="flex items-center space-x-1">
               <!-- V16: Nút Sửa & Xóa nhân sự CHỈ HIỂN THỊ cho Quản Lý Khoa hoặc Admin -->
               ${(this.isAdmin() || this.canManageDeptStaff(s.department_id)) ? `
+                ${this.canResetPasswordFor && this.canResetPasswordFor(s) ? `
+                <button onclick="app5s.openPasswordResetModal('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-700 transition" title="Cấp lại mật khẩu (nhân viên quên mật khẩu)">
+                  <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                </button>` : ''}
                 <button onclick="app5s.openEditStaffModal('${s.code}')" class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition" title="Chỉnh sửa chức danh & phân công buồng phòng">
                   <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                 </button>
@@ -6608,10 +6612,17 @@ Trân trọng cảm ơn!`);
             </h2>
           </div>
           ${(this.isAdmin() || this.isDepartmentManager()) ? `
-            <button onclick="app5s.openAddAccountModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
-              <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
-              <span>${this.isAdmin() ? 'Thêm Tài Khoản' : 'Thêm Nhân Viên'}</span>
-            </button>
+            <div class="flex flex-col items-end gap-1.5">
+              <button onclick="app5s.openAddAccountModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+                <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                <span>${this.isAdmin() ? 'Thêm Tài Khoản' : 'Thêm Nhân Viên'}</span>
+              </button>
+              <!-- V29c: cấp lại mật khẩu cho nhân viên quên / mất mật khẩu -->
+              <button onclick="app5s.openPasswordResetModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition flex items-center space-x-1">
+                <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                <span>Cấp lại mật khẩu</span>
+              </button>
+            </div>
           ` : ''}
         </div>
 
@@ -7699,6 +7710,11 @@ Trân trọng cảm ơn!`);
               <input type="password" id="edit-staff-pass" placeholder="(Giữ nguyên)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-mono text-slate-900 dark:text-white">
             </div>
           </div>
+          ${this.canResetPasswordFor && this.canResetPasswordFor(s) ? `
+          <button type="button" onclick="app5s.openPasswordResetModal('${s.code}')" class="w-full p-2.5 rounded-xl border border-indigo-300 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-200 text-xs font-bold flex items-center justify-between">
+            <span>🔑 Nhân viên quên mật khẩu? Cấp mật khẩu tạm</span>
+            <span>›</span>
+          </button>` : ''}
 
           <!-- PHÂN CÔNG NHIỀU VỊ TRÍ PHỤ TRÁCH 5S -->
           <div class="pt-2 border-t border-slate-200 dark:border-slate-700 space-y-2">
@@ -9075,7 +9091,7 @@ Trân trọng cảm ơn!`);
         <!-- BẢO MẬT & ĐỔI MẬT KHẨU -->
         <div class="grid grid-cols-2 gap-2 pt-1 text-xs font-bold">
           <button onclick="app5s.openChangePasswordModal()" class="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl flex items-center justify-center space-x-1.5 border border-slate-200 dark:border-slate-600 transition">
-            <i data-lucide="key-round" class="w-3.5 h-3.5 text-indigo-600"></i>
+            <i data-lucide="key" class="w-3.5 h-3.5 text-indigo-600"></i>
             <span>Đổi Mật Khẩu</span>
           </button>
           <button onclick="app5s.logout()" class="py-2.5 px-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl flex items-center justify-center space-x-1.5 border border-red-200 transition">

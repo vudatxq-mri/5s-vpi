@@ -9,11 +9,11 @@
  *  - Khi mất mạng, API trả về mã 503 (trước đây trả 200 khiến app tưởng đã đồng bộ thành công)
  */
 
-const CACHE_NAME = "vpi-5s-cache-v29b_20261125";
+const CACHE_NAME = "vpi-5s-cache-v29c_20261125";
 const STATIC_ASSETS = [
   "/",
-  "/app.js?v=20261125_v29b",
-  "/app-v29.js?v=20261125_v29b",
+  "/app.js?v=20261125_v29c",
+  "/app-v29.js?v=20261125_v29c",
   "/style.css?v=20261120_v25",
   "/css/app.css?v=20261120_v25",
   "/manifest.json",
@@ -58,6 +58,23 @@ function putInCache(request, response) {
   }
   return response;
 }
+
+// V29c: bấm vào thông báo "Hòm thư có tin mới" => mở app và mở hòm thư
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "/?inbox=1";
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+      for (const c of list) {
+        if (c.url && new URL(c.url).origin === self.location.origin) {
+          c.postMessage({ type: "open-inbox" });
+          return c.focus();
+        }
+      }
+      return self.clients.openWindow(url);
+    })
+  );
+});
 
 // 3. Xử lý yêu cầu mạng
 self.addEventListener("fetch", (event) => {

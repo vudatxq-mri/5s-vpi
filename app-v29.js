@@ -394,7 +394,8 @@
       const today = this.getTodayDateString();
       let grades = DEFAULT_GRADES;
       try { const g = JSON.parse(localStorage.getItem('vpi_5s_grade_thresholds') || 'null'); if (g && g.excellent) grades = g; } catch (e) {}
-      this.statsState = { view: 'areas', from: today, to: today, dept: 'all', skipSunday: true, onlyMissing: false, grades, personQ: '' };
+      // V29c: 5S thực hiện tất cả các ngày trong tuần (kể cả Chủ nhật) => không còn tùy chọn bỏ Chủ nhật
+      this.statsState = { view: 'areas', from: today, to: today, dept: 'all', doneFilter: 'all', grades, personQ: '' };
     }
     return this.statsState;
   };
@@ -441,8 +442,16 @@
     else if (p === 'year') { st.from = `${y}-01-01`; st.to = t; }
     this.render();
   };
-  P.toggleStatsSunday = function (v) { this.getStatsState().skipSunday = !!v; this.render(); };
-  P.toggleStatsOnlyMissing = function (v) { this.getStatsState().onlyMissing = !!v; this.render(); };
+  // V29c: lọc khu vực Tất cả / Đã thực hiện / Chưa thực hiện
+  P.setStatsDoneFilter = function (v) { this.getStatsState().doneFilter = ['done', 'missing'].includes(v) ? v : 'all'; this.render(); };
+  const NOT_DONE = ['missing', 'todayPending'];
+  const DONE = ['approved', 'rejected', 'submitted'];
+  // Ngày: theo trạng thái ô. Nhiều ngày: "Đã thực hiện" = làm đủ mọi ngày phải làm; "Chưa thực hiện" = còn ít nhất 1 ngày chưa làm.
+  P.statsRoomGroup = function (a, cellStatus) {
+    if (cellStatus !== undefined) return DONE.includes(cellStatus) ? 'done' : NOT_DONE.includes(cellStatus) ? 'missing' : 'off';
+    if (!a || a.required + a.todayPending === 0) return 'off';
+    return a.missing + a.todayPending > 0 ? 'missing' : 'done';
+  };
   P.setStatsPersonQuery = function (q) { this.getStatsState().personQ = q; clearTimeout(this.statsQTimer); this.statsQTimer = setTimeout(() => this.render(), 200); };
   P.setStatsGrade = function (key, idx, v) {
     const st = this.getStatsState();
@@ -560,7 +569,6 @@
       const da = deptAgg.get(dk);
       const startDay = room.created_at && room.created_at > st.from ? room.created_at : st.from;
       for (let d = startDay; d <= end; d = addDays(d, 1)) {
-        if (st.skipSunday && weekday(d) === 0) continue;
         const r = rec.get(`${room.id}|${d}`);
         let status;
         if (r && r.w === false) status = 'off';
@@ -683,7 +691,7 @@
           </div>
           <div class="flex flex-wrap items-center gap-1.5">
             ${preset('today', 'Hôm nay')}${preset('yesterday', 'Hôm qua')}${preset('7d', '7 ngày')}${preset('month', 'Tháng này')}${preset('quarter', 'Quý này')}${preset('year', 'Năm nay')}
-            <label class="ml-auto flex items-center space-x-1 text-[11px] text-slate-600 dark:text-slate-300"><input type="checkbox" ${st.skipSunday ? 'checked' : ''} onchange="app5s.toggleStatsSunday(this.checked)" class="w-3.5 h-3.5 rounded"><span>Không tính Chủ nhật</span></label>
+            <span class="ml-auto text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">Tính đủ 7 ngày/tuần (cả Chủ nhật)</span>
           </div>
           <div class="text-[10px] text-slate-400">
             ${data.loading && data.rows ? 'Đang cập nhật số liệu mới nhất... • ' : ''}${data.source === 'local' ? '⚠️ Đang dùng số liệu lưu trên máy (tối đa 90 ngày gần nhất)' + (data.error ? ' - máy chủ: ' + esc(data.error) : '') : 'Số liệu từ máy chủ'} • Chỉ tính "đã thực hiện" khi ảnh chụp đã lên máy chủ • Ngày hôm nay chưa nộp không tính vi phạm.
@@ -728,13 +736,18 @@
     S.rooms.forEach(r => { const k = String(r.department_id); if (!byDept.has(k)) byDept.set(k, []); byDept.get(k).push(r); });
     const depts = this.getFiveSDepartments().filter(d => byDept.has(String(d.id)));
     const cellMap = new Map(S.cells.map(c => [`${c.room.id}|${c.date}`, c]));
+    const flt = st.doneFilter || 'all';
+    const cellOf = (r) => cellMap.get(`${r.id}|${st.from}`) || { status: 'missing', rec: null };
+    const groupOf = (r) => isDay ? this.statsRoomGroup(null, cellOf(r).status) : this.statsRoomGroup(S.roomAgg.get(String(r.id)));
+    const counts = { all: S.rooms.length, done: 0, missing: 0 };
+    S.rooms.forEach(r => { const g = groupOf(r); if (counts[g] !== undefined) counts[g]++; });
     const blocks = depts.map(d => {
       let rooms = byDept.get(String(d.id)).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
       const rows = rooms.map(r => {
         const a = S.roomAgg.get(String(r.id));
+        if (flt !== 'all' && groupOf(r) !== flt) return '';
         if (isDay) {
-          const c = cellMap.get(`${r.id}|${st.from}`) || { status: (st.skipSunday && weekday(st.from) === 0) ? 'off' : 'missing', rec: null };
-          if (st.onlyMissing && !['missing', 'todayPending'].includes(c.status)) return '';
+          const c = cellOf(r);
           const rr = c.rec;
           return `<tr class="border-t border-slate-100 dark:border-slate-700">
             <td class="py-1.5 pr-2 font-bold text-slate-800 dark:text-slate-100">${esc(r.name)}</td>
@@ -742,7 +755,6 @@
             <td class="py-1.5 pr-2 text-slate-500">${rr && rr.u ? `${esc(rr.b || '')}${rr.t ? ' • ' + esc(rr.t) : ''}` : ''}${rr && rr.is && c.status === 'rejected' ? `<div class="text-red-600">Lỗi: ${esc(rr.is)}</div>` : ''}</td>
           </tr>`;
         }
-        if (st.onlyMissing && !a.missing) return '';
         return `<tr class="border-t border-slate-100 dark:border-slate-700">
           <td class="py-1.5 pr-2 font-bold text-slate-800 dark:text-slate-100">${esc(r.name)}</td>
           <td class="py-1.5 pr-2 text-center">${a.required}</td>
@@ -771,7 +783,15 @@
     }).join('');
     return `
       ${this.renderStatsSummary(S.total, isDay)}
-      <label class="flex items-center space-x-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-300"><input type="checkbox" ${st.onlyMissing ? 'checked' : ''} onchange="app5s.toggleStatsOnlyMissing(this.checked)" class="w-3.5 h-3.5 rounded"><span>Chỉ hiện khu vực CHƯA THỰC HIỆN</span></label>
+      <div class="space-y-1">
+        <div class="grid grid-cols-3 gap-1.5" role="group" aria-label="Lọc khu vực theo trạng thái thực hiện">
+          ${[['all', 'Tất cả khu vực', 'bg-slate-800 text-white', 'border-slate-300 text-slate-700 dark:text-slate-200'],
+             ['done', 'Đã thực hiện', 'bg-emerald-600 text-white', 'border-emerald-300 text-emerald-700 dark:text-emerald-300'],
+             ['missing', 'Chưa thực hiện', 'bg-red-600 text-white', 'border-red-300 text-red-700 dark:text-red-300']].map(([id, label, on, off]) =>
+            `<button onclick="app5s.setStatsDoneFilter('${id}')" aria-pressed="${flt === id}" class="py-2 px-1 rounded-xl text-[11px] font-black border transition ${flt === id ? on + ' border-transparent shadow-xs' : 'bg-white dark:bg-slate-800 ' + off}">${label} <span class="opacity-80">(${counts[id]})</span></button>`).join('')}
+        </div>
+        ${!isDay && flt !== 'all' ? `<div class="text-[10px] text-slate-400">${flt === 'done' ? 'Khu vực đã thực hiện đủ tất cả các ngày trong khoảng đã chọn.' : 'Khu vực còn ít nhất 1 ngày chưa thực hiện trong khoảng đã chọn.'}</div>` : ''}
+      </div>
       ${blocks || '<div class="p-6 text-center text-xs text-slate-400 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">Không có khu vực nào phù hợp bộ lọc.</div>'}
     `;
   };
@@ -955,7 +975,7 @@
     return {
       title: `BÁO CÁO KHU VỰC THỰC HIỆN / CHƯA THỰC HIỆN 5S (${range})`, file: `KhuVuc5S_${st.from}_${st.to}`,
       head: ['STT', 'Ngày', 'Khoa/Phòng', 'Khu vực', 'Trạng thái', 'Người nộp', 'Giờ nộp', 'Người phụ trách', 'Lỗi ghi nhận'],
-      rows: cells.filter(c => !st.onlyMissing || ['missing', 'todayPending'].includes(c.status)).map((c, i) => [i + 1, fmtVN(c.date), deptName(c.room.department_id), c.room.name, stTxt[c.status] || c.status,
+      rows: cells.filter(c => !st.doneFilter || st.doneFilter === 'all' || this.statsRoomGroup(null, c.status) === st.doneFilter).map((c, i) => [i + 1, fmtVN(c.date), deptName(c.room.department_id), c.room.name, stTxt[c.status] || c.status,
         c.rec && c.rec.u ? c.rec.b : '', c.rec && c.rec.u ? c.rec.t : '', ((c.rec && c.rec.st) || []).map(x => x.name).join(', '), c.rec && c.status === 'rejected' ? c.rec.is : ''])
     };
   };
@@ -999,4 +1019,395 @@
       setTimeout(() => frame.remove(), 60000);
     }, 300);
   };
+
+  // =========================================================================
+  // 5. V29c: CẤP LẠI MẬT KHẨU CHO NHÂN VIÊN BỊ QUÊN / MẤT MẬT KHẨU
+  //    Vào: Nhân sự → nút "Cấp lại mật khẩu" (hoặc biểu tượng chìa khóa ở từng người),
+  //         Hộp thư Admin → yêu cầu "Cấp lại mật khẩu" → nút "Cấp lại mật khẩu ngay".
+  //    Máy chủ sinh mật khẩu tạm, bắt buộc đổi ở lần đăng nhập kế tiếp, đăng xuất các phiên cũ.
+  // =========================================================================
+  P.canResetPasswordFor = function (s) {
+    const me = this.getCurrentUser();
+    if (!me || !s) return false;
+    if (normCode(s.code) === normCode(me.code)) return false;
+    if (this.isAdmin()) return true;
+    const isReviewer = s.can_review || s.role === 'admin' || s.is_admin;
+    return !isReviewer && this.isDepartmentManager() && String(s.department_id) === String(this.getUserDepartmentId());
+  };
+
+  P.canResetPasswords = function () {
+    return this.isAdmin() || this.isDepartmentManager();
+  };
+
+  P.openPasswordResetModal = function (code, msgId) {
+    if (!this.canResetPasswords()) { this.showToast('🔒 Chỉ Admin hoặc lãnh đạo khoa được cấp lại mật khẩu.'); return; }
+    this.pwResetState = { q: '', code: code ? normCode(code) : '', msgId: msgId || null, result: null, busy: false, error: '' };
+    this.renderPwResetModal();
+  };
+
+  P.setPwResetQuery = function (q) {
+    this.pwResetState.q = q;
+    clearTimeout(this.pwResetTimer);
+    this.pwResetTimer = setTimeout(() => this.renderPwResetModal(), 200);
+  };
+
+  P.pickPwResetStaff = function (code) {
+    Object.assign(this.pwResetState, { code: normCode(code), error: '' });
+    this.renderPwResetModal();
+  };
+
+  P.renderPwResetModal = function () {
+    const st = this.pwResetState;
+    if (!st) return;
+    const depts = new Map((this.data.departments || []).map(d => [String(d.id), d]));
+    const deptName = (id) => (depts.get(String(id)) || {}).name || '';
+    const s = st.code ? (this.data.staff || []).find(x => normCode(x.code) === st.code) : null;
+    let body = '';
+    if (st.result) {
+      const r = st.result;
+      body = `
+        <div class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 space-y-2">
+          <div class="font-black">✅ Đã cấp lại mật khẩu cho ${esc(r.name)} (${esc(r.code)})</div>
+          <div class="text-[11px]">Mật khẩu tạm:</div>
+          <div class="flex items-center gap-2">
+            <code id="pw-reset-temp" class="flex-1 text-center text-xl font-black tracking-widest bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-700 rounded-xl py-2 select-all">${esc(r.temp_password)}</code>
+            <button onclick="app5s.copyTempPassword()" class="px-3 py-2.5 rounded-xl bg-emerald-600 text-white font-bold">Sao chép</button>
+          </div>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 space-y-1">
+          <div>1. Báo mật khẩu tạm cho nhân viên <strong>trực tiếp hoặc qua điện thoại</strong> (không gửi vào nhóm chung).</div>
+          <div>2. Nhân viên đăng nhập bằng <strong>Mã NV / tên đăng nhập</strong> và mật khẩu tạm.</div>
+          <div>3. App bắt buộc nhân viên <strong>đặt mật khẩu mới</strong> ngay khi đăng nhập.</div>
+          <div>Các máy đang đăng nhập tài khoản này đã bị đăng xuất. Mật khẩu tạm chỉ hiện một lần tại đây.</div>
+        </div>
+        <button onclick="app5s.closeModal(); app5s.pwResetState = null;" class="w-full py-2.5 rounded-2xl bg-slate-800 text-white font-black">Xong</button>`;
+    } else if (s) {
+      const can = this.canResetPasswordFor(s);
+      body = `
+        <div class="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-0.5">
+          <div class="text-sm font-black text-slate-900 dark:text-white">${esc(s.name)}</div>
+          <div class="text-[11px] text-slate-500">Mã NV: <strong class="font-mono">${esc(s.code)}</strong>${s.username ? ` • Tên đăng nhập: <strong class="font-mono">${esc(s.username)}</strong>` : ''}</div>
+          <div class="text-[11px] text-slate-500">${esc(deptName(s.department_id))}${s.phone ? ` • SĐT: <a class="font-bold text-indigo-600" href="tel:${esc(s.phone)}">${esc(s.phone)}</a>` : ''}</div>
+        </div>
+        <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-[11px]">
+          ⚠️ Xác minh đúng người trước khi cấp (gọi lại số điện thoại trong hồ sơ hoặc gặp trực tiếp). Mật khẩu cũ sẽ hết hiệu lực ngay.
+        </div>
+        ${st.error ? `<div class="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-300 text-red-700 dark:text-red-300 font-bold">${esc(st.error)}</div>` : ''}
+        ${can ? `<button id="pw-reset-btn" onclick="app5s.doPasswordReset()" ${st.busy ? 'disabled' : ''} class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-black">${st.busy ? 'Đang cấp lại...' : '🔑 CẤP MẬT KHẨU TẠM'}</button>`
+          : `<div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300">Bạn không có quyền cấp lại mật khẩu cho tài khoản này (chỉ Admin cấp cho người duyệt 5S / lãnh đạo).</div>`}
+        <button onclick="app5s.pickPwResetStaff('')" class="w-full py-2 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold">‹ Chọn người khác</button>`;
+    } else {
+      const q = st.q.trim().toLowerCase();
+      let list = (this.data.staff || []).filter(x => this.canResetPasswordFor(x));
+      if (q) list = list.filter(x => `${x.name} ${x.code} ${x.username || ''} ${deptName(x.department_id)}`.toLowerCase().includes(q));
+      list.sort((a, b) => String(a.name).localeCompare(String(b.name), 'vi'));
+      const total = list.length;
+      body = `
+        <input id="pw-reset-search" type="search" value="${esc(st.q)}" oninput="app5s.setPwResetQuery(this.value)" placeholder="Tìm theo họ tên, mã NV, tên đăng nhập, khoa..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5">
+        <div class="text-[10px] text-slate-400">${total} tài khoản bạn được cấp lại mật khẩu${total > 40 ? ' • hiện 40 người đầu, gõ tên để tìm' : ''}</div>
+        <div class="space-y-1">
+          ${list.slice(0, 40).map(x => `
+            <button onclick="app5s.pickPwResetStaff('${jsq(x.code)}')" class="w-full text-left p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-indigo-400 flex items-center justify-between gap-2">
+              <span><strong class="text-slate-900 dark:text-white">${esc(x.name)}</strong> <span class="font-mono text-[10px] text-slate-500">${esc(x.code)}</span><br><span class="text-[10px] text-slate-500">${esc(deptName(x.department_id))}</span></span>
+              <span class="text-indigo-600 font-bold shrink-0">Chọn ›</span>
+            </button>`).join('') || '<div class="p-4 text-center text-slate-400">Không tìm thấy tài khoản phù hợp.</div>'}
+        </div>`;
+    }
+    this.showModal(`
+      <div class="p-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar text-xs">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2.5">
+          <div>
+            <h3 class="text-sm font-black text-slate-900 dark:text-white">CẤP LẠI MẬT KHẨU NHÂN VIÊN</h3>
+            <p class="text-[11px] text-slate-500">Dành cho nhân viên quên / mất mật khẩu đăng nhập</p>
+          </div>
+          <button onclick="app5s.closeModal(); app5s.pwResetState = null;" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        ${body}
+      </div>`);
+  };
+
+  P.doPasswordReset = async function () {
+    const st = this.pwResetState;
+    if (!st || !st.code || st.busy) return;
+    if (!this.authToken) { st.error = 'Cần đăng nhập và có mạng để cấp lại mật khẩu.'; this.renderPwResetModal(); return; }
+    st.busy = true; st.error = '';
+    this.renderPwResetModal();
+    try {
+      const res = await this.apiFetch('password', { method: 'POST', body: JSON.stringify({ reset_for: st.code, msg_id: st.msgId }) });
+      if (!res || !res.temp_password) throw new Error('Máy chủ không trả về mật khẩu tạm');
+      st.result = res;
+      // Cập nhật ngay hộp thư trên máy này (máy chủ đã đánh dấu yêu cầu là đã xử lý)
+      (this.data.admin_messages || []).forEach(m => {
+        if (m && (String(m.id) === 'FP-' + st.code || (st.msgId && String(m.id) === String(st.msgId))) && !m.reply) {
+          m.status = 'replied'; m.admin_read = true; m.reply = 'Đã cấp lại mật khẩu tạm.';
+        }
+      });
+      this.showToast(`✅ Đã cấp lại mật khẩu cho ${res.name || res.code}`);
+      setTimeout(() => this.pullStateFromServer(), 1500);
+    } catch (e) {
+      st.error = '❌ ' + ((e && e.message) || 'Không cấp lại được mật khẩu') + (navigator.onLine === false ? ' (mất mạng)' : '');
+    } finally {
+      st.busy = false;
+      this.renderPwResetModal();
+      this.updateInboxIndicators();
+    }
+  };
+
+  P.copyTempPassword = function () {
+    const v = this.pwResetState && this.pwResetState.result && this.pwResetState.result.temp_password;
+    if (!v) return;
+    const done = () => this.showToast('📋 Đã sao chép mật khẩu tạm');
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(v).then(done, () => this.showToast('Hãy chọn và chép mật khẩu thủ công')); return; }
+    } catch (e) {}
+    this.showToast('Hãy chọn và chép mật khẩu thủ công');
+  };
+
+  // =========================================================================
+  // 6. V29c: HÒM THƯ CÓ THÔNG BÁO CHO ADMIN KHI CÓ TIN NHẮN / YÊU CẦU MỚI
+  //    - Số tin chưa đọc trên quả chuông + dải nhắc "Hòm thư có N tin mới" ở đầu màn hình
+  //    - Chuông + thông báo nổi khi tin mới về (kể cả khi app chạy nền, nếu cho phép thông báo)
+  //    - Mở hòm thư => các tin được đánh dấu đã đọc trên mọi máy của Admin
+  // =========================================================================
+  const NOTIFIED_KEY = 'vpi_5s_inbox_notified_v1';
+  const PW_TOPIC = 'Cấp lại mật khẩu';
+
+  P.isInboxOwner = function () { return this.isAdmin(); };
+
+  P.getUnreadInbox = function () {
+    if (!this.isInboxOwner()) return [];
+    const me = normCode((this.getCurrentUser() || {}).code);
+    return (this.data.admin_messages || []).filter(m => m && !m.admin_read && !m.reply && m.status !== 'replied' && normCode(m.sender_code) !== me);
+  };
+
+  P.updateInboxIndicators = function () {
+    const unread = this.getUnreadInbox();
+    const n = unread.length;
+    let pill = document.getElementById('vpi-inbox-alert');
+    const loggedIn = !!this.getCurrentUser();
+    const inboxOpen = !!document.querySelector('#modal-container h3') && /HỘP THƯ TIN NHẮN/.test(document.querySelector('#modal-container h3').textContent);
+    if (n > 0 && loggedIn && !inboxOpen) {
+      if (!pill) {
+        pill = document.createElement('button');
+        pill.id = 'vpi-inbox-alert';
+        pill.type = 'button';
+        pill.setAttribute('aria-live', 'polite');
+        pill.onclick = () => this.openAdminInboxModal();
+        pill.className = 'fixed left-1/2 -translate-x-1/2 z-40 px-3.5 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-black shadow-lg flex items-center gap-1.5';
+        pill.style.top = 'calc(env(safe-area-inset-top, 0px) + 58px)';
+        document.body.appendChild(pill);
+      }
+      const urgent = unread.filter(m => m.priority === 'urgent' || m.topic === PW_TOPIC).length;
+      pill.textContent = `📬 Hòm thư có ${n} tin mới${urgent ? ` (${urgent} khẩn)` : ''} – Mở xem`;
+    } else if (pill) {
+      pill.remove();
+    }
+    // Số trên quả chuông: Admin = phiếu chờ duyệt + tin nhắn chưa đọc
+    const notifEl = document.getElementById('notif-count');
+    if (notifEl && this.isInboxOwner()) {
+      const pending = this.canReview5S() ? (this.data.audits || []).filter(a => a && (a.status === 'pending' || !a.status)).length : 0;
+      const total = pending + n;
+      notifEl.textContent = total > 99 ? '99+' : String(total);
+      notifEl.classList.toggle('hidden', total === 0);
+    }
+    try {
+      if (this.isInboxOwner() && navigator.setAppBadge) { n ? navigator.setAppBadge(n) : navigator.clearAppBadge(); }
+    } catch (e) {}
+    const base = document.title.replace(/^\(\d+\)\s*/, '');
+    document.title = n ? `(${n}) ${base}` : base;
+  };
+
+  P.checkInboxNotifications = function () {
+    if (!this.isInboxOwner()) { this.updateInboxIndicators(); return; }
+    const unread = this.getUnreadInbox();
+    let notified;
+    try { notified = new Set(JSON.parse(localStorage.getItem(NOTIFIED_KEY) || '[]')); } catch (e) { notified = new Set(); }
+    const fresh = unread.filter(m => !notified.has(String(m.id)));
+    if (fresh.length) {
+      fresh.forEach(m => notified.add(String(m.id)));
+      try { localStorage.setItem(NOTIFIED_KEY, JSON.stringify(Array.from(notified).slice(-400))); } catch (e) {}
+      const first = fresh[0];
+      const title = fresh.length === 1
+        ? `📬 ${first.topic === PW_TOPIC ? 'Yêu cầu cấp lại mật khẩu' : 'Tin nhắn mới'} từ ${first.sender_name || first.sender_code || 'nhân viên'}`
+        : `📬 Hòm thư Admin có ${fresh.length} tin nhắn mới`;
+      const body = fresh.length === 1 ? String(first.title || first.content || '').slice(0, 140) : fresh.slice(0, 3).map(m => `• ${m.sender_name || ''}: ${m.title || m.topic || ''}`).join('\n');
+      this.showToast(title);
+      try { this.playNotificationChime(); } catch (e) {}
+      try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+      this.showSystemNotification(title, body);
+    }
+    this.updateInboxIndicators();
+  };
+
+  P.showSystemNotification = function (title, body) {
+    try {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      if (document.visibilityState === 'visible' && document.hasFocus && document.hasFocus()) return; // đang mở app: đã có chuông + dải nhắc
+      const opts = { body, tag: 'vpi-inbox', renotify: true, icon: '/icon-192.png', badge: '/favicon.png', data: { url: '/?inbox=1' } };
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts)).catch(() => { try { new Notification(title, opts); } catch (e) {} });
+      } else {
+        new Notification(title, opts);
+      }
+    } catch (e) {}
+  };
+
+  P.enableInboxNotifications = function () {
+    if (!('Notification' in window)) { this.showToast('Trình duyệt này không hỗ trợ thông báo. Trên iPhone: thêm app vào Màn hình chính rồi mở từ biểu tượng.'); return; }
+    Notification.requestPermission().then(p => {
+      this.showToast(p === 'granted' ? '🔔 Đã bật thông báo hòm thư trên máy này' : '🔕 Chưa được phép hiện thông báo (bật lại trong cài đặt trình duyệt)');
+      if (p === 'granted') this.showSystemNotification('🔔 Thông báo hòm thư 5S VPI đã bật', 'Bạn sẽ nhận thông báo khi có tin nhắn / yêu cầu mới.');
+      this.openAdminInboxModal();
+    });
+  };
+
+  // Hòm thư (thay bản cũ): đánh dấu tin MỚI, nút cấp lại mật khẩu, bật thông báo, sửa lỗi nút trả lời với mã tin dạng chữ
+  P.openAdminInboxModal = function () {
+    const owner = this.isInboxOwner();
+    const messages = this.data.admin_messages || [];
+    const unread = this.getUnreadInbox();
+    if (!this.inboxNewIds || !this.inboxModalOpen) this.inboxNewIds = new Set(unread.map(m => String(m.id)));
+    else unread.forEach(m => this.inboxNewIds.add(String(m.id)));
+    this.inboxModalOpen = true;
+    if (!this.inboxFilter) this.inboxFilter = 'all';
+    const flt = this.inboxFilter;
+    const list = messages.filter(m => m && (flt === 'all' || (flt === 'open' && !m.reply) || (flt === 'pw' && m.topic === PW_TOPIC)));
+    const perm = ('Notification' in window) ? Notification.permission : 'unsupported';
+    const staffBy = new Map((this.data.staff || []).map(s => [normCode(s.code), s]));
+    const fbtn = (id, label, n) => `<button onclick="app5s.inboxFilter='${id}'; app5s.openAdminInboxModal()" class="px-2.5 py-1.5 rounded-xl font-bold text-[11px] ${flt === id ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">${label} (${n})</button>`;
+    const html = `
+      <div class="p-5 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold"><i data-lucide="inbox" class="w-5 h-5"></i></div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 dark:text-white">HỘP THƯ TIN NHẮN & GÓP Ý ADMIN</h3>
+              <p class="text-[10px] text-indigo-600 font-bold">${this.inboxNewIds.size ? `${this.inboxNewIds.size} tin mới` : 'Không có tin mới'}</p>
+            </div>
+          </div>
+          <button onclick="app5s.closeModal()" class="p-1.5 rounded-xl text-slate-400 hover:bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        ${owner ? `
+          <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl text-[11px] ${perm === 'granted' ? 'bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200' : 'bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'}">
+            <span>${perm === 'granted' ? '🔔 Đã bật thông báo tin nhắn mới trên máy này.' : perm === 'denied' ? '🔕 Trình duyệt đang chặn thông báo. Bật lại trong cài đặt trang để nhận báo tin mới.' : perm === 'unsupported' ? 'Máy này không hỗ trợ thông báo nổi; tin mới vẫn báo bằng chuông và dải đỏ khi mở app.' : 'Bật thông báo để biết ngay khi có tin nhắn / yêu cầu cấp lại mật khẩu.'}</span>
+            ${perm === 'default' ? `<button onclick="app5s.enableInboxNotifications()" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-amber-600 text-white font-black">Bật thông báo</button>` : ''}
+          </div>` : ''}
+        <div class="flex flex-wrap gap-1.5">
+          ${fbtn('all', 'Tất cả', messages.length)}${fbtn('open', 'Chưa trả lời', messages.filter(m => m && !m.reply).length)}${fbtn('pw', 'Cấp lại mật khẩu', messages.filter(m => m && m.topic === PW_TOPIC).length)}
+        </div>
+        <div class="space-y-3">
+          ${list.length === 0 ? `<div class="text-center py-8 text-slate-400 text-xs"><i data-lucide="message-square-off" class="w-8 h-8 mx-auto mb-2 opacity-50"></i><p>Không có tin nhắn nào.</p></div>` : list.map(m => {
+            const isNew = this.inboxNewIds.has(String(m.id));
+            const isPw = m.topic === PW_TOPIC;
+            const target = staffBy.get(normCode(m.sender_code));
+            const canPw = isPw && !m.reply && target && this.canResetPasswordFor(target);
+            return `
+            <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border ${isNew ? 'border-red-400 ring-1 ring-red-300 dark:ring-red-800' : 'border-slate-200 dark:border-slate-700'} shadow-2xs space-y-2">
+              <div class="flex items-center justify-between text-xs gap-2">
+                <div class="flex items-center flex-wrap gap-1.5">
+                  ${isNew ? '<span class="px-1.5 py-0.5 rounded-md bg-red-600 text-white text-[9px] font-black">MỚI</span>' : ''}
+                  <strong class="text-slate-900 dark:text-white">${esc(m.sender_name)}</strong>
+                  <span class="text-[10px] text-slate-400">[${esc(m.dept_name)}]</span>
+                </div>
+                <span class="shrink-0 text-[10px] ${m.priority === 'urgent' ? 'bg-red-100 text-red-700 border border-red-300' : 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded-full font-bold">${esc(m.topic)}</span>
+              </div>
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${esc(m.title)}</div>
+              <div class="text-[11.5px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-xl leading-relaxed">${esc(m.content)}</div>
+              ${canPw ? `<button onclick="app5s.openPasswordResetModal('${jsq(target.code)}', '${jsq(m.id)}')" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black">🔑 Cấp lại mật khẩu cho ${esc(target.name)} (${esc(target.code)})</button>` : ''}
+              ${isPw && !m.reply && !target ? `<div class="text-[10.5px] text-amber-700 dark:text-amber-300">Không tìm thấy mã NV ${esc(m.sender_code)} trong danh sách nhân sự.</div>` : ''}
+              ${m.reply ? `
+                <div class="text-[11px] text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 p-2 rounded-xl border border-emerald-200 dark:border-emerald-800"><strong>Phản hồi:</strong> ${esc(m.reply)}</div>` : `
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-[10px] text-slate-400">🕒 ${esc(m.date)}</span>
+                  ${owner || this.isHospitalLeaderOrSupervisor() ? `<button onclick="app5s.quickReplyMessage('${jsq(m.id)}')" class="text-[10px] font-bold text-indigo-600 hover:underline">✍️ Trả lời tin nhắn</button>` : ''}
+                </div>`}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="pt-2">
+          <button onclick="app5s.openFeedbackModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition"><i data-lucide="plus" class="w-4 h-4"></i><span>Soạn Tin Nhắn / Góp Ý Mới</span></button>
+        </div>
+      </div>`;
+    this.showModal(html);
+    // Đánh dấu đã đọc (đồng bộ lên máy chủ => máy khác của Admin cũng hết báo)
+    if (owner && unread.length) {
+      const at = new Date().toLocaleString('vi-VN');
+      unread.forEach(m => { m.admin_read = true; m.admin_read_at = at; });
+      this.saveData();
+    }
+    this.updateInboxIndicators();
+  };
+
+  // Đóng hộp thư => bỏ nhãn MỚI cho lần mở sau
+  const origCloseModal = P.closeModal;
+  P.closeModal = function () {
+    this.inboxModalOpen = false;
+    this.inboxNewIds = null;
+    const r = origCloseModal.apply(this, arguments);
+    try { this.updateInboxIndicators(); } catch (e) {}
+    return r;
+  };
+
+  // Trung tâm thông báo (quả chuông): Admin thấy ngay mục hòm thư
+  const origNotifCenter = P.openNotificationsCenterModal;
+  P.openNotificationsCenterModal = function () {
+    const r = origNotifCenter.apply(this, arguments);
+    if (this.isInboxOwner()) {
+      const n = this.getUnreadInbox().length;
+      const box = document.querySelector('#modal-container .space-y-4');
+      if (box && box.children.length > 1 && !box.querySelector('#vpi-notif-inbox')) {
+        const el = document.createElement('button');
+        el.id = 'vpi-notif-inbox';
+        el.type = 'button';
+        el.onclick = () => this.openAdminInboxModal();
+        el.className = `w-full p-3 rounded-2xl text-left text-xs font-bold flex items-center justify-between ${n ? 'bg-red-600 text-white' : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800'}`;
+        el.innerHTML = `<span>📬 Hòm thư Admin: ${n ? `<strong>${n} tin nhắn mới</strong>` : 'không có tin mới'}</span><span>Mở ›</span>`;
+        box.insertBefore(el, box.children[1]);
+      }
+    }
+    return r;
+  };
+
+  // Giữ số trên chuông đúng sau mỗi lần vẽ lại giao diện
+  const origUpdateUI = P.updateUserInterface;
+  P.updateUserInterface = function () {
+    const r = origUpdateUI.apply(this, arguments);
+    try { this.updateInboxIndicators(); } catch (e) {}
+    return r;
+  };
+
+  // Sau mỗi lần tải dữ liệu từ máy chủ: kiểm tra tin mới
+  const origPull = P.pullStateFromServer;
+  P.pullStateFromServer = function () {
+    const p = origPull.apply(this, arguments);
+    Promise.resolve(p).then(() => { try { this.checkInboxNotifications(); } catch (e) {} });
+    return p;
+  };
+
+  // Admin: khi app chạy nền vẫn kiểm tra hòm thư mỗi 60 giây để báo tin mới
+  P.initInboxWatcher = function () {
+    if (this.inboxWatcherReady) return;
+    this.inboxWatcherReady = true;
+    const tick = () => {
+      if (document.visibilityState === 'hidden' && this.authToken && this.isInboxOwner()) this.pullStateFromServer();
+    };
+    document.addEventListener('visibilitychange', () => {
+      clearInterval(this.inboxBgTimer);
+      if (document.visibilityState === 'hidden' && this.isInboxOwner()) this.inboxBgTimer = setInterval(tick, 60000);
+    });
+    try {
+      if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', ev => {
+        if (ev.data && ev.data.type === 'open-inbox' && this.getCurrentUser()) this.openAdminInboxModal();
+      });
+    } catch (e) {}
+    // Mở từ thông báo (/?inbox=1)
+    if (/[?&]inbox=1/.test(location.search)) {
+      setTimeout(() => { if (this.getCurrentUser()) this.openAdminInboxModal(); }, 1500);
+      try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    }
+    setTimeout(() => this.checkInboxNotifications(), 2500);
+  };
+
+  const startWatcher = () => { if (window.app5s && window.app5s.initInboxWatcher) window.app5s.initInboxWatcher(); else setTimeout(startWatcher, 500); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startWatcher); else startWatcher();
 })();

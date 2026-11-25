@@ -74,6 +74,57 @@ và kiểm thử bản sửa trên máy (localhost). Bản gốc lưu trong thư
   thay đổi trên app → có hiệu lực mọi máy.
 - Bỏ tính năng "chuyển tài khoản không cần mật khẩu".
 
+## D2. Bản V28 (23/11/2026)
+
+- **Sửa lỗi tự tải lại / nhảy trang:** cứ 10 giây app vẽ lại toàn màn hình (do vùng tải chồng lấn 50 phiên bản
+  luôn trả về bản ghi cũ). Nay chỉ vẽ lại khi thật sự có dữ liệu mới, và hoãn khi người dùng đang cuộn/chạm.
+  Chuyển tab mở từ đầu trang. Kiểm chứng: 35 giây để yên → 0 lần vẽ lại, giữ nguyên vị trí cuộn.
+- **Bảo mật:**
+  - Máy chủ vô hiệu hóa mã độc trong mọi nội dung nhập (`<`, `>`, dấu nháy…), chặn ảnh SVG, kiểm tra khóa bản ghi.
+  - Chính sách CSP: chỉ tải mã/ảnh từ nguồn tin cậy; cố định phiên bản Tailwind; thêm HSTS.
+  - Ngày sinh, SĐT nhân sự không còn gửi xuống máy người khác (chỉ Admin / bản thân / quản lý khoa thấy SĐT).
+  - Hộp thư Admin chỉ Admin/Ban chỉ đạo và người gửi xem được.
+  - "Quên mật khẩu" nay gửi được tới Admin (trước đây không tới), chống spam 10 phút, không lộ mã NV có tồn tại.
+- **Nội dung:** bỏ nút "ảnh mẫu minh chứng" (cho nộp ảnh giả), bỏ điểm gán sẵn 98 "Xuất sắc", bỏ ghi chú soạn sẵn,
+  bỏ thông báo khẩn cũ 16/10, bỏ bộ đếm lượt xem giả (1.286/48), bỏ nhật ký truy cập giả, số trên quả chuông = số thật.
+
+## D3. Bản V29 (25/11/2026)
+
+- **Danh mục khu vực 5S** theo Google Sheet "DS các khu vực 5S toàn viện VPI": 18 khoa/phòng, 57 vị trí (mã phòng 101–157).
+  Ghép với khoa cũ: CĐHA(8), Khám bệnh(2), Xét nghiệm(9), Ngoại TH(4), Nhi(7), Nội TH(5), YHCT-PHCN(3), Dược(15),
+  Cấp cứu(1 → "Phòng Cấp cứu"), TCKT(20), QLCL(16), HCNS(19). Tạo mới: HDKH(21), Kinh doanh Bảo hiểm(22), Marketing(23),
+  KHVH(24), Nhà 3 tầng(25), Trung tâm Tiêu hóa(26). 8 khoa cũ không có trong sheet (ICU, PTGM, Sản, LCK, TDCN, KSNK, KHTH,
+  Điều dưỡng) giữ lại vì còn nhân sự, đánh dấu `in_5s:false`. **Admin vào tab Thống kê → "Áp dụng"** để đưa lên máy chủ;
+  79 vị trí cũ bị **xóa hẳn** (gỡ cả khỏi phân quyền khu vực và danh sách phụ trách của nhân sự).
+- **Xóa toàn bộ dữ liệu 5S để triển khai mới** (V29b, Admin): Thống kê → "Xóa dữ liệu & triển khai mới" → gõ `XOA DU LIEU 5S`.
+  Gọi `POST /api/reset`: đánh dấu xóa mọi phiếu 5S, lịch/ảnh bàn giao khu vực, đánh giá khoa; xóa ảnh trong kho `photos`
+  (giới hạn ~11 giây/lần, còn sót thì bấm lại); ghi mốc `singleton/data_reset`. Máy chưa nhận mốc mới bị từ chối gửi dữ liệu 5S
+  cũ (`reset_at` trong `POST /api/sync`), tự bỏ hàng đợi cũ và tải lại. Giữ nguyên tài khoản, mật khẩu, nhân sự, quyền, khoa phòng.
+- Đổi "Tác giả: Vũ Đạt" thành "Phát triển bởi Vũ Đạt, Bệnh viện Vĩnh Phúc VPI".
+- **Cấp lại mật khẩu** (V29c): Nhân sự → "Cấp lại mật khẩu" (hoặc biểu tượng chìa khóa ở từng người, hoặc nút dưới yêu cầu
+  "Cấp lại mật khẩu" trong Hộp thư). Gọi `POST /api/password {reset_for, msg_id}`: máy chủ sinh mật khẩu tạm (VD `Vpi482KQ`),
+  bắt buộc đổi ở lần đăng nhập kế tiếp, đăng xuất mọi phiên cũ, tự đánh dấu yêu cầu trong hộp thư là đã xử lý (không ghi mật khẩu
+  vào tin nhắn). Admin cấp cho mọi người; lãnh đạo khoa cấp cho nhân viên trong khoa không có quyền duyệt.
+- **Thông báo hòm thư cho Admin** (V29c): số tin chưa đọc trên quả chuông, dải đỏ "Hòm thư có N tin mới", chuông + rung,
+  thông báo nổi của hệ điều hành khi app chạy nền (Admin bấm "Bật thông báo" trong hộp thư; app nền kiểm tra mỗi 60 giây).
+  Mở hộp thư => tin được đánh dấu `admin_read` trên mọi máy của Admin. Giới hạn: khi app đã đóng hẳn / điện thoại khóa lâu,
+  tin mới chỉ báo khi mở lại app (chưa có Web Push).
+- **Thống kê** (V29c): bỏ "Không tính Chủ nhật" (5S làm cả 7 ngày); bộ lọc Tất cả / Đã thực hiện / Chưa thực hiện kèm số lượng.
+- **Phân quyền khu vực** (`staff.area_scope = {all, rooms[]}`, chỉ Admin sửa, máy chủ kiểm tra): Thống kê → "Phân quyền khu vực"
+  hoặc Nhân sự → Sửa → "📍 Phân quyền khu vực 5S". Mặc định: người duyệt = toàn viện; lãnh đạo khoa = khu vực khoa mình.
+- **Bỏ tải ảnh từ máy**: chỉ chụp camera; camera hệ thống chỉ nhận ảnh chụp trong 3 phút; camera lỗi không tạo ảnh giả.
+  Nộp ảnh luôn ghi cho **ngày hôm nay**; ảnh **chưa lên máy chủ = chưa thực hiện** (hiện "ẢNH CHƯA GỬI ĐƯỢC").
+  Máy chủ từ chối ảnh không nằm trong kho ảnh, từ chối nộp bù ngày cũ, tự ghi `server_at` và người nộp.
+- **Bỏ chấm điểm số**: chỉ còn Đạt / Không đạt (phiếu, đánh giá khoa, báo cáo, CSV).
+- **Tab Thống kê** (+ API `GET /api/report?from=&to=`, không giới hạn 90 ngày): khu vực đã/chưa thực hiện; biểu đồ & bảng xếp
+  hạng thi đua khoa phòng (% hoàn thành, % đạt, ngưỡng xếp loại chỉnh được); danh sách cá nhân vi phạm (không thực hiện /
+  không đạt / nộp muộn, chi tiết từng lần); xuất Excel (CSV), in A4.
+- **Sửa lỗi "chạy lại app"** khi thêm/sửa (Tùy chỉnh ca & nhân sự...): giao diện cập nhật tại chỗ (DOM morph), giữ vị trí cuộn,
+  không chạy lại hiệu ứng mở hộp thoại, ảnh không tải lại.
+- Sửa kèm: hàm thêm nhân sự vào phòng ghi nhầm cả danh mục 20 khoa vào hồ sơ nhân sự; ảnh vừa chụp ở phòng này có thể bị nộp
+  cho phòng khác.
+- Bản V28 lưu tại `original/v28/`. Kiểm thử giao diện trên máy bằng `tools/static_server.ps1` (không có API).
+
 ## E. Cách triển khai bản V27
 
 1. Supabase → SQL Editor → chạy `supabase/schema.sql` (hiện 3 dòng "OK").

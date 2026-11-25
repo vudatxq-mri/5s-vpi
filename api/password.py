@@ -1,4 +1,6 @@
-"""POST /api/password  {current, new} -> {token}  (đổi mật khẩu của chính mình)"""
+"""POST /api/password  {current, new} -> {token}  (đổi mật khẩu của chính mình)
+POST /api/password  {reset_for, msg_id?} -> {ok, code, name, temp_password}
+     (V29c: Admin / lãnh đạo khoa cấp lại mật khẩu tạm cho nhân viên quên mật khẩu)"""
 import os
 import sys
 from http.server import BaseHTTPRequestHandler
@@ -12,6 +14,8 @@ WEAK = {'123456', '123', '1234', '12345', '12345678', '000000', '111111', '12312
 def _change(handler_self):
     user = core.authenticate(handler_self.headers)
     body = core.read_json(handler_self, 10000)
+    if body.get('reset_for'):
+        return 200, core.admin_reset_password(user, str(body.get('reset_for'))[:40], body.get('msg_id'))
     current = str(body.get('current') or '')
     new = str(body.get('new') or '')
     code = core.norm_code(user['code'])

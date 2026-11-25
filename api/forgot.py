@@ -42,7 +42,7 @@ def _forgot(h):
         'topic': 'Cấp lại mật khẩu', 'priority': 'urgent',
         'title': '[CẤP MẬT KHẨU] %s (%s)' % (name, core.norm_code(code)),
         'content': ('Yêu cầu cấp lại mật khẩu. Họ tên khai báo: %s; tên trong hồ sơ: %s; khoa: %s; SĐT: %s. '
-                    'Hãy gọi xác minh trước khi đặt lại mật khẩu (Nhân sự → Sửa → Mật khẩu mới).')
+                    'Hãy gọi xác minh rồi bấm nút "Cấp lại mật khẩu" ngay dưới tin nhắn này.')
                    % (name, core.clean_text(str(staff.get('name') or '?')), dept or '?', phone or 'chưa cung cấp'),
         'status': 'received', 'reply': '',
     }

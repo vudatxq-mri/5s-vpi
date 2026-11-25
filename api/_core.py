@@ -546,9 +546,11 @@ def check_op(u, op, existing, rooms_cache, password_updates):
             return True, d, ''
         if norm_code(existing.get('sender_code')) == norm_code(u['code']):
             d = dict(d)
-            for f in ('reply', 'status'):
+            for f in ('reply', 'status', 'reply_date', 'admin_read'):
                 if f in existing:
                     d[f] = existing[f]
+                else:
+                    d.pop(f, None)
             return True, d, ''
         return False, None, 'Không có quyền'
 
@@ -694,6 +696,57 @@ def reset_5s_data(u, confirm):
         'rec_date': None, 'updated_by': norm_code(u['code'])}], prefer='resolution=merge-duplicates,return=minimal')
     marker['version'] = current_version()
     return marker
+
+
+# ---------------------------------------------------------------------------
+# V29c: CẤP LẠI MẬT KHẨU cho nhân viên bị quên / mất mật khẩu
+# - Admin: cấp lại cho mọi tài khoản (trừ chính mình - tự đổi ở "Đổi mật khẩu")
+# - Lãnh đạo khoa/phòng: cấp lại cho nhân viên cùng khoa không có quyền duyệt
+# Mật khẩu tạm do máy chủ sinh ngẫu nhiên, bắt buộc đổi ở lần đăng nhập kế tiếp,
+# mọi phiên đăng nhập cũ của tài khoản đó bị đăng xuất (pw_version tăng).
+# ---------------------------------------------------------------------------
+_TEMP_PW_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
+
+
+def make_temp_password():
+    return 'Vpi' + ''.join(secrets.choice('23456789') for _ in range(3)) + \
+        ''.join(secrets.choice(_TEMP_PW_CHARS) for _ in range(2))
+
+
+def admin_reset_password(u, target, msg_id=None):
+    code = norm_code(target)
+    if not code:
+        raise ApiError(400, 'Thiếu mã nhân viên cần cấp lại mật khẩu')
+    if code == norm_code(u['code']):
+        raise ApiError(400, 'Mật khẩu của chính mình hãy đổi ở mục "Đổi mật khẩu"')
+    staff = get_record('staff', code)
+    if not staff:
+        raise ApiError(404, 'Không tìm thấy nhân viên %s' % code)
+    allowed = is_admin(u) or (is_manager(u) and same_dept(staff.get('department_id'), u.get('department_id'))
+                              and not can_review(staff))
+    if not allowed:
+        raise ApiError(403, 'Chỉ Admin (hoặc lãnh đạo khoa với nhân viên trong khoa) được cấp lại mật khẩu')
+    temp = make_temp_password()
+    set_password(code, temp, must_change=True, bump=True)
+    # Đánh dấu yêu cầu "Cấp lại mật khẩu" trong hòm thư là đã xử lý (không ghi mật khẩu vào tin nhắn)
+    keys = {'FP-' + code}
+    if msg_id:
+        keys.add(str(msg_id)[:120])
+    now = (_dt.datetime.utcnow() + _dt.timedelta(hours=7)).strftime('%H:%M %d/%m/%Y')
+    for k in keys:
+        if not SAFE_KEY.match(k):
+            continue
+        m = get_record('admin_messages', k)
+        if not m or m.get('status') == 'replied':
+            continue
+        m = dict(m)
+        m.update({'status': 'replied', 'admin_read': True, 'read_by_user': False, 'reply_date': now,
+                  'reply': 'Đã cấp lại mật khẩu tạm lúc %s. Liên hệ người cấp (%s) để nhận mật khẩu, '
+                           'đăng nhập và đổi mật khẩu mới.' % (now, clean_text(str(u.get('name') or u['code'])))})
+        rest('POST', 'records', {'on_conflict': 'collection,key'}, [{
+            'collection': 'admin_messages', 'key': k, 'data': m, 'deleted': False,
+            'rec_date': None, 'updated_by': norm_code(u['code'])}], prefer='resolution=merge-duplicates,return=minimal')
+    return {'ok': True, 'code': code, 'name': staff.get('name') or '', 'temp_password': temp}
 
 
 def set_password(code, pw, must_change, bump):
